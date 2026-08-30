@@ -1,0 +1,3330 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#17140F">
+<title>흥양기 興陽記</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=IBM+Plex+Sans+KR:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════
+   흥양기 — 오방색(五方色). 무신도 단청에서 뽑았다.
+   흑(玄)북 · 청(靑)동 · 적(赤)남 · 백(白)서 · 황(黃)중앙
+   ═══════════════════════════════════════════════════ */
+:root{
+  /* 혼합(C) — 순흑 화폭 위 금(金)+진사(辰砂). 무신도 색이 사는 어둠. */
+  --heuk:#0B0A08; --heuk2:#15120D; --heuk3:#1F1B13;
+  --hwang:#C8A24B; --hwang-l:#E4C778; --cheong:#1E4C73; --cheong-l:#4E8FC0; --jeok:#CE3A2A;
+  --baek:#EDE7DA; --dim:#8B8275; --line:#2A2418;
+  /* 깊이 — 금빛 실선 · 안쪽 광택 · 그늘 · 발광 */
+  --line-hi:rgba(228,199,120,.13); --gold-in:rgba(255,241,205,.28);
+  --sh1:0 4px 14px rgba(0,0,0,.45); --sh2:0 10px 26px rgba(0,0,0,.55); --sh3:0 16px 40px rgba(0,0,0,.7);
+  --glow-h:0 0 16px rgba(200,162,75,.4); --glow-j:0 0 18px rgba(206,58,42,.5);
+  --serif:'Nanum Myeongjo',serif; --sans:'IBM Plex Sans KR',sans-serif;
+  --safe-b:env(safe-area-inset-bottom,0px);
+}
+.dm-home{padding-top:2px}.dm-hero{position:relative;min-height:178px;overflow:hidden;padding:20px 18px;margin:-14px -14px 14px;background:radial-gradient(circle at 80% 20%,rgba(200,162,75,.24),transparent 35%),linear-gradient(140deg,#291b18,#120f0d 62%,#241b14);border-bottom:1px solid #59452a}.dm-hero:after{content:'興';position:absolute;right:18px;bottom:-32px;font:800 180px/1 var(--serif);color:rgba(228,199,120,.09);transform:rotate(-12deg)}.dm-kicker{font-size:10px;letter-spacing:.18em;color:var(--hwang-l);position:relative;z-index:1}.dm-hero h2{font-size:25px;letter-spacing:.08em;margin:7px 0;position:relative;z-index:1}.dm-hero p{font-size:11.5px;color:#c3b8a6;line-height:1.6;position:relative;z-index:1}.dm-actions{display:grid;grid-template-columns:1.35fr 1fr;gap:8px;margin-top:15px;position:relative;z-index:2}.dm-actions .btn{padding:11px 8px;font-size:12px}.dm-actions .ghost{background:rgba(0,0,0,.3)}.dm-section{margin:15px 0 8px;display:flex;justify-content:space-between;align-items:center}.dm-section h3{font:700 14px var(--serif);letter-spacing:.07em}.dm-section span{font-size:10px;color:var(--dim)}.dm-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.dm-stat{padding:10px 8px;background:rgba(28,23,19,.92);border:1px solid var(--line);text-align:center}.dm-stat b{display:block;color:var(--hwang-l);font:700 18px var(--serif)}.dm-stat small{color:var(--dim);font-size:9.5px}.dm-quest{display:flex;align-items:center;gap:10px;padding:11px 12px;background:linear-gradient(90deg,rgba(128,102,184,.18),rgba(20,15,12,.8));border:1px solid #493c60;margin-bottom:7px}.dm-quest .qicon{font-size:21px}.dm-quest strong{font:700 11.5px var(--serif);display:block}.dm-quest small{font-size:10px;color:var(--dim)}.dm-quest button{margin-left:auto;color:var(--hwang-l);font-size:11px}.dm-featured{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.dm-featured .mini{min-width:0}.dm-badge{position:absolute;top:7px;left:7px;z-index:3;background:#d94b42;color:white;font-size:8px;padding:3px 5px;letter-spacing:.08em}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overscroll-behavior:none}
+body{
+  background:var(--heuk);color:var(--baek);font-family:var(--sans);font-weight:300;
+  -webkit-font-smoothing:antialiased;
+  background-image:
+    radial-gradient(ellipse 120% 52% at 50% 0%,#1C160E 0%,transparent 72%),
+    repeating-linear-gradient(90deg,transparent 0 3px,rgba(0,0,0,.14) 3px 4px);
+}
+:focus-visible{outline:2px solid var(--hwang);outline-offset:2px}
+/* 폭 — 폰은 560, 넓은 화면(갤탭)은 960까지 편다.
+   560 고정이면 태블릿에서 양옆이 통째로 죽는다. nav 도 같이 넓혀야 어긋나지 않는다. */
+#app{max-width:560px;margin:0 auto;min-height:100%;display:flex;flex-direction:column}
+@media(min-width:900px){ #app{max-width:960px} }
+.mini .blank{background:radial-gradient(circle at 50% 28%,rgba(228,199,120,.30) 0 12%,transparent 13%),radial-gradient(circle at 50% 42%,rgba(128,102,184,.26),transparent 42%),linear-gradient(145deg,#332822,#12100e 70%)}
+.mini .blank:after{content:'✦';position:absolute;inset:0;display:grid;place-items:center;font:34px var(--serif);color:rgba(228,199,120,.38)}
+.dm-battle-guide{display:grid;grid-template-columns:repeat(5,1fr);gap:3px;margin:10px 0;padding:8px 5px;background:rgba(20,15,12,.82);border:1px solid var(--line)}.dm-battle-guide span{text-align:center;font:9px var(--serif);color:var(--dim)}.dm-battle-guide span b{display:block;color:var(--hwang-l);font-size:13px;margin-bottom:2px}
+.dm-boss-state{padding:9px 11px;border:1px solid #493c60;background:linear-gradient(90deg,rgba(128,102,184,.18),rgba(18,14,12,.9));font-size:11px;color:#c5b7ac;line-height:1.55}.dm-boss-state b{color:#f0c979;font-family:var(--serif)}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+
+/* ── 머리: 재화 ─────────────────────────── */
+header{
+  position:sticky;top:0;z-index:20;background:rgba(11,10,8,.94);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--line);
+  box-shadow:0 1px 0 var(--line-hi),var(--sh1);padding:10px 14px;
+}
+.hd{display:flex;align-items:center;gap:10px}
+.who{font-family:var(--serif);font-size:14px;font-weight:700;letter-spacing:.04em}
+.lv{font-size:10.5px;color:var(--hwang);font-family:var(--serif)}
+.res{margin-left:auto;display:flex;gap:11px;font-size:11.5px;font-family:var(--serif)}
+.res b{font-weight:700;font-size:13px}
+.r-h b{color:#D98B3A} .r-b b{color:var(--hwang)} .r-y b{color:var(--dim)}
+
+/* ── 몸통 ───────────────────────────────── */
+main{flex:1;padding:14px 14px 84px}
+.pane{display:none;animation:in .22s ease-out}
+.pane.on{display:block}
+@keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+h2{font-family:var(--serif);font-size:19px;font-weight:800;letter-spacing:.1em;margin-bottom:3px}
+.sub{font-size:11.5px;color:var(--dim);margin-bottom:16px;line-height:1.6}
+
+.card{background:linear-gradient(180deg,var(--heuk2),#100E0A);border:1px solid var(--line);box-shadow:inset 0 1px 0 var(--line-hi),var(--sh1);padding:14px;margin-bottom:11px}
+.card h3{font-family:var(--serif);font-size:14.5px;font-weight:700;letter-spacing:.05em;margin-bottom:7px;
+  display:flex;align-items:center;gap:8px}
+.card h3::before{content:"";width:4px;height:13px;background:var(--hwang);flex:0 0 auto}
+
+.btn{
+  display:block;width:100%;padding:13px;
+  background:linear-gradient(180deg,var(--hwang-l),var(--hwang));color:var(--heuk);
+  font-family:var(--serif);font-weight:800;font-size:14.5px;letter-spacing:.1em;
+  transition:.15s;border:1px solid var(--hwang);
+  box-shadow:inset 0 1px 0 var(--gold-in),var(--glow-h);
+}
+.btn:active{transform:scale(.985)}
+.btn:disabled{opacity:.35;cursor:not-allowed}
+.btn.ghost{background:transparent;color:var(--baek);border-color:var(--line)}
+.btn.red{background:linear-gradient(180deg,#E24C3C,var(--jeok));border-color:var(--jeok);color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.2),var(--glow-j)}
+.btn.sm{padding:8px 14px;font-size:12.5px;width:auto;display:inline-block}
+
+.err{background:#2A1512;border:1px solid var(--jeok);padding:11px;font-size:12.5px;
+     color:#E8A5A0;margin-bottom:11px;line-height:1.6}
+.err b{color:var(--jeok);display:block;font-family:var(--serif);margin-bottom:3px}
+
+/* ── 카드 낱장 ───────────────────────────── */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:9px}
+.mini{
+  position:relative;aspect-ratio:3/4;background:#000;border:1px solid var(--line);
+  overflow:hidden;cursor:pointer;transition:.18s;
+}
+.mini:active{transform:scale(.96)}
+.mini.sel{border-color:var(--hwang);box-shadow:0 0 0 1px var(--hwang),var(--glow-h)}
+.mini img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 22%}
+/* 그림이 없거나 로딩에 실패한 자리. 예전엔 이름 첫 글자를 크게 찍었는데,
+   [hidden] 은 브라우저 기본 display:none 이고 이 클래스 선택자가 그걸 이겨서
+   그림 위에 글자가 늘 깔려 있었다. 글자를 아예 뺀다 — 이름은 아래에 이미 있다. */
+.mini .blank{position:absolute;inset:0;background:
+  repeating-linear-gradient(135deg, #0E0C08 0 6px, #121009 6px 12px)}
+.mini .blank[hidden]{display:none}
+.mini .band{position:absolute;left:0;top:0;bottom:0;width:3px}
+.f-당 .band,.band.f-당{background:var(--hwang)}
+.f-물 .band,.band.f-물{background:var(--cheong)}
+.f-저승 .band,.band.f-저승{background:var(--jeok)}
+.mini .nm{position:absolute;left:0;right:0;bottom:0;padding:16px 5px 4px;
+  background:linear-gradient(transparent,rgba(0,0,0,.93) 45%);
+  font-family:var(--serif);font-size:10.5px;font-weight:700;line-height:1.25}
+.mini .st{position:absolute;top:3px;right:4px;font-size:9px;color:var(--hwang);letter-spacing:-1px}
+.mini .halo{position:absolute;left:50%;top:38%;transform:translate(-50%,-50%);
+            width:112%;aspect-ratio:1;pointer-events:none}
+.mini .hp{position:absolute;left:0;right:0;bottom:0;height:3px;background:#3A0F0C}
+.mini .hp i{display:block;height:100%;background:var(--jeok);transition:width .4s}
+.mini.down{filter:grayscale(1) brightness(.4)}
+
+/* ── 도감 필터 ───────────────────────────── */
+.filt{display:flex;flex-direction:column;gap:7px;margin-bottom:13px}
+.frow{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+.frow .fl{font-size:9.5px;color:var(--dim);font-family:var(--serif);
+          letter-spacing:.16em;width:32px;flex-shrink:0}
+.chip{font-size:11px;padding:5px 10px;border:1px solid var(--line);color:var(--dim);
+      font-family:var(--serif);transition:.14s}
+.chip.on{border-color:var(--hwang);color:var(--hwang);background:rgba(200,162,75,.09)}
+.chip.f-당.on{border-color:var(--hwang);color:var(--hwang)}
+.chip.f-물.on{border-color:var(--cheong-l);color:var(--cheong-l);background:rgba(78,143,192,.1)}
+.chip.f-저승.on{border-color:var(--jeok);color:var(--jeok);background:rgba(184,53,46,.1)}
+
+/* 도감 낱장 — 미획득 이름이 회색 위 회색이라 안 읽혔다 */
+.mini.dim .nm{color:#9A8F7C}
+.mini .tr{position:absolute;top:3px;right:4px;font-size:9px;letter-spacing:-1px;
+          color:var(--hwang);text-shadow:0 1px 3px #000}
+.mini .noart{position:absolute;top:4px;left:7px;font-size:8px;color:#5C5347;
+             font-family:var(--serif);letter-spacing:.1em}
+
+/* ── 파티 슬롯 — 누가 앞장서는지 보여야 한다 ── */
+.slots{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:11px}
+.sl{position:relative;aspect-ratio:3/4;background:#0C0A07;border:1px dashed var(--line);
+    display:grid;place-items:center;overflow:hidden}
+.sl.has{border:1px solid var(--line);border-style:solid}
+.sl img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 20%}
+.sl .e{font-family:var(--serif);font-size:10px;color:#3E3629}
+.sl .no{position:absolute;top:2px;left:4px;font-size:9px;font-family:var(--serif);
+        color:var(--dim);text-shadow:0 1px 3px #000;z-index:2}
+.sl.lead{border-color:var(--hwang);box-shadow:0 0 0 1px var(--hwang),var(--glow-h)}
+.sl.lead .no{color:var(--hwang)}
+.sl .ld{position:absolute;left:0;right:0;bottom:0;background:var(--hwang);color:var(--heuk);
+        font-family:var(--serif);font-size:8.5px;font-weight:800;text-align:center;
+        padding:2px 0;letter-spacing:.1em;z-index:2}
+
+/* ── 상세 팝업 — 넓은 화면에선 그림 좌 / 정보 우 ── */
+@media(min-width:760px){
+  .ov-in{max-width:720px}
+  .ov-in.two{display:grid;grid-template-columns:300px 1fr}
+  .ov-in.two > div:first-child{aspect-ratio:3/4}
+  .ov-in.two .ov-b{overflow:auto;max-height:82vh}
+}
+
+/* ══ 카드 상세 — 접으면 그림이 커진다 ═════════════
+   그림이 기본이고 정보는 손님이다. 아무것도 안 열면 3:4 전면 —
+   카드를 보러 온 사람은 그림을 본다. 스킬이 궁금하면 열고,
+   그때 그림이 예의 있게 물러난다. 닫으면 돌아온다.        */
+.cd{max-width:420px;width:100%;background:var(--heuk2);border:1px solid var(--line);
+    box-shadow:var(--sh3);max-height:88vh;overflow-y:auto;position:relative}
+.cd .art{position:relative;aspect-ratio:3/4;background:#000;overflow:hidden;
+         transition:aspect-ratio .45s cubic-bezier(.2,.9,.25,1)}
+.cd.open .art{aspect-ratio:16/9;min-height:150px}
+.cd .art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+             object-position:center 18%}
+/* 그림 아래 옅은 그늘 — 그림과 이름판이 이어 보이게만 한다. 글자는 안 얹는다. */
+.cd .art .g{position:absolute;left:0;right:0;bottom:0;height:34%;
+            background:linear-gradient(transparent,rgba(12,10,8,.75))}
+.cd .art .hl{position:absolute;left:50%;top:42%;transform:translate(-50%,-50%);
+             width:70%;aspect-ratio:1;pointer-events:none;opacity:.5;transition:opacity .35s}
+.cd.open .art .hl{opacity:0}
+.cd .art .hl circle{fill:none;stroke:currentColor;stroke-width:.7}
+/* ★ 이름판(名牌) — 그림 밖에 둔다.
+   예전엔 그림 위에 얹었는데, 항목을 열면 그림이 16:9로 줄면서 이름판까지 같이 눌렸다.
+   폰에서 16:9는 세로 220px뿐이라 이름·선·부제가 서로를 먹었다.
+   판을 그림 밖으로 빼면 그림이 아무리 줄어도 이름은 제 자리를 지킨다. */
+.cd .plate{position:relative;background:#0F0D09;border-bottom:1px solid var(--line);
+           padding:13px 16px 12px;text-align:center;min-height:78px}
+.cd .plate .nm{font-family:var(--serif);font-size:26px;font-weight:800;line-height:1.15;
+               color:var(--baek);word-break:keep-all}
+.cd .plate .rule{width:70px;height:1px;margin:8px auto 7px;opacity:.6}
+.cd .plate .sub{font-size:10.5px;font-weight:600;letter-spacing:.22em}
+.cd .plate .st{position:absolute;left:14px;top:14px;font-size:13px;color:var(--hwang);letter-spacing:1px}
+.cd .plate .sil{position:absolute;right:13px;top:13px;font-family:var(--serif);font-size:10px;
+                color:var(--hwang);border:1px solid var(--hwang);padding:2px 7px}
+.cd .x{position:absolute;right:9px;top:9px;width:30px;height:30px;z-index:9;color:var(--baek);
+       background:rgba(0,0,0,.6);border:1px solid var(--line);font-size:14px}
+
+.cd details{border-top:1px solid var(--line)}
+.cd summary{padding:13px 16px;font-family:var(--serif);font-size:13.5px;font-weight:700;
+            cursor:pointer;list-style:none;display:flex;align-items:center;gap:10px}
+.cd summary::-webkit-details-marker{display:none}
+.cd summary::after{content:"+";margin-left:auto;color:var(--dim);font-size:16px}
+.cd details[open] summary::after{content:"−"}
+.cd summary .k{font-size:9px;letter-spacing:.22em;color:var(--dim);font-weight:400;flex:0 0 42px}
+.cd summary.lk{color:#5C5347}
+.cd summary.lk .k{color:var(--jeok)}
+.cd .bd{padding:0 16px 15px 68px;font-size:12.5px;line-height:1.9;color:var(--dim)}
+.cd .bd .t{font-family:var(--serif);font-size:14px;color:var(--baek);font-weight:700}
+.cd .bd .t.hw{color:var(--hwang)} .cd .bd .t.jk{color:var(--jeok)}
+.cd .num{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}
+.cd .num span{font-size:10.5px;padding:2px 8px;border:1px solid var(--line);color:var(--baek);
+              font-family:var(--serif)}
+.cd .num span b{color:var(--hwang);font-weight:400}
+.cd .lockbar{margin-top:8px;padding:9px 11px;border:1px dashed var(--line);background:#12100B}
+.cd .lockbar .l1{font-size:11.5px;color:var(--jeok);font-family:var(--serif)}
+.cd .lockbar .l2{font-size:11px;color:var(--dim);margin-top:5px;line-height:1.7}
+.cd .src{font-family:var(--serif);border-left:2px solid var(--line);padding-left:11px}
+.cd .src b{color:var(--hwang);font-weight:400}
+
+/* ── 던전 목록 ───────────────────────────── */
+.dun{display:flex;align-items:center;gap:11px;padding:12px 13px;
+     background:linear-gradient(180deg,var(--heuk2),#100E0A);
+     border:1px solid var(--line);box-shadow:inset 0 1px 0 var(--line-hi),var(--sh1);
+     margin-bottom:8px;cursor:pointer;transition:.15s}
+.dun:active{transform:scale(.99)}
+.dun.lock{opacity:.4}
+.dun .dl{width:34px;height:34px;display:grid;place-items:center;font-family:var(--serif);
+         font-size:11px;font-weight:800;border:1px solid var(--line);flex-shrink:0}
+.dun .dn{font-family:var(--serif);font-size:14px;font-weight:700}
+.dun .dm{font-size:10.5px;color:var(--dim);margin-top:2px}
+.dun .dc{margin-left:auto;text-align:right;font-size:10.5px;color:var(--dim);flex-shrink:0}
+.dun .dc b{display:block;color:#D98B3A;font-size:12.5px;font-family:var(--serif)}
+.tag{display:inline-block;font-size:9.5px;padding:1px 6px;border:1px solid var(--line);
+     color:var(--dim);margin-left:4px}
+.tag.ui{border-color:var(--jeok);color:var(--jeok)}
+
+/* ── 전투 로그 ───────────────────────────── */
+.log{background:#0A0806;border:1px solid var(--line);padding:11px;max-height:230px;
+     overflow-y:auto;font-size:12px;line-height:1.75;font-family:var(--serif);
+     box-shadow:inset 0 2px 8px rgba(0,0,0,.45)}
+.log div{padding:2px 0;opacity:0;animation:pop .3s forwards}
+@keyframes pop{to{opacity:1}}
+.log .u{color:var(--hwang);font-weight:700}
+.log .c{color:var(--jeok);font-weight:700}
+.log .h{color:var(--cheong-l)}
+.log .e{color:var(--baek);font-weight:700;border-top:1px solid var(--line);margin-top:5px;padding-top:5px}
+
+.bar{height:4px;background:var(--heuk3);margin:9px 0;overflow:hidden;box-shadow:inset 0 1px 3px rgba(0,0,0,.6)}
+.bar i{display:block;height:100%;transition:width .5s}
+.bar.buj i{background:linear-gradient(90deg,var(--cheong),var(--jeok))}
+.bar.pg i{background:var(--hwang)}
+.lbl{display:flex;justify-content:space-between;font-size:10.5px;color:var(--dim);
+     font-family:var(--serif);letter-spacing:.05em}
+
+/* ── 고풀이 ─────────────────────────────── */
+.gopan{position:relative;padding:24px 4px 18px;margin:14px 0 2px;border-radius:12px;overflow:hidden;
+  background:radial-gradient(120% 88% at 50% 48%, rgba(200,162,75,calc(.045 + var(--rel,0)*.14)) 0%, transparent 60%)}
+.gopan::after{content:"";position:absolute;inset:0;border-radius:12px;box-shadow:inset 0 0 46px rgba(0,0,0,.55);pointer-events:none}
+.cord{position:absolute;left:9%;right:9%;top:50%;height:2px;transform:translateY(-50%);
+  background:linear-gradient(90deg,transparent,rgba(233,226,210,.5) 13%,rgba(233,226,210,.5) 87%,transparent);
+  box-shadow:0 0 9px rgba(233,226,210,.14)}
+.knots{position:relative;display:flex;justify-content:space-between;align-items:center;
+  padding:0 7%;margin:0;min-height:50px;z-index:1}
+.knot{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;
+  font-family:var(--serif);font-size:12px;border:2px solid var(--baek);color:var(--baek);
+  background:radial-gradient(circle at 40% 34%,#F3ECDD,#6A6152 96%);box-shadow:var(--sh1);
+  transition:transform .32s cubic-bezier(.2,.9,.3,1.45),opacity .4s,box-shadow .3s,color .3s,border-color .3s}
+.knot.now{border-color:var(--jeok);color:#fff;background:radial-gradient(circle at 40% 34%,#E8C9C4,#7A231B 96%);
+  box-shadow:var(--glow-j);animation:knotpulse 1s infinite alternate}
+.knot.done{border-color:var(--hwang);color:var(--hwang);background:radial-gradient(circle,rgba(200,162,75,.18),transparent 70%);
+  box-shadow:var(--glow-h);transform:scale(.6);opacity:.5}
+@keyframes knotpulse{to{box-shadow:0 0 22px rgba(206,58,42,.82)}}
+.pull{width:100%;padding:19px;margin-top:2px;background:linear-gradient(180deg,var(--heuk2),#100E0A);
+  border:1px solid var(--hwang);border-radius:9px;box-shadow:inset 0 1px 0 var(--gold-in),var(--sh1);
+  font-family:var(--serif);font-size:15.5px;letter-spacing:.16em;color:var(--hwang-l)}
+.pull:active{transform:translateY(1px);box-shadow:inset 0 2px 7px rgba(0,0,0,.5)}
+.pull:disabled{opacity:.5;border-color:var(--line);color:var(--dim);box-shadow:none}
+.gp-avg{font-size:10.5px;color:var(--dim);text-align:center;margin-top:11px;font-family:var(--serif);letter-spacing:.06em}
+.salpuri{position:absolute;inset:0;left:-115%;pointer-events:none;z-index:3;
+  background:linear-gradient(90deg,transparent,rgba(233,226,210,.72) 50%,transparent)}
+.salpuri.on{animation:sweep 1.15s cubic-bezier(.6,0,.34,1) forwards}
+@keyframes sweep{to{left:115%}}
+
+/* ── 굿 결과 ─────────────────────────────── */
+.pull-res{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-top:12px}
+.rates{font-size:10.5px;color:var(--dim);line-height:1.8;font-family:var(--serif);
+       border-top:1px solid var(--line);margin-top:11px;padding-top:9px}
+
+/* ── 발 ─────────────────────────────────── */
+/* ══ 길 — 목록 → 지도 → 보스 ══════════════════════
+   목록에서 던전을 누르면 지도가 펼쳐지며 그 자리로 당겨지고,
+   그 위로 보스가 화면을 채운다. 새로 그릴 그림이 없다 —
+   보스 카드가 곧 그 곳의 기운이다. */
+#gilMap{position:fixed;inset:0;z-index:60;background:#0A0806;
+  opacity:0;visibility:hidden;transition:opacity .45s}
+#gilMap.on{opacity:1;visibility:visible}
+#gilMap svg{position:absolute;inset:0;width:100%;height:100%}
+#mapg{transition:transform .9s cubic-bezier(.25,.9,.25,1)}
+.pin{cursor:pointer;outline:none}
+.pin .lab{font-family:var(--serif);font-size:10px;font-weight:700;
+  paint-order:stroke;stroke:rgba(10,8,6,.92);stroke-width:3.2px}
+.pin .lv{font-family:var(--serif);font-size:9px;font-weight:800}
+.pin.lock{opacity:.32}
+#gate{position:fixed;inset:0;z-index:70;background:#000;
+  opacity:0;visibility:hidden;transition:opacity .55s}
+#gate.on{opacity:1;visibility:visible}
+#gate .art{position:absolute;inset:0}
+#gate .art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  object-position:center 20%;transform:scale(1.1);
+  animation:breathe 10s ease-in-out infinite alternate}
+@keyframes breathe{from{transform:scale(1.10)}to{transform:scale(1.18)}}
+#gate .vig{position:absolute;inset:0;
+  background:radial-gradient(74% 44% at 50% 30%, transparent, rgba(0,0,0,.5) 100%),
+             linear-gradient(transparent 30%, rgba(10,8,6,.9) 58%, #0A0806 84%)}
+#gate .where{position:absolute;left:0;right:0;top:22px;text-align:center;z-index:3;
+  font-size:10px;letter-spacing:.42em;color:var(--dim)}
+#gate .bn{position:absolute;left:0;right:0;top:41%;text-align:center;z-index:3;
+  font-family:var(--serif);font-size:32px;font-weight:800;
+  text-shadow:0 3px 22px #000, 0 0 44px rgba(0,0,0,.92)}
+#gate .bs{position:absolute;left:0;right:0;top:calc(41% + 42px);text-align:center;z-index:3;
+  font-size:10.5px;font-weight:600;letter-spacing:.26em;text-shadow:0 1px 8px #000}
+#gate .kings{position:absolute;left:16px;right:16px;top:calc(41% + 76px);z-index:3;display:flex;gap:3px}
+#gate .kings i{flex:1;height:3px;background:#3A1512}
+#gate .kings i.done{background:var(--jeok)}
+#gate .kings .kl{position:absolute;left:0;right:0;top:8px;text-align:center;font-size:9px;
+  color:#E08A80;letter-spacing:.2em;font-family:var(--serif)}
+#gate .bd{position:absolute;left:0;right:0;bottom:0;z-index:4;padding:0 18px 18px;
+  max-width:600px;margin:0 auto}
+#gate .dn{font-family:var(--serif);font-size:17px;font-weight:700}
+#gate .m{font-size:10.5px;color:var(--dim);margin-top:3px}
+#gate .desc{font-family:var(--serif);font-size:13px;line-height:1.95;margin-top:11px;
+  border-left:2px solid var(--hwang);padding-left:12px;opacity:.94}
+#gate .ways{display:flex;gap:6px;margin-top:15px}
+#gate .ways button{flex:1;padding:13px 0;font-family:var(--serif);font-size:13px;
+  letter-spacing:.14em;border:1px solid var(--line);background:rgba(16,13,9,.9);color:var(--dim)}
+#gate .ways button.go{background:linear-gradient(180deg,var(--hwang-l),var(--hwang));color:var(--heuk);
+  border-color:var(--hwang);font-weight:800;flex:1.4;box-shadow:inset 0 1px 0 var(--gold-in),var(--glow-h)}
+#gate .ways button:disabled{opacity:.35}
+#gate .ways button.nx{color:var(--baek)}
+#gate .err{margin-top:9px}
+/* ══ 전투 연출 ═══════════════════════════════════
+   서버가 로그를 통째로 내려준다. 클라이언트는 계산이 없다.
+   연출은 순수한 재생 문제다 — 무엇을 언제 보여줄지만 정한다. */
+#stage{position:relative;min-height:430px;margin-top:10px;overflow:hidden;
+  border:1px solid var(--line);background:#0C0A08;
+  background-image:radial-gradient(ellipse 130% 45% at 50% 0%,#1E1912 0%,transparent 65%)}
+#stage.shake{animation:shk .34s}
+@keyframes shk{0%,100%{transform:translate(0)}15%{transform:translate(-5px,3px)}
+  30%{transform:translate(5px,-3px)}45%{transform:translate(-4px,-2px)}
+  60%{transform:translate(4px,2px)}80%{transform:translate(-2px,1px)}}
+#flash{position:absolute;inset:0;z-index:13;pointer-events:none;opacity:0}
+#flash.on{animation:fl .38s}
+@keyframes fl{0%{opacity:0}12%{opacity:.85}100%{opacity:0}}
+.rank{position:absolute;left:8px;right:8px;display:grid;
+  grid-template-columns:repeat(5,1fr);gap:5px;z-index:5}
+.rank.foes{top:10px;align-items:start}
+.rank.usr{bottom:10px;align-items:end}
+.bu{position:relative;background:#000;border:1px solid var(--line);overflow:hidden;
+  aspect-ratio:3/4;transition:transform .3s cubic-bezier(.2,1.4,.4,1),filter .3s,opacity .3s}
+.bu img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 18%}
+.bu .bd2{position:absolute;left:0;top:0;bottom:0;width:2px;z-index:2}
+.bu .bn2{position:absolute;left:0;right:0;bottom:0;padding:10px 2px 3px;font-size:8px;
+  font-family:var(--serif);font-weight:700;text-align:center;z-index:2;
+  background:linear-gradient(transparent,rgba(0,0,0,.94))}
+.bu .hb{position:absolute;left:0;right:0;bottom:0;height:2.5px;background:#3A0F0C;z-index:3}
+.bu .hb i{display:block;height:100%;background:var(--jeok);transition:width .4s}
+.bu .sb{position:absolute;left:0;right:0;bottom:2.5px;height:2px;background:var(--cheong-l);
+  z-index:3;width:0;transition:width .3s}
+.bu .lit{position:absolute;inset:0;z-index:4;opacity:0;pointer-events:none;
+  background:radial-gradient(circle at 50% 40%,#fff,transparent 65%)}
+.bu .lit.on{animation:lit .28s}
+@keyframes lit{0%{opacity:0}20%{opacity:.75}100%{opacity:0}}
+.bu .stg{position:absolute;left:2px;top:2px;z-index:5;display:flex;flex-direction:column;gap:2px}
+.bu .stg span{font-size:7px;font-family:var(--serif);padding:0 3px;border:1px solid;
+  background:rgba(0,0,0,.7)}
+/* ★ 나선다 — 행동하는 자가 앞으로 나와 커진다. 신이 내리는 것과 같다. */
+.bu.act{z-index:11;transform:scale(1.9);
+  box-shadow:0 0 0 1px var(--hwang),0 0 40px rgba(200,162,75,.45),0 14px 40px rgba(0,0,0,.9)}
+.foes .bu.act{transform-origin:center top}
+.usr .bu.act{transform-origin:center bottom}
+.bu.act .bn2{font-size:5px}
+.bu.hit{animation:bhit .3s}
+@keyframes bhit{0%,100%{transform:translate(0)}25%{transform:translate(-4px,2px)}
+  55%{transform:translate(4px,-2px)}80%{transform:translate(-2px,0)}}
+.bu.hit.act{animation:bhitA .3s}
+@keyframes bhitA{0%,100%{transform:scale(1.9)}50%{transform:scale(1.9) translate(4px,-2px)}}
+.bu.gone{filter:grayscale(.9) brightness(.5);opacity:.72;transform:translateY(6px) scale(.94)}
+.bu.gone::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.28);z-index:5}
+.bu.rage{box-shadow:0 0 0 1px var(--jeok),0 0 28px rgba(184,53,46,.6);
+  animation:rg 1.1s infinite alternate}
+@keyframes rg{from{filter:none}to{filter:brightness(1.22) saturate(1.3)}}
+.bu.tmp{border-style:dashed;opacity:.85}
+.fly{position:absolute;z-index:12;font-family:var(--serif);font-weight:800;pointer-events:none;
+  animation:flyu 1s cubic-bezier(.2,.8,.3,1) forwards}
+@keyframes flyu{0%{opacity:0;transform:translateY(8px) scale(.8)}
+  16%{opacity:1;transform:translateY(-4px) scale(1.15)}
+  100%{opacity:0;transform:translateY(-48px) scale(1)}}
+
+/* ── 역경직(逆硬直) — 급소가 들어간 순간 판이 한 번 굳는다.
+      굳는 동안 모든 움직임을 멈춰 무게를 만들고, 풀리며 반동이 온다. ── */
+#stage{transition:filter .09s ease, transform .09s ease}
+#stage.frz{filter:brightness(1.14) contrast(1.1) saturate(.94);transform:scale(1.012)}
+/* 굳는 것은 '판'이다. 획과 수치는 굳지 않는다 — 그게 멈추면 타격이 안 읽힌다. */
+#stage.frz *:not(.swd):not(.fly){animation-play-state:paused!important}
+
+/* ── 검풍(劍風) — 치는 쪽에서 맞는 쪽으로 한 획을 긋는다.
+      평타는 금빛 가는 획, 급소는 진사빛 굵은 획. ── */
+.swd{position:absolute;z-index:12;height:3px;pointer-events:none;transform-origin:left center;
+  background:linear-gradient(90deg,transparent,var(--hwang-l) 34%,#FFF6E2 62%,transparent);
+  filter:blur(.4px) drop-shadow(0 0 9px rgba(200,162,75,.7));
+  animation:swd .26s cubic-bezier(.16,1,.3,1) forwards}
+.swd.c{height:7px;
+  background:linear-gradient(90deg,transparent,#FFEAD0 22%,var(--jeok) 58%,transparent);
+  filter:blur(1px) drop-shadow(0 0 15px rgba(206,58,42,.78))}
+@keyframes swd{0%{opacity:0;clip-path:inset(0 100% 0 0)}
+  16%{opacity:1}
+  70%{opacity:1;clip-path:inset(0 0 0 0)}
+  100%{opacity:0;clip-path:inset(0 0 0 0)}}
+
+/* ── 치명타 수치는 무게가 다르다 — 크게 박고, 진사 그림자를 깐다 ── */
+.fly.hv{font-size:26px;letter-spacing:-.5px;
+  text-shadow:0 2px 0 rgba(206,58,42,.85),0 0 18px rgba(0,0,0,.95);
+  animation:flyh 1.05s cubic-bezier(.16,1,.3,1) forwards}
+@keyframes flyh{0%{opacity:0;transform:translateY(6px) scale(2.1)}
+  14%{opacity:1;transform:translateY(-2px) scale(1)}
+  62%{opacity:1;transform:translateY(-18px) scale(1)}
+  100%{opacity:0;transform:translateY(-52px) scale(.9)}}
+/* ── 합(合) 예보 — 이 한 대에 상성이 어떻게 걸렸는지 한 마디로 읽힌다.
+      서버가 따로 주는 값이 아니라 이 게임의 상성 규칙(BEATS)에서 낸다.
+      그래서 화면에 뜬 말과 실제로 들어간 피해가 어긋나지 않는다. ── */
+#clash{position:absolute;left:0;right:0;top:36%;z-index:14;text-align:center;pointer-events:none;
+  font-family:var(--serif);font-weight:800;font-size:23px;letter-spacing:.2em;opacity:0}
+#clash .h{display:block;margin-top:3px;font-size:13px;letter-spacing:.34em;opacity:.7}
+#clash.y{color:var(--hwang-l);text-shadow:0 0 18px rgba(200,162,75,.7),0 2px 12px #000}
+#clash.j{color:var(--jeok);text-shadow:0 0 20px rgba(206,58,42,.75),0 2px 12px #000}
+#clash.on{animation:clsh .9s cubic-bezier(.16,1,.3,1)}
+@keyframes clsh{0%{opacity:0;transform:scale(.74)}18%{opacity:1;transform:scale(1.05)}
+  64%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1)}}
+
+/* ── 부적(符籍) 파편 — 급소가 들어가면 부적이 찢겨 날린다 ── */
+.bjk{position:absolute;z-index:12;width:15px;height:34px;pointer-events:none;
+  background:linear-gradient(180deg,#8C2318,#57160F);border:1px solid rgba(228,199,120,.45);
+  color:var(--hwang-l);font-family:var(--serif);font-size:8px;line-height:1.2;text-align:center;
+  padding-top:3px;box-shadow:0 0 10px rgba(206,58,42,.4);
+  animation:bjk .62s cubic-bezier(.1,.8,.3,1) forwards}
+@keyframes bjk{0%{opacity:1;transform:translate(-50%,-50%) rotate(0deg) scale(.9)}
+  100%{opacity:0;filter:blur(2px);
+    transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) rotate(var(--rot)) scale(1.06)}}
+
+/* ── 제사상 기물 — 판 뒤에 놓인다. 자리를 뺏지 않고 전황만 말한다.
+      초(걸음)와 향심(부정)은 위 진행바에 이미 있으므로 여기 두지 않는다. ── */
+#altar{position:absolute;inset:0;z-index:1;pointer-events:none}
+/* 놋저울 — 양쪽이 성한 정도를 견주어 기운다 */
+#nsc{position:absolute;left:50%;top:46%;width:196px;height:2px;margin-left:-98px;
+  transform-origin:center center;opacity:.22;
+  transition:transform .55s cubic-bezier(.16,1,.3,1)}
+#nsc i{position:absolute;display:block}
+#nsc .beam{left:0;right:0;top:0;height:2px;
+  background:linear-gradient(90deg,transparent,#6B5A32 13%,#9C8555 50%,#6B5A32 87%,transparent)}
+#nsc .post{left:50%;top:-30px;width:2px;height:30px;margin-left:-1px;
+  background:linear-gradient(#9C8555,rgba(156,133,85,0))}
+#nsc .str{top:2px;width:1px;height:16px;background:#6B5A32}
+#nsc .str.l{left:14px} #nsc .str.r{right:14px}
+#nsc .pan{top:18px;width:34px;height:1px;background:#8C7853;box-shadow:0 3px 7px rgba(0,0,0,.6)}
+#nsc .pan.l{left:-3px} #nsc .pan.r{right:-3px}
+/* 무령(巫鈴) — 신벌이 오면 저 혼자 운다 */
+#mury{position:absolute;right:11px;top:9px;width:19px;height:19px;color:#8C7853;
+  opacity:.3;transform-origin:top center;transition:opacity .25s}
+#mury.on{opacity:.9;color:var(--jeok);animation:mury .09s infinite}
+@keyframes mury{0%,100%{transform:rotate(0)}25%{transform:rotate(-15deg)}75%{transform:rotate(15deg)}}
+
+#uniq{position:absolute;inset:0;z-index:15;display:grid;place-items:center;pointer-events:none;
+  opacity:0;background:rgba(6,5,4,.82)}
+#uniq.on{animation:uq 1.5s}
+@keyframes uq{0%{opacity:0}10%{opacity:1}80%{opacity:1}100%{opacity:0}}
+#uniq .who{font-size:11px;letter-spacing:.35em;color:var(--dim);text-align:center}
+#uniq .un{font-family:var(--serif);font-size:32px;font-weight:800;margin-top:8px;text-align:center;
+  color:var(--hwang-l);text-shadow:0 0 34px rgba(200,162,75,.55)}
+#uniq .ur{width:120px;height:1px;background:var(--hwang);margin:11px auto 0;opacity:.5}
+#uniq .ut{font-family:var(--serif);font-size:12.5px;color:var(--baek);opacity:.9;margin-top:9px;
+  text-align:center;padding:0 26px;line-height:1.8}
+#blog{position:absolute;left:12px;right:12px;top:50%;transform:translateY(-50%);
+  z-index:6;height:52px;overflow:hidden;font-family:var(--serif);font-size:12.5px;
+  line-height:1.75;color:var(--dim);text-align:center}
+#blog div{opacity:0;animation:lp .22s forwards}
+@keyframes lp{to{opacity:1}}
+#blog .a{color:var(--baek)} #blog .c{color:#E08A80;font-weight:700}
+#blog .u2{color:var(--hwang-l);font-weight:700} #blog .h{color:var(--cheong-l)}
+#blog .r{color:var(--jeok);font-weight:700}
+.bctl{display:flex;gap:6px;margin-top:10px}
+.bctl button{flex:1;padding:12px 0;font-family:var(--serif);font-size:13px;letter-spacing:.16em;
+  border:1px solid var(--line);background:#100D09;color:var(--dim)}
+.bctl button.main{background:linear-gradient(180deg,var(--hwang-l),var(--hwang));color:var(--heuk);
+  border-color:var(--hwang);font-weight:800;flex:1.6;box-shadow:inset 0 1px 0 var(--gold-in),var(--glow-h)}
+.bctl button.on{color:#E08A80;border-color:var(--jeok)}
+.bctl button:disabled{opacity:.35}
+/* ══ 보스 등장씬 — 광배(光背)가 곧 격(格)이다 ═══════
+   무신도에서 격이 높은 신일수록 광배가 크다.
+   그걸 시간으로 옮겼다. 잡귀는 광배가 없고, 대신은 6초가 걸린다.
+   설명하지 않는다. 등장 길이로 안다. */
+#ent{position:fixed;inset:0;z-index:80;background:#000;
+  opacity:0;visibility:hidden;transition:opacity .5s}
+#ent.on{opacity:1;visibility:visible}
+#ent .sc{position:absolute;inset:0;overflow:hidden}
+#ent .smoke{position:absolute;inset:0;opacity:0;pointer-events:none;
+  background:
+    radial-gradient(42% 26% at 24% 82%, rgba(200,180,150,.16), transparent 68%),
+    radial-gradient(36% 22% at 74% 74%, rgba(200,180,150,.11), transparent 70%),
+    radial-gradient(50% 30% at 50% 96%, rgba(200,180,150,.13), transparent 72%);
+  animation:smIn 1.4s .1s forwards, drft 16s 1.5s ease-in-out infinite alternate}
+@keyframes smIn{to{opacity:1}}
+@keyframes drft{from{transform:translateY(0) scale(1)}to{transform:translateY(-22px) scale(1.08)}}
+#ent .halo{position:absolute;left:50%;top:38%;transform:translate(-50%,-50%);
+  width:110%;max-width:560px;aspect-ratio:1;pointer-events:none}
+#ent .halo circle,#ent .halo path{fill:none;stroke:currentColor;
+  stroke-dasharray:var(--L);stroke-dashoffset:var(--L);
+  animation:hdraw var(--d) cubic-bezier(.3,.7,.2,1) forwards}
+@keyframes hdraw{to{stroke-dashoffset:0}}
+#ent .halo .gw{filter:drop-shadow(0 0 12px currentColor)}
+#ent .boss{position:absolute;inset:0;opacity:0;
+  animation:brise var(--rise) cubic-bezier(.2,.8,.25,1) forwards}
+#ent .boss img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  object-position:center 16%;transform:scale(1.2)}
+@keyframes brise{
+  0%{opacity:0;transform:scale(1.14) translateY(22px);filter:brightness(.2) blur(6px)}
+  60%{opacity:1;filter:brightness(1) blur(0)}
+  100%{opacity:1;transform:scale(1) translateY(0);filter:none}}
+#ent .vg{position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(72% 46% at 50% 32%, transparent, rgba(0,0,0,.62) 100%),
+             linear-gradient(transparent 40%, rgba(6,5,4,.9) 74%, #000 96%)}
+#ent .bnm{position:absolute;left:0;right:0;top:52%;text-align:center;z-index:5;
+  font-family:var(--serif);font-size:38px;font-weight:800;letter-spacing:.05em;
+  text-shadow:0 3px 26px #000, 0 0 54px rgba(0,0,0,.95);
+  clip-path:inset(0 100% 0 0);
+  animation:brush .7s var(--nd) cubic-bezier(.5,0,.15,1) forwards}
+@keyframes brush{to{clip-path:inset(0 0 0 0)}}
+#ent .brl{position:absolute;left:50%;top:calc(52% + 42px);transform:translateX(-50%);
+  width:0;height:1px;z-index:5;opacity:.6;
+  animation:ruleW .6s calc(var(--nd) + .35s) forwards}
+@keyframes ruleW{to{width:110px}}
+#ent .bsb{position:absolute;left:0;right:0;top:calc(52% + 52px);text-align:center;z-index:5;
+  font-size:11px;font-weight:600;letter-spacing:.34em;opacity:0;text-shadow:0 1px 8px #000;
+  animation:efi .6s calc(var(--nd) + .5s) forwards}
+@keyframes efi{to{opacity:1}}
+#ent .say{position:absolute;left:22px;right:22px;bottom:104px;z-index:5;text-align:center;
+  font-family:var(--serif);font-size:15px;line-height:1.85;color:var(--baek);opacity:0;
+  text-shadow:0 2px 14px #000;max-width:560px;margin:0 auto;
+  animation:sayIn .8s calc(var(--nd) + 1.0s) forwards}
+@keyframes sayIn{from{opacity:0;transform:translateY(8px)}to{opacity:.95;transform:none}}
+#ent .say::before,#ent .say::after{content:"";display:block;width:26px;height:1px;
+  background:currentColor;opacity:.3;margin:0 auto 11px}
+#ent .say::after{margin:11px auto 0}
+#ent .skip{position:absolute;right:12px;top:12px;z-index:9;padding:7px 13px;
+  border:1px solid var(--line);background:rgba(0,0,0,.6);color:var(--dim);
+  font-family:var(--serif);font-size:11px;letter-spacing:.18em}
+#ent .go{position:absolute;left:16px;right:16px;bottom:24px;z-index:9;padding:14px 0;
+  background:var(--hwang);color:var(--heuk);border:none;max-width:560px;margin:0 auto;
+  font-family:var(--serif);font-weight:800;font-size:14px;letter-spacing:.14em;
+  opacity:0;animation:efi .6s calc(var(--nd) + 1.6s) forwards}
+/* 격노 — 같은 얼굴이 다시 온다 */
+#ragel{position:absolute;left:0;right:0;top:44%;z-index:14;text-align:center;pointer-events:none;
+  font-family:var(--serif);font-size:20px;font-weight:800;color:#E08A80;opacity:0;
+  text-shadow:0 0 30px rgba(184,53,46,.9), 0 2px 12px #000;padding:0 24px;line-height:1.7}
+#ragel.on{animation:rgl 1.6s}
+@keyframes rgl{0%{opacity:0;transform:scale(.9)}12%{opacity:1;transform:scale(1)}
+  75%{opacity:1}100%{opacity:0}}
+/* 넘기기 — 카드 상세 · 보스 게이트 공통 */
+.arw{position:absolute;top:0;bottom:0;width:44px;z-index:8;background:none;border:0;
+  color:rgba(237,231,218,.5);font-size:20px;font-family:var(--serif);
+  display:grid;place-items:center;transition:.15s}
+.arw:active{color:var(--hwang);background:rgba(0,0,0,.35)}
+.arw:disabled{opacity:.18}
+.arw.l{left:0} .arw.r{right:0}
+.cd .arw{top:0;height:100%;pointer-events:none}
+.cd .arw span{pointer-events:auto;padding:14px 8px;background:rgba(10,8,6,.55);
+  border:1px solid var(--line);line-height:1}
+.cd .nvi{position:absolute;left:0;right:0;bottom:8px;text-align:center;z-index:8;
+  font-family:var(--serif);font-size:10px;color:var(--dim);letter-spacing:.14em;
+  text-shadow:0 1px 6px #000;pointer-events:none}
+/* ══ 오프닝 — 향(香) ══════════════════════════════
+   굿은 향을 사르는 데서 시작한다. 그리고 향은 이 게임의 행동력이다.
+   첫 화면이 곧 규칙의 설명이다. 아무도 설명하지 않았는데 향이 뭔지 알게 된다.
+   그리고 향은 탄다. 18초에 걸쳐 짧아진다 — 사라진다는 것, 그게 이 게임의 주제다. */
+#open{position:fixed;inset:0;z-index:100;background:#000;overflow:hidden;
+  transition:opacity .9s}
+#open.gone{opacity:0;pointer-events:none}
+#open .plume{position:absolute;left:0;right:0;bottom:120px;height:74%;z-index:2;opacity:0;
+  background:
+    radial-gradient(26% 44% at 50% 96%, rgba(210,195,170,.22), transparent 72%),
+    radial-gradient(16% 34% at 44% 66%, rgba(210,195,170,.16), transparent 74%),
+    radial-gradient(20% 40% at 57% 40%, rgba(210,195,170,.12), transparent 76%);
+  animation:pfi 2.4s .4s forwards, sway 11s 2s ease-in-out infinite alternate}
+@keyframes pfi{to{opacity:1}}
+@keyframes sway{from{transform:translateX(-10px) scaleX(1)}to{transform:translateX(12px) scaleX(1.12)}}
+#open .stick{position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:3px;height:210px;
+  background:linear-gradient(180deg,#5C4A2E,#2A2118);z-index:3;
+  animation:burn 90s linear forwards}
+@keyframes burn{to{height:96px}}
+#open .ember{position:absolute;left:50%;bottom:210px;transform:translateX(-50%);
+  width:7px;height:7px;border-radius:50%;background:#E08A80;z-index:4;
+  box-shadow:0 0 16px 5px rgba(224,138,128,.75);
+  animation:eglow 2.4s ease-in-out infinite alternate, burn2 90s linear forwards}
+@keyframes eglow{from{opacity:.65;transform:translateX(-50%) scale(.9)}
+  to{opacity:1;transform:translateX(-50%) scale(1.15)}}
+@keyframes burn2{to{bottom:96px}}
+
+#open .ttl{position:absolute;left:0;right:0;top:22%;text-align:center;z-index:8}
+#open .ttl .k{font-family:var(--serif);font-size:50px;font-weight:800;letter-spacing:.14em;
+  color:var(--baek);text-shadow:0 0 44px rgba(0,0,0,.9);
+  clip-path:inset(0 100% 0 0);animation:obrush 1s 1.2s cubic-bezier(.5,0,.15,1) forwards}
+@keyframes obrush{to{clip-path:inset(0 0 0 0)}}
+#open .ttl .h{font-family:var(--serif);font-size:14px;letter-spacing:.5em;color:var(--hwang);
+  margin-top:7px;opacity:0;animation:ofi .8s 1.9s forwards}
+#open .ttl .rl{width:0;height:1px;background:var(--hwang);margin:15px auto 0;opacity:.55;
+  animation:orw .8s 2.2s forwards}
+@keyframes orw{to{width:140px}}
+#open .ttl .y{font-family:var(--serif);font-size:12px;letter-spacing:.34em;color:var(--dim);
+  margin-top:13px;opacity:0;animation:ofi .9s 2.5s forwards}
+#open .ttl .ln{font-family:var(--serif);font-size:13px;color:#A99C86;margin-top:19px;line-height:1.9;
+  opacity:0;animation:ofi 1s 3.1s forwards;padding:0 32px}
+@keyframes ofi{to{opacity:1}}
+
+#open .btns{position:absolute;left:22px;right:22px;bottom:38px;z-index:9;opacity:0;
+  max-width:520px;margin:0 auto;animation:ofi .9s 3.8s forwards}
+#open .btns button{display:block;width:100%;padding:15px;font-family:var(--serif);
+  font-size:15px;font-weight:800;letter-spacing:.2em;border:1px solid var(--hwang);
+  background:none;color:var(--hwang)}
+#open .btns button.p{background:linear-gradient(180deg,var(--hwang-l),var(--hwang));color:var(--heuk);margin-bottom:8px;box-shadow:inset 0 1px 0 var(--gold-in),var(--glow-h)}
+#open .btns .v{text-align:center;font-size:10px;color:#5C5347;margin-top:12px;letter-spacing:.1em;
+  font-family:var(--serif)}
+#open .nick{width:100%;padding:13px;background:rgba(10,8,6,.8);border:1px solid var(--line);
+  color:var(--baek);font-family:var(--serif);font-size:16px;margin-bottom:9px;text-align:center;
+  letter-spacing:.1em}
+#open .nick:focus{outline:none;border-color:var(--hwang)}
+#open .err{margin-bottom:8px}
+/* ══ 거리(巨里) — 초보를 데려가는 손 ═════════════
+   굿은 「거리」로 나뉜다. 부정거리 → 초가망석 → … → 뒷전.
+   이야기가 아니라 손이다. 거리마다 규칙 하나를 가르치고,
+   다음에 뭘 할지 알려준다. 설명서가 아니라 할머니가 하는 말로. */
+#geo{position:fixed;inset:0;z-index:90;background:#000;
+  opacity:0;visibility:hidden;transition:opacity .6s}
+#geo.on{opacity:1;visibility:visible}
+#geo .bg{position:absolute;inset:0;opacity:0;transition:opacity 1.4s}
+#geo .bg.on{opacity:.30}
+#geo .bg img{width:100%;height:100%;object-fit:cover;object-position:center 20%;
+  filter:blur(2px) brightness(.7)}
+#geo .vg{position:absolute;inset:0;
+  background:radial-gradient(72% 46% at 50% 40%, transparent, rgba(2,2,2,.92) 100%)}
+#geo .gn{position:absolute;left:0;right:0;top:26px;text-align:center;z-index:9;
+  font-family:var(--serif);font-size:10.5px;letter-spacing:.42em;color:var(--dim)}
+#geo .sk{position:absolute;right:11px;top:11px;z-index:12;padding:6px 12px;
+  border:1px solid var(--line);background:rgba(0,0,0,.6);color:var(--dim);
+  font-family:var(--serif);font-size:10.5px;letter-spacing:.18em}
+#geo .lines{position:absolute;left:26px;right:26px;top:50%;transform:translateY(-50%);z-index:6;
+  max-width:560px;margin:0 auto}
+#geo .ln{font-family:var(--serif);font-size:17px;line-height:2.1;color:var(--baek);
+  opacity:0;transform:translateY(10px);transition:opacity .7s,transform .7s;margin-bottom:5px}
+#geo .ln.on{opacity:.95;transform:none}
+#geo .ln.say{color:var(--hwang-l);font-size:19px;padding-left:14px;
+  border-left:2px solid var(--hwang);margin:15px 0}
+#geo .ln.dim{color:#7E7364;font-size:14.5px}
+#geo .teach{position:absolute;left:22px;right:22px;bottom:96px;z-index:9;max-width:560px;
+  margin:0 auto;padding:13px 15px;border:1px dashed var(--line);background:rgba(16,13,9,.85);
+  opacity:0;transition:opacity .7s}
+#geo .teach.on{opacity:1}
+#geo .teach .k{font-family:var(--serif);font-size:9.5px;letter-spacing:.3em;color:var(--dim)}
+#geo .teach .v{font-family:var(--serif);font-size:14px;color:var(--hwang-l);margin-top:6px;
+  line-height:1.8}
+#geo .cue{position:absolute;left:0;right:0;bottom:34px;text-align:center;z-index:9;
+  font-family:var(--serif);font-size:11px;color:#5C5347;letter-spacing:.2em;
+  animation:gblink 2.4s infinite}
+@keyframes gblink{0%,100%{opacity:.25}50%{opacity:.8}}
+#geo .go{position:absolute;left:22px;right:22px;bottom:26px;z-index:10;max-width:560px;margin:0 auto;
+  padding:14px;background:linear-gradient(180deg,var(--hwang-l),var(--hwang));color:var(--heuk);border:0;
+  font-family:var(--serif);font-weight:800;font-size:14px;letter-spacing:.14em;
+  box-shadow:inset 0 1px 0 var(--gold-in),var(--glow-h);opacity:0;transition:opacity .6s}
+#geo .go.on{opacity:1}
+#geo .tap{position:absolute;inset:0;z-index:8;background:none;border:0}
+
+/* 길잡이 — 본향에 늘 떠 있다. 다음에 뭘 할지 모르는 순간이 없게. */
+.guide{border:1px solid var(--hwang);background:linear-gradient(180deg,#1B160E,#100C07);
+  box-shadow:var(--sh1);padding:14px 16px;margin-bottom:11px;position:relative;overflow:hidden}
+.guide::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--hwang);box-shadow:var(--glow-h)}
+.guide .k{font-family:var(--serif);font-size:9.5px;letter-spacing:.3em;color:var(--dim)}
+.guide .t{font-family:var(--serif);font-size:16px;font-weight:700;color:var(--hwang-l);margin-top:5px}
+.guide .d{font-size:12px;color:var(--dim);line-height:1.8;margin-top:6px}
+.guide .b{display:block;width:100%;margin-top:11px;padding:11px;
+  background:linear-gradient(180deg,var(--hwang-l),var(--hwang));
+  color:var(--heuk);border:0;font-family:var(--serif);font-weight:800;font-size:13.5px;
+  letter-spacing:.12em;box-shadow:inset 0 1px 0 var(--gold-in),var(--glow-h)}
+/* ══ 2.5D 시차 ═══════════════════════════════════
+   검은 배경에 발광하는 형체 — 밝은 곳이 앞이고 검은 곳은 무한히 뒤다.
+   밝기가 곧 깊이(depth)다. 깊이 맵을 따로 저장하지 않는다.
+   브라우저가 그림을 받는 순간 그 자리에서 계산한다. 새 파일 0개. */
+.px{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:1}
+.px-off{display:none}
+nav{position:fixed;bottom:0;left:0;right:0;z-index:30;
+    background:rgba(11,10,8,.96);backdrop-filter:blur(10px);
+    border-top:1px solid var(--line);box-shadow:0 -1px 0 var(--line-hi),0 -8px 24px rgba(0,0,0,.5);
+    display:flex;padding-bottom:var(--safe-b);max-width:560px;margin:0 auto}
+@media(min-width:900px){ nav{max-width:960px} }
+nav button{flex:1;padding:9px 2px 8px;display:flex;flex-direction:column;
+           align-items:center;gap:3px;color:var(--dim);transition:.15s;position:relative}
+nav button.on{color:var(--hwang)}
+nav button.on::before{content:"";position:absolute;top:0;left:26%;right:26%;height:2px;background:var(--hwang);box-shadow:var(--glow-h)}
+nav .ni{font-size:17px;line-height:1}
+nav .nt{font-size:9.5px;font-family:var(--serif);letter-spacing:.05em}
+
+/* ── 덮개 ───────────────────────────────── */
+/* 해금 때는 같은 천을 화면 전체로 쓴다. 고풀이의 .salpuri 와 같은 결·같은 키프레임이다.
+   (v29 에서 #salp 를 따로 만들었던 것을 되돌린다 — 같은 연출을 두 벌 둘 이유가 없다.) */
+.salpuri.full{position:fixed;z-index:70}
+/* 무신도 회랑 — 노드 한 줄씩 */
+.gbar{height:5px;background:#241E17;margin-top:8px;overflow:hidden}
+.gbar i{display:block;height:100%;background:linear-gradient(90deg,var(--hwang),var(--hwang-l));transition:width .4s}
+.nodes{margin-top:12px;border-top:1px solid var(--line)}
+.nrow{display:flex;align-items:center;gap:9px;padding:9px 2px;border-bottom:1px solid var(--line)}
+.nrow .nn{font-family:var(--serif);font-weight:700;font-size:13px;min-width:64px}
+.nrow .nn .nl{margin-left:6px;font-size:10px;color:var(--dim);font-weight:400}
+.nrow .nc{flex:1;font-size:11px;color:var(--dim)}
+.nrow.on{background:linear-gradient(90deg,rgba(200,162,75,.09),transparent)}
+.nrow.on .nn{color:var(--hwang-l)}
+.nrow.lk{opacity:.5}
+/* 접신 자리 */
+.slots{display:flex;gap:7px;margin-top:9px}
+.slotbox{flex:1;border:1px dashed var(--line);padding:8px 9px;min-height:46px}
+.slotbox.on{border-style:solid;border-color:var(--hwang);
+  background:linear-gradient(180deg,rgba(200,162,75,.08),transparent)}
+.slotbox .sv{font-family:var(--serif);font-weight:800;font-size:13px;color:var(--hwang-l)}
+.slotbox .ss{font-size:10.5px;color:var(--dim);margin-top:2px;line-height:1.4}
+.slotbox .empty{font-size:11px;color:#5C5347}
+
+.ov{position:fixed;inset:0;background:rgba(8,6,4,.93);backdrop-filter:blur(3px);
+    z-index:50;display:none;place-items:center;padding:16px}
+.ov.on{display:grid}
+.ov-in{max-width:400px;width:100%;background:var(--heuk2);border:1px solid var(--line);
+       max-height:92vh;overflow:auto}
+.ov-b{padding:17px 19px 20px}
+.x{position:absolute;right:9px;top:9px;width:32px;height:32px;background:rgba(0,0,0,.6);
+   border:1px solid var(--line);font-size:16px;z-index:2}
+.row{display:flex;gap:10px;padding:8px 0;border-top:1px solid var(--line);font-size:12.5px}
+.row dt{font-family:var(--serif);color:var(--dim);min-width:60px;flex-shrink:0;letter-spacing:.08em}
+.row dd{line-height:1.6}
+
+.mid{text-align:center;padding:44px 0;color:var(--dim);font-family:var(--serif);letter-spacing:.08em}
+.spin{display:inline-block;width:20px;height:20px;border:2px solid var(--line);
+      border-top-color:var(--hwang);border-radius:50%;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+/* ── 리디자인: 가볍고 선명한 카드게임 UI ── */
+:root{--heuk:#f5f7fb;--heuk2:#ffffff;--heuk3:#eef1f7;--baek:#202534;--dim:#778096;--line:#e4e8f0;--line-hi:rgba(255,255,255,.9);--hwang:#e09a36;--hwang-l:#f4b957;--cheong:#4a83c4;--cheong-l:#72a9e8;--jeok:#d65a62;--serif:'IBM Plex Sans KR',sans-serif;--sans:'IBM Plex Sans KR',sans-serif;--sh1:0 4px 16px rgba(43,55,82,.07);--sh2:0 10px 28px rgba(43,55,82,.10);--glow-h:0 5px 15px rgba(224,154,54,.18);--glow-j:none}
+body{background:#f5f7fb;color:var(--baek);background-image:radial-gradient(circle at 15% 0%,#fff 0,transparent 34%),linear-gradient(135deg,rgba(224,154,54,.035),transparent 45%)}
+#app{max-width:620px}.pane{animation:in .16s ease-out}header{background:rgba(255,255,255,.92);border-bottom:1px solid var(--line);box-shadow:0 1px 8px rgba(43,55,82,.06)}.who{color:#202534}.lv{color:#b8781a}.res{color:#687286}.r-h b{color:#d68127}.r-b b{color:#b8781a}.r-y b{color:#687286}
+main{padding:16px 16px 88px}h2{font-size:20px;letter-spacing:.02em}.sub{color:#7a8497}.card{background:#fff;border:1px solid var(--line);box-shadow:var(--sh1);border-radius:14px;padding:15px;margin-bottom:12px}.card h3{color:#30394d}.card h3::before{border-radius:3px;background:#e5a33f}.btn{border-radius:10px;background:linear-gradient(135deg,#f2bd63,#dc9130);color:#fff;border:0;box-shadow:var(--glow-h);font-size:13px}.btn.ghost{background:#f3f5f9;color:#536078;border:1px solid #e2e6ee;box-shadow:none}.err{background:#fff1f2;border:1px solid #f2c4c9;color:#b5424c;border-radius:10px}.err b{color:#c54d57}
+.grid{gap:10px}.mini{border:1px solid #e0e5ee;border-radius:12px;background:#e9edf4;box-shadow:0 3px 10px rgba(42,56,85,.06)}.mini.sel{border-color:#e3a447;box-shadow:0 0 0 2px rgba(227,164,71,.25),var(--sh1)}.mini .nm{font-size:10.5px;background:linear-gradient(transparent,rgba(18,25,39,.85) 50%);padding-top:22px}.mini .st{color:#ffd36e}.mini .blank{background:radial-gradient(circle at 50% 28%,rgba(255,255,255,.8) 0 13%,transparent 14%),linear-gradient(145deg,#dfe8f6,#bfcce0)}.mini .blank:after{color:rgba(70,105,155,.4)}
+nav{background:rgba(255,255,255,.96)!important;border-top:1px solid var(--line)!important;box-shadow:0 -4px 18px rgba(43,55,82,.06)!important}nav button{color:#8993a5!important}nav button.on{color:#c27c20!important}.ni{filter:none!important}.dm-hero{margin:-16px -16px 16px;background:linear-gradient(135deg,#fff7e9,#fff 55%,#eef5ff);border-bottom:1px solid #ebdfc9;border-radius:0 0 20px 20px}.dm-hero h2{color:#263047}.dm-hero p{color:#778096}.dm-hero:after{color:rgba(224,154,54,.09)}.dm-stat{background:#fff;border:1px solid var(--line);border-radius:12px}.dm-stat b{color:#c78325}.dm-quest{background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:var(--sh1)}.dm-quest strong{color:#30394d}.dm-battle-guide,.dm-boss-state{background:#fff;border:1px solid var(--line);border-radius:12px}.dm-battle-guide span{color:#8a94a6}.dm-battle-guide span b,.dm-boss-state b{color:#c78325}
+#stage{border-radius:18px;overflow:hidden;box-shadow:var(--sh2);border:1px solid #dfe5ef;background:#f3f6fb}#battle{color:#536078}.bctl button{border-radius:9px!important}
+/* 카드 배틀 전투장 */
+#stage{min-height:548px;margin-top:12px;border:1px solid #dbe2ec;border-radius:18px;background:linear-gradient(180deg,#edf3fb 0%,#f9fbfd 45%,#fff 100%);box-shadow:0 8px 24px rgba(39,59,91,.10);overflow:hidden}.mini img{object-position:center 19%;filter:saturate(1.12) contrast(1.04)}.mini{background:#1a2234}.mini .nm{font-weight:700;text-shadow:0 1px 3px #000}.bu img{object-position:center 18%;filter:saturate(1.1) contrast(1.03)}
+#stage:before{content:'BATTLE FIELD';position:absolute;left:14px;top:12px;font:700 9px var(--sans);letter-spacing:.18em;color:#9aa7ba}
+.rank{left:14px;right:14px;gap:8px}.rank.foes{top:38px}.rank.usr{bottom:18px}
+.bu{border:1px solid #d8e0eb;border-radius:12px;background:#dce5f1;box-shadow:0 4px 10px rgba(39,59,91,.12);color:#fff;filter:none!important;opacity:1}.bu img{filter:none!important;object-position:center 18%}.bu .bn2{font-family:var(--sans);font-size:9px;background:linear-gradient(transparent,rgba(18,28,45,.9) 55%);padding:16px 2px 5px}.bu .hb{height:4px;background:#b9c5d5}.bu .hb i{background:linear-gradient(90deg,#54b47a,#2d9a68)}.bu .sb{bottom:4px;height:3px;background:#62a4e8}.bu.act{transform:scale(1.18);box-shadow:0 0 0 2px #e8aa47,0 8px 22px rgba(75,108,155,.3)}.foes .bu.act{transform-origin:center top}.usr .bu.act{transform-origin:center bottom}.bu.gone{filter:grayscale(.25)!important;opacity:.55;transform:translateY(5px) scale(.94)}.bu.rage{box-shadow:0 0 0 2px #da6870,0 7px 20px rgba(214,90,98,.28)}
+#blog{top:48%;height:66px;color:#718096}.rank.foes:after{content:'ENEMY';position:absolute;top:-22px;left:0;font:700 9px var(--sans);letter-spacing:.16em;color:#d66b6f}.rank.usr:after{content:'YOUR PARTY';position:absolute;bottom:-18px;left:0;font:700 9px var(--sans);letter-spacing:.16em;color:#5b9ad4}
+.bctl{position:sticky;bottom:calc(var(--safe-b) + 4px);z-index:18;padding:8px;background:rgba(255,255,255,.94);border:1px solid #e1e6ef;border-radius:14px;box-shadow:0 5px 20px rgba(39,59,91,.12)}.bctl button{border-radius:9px!important;color:#52617a;background:#f0f3f8;border:1px solid #dce3ed}.bctl button.main{background:linear-gradient(135deg,#f1b85b,#dc9130);color:#fff;border:0}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="hd">
+      <div>
+        <div class="who" id="who">…</div>
+        <div class="lv" id="lv"></div>
+      </div>
+      <div class="res">
+        <span class="r-h">香 <b id="hyang">–</b></span>
+        <span class="r-b">福 <b id="bok">–</b></span>
+        <span class="r-y">錢 <b id="yeop">–</b></span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="pane on" id="p-home"></div>
+    <div class="pane" id="p-dang"></div>
+    <div class="pane" id="p-gil"></div>
+    <div class="pane" id="p-gut"></div>
+    <div class="pane" id="p-dogam"></div>
+  </main>
+
+  <nav>
+    <button class="on" data-p="home"><span class="ni">⛩</span><span class="nt">본향</span></button>
+    <button data-p="dang"><span class="ni">☰</span><span class="nt">당</span></button>
+    <button data-p="gil"><span class="ni">⛰</span><span class="nt">길</span></button>
+    <button data-p="gut"><span class="ni">🜂</span><span class="nt">굿</span></button>
+    <button data-p="dogam"><span class="ni">◈</span><span class="nt">도감</span></button>
+  </nav>
+</div>
+
+<div id="gilMap"><svg viewBox="0 0 720 940"><g id="mapg"></g></svg></div>
+<div id="gate"></div>
+<div id="ent"><div class="sc" id="entSc"></div></div>
+<div id="geo"></div>
+
+<div id="open">
+  <div class="plume"></div>
+  <div class="stick"></div>
+  <div class="ember"></div>
+  <div class="ttl">
+    <div class="k">흥 양 기</div>
+    <div class="h">興 陽 記</div>
+    <div class="rl"></div>
+    <div class="y">一四四一 &nbsp;—&nbsp; 一九一四</div>
+    <div class="ln">흥양이라는 이름은<br>사백일흔세 해를 살고 사라졌다.<br><br>
+      그 이름으로 부르던 신들이 있었다.</div>
+  </div>
+  <div class="btns" id="openB"></div>
+</div>
+
+<div class="ov" id="ov"><div class="ov-in" id="ovIn"></div></div>
+<div class="ov" id="growOv" style="z-index:55"><div class="ov-in" id="growIn"></div></div>
+<div class="ov" id="unlockOv" style="z-index:60"><div class="ov-in" id="unlockIn"></div></div>
+
+<script>
+/* ══════════════════════════════════════════════════
+   클라이언트는 아무것도 결정하지 않는다.
+   서버가 시드로 확정한 결과를 받아 재생할 뿐이다.
+   ══════════════════════════════════════════════════ */
+const API  = "https://ybflkszmymalhafzzdbs.supabase.co/functions/v1/hy";
+const ART  = "https://ybflkszmymalhafzzdbs.supabase.co/storage/v1/object/public/";
+const $  = s => document.querySelector(s);
+const esc = s => String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+let PID = null, M = null, ME = null, SESS = null;
+
+/* 저장소 — localStorage가 막힌 환경(샌드박스 미리보기 등)에서도 죽지 않는다.
+   그런 곳에선 새로고침하면 플레이어가 초기화된다. 실제 배포에선 정상 저장된다. */
+let _mem = null;
+const store = {
+  get(){ try{ return localStorage.getItem("hy_pid"); }catch(_){ return _mem; } },
+  set(v){ try{ localStorage.setItem("hy_pid", v); }catch(_){ _mem = v; } },
+};
+
+/* ── 통신 ── */
+async function api(path, body){
+  const r = await fetch(API+path, {
+    method: body ? "POST" : "GET",
+    headers: { "Content-Type":"application/json", ...(PID?{"x-player":PID}:{}) },
+    body: body ? JSON.stringify(body) : undefined,
+  });
+  const d = await r.json().catch(()=>({error:"BAD_JSON",message:"서버 응답을 읽을 수 없다"}));
+  if (!r.ok || d.error) throw d;
+  /* 해금은 어느 행동에서든 터진다 — 던전·씻김·가챠·진화, 심지어 앱을 켜기만 해도(소급).
+     화면마다 따로 처리하면 반드시 한 군데를 빠뜨린다. 여기 한 곳에서 잡는다. */
+  if (Array.isArray(d.unlocked) && d.unlocked.length){
+    UNLOCK_Q.push(...d.unlocked);
+    setTimeout(()=>{ if(!$("#unlockOv").classList.contains("on")) showUnlock(); }, 150);
+  }
+  return d;
+}
+
+/* 살풀이 — 흰 천을 한 번 쓸어 액을 내보낸다.
+   고풀이에서 쓰는 .salpuri 를 그대로 쓰되, 해금 때만 화면 전체(.full)로 편다. */
+function salpuriSweep(){
+  let v = $("#salpFull");
+  if(!v){
+    v = document.createElement("div");
+    v.id = "salpFull"; v.className = "salpuri full";
+    document.body.appendChild(v);
+  }
+  v.classList.remove("on"); void v.offsetWidth; v.classList.add("on");
+}
+
+/* ── 해금 알림 ── */
+let UNLOCK_Q = [];
+async function showUnlock(){
+  if (!UNLOCK_Q.length){
+    // 다 봤으면 창을 닫고, 새로 받은 카드가 도감·당에 바로 보이도록 다시 그린다.
+    $("#unlockOv").classList.remove("on");
+    try{ await refresh(); if (PANES[TAB]) PANES[TAB](); }catch(_){}
+    return;
+  }
+  const u = UNLOCK_Q.shift();
+  const src = u.art ? ART + u.art : null;
+  $("#unlockIn").innerHTML = `
+    <div style="position:relative;aspect-ratio:3/4;background:#000;overflow:hidden">
+      ${src?`<img src="${src}" style="width:100%;height:100%;object-fit:cover">`
+        :`<div class="blank" style="position:absolute;inset:0"></div>`}
+      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(8,6,4,.92) 8%,transparent 55%)"></div>
+      <div style="position:absolute;left:0;right:0;bottom:14px;text-align:center">
+        <div style="font-size:11px;letter-spacing:.22em;color:#E08A80;text-shadow:0 1px 6px #000">봉 인 이 &nbsp;풀 렸 다</div>
+        <div style="font-family:var(--serif);font-size:26px;margin-top:5px;color:var(--baek)">${esc(u.name)}</div>
+        <div style="font-size:12px;font-weight:600;color:${FCOL_L[u.faction]??"var(--dim)"};margin-top:3px;text-shadow:0 1px 6px #000">
+          ${esc(u.faction)} · ${esc(u.godhood)} · ${"★".repeat(u.tier)}</div>
+      </div>
+    </div>
+    <div class="ov-b">
+      ${u.flavor?`<p style="font-family:var(--serif);font-size:13px;line-height:1.85;color:var(--dim);margin:0 0 12px">${esc(u.flavor)}</p>`:""}
+      <dl>
+        <div class="row"><dt>연 조건</dt><dd>${esc(u.how)}</dd></div>
+        ${u.unique_skill?`<div class="row"><dt>유니크</dt><dd>${esc(u.unique_skill)}</dd></div>`:""}
+      </dl>
+      <button class="btn" style="margin-top:13px" onclick="showUnlock()">
+        ${UNLOCK_Q.length ? `모신다 (${UNLOCK_Q.length}위 더 남음)` : "모신다"}</button>
+    </div>`;
+  $("#unlockOv").classList.add("on");
+  salpuriSweep();
+}
+function fail(e){
+  const why = e?.message ?? "알 수 없는 오류";
+  const extra = [];
+  if (e?.have !== undefined && e?.need !== undefined) extra.push(`가진 것 ${e.have} / 필요 ${e.need}`);
+  if (e?.cost && e?.cap) extra.push(`신력 ${e.cost} / ${e.cap}`);
+  if (e?.why) extra.push(e.why);
+  if (e?.hint) extra.push(e.hint);
+  if (e?.detail) extra.push(e.detail);
+  return `<div class="err"><b>${esc(e?.error??"오류")}</b>${esc(why)}${
+    extra.length?"<br><span style='color:#8B8275;font-size:11px'>"+extra.map(esc).join(" · ")+"</span>":""}</div>`;
+}
+
+/* ── 카드 낱장 ── */
+const HALO = {
+  3:'<circle cx="50" cy="50" r="33" stroke="currentColor" stroke-width=".9" fill="none" opacity=".62"/>',
+  4:'<circle cx="50" cy="50" r="33" stroke="currentColor" stroke-width=".9" fill="none" opacity=".72"/><circle cx="50" cy="50" r="40" stroke="currentColor" stroke-width="2.4" fill="none" opacity=".34"/>',
+  5:'<circle cx="50" cy="50" r="31" stroke="currentColor" stroke-width="1" fill="none" opacity=".8"/><ellipse cx="50" cy="56" rx="42" ry="47" stroke="currentColor" stroke-width="1.5" fill="none" opacity=".55"/>',
+};
+const FCOL = {"당":"#C8A24B","물":"#4E8FC0","저승":"#B8352E"};
+/* 어두운 배경 위의 글자용. 저승색(#B8352E)은 검은 그림 위에서 그냥 사라진다.
+   같은 색조를 유지하되 명도만 올린다. */
+const FCOL_L = {"당":"#E3C888","물":"#8FC0E3","저승":"#E08A80"};
+const mc = id => M?.cards.find(c=>c.id===id);
+/* 전투 응답의 적은 {name,faction,tier}만 온다 — id가 없다. 이름으로 마스터를 찾는다.
+   (적 카드는 전부 비히든이라 M.cards 안에 있다. 이걸 안 써서 그림·체력이 안 잡혔다.) */
+const mcName = name => M?.cards.find(c=>c.name===name);
+
+/* 신력(神力) — 동시에 모실 수 있는 신의 총량. 격(格)이 오르면 늘어난다.
+   서버 v6은 cost_cap, v7은 sinryeok 으로 내려준다. 둘 다 받는다 — 배포 전후로 안 깨진다. */
+const SINRYEOK = () => ME?.sinryeok ?? ME?.cost_cap ?? 0;
+/* 창고에 신표가 몇 개 있나 */
+const MAT = id => (ME?.materials ?? []).find(x=>x.material_id===id)?.qty ?? 0;
+
+/* ── 그림 경로 ──────────────────────────────
+   서버가 내려주는 필드명은 `art` 다 (Storage 실물이 있는 것만).
+   예전엔 `art_url` 이었다. 서버만 고치고 여기를 안 고쳐서
+   120장이 통째로 안 뜨는 사고가 났다. 이제 둘 다 받는다.
+   그리고 이 함수 하나만 본다 — 화면마다 따로 조합하면 또 엇갈린다. */
+function animeArt(c){
+  /* 첨부 레퍼런스와 같은 고채도 애니메이션 일러스트를 카드 전체에 사용한다. */
+  return (String(c?.id||"").charCodeAt(1)||0)%2 ? "01-9590.jpg" : "01-9590.jpg";
+  const f=c?.faction||"당", col=f==="물"?"#62a8e8":f==="저승"?"#e67883":"#e5a94d";
+  const id=String(c?.id||c?.name||"X").replace(/[^A-Za-z0-9가-힣]/g,"");
+  const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 480"><defs><linearGradient id="g" x2="1" y2="1"><stop stop-color="#fff"/><stop offset="1" stop-color="${col}"/></linearGradient></defs><rect width="360" height="480" rx="28" fill="url(#g)"/><circle cx="276" cy="92" r="82" fill="#fff" opacity=".3"/><path d="M65 430Q78 270 180 245Q282 270 295 430" fill="#24304a"/><path d="M112 205Q112 92 180 80Q248 92 248 205Q235 270 180 276Q125 270 112 205" fill="#f6c9ab"/><path d="M106 171Q111 63 184 72Q250 70 257 166Q220 124 181 142Q142 124 106 171" fill="#28344f"/><circle cx="151" cy="194" r="8" fill="#26324a"/><circle cx="209" cy="194" r="8" fill="#26324a"/><path d="M157 232Q180 247 203 232" fill="none" stroke="#a84d55" stroke-width="5" stroke-linecap="round"/><path d="M180 38v40M160 50l20-28 20 28" stroke="${col}" stroke-width="7" fill="none" stroke-linecap="round"/><text x="24" y="452" font-family="sans-serif" font-weight="700" font-size="18" fill="#fff">${id.slice(0,14)}</text></svg>`;
+  return "data:image/svg+xml;charset=UTF-8,"+encodeURIComponent(svg);
+}
+const artOf = c => {
+  return animeArt(c);
+  /* 서버 아트는 보관용으로 남기고, 현재 시즌은 애니메이션 카드 아트를 사용한다. */
+  /*
+  const p = c && (c.art ?? c.art_url);
+  if (p) return ART + p;
+  // 마스터에 art가 없어도(히든/GHOST) card_id로 Storage 실물을 직접 가리킨다.
+  // Storage 실물은 언제나 art/{id}.webp 규격 — /master가 히든을 잘라도 그림은 뜬다.
+  const id = c && c.id;
+  return (typeof id === "string" && /^C\d+$/.test(id)) ? ART + "art/" + id + ".webp" : null; */
+};
+/* 마스터에 없는 카드(히든 등)를 만나도 화면에서 지워버리지 않는다.
+   지워버리면 "가지고 있는데 안 보이는 카드"가 된다. 그 사고도 났다. */
+const GHOST = id => ({ id, name:"미상(未詳)", faction:"저승", godhood:"?", rarity:"?",
+                       role:"밸런스", art:null, unique_skill:"", source:"" });
+
+function mini(pc, opt={}){
+  const c = mc(pc.card_id) ?? GHOST(pc.card_id);
+  const t = pc.tier ?? 1;
+  const halo = HALO[t] ? `<svg class="halo" viewBox="0 0 100 100" style="color:${FCOL_L[c.faction]??FCOL[c.faction]}">${HALO[t]}</svg>` : "";
+  const hp = opt.hp ? `<div class="hp"><i style="width:${Math.max(0,opt.hp.hp/opt.hp.maxhp*100)}%"></i></div>` : "";
+  const src = artOf(c);
+  const img = src
+    ? `<img src="${src}" alt="" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.hidden=false"><div class="blank" hidden></div>`
+    : `<div class="blank"></div>`;
+  return `<div class="mini f-${c.faction} ${opt.sel?"sel":""} ${opt.down?"down":""}"
+    data-id="${pc.id??""}" data-card="${c.id}">
+    <span class="band"></span>${img}${halo}
+    <span class="st">${"★".repeat(t)}</span>
+    <div class="nm">${esc(c.name)}</div>${hp}</div>`;
+}
+
+/* ══ 본향 ══════════════════════════════════ */
+
+/* ══ 거리(巨里) ═══════════════════════════════════
+   진짜 이야기가 아니다. 초보를 데려가는 손이다.
+   거리마다 ① 규칙 하나를 가르치고 ② 다음에 뭘 할지 알려준다.
+   설명서가 아니라 할머니가 하는 말로. */
+const GEORI = [
+ { id:"부정", name:"부 정 &nbsp;거 리",
+   lines:[
+     {t:"당집이 비어 있다."},
+     {t:"마루에 먼지가 앉았다."},
+     {t:"그런데 한 자리만 없다.", bg:"C032"},
+     {t:"누가 앉아 있었다.", bg:"C032"},
+     {t:"「왔구나.」", say:1, bg:"C032"},
+     {t:"열여덟에 나갔다. 서른둘에 돌아왔다.", dim:1, bg:"C032"},
+     {t:"무서워서 도망쳤다는 말은 안 했다.", dim:1, bg:"C032"},
+     {t:"「무구가 없다. 넷 다.」", say:1, bg:"C085"},
+     {t:"지전(紙錢) · 명두(明斗) · 신칼 · 질베.", dim:1, bg:"C094"},
+     {t:"「그것들이 없으면 씻김을 못 한다.」", say:1, bg:"C095"},
+     {t:"「그리고 있어도 못 한다. 신이 안 오니까.」", say:1, bg:"C100"},
+     {t:"흥양이라는 고을은 백 년 전에 없어졌다.", dim:1},
+     {t:"부를 이름이 없는 신은 오지 않는다."},
+     {t:"「신을 하나씩 찾아 모셔라.」", say:1},
+     {t:"「이름이 돌아오면, 그때 나를 보내라.」", say:1},
+   ],
+   teach:{ k:"향 香", v:"굿을 하려면 향부터 살라야 한다.<br>향은 6분에 하나씩 찬다. 최대 백스무 개." },
+   go:"당(堂)에 신을 모신다", tab:"dang",
+   task:{ t:"다섯 위를 모신다", d:"당(堂)에 다섯 신을 세운다. 가운데 자리가 앞장선다.", tab:"dang" } },
+
+ { id:"clear:D01", name:"초 가 망 석",
+   lines:[
+     {t:"저잣거리에서 객귀를 물렸다.", bg:"C082"},
+     {t:"「초가망석(初架望席)이다.」", say:1, bg:"C033"},
+     {t:"「조상과 망자를 부르는 첫 절차.」", say:1, bg:"C033"},
+     {t:"「신이 왔다. 처음으로.」", say:1},
+     {t:"하나가 왔으면 둘도 온다.", dim:1},
+   ],
+   teach:{ k:"복 채 卜債", v:"복채를 올리면 신이 온다.<br>어느 신이 올지는 신만 안다." },
+   go:"복채를 올린다", tab:"gut",
+   task:{ t:"복채를 올려 신을 부른다", d:"신을 더 모아야 다음 길로 간다.", tab:"gut" } },
+
+ { id:"clear:D02", name:"문 &nbsp;거 리",
+   lines:[
+     {t:"능가사 마당에 무신도가 걸려 있었다.", bg:"C020"},
+     {t:"불가(佛家)의 것이 아니다.", dim:1, bg:"C020"},
+     {t:"「내가 걸었다.」", say:1, bg:"C032"},
+     {t:"「절이든 어디든, 걸어야 할 데가 있다.」", say:1},
+     {t:"할머니가 다녀간 자리가 또 있을 것이다.", dim:1},
+   ],
+   teach:{ k:"신 력 神力", v:"감당 못 할 신을 모으면 탈이 난다.<br>격(格)이 오르면 신력이 는다." },
+   go:"팔령산으로 간다", tab:"gil",
+   task:{ t:"팔령산 여덟 봉을 넘는다", d:"유영봉부터 적취봉까지. 실제 종주 순서 그대로다.", tab:"gil" } },
+
+ { id:"clear:D03", name:"산 &nbsp;거 리",
+   lines:[
+     {t:"팔령산(八靈山).", bg:"C039"},
+     {t:"옛 문헌에 그렇게 적혀 있다. 지어낸 이름이 아니다.", dim:1, bg:"C039"},
+     {t:"「여덟 봉우리가 물에 비치면 아홉이다.」", say:1, bg:"C039"},
+     {t:"「하나가 더 있다.」", say:1},
+   ],
+   teach:{ k:"부 정 不淨", v:"걸을수록 부정이 쌓인다. 지면 더 쌓인다.<br>백이 차면 더는 못 버티고 나온다." },
+   go:"길로 간다", tab:"gil",
+   task:{ t:"여덟 봉을 다 넘는다", d:"부정이 차면 챙긴 것만 들고 나온다. 다시 들어가면 된다.", tab:"gil" } },
+
+ { id:"clear:D11", name:"용 왕 &nbsp;거 리",
+   lines:[
+     {t:"물이 빠지면 뻘 위에 발자국이 남는다.", bg:"C051"},
+     {t:"사람 것이 아니고, 뭍으로 오르지 않는다.", dim:1, bg:"C051"},
+     {t:"「도깨비는 대접을 받으면 반드시 갚는다.」", say:1, bg:"C057"},
+     {t:"「메밀 냄새를 좋아한다. 기억해 둬라.」", say:1},
+     {t:"뻘 속에서 놋쇠 거울 하나가 나왔다.", bg:"C094"},
+     {t:"명두(明斗). 무구 넷 중 하나.", dim:1, bg:"C094"},
+   ],
+   teach:{ k:"진 화 · 정 성", v:"실패해도 재료는 그대로다.<br>정성이 쌓여 다음이 쉬워진다." },
+   go:"신을 기른다", tab:"gut",
+   task:{ t:"신을 길러 5성으로", d:"5성이 되어야 유니크가 열린다.", tab:"gut" } },
+
+ { id:"clear:D15", name:"지 전 &nbsp;거 리",
+   lines:[
+     {t:"소록도. 여기선 싸우지 않는다.", bg:"C100"},
+     {t:"넋을 씻겨 보낼 뿐이다.", bg:"C100"},
+     {t:"매듭 일곱을 풀었다.", dim:1},
+     {t:"「급하게 하면 안 풀린다.」", say:1},
+     {t:"「굿은 정성이다. 손이 떨리면 넋도 떤다.」", say:1},
+     {t:"솔가지에 걸린 종이돈을 걷었다.", bg:"C085"},
+     {t:"지전(紙錢). 둘째 무구다.", dim:1, bg:"C085"},
+   ],
+   teach:{ k:"씻 김 · 고 풀 이", v:"매듭 하나에 최소 0.22초.<br>천천히 풀수록 정성이 쌓여 성공률이 오른다." },
+   go:"봉대산으로 간다", tab:"gil",
+   task:{ t:"봉대산 말바위터", d:"아기장수. 오백 년째 못 간 넋이 있다.", tab:"gil" } },
+
+ { id:"clear:D19", name:"신 칼 &nbsp;거 리",
+   lines:[
+     {t:"아기장수가 죽자 용마가 울며 바위에 부딪혀 죽었다.", bg:"C111"},
+     {t:"겨드랑이에 날개가 있었다. 그래서 죽었다.", dim:1, bg:"C111"},
+     {t:"「오백 년이다.」", say:1},
+     {t:"「그동안 아무도 안 씻겼다.」", say:1},
+     {t:"말바위 틈에 칼이 하나 박혀 있었다.", bg:"C095"},
+     {t:"신칼. 셋째 무구다.", dim:1, bg:"C095"},
+   ],
+   teach:{ k:"신 표 神標", v:"특별 던전에서 그 보스를 잡아야 신표가 나온다.<br>셋을 모아야 유니크가 열린다." },
+   go:"특별 던전으로", tab:"gil",
+   task:{ t:"신표를 모은다", d:"유니크를 열려면 5성 + 신표 셋이 필요하다.", tab:"gil" } },
+
+ { id:"clear:D20", name:"길 닦 음",
+   lines:[
+     {t:"신통(神筒)이 있었다는 자리.", bg:"C038"},
+     {t:"통이 열린 뒤로 아무도 살지 않는다.", dim:1, bg:"C038"},
+     {t:"폐허에 긴 무명천 한 필이 놓여 있었다.", bg:"C100"},
+     {t:"질베. 마지막 무구다.", dim:1, bg:"C100"},
+     {t:"「넷이 다 모였다.」", say:1},
+     {t:"「이제 굿을 할 수 있다.」", say:1},
+     {t:"「그런데 아직 신이 다 안 왔다.」", say:1},
+   ],
+   teach:{ k:"무 구 巫具", v:"지전 · 명두 · 신칼 · 질베.<br>넷을 다 가지고 씻김을 올리면 열리는 신이 있다." },
+   go:"통천문으로", tab:"gil",
+   task:{ t:"통천문(通天門)", d:"팔영산 두류봉과 칠성봉 사이. 실재하는 바위 문이다.", tab:"gil" } },
+
+ { id:"clear:S2", name:"통 천 문",
+   lines:[
+     {t:"바위가 갈라져 문이 되었다.", bg:"C109"},
+     {t:"하늘로 통한다 하여 통천문이다.", dim:1, bg:"C109"},
+     {t:"문 앞에 갓 쓴 자가 서 있었다.", bg:"C109"},
+     {t:"「나는 저승 문을 열고 들어가 염라를 잡아 나온 자다.」", say:1, bg:"C109"},
+     {t:"「문을 여는 법을 아는 자가 문을 지킨다.」", say:1},
+     {t:"「누가 열었느냐고 묻지 마라. 이미 늦었다.」", say:1},
+   ],
+   teach:{ k:"해 금 解禁", v:"숨은 신은 뽑아서 얻는 게 아니다.<br>해야 얻는다. 스무 위가 그렇게 열린다." },
+   go:"나락으로", tab:"gil",
+   task:{ t:"나락 시왕 10전", d:"열 왕이 차례로 묻는다. 한 걸음에 한 왕이다.", tab:"gil" } },
+
+ { id:"clear:S1", name:"나 락",
+   lines:[
+     {t:"열 왕을 넘었다.", bg:"C119"},
+     {t:"「할머니를 봤느냐.」", say:1, bg:"C119"},
+     {t:"열째 왕이 수레바퀴를 멈췄다.", dim:1, bg:"C119"},
+     {t:"「명부에 없다.」", say:1, bg:"C119"},
+     {t:"「죽었는데 명부에 없다는 건 하나뿐이다.」", say:1},
+     {t:"「안 간 것이다.」", say:1},
+   ],
+   teach:{ k:"격 노 激怒", v:"보스가 몰리면 사나워진다.<br>체력 30% 아래에서 공격 +40%." },
+   go:"나로 발사대로", tab:"gil",
+   task:{ t:"나로 발사대", d:"흥양에서 하늘로 쏘아 올린다. 마지막이다.", tab:"gil" } },
+
+ { id:"clear:S5", name:"뒷 전",
+   lines:[
+     {t:"흥양에서 하늘로 쏘아 올린다.", bg:"C120"},
+     {t:"통천문이 여기서 다시 열렸다.", bg:"C120"},
+     {t:"「저승의 주인은 염라가 아니다.」", say:1, bg:"C120"},
+     {t:"「내 아우가 이승을 속여 뺏었다.」", say:1, bg:"C120"},
+     {t:"「그 아우가 문을 열었다.」", say:1},
+     {t:"─", dim:1},
+     {t:"돌아와 마루에 향을 사르고 굿을 시작했다.", bg:"C032"},
+     {t:"이번엔 신이 왔다.", bg:"C032"},
+     {t:"흥양이라는 이름이 돌아왔기 때문이다.", dim:1},
+     {t:"「이제 됐다.」", say:1, bg:"C032"},
+     {t:"「길을 닦아라.」", say:1},
+   ],
+   teach:{ k:"뒷 전", v:"굿의 마지막 거리.<br>왔던 신들을 다 돌려보낸다." },
+   go:"할머니를 보낸다", tab:"gut",
+   task:null },
+];
+
+const GKEY = "hy_geori";
+const geoSeen = () => { try{ return new Set(JSON.parse(localStorage.getItem(GKEY) ?? "[]")); }
+                        catch(_){ return new Set(); } };
+const geoMark = id => { try{ const s=geoSeen(); s.add(id);
+  localStorage.setItem(GKEY, JSON.stringify([...s])); }catch(_){} };
+
+let GI = 0, GEO = null;
+
+/* 그 거리가 아직 안 나왔으면 연다. 나왔으면 그냥 지나간다. */
+function geori(id){
+  if (geoSeen().has(id)) return false;
+  const g = GEORI.find(x=>x.id===id);
+  if (!g) return false;
+  GEO = g; GI = 0;
+  geoMark(id);
+  drawGeori();
+  $("#geo").classList.add("on");
+  return true;
+}
+
+function drawGeori(){
+  const g = GEO, n = g.lines.length;
+  const shown = g.lines.slice(Math.max(0, GI-2), GI+1);
+  // 배경은 최근에 지정된 것을 이어 쓴다
+  let bg = null;
+  for (let k=0; k<=GI && k<n; k++) if (g.lines[k].bg) bg = g.lines[k].bg;
+  const done = GI >= n-1;
+  const c = bg ? mc(bg) : null;
+  const src = c ? artOf(c) : null;
+
+  $("#geo").innerHTML = `
+    <div class="bg ${src?"on":""}">${src?`<img src="${src}" alt="">`:""}</div>
+    <div class="vg"></div>
+    <div class="gn">${g.name}</div>
+    <button class="sk" onclick="geoEnd()">넘 긴 다</button>
+    <div class="lines">
+      ${shown.map((l,k)=>`<div class="ln ${l.say?"say":""} ${l.dim?"dim":""}"
+        style="transition-delay:${k*0.1}s">${l.t}</div>`).join("")}
+    </div>
+    ${done && g.teach ? `<div class="teach">
+      <div class="k">${g.teach.k}</div><div class="v">${g.teach.v}</div></div>` : ""}
+    ${done
+      ? `<button class="go" onclick="geoEnd()">${g.go ?? "간다"}</button>`
+      : `<div class="cue">눌러서 넘긴다</div>`}
+    ${done ? "" : `<button class="tap" onclick="geoNext()"></button>`}`;
+
+  requestAnimationFrame(()=>{
+    $("#geo").querySelectorAll(".ln").forEach(e=>e.classList.add("on"));
+    const t=$("#geo .teach"); if(t) setTimeout(()=>t.classList.add("on"), 500);
+    const b=$("#geo .go");    if(b) setTimeout(()=>b.classList.add("on"), 900);
+  });
+}
+function geoNext(){ if(GI < GEO.lines.length-1){ GI++; drawGeori(); } }
+function geoEnd(){
+  const g = GEO;
+  $("#geo").classList.remove("on");
+  setTimeout(()=>{ $("#geo").innerHTML=""; }, 620);
+  if (g?.task) { TASK = g.task; saveTask(); }
+  else if (g && !g.task) { TASK = null; saveTask(); }
+  GEO = null;
+  if (g?.tab) setTimeout(()=>go(g.tab), 640);
+  else home();
+}
+
+/* ── 길잡이 — 다음에 뭘 할지 모르는 순간이 없게 ── */
+const TKEY = "hy_task";
+let TASK = null;
+function loadTask(){ try{ TASK = JSON.parse(localStorage.getItem(TKEY) ?? "null"); }catch(_){ TASK=null; } }
+function saveTask(){ try{ TASK ? localStorage.setItem(TKEY, JSON.stringify(TASK))
+                              : localStorage.removeItem(TKEY); }catch(_){} }
+function guideHtml(){
+  if(!TASK) return "";
+  return `<div class="guide">
+    <div class="k">지 금 &nbsp;할 &nbsp;일</div>
+    <div class="t">${esc(TASK.t)}</div>
+    <div class="d">${esc(TASK.d ?? "")}</div>
+    ${TASK.tab?`<button class="b" onclick="go('${TASK.tab}')">간 다</button>`:""}
+  </div>`;
+}
+
+function home(){
+  const p = ME.player, cap = SINRYEOK();
+  const owned = ME.cards.length;
+  const seen = new Set(ME.cards.map(c=>c.card_id)).size;
+  /* 진단줄 — 옛 파일을 캐시로 보고 있으면 이 줄 자체가 안 보인다.
+     그림이 안 뜰 때 "몇 장이 서버에 있는지"를 바로 알 수 있다. */
+  const art = M.cards.filter(c=>artOf(c)).length;
+  $("#p-home").innerHTML = `
+    <h2>본향 本鄕</h2>
+    <p class="sub">고흥의 신과 귀 백스무 위(位).<br>모시고, 기르고, 원(冤)을 푼다.</p>
+    <p class="sub" style="font-size:11px;color:#5C5347">
+      v34 · 격·무신도 효과 · 그림 ${M.with_art ?? "?"}/${M.total_count ?? 120}장 · 도감 ${seen}/${M.total_count ?? 120}위</p>
+
+    ${guideHtml()}
+
+    ${SESS ? `<div class="card" style="border-color:var(--hwang)">
+      <h3>가던 길이 있다</h3>
+      <div class="lbl"><span>${esc(SESS.dungeon)}</span><span>${SESS.step}/${SESS.of} 걸음</span></div>
+      <div class="bar pg"><i style="width:${SESS.step/SESS.of*100}%"></i></div>
+      <button class="btn" onclick="go('gil')">이어서 간다</button>
+    </div>` : ""}
+
+    <div class="card">
+      <h3>모신 신</h3>
+      <div class="lbl"><span>보유 ${owned}위</span><span>도감 ${seen}/120</span></div>
+      <div class="bar pg"><i style="width:${seen/120*100}%"></i></div>
+      <div style="font-size:11.5px;color:var(--dim);margin-top:9px;line-height:1.7">
+        신력 <b style="color:var(--hwang)">${cap}</b> (격 ${p.level})<br>
+        <span style="font-size:10.5px">5성 다섯을 한 자리에 세우려면 신력 410. 격 175가 필요하다 — 닿을 수 없다.</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>재화</h3>
+      <dl>
+        <div class="row"><dt>향 香</dt><dd>${p.hyang} / 120 <span style="color:var(--dim);font-size:11px">— 6분에 하나씩 찬다</span></dd></div>
+        <div class="row"><dt>복채 福債</dt><dd>${p.bokchae} <span style="color:var(--dim);font-size:11px">— 굿 한 번에 30</span></dd></div>
+        <div class="row"><dt>엽전 錢</dt><dd>${Number(p.yeopjeon).toLocaleString()}</dd></div>
+        <div class="row"><dt>인정 人情</dt><dd>${p.injeong}</dd></div>
+      </dl>
+    </div>
+
+    ${sinmulHtml()}`;
+}
+
+/* 신물 궤 — 창고에 뭐가 쌓였는지 보여준다. 여태 개수 조회만 하고 보여주지는 않았다.
+   신표(SP_xxx)는 카드에 묶여 있으므로 그 카드의 그림으로 보여주고,
+   유니크에 셋이 필요하니 몇/3 인지까지 같이 말한다. */
+function sinmulHtml(){
+  const rows = (ME?.materials ?? []).filter(x => (x.qty ?? 0) > 0);
+  if(!rows.length)
+    return `<div class="card"><h3>신물 궤 神物櫃</h3>
+      <div style="font-size:11.5px;color:var(--dim);line-height:1.7">
+        아직 아무것도 없다. 길에 나가 악귀를 물리치면 쌓인다.</div></div>`;
+
+  const plain = rows.filter(x => !String(x.material_id).startsWith("SP_"));
+  const sp    = rows.filter(x =>  String(x.material_id).startsWith("SP_"));
+
+  const plainHtml = plain.length ? `<dl>${plain.map(x=>
+    `<div class="row"><dt>${esc(x.material_id)}</dt><dd>${Number(x.qty).toLocaleString()}</dd></div>`
+  ).join("")}</dl>` : "";
+
+  const spHtml = sp.length ? `
+    <div style="font-size:11px;color:var(--dim);margin:11px 0 7px">신표 神標 — 셋을 모으면 유니크가 열린다</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(66px,1fr));gap:9px">
+      ${sp.map(x=>{
+        const c = M.cards.find(k => k.sinpyo_id === x.material_id);
+        const a = c ? artOf(c) : null;
+        const n = Math.min(3, x.qty), full = x.qty >= 3;
+        return `<div style="text-align:center">
+          <div class="mini${full?" sel":""}" style="cursor:default">
+            <span class="band f-${esc(c?.faction ?? "당")}"></span>
+            ${a ? `<img src="${a}" alt="" loading="lazy">` : ""}
+            <span class="blank" ${a?"hidden":""}></span>
+          </div>
+          <div style="font-size:10px;color:var(--dim);margin-top:4px;line-height:1.35">
+            ${esc(c?.name ?? x.material_id)}<br>
+            <b style="color:${full?"var(--hwang)":"var(--dim)"}">${n}</b>/3</div>
+        </div>`;
+      }).join("")}
+    </div>` : "";
+
+  return `<div class="card"><h3>신물 궤 神物櫃</h3>${plainHtml}${spHtml}</div>`;
+}
+
+/* ══ 기른다 — 진화 · 각성 · 유니크 ═══════════════
+   여태 확률만 보여주고 정작 기를 수가 없었다. 서버엔 라우트가 다 있다.
+   카드를 제물로 태우는 일이라 자동으로 고르지 않는다 — 반드시 손으로 고르게 한다. */
+let GROW = null;   // {kind, id, need, pick:Set}
+
+function growClose(){ GROW=null; $("#growOv").classList.remove("on"); }
+
+/* 제물이 될 수 있는 카드만 추린다 */
+function growFeeds(kind, me){
+  return ME.cards.filter(pc => {
+    if(pc.id === me.id) return false;              // 자기 자신은 못 먹는다
+    if(pc.locked) return false;                    // 잠근 것은 건드리지 않는다
+    if(kind === "evolve") return (pc.tier ?? 1) === (me.tier ?? 1);
+    if(kind === "awaken") return pc.card_id === me.card_id;
+    if(kind === "slot")   return true;             // 접신은 아무 카드나 먹는다
+    return false;
+  });
+}
+
+function growOpen(kind, pcId){
+  const me = ME.cards.find(c => c.id === pcId);
+  if(!me) return;
+  const need = kind === "evolve" ? EVO_FEED[Math.min(5,(me.tier??1)+1)]
+             : (kind === "awaken" || kind === "slot") ? 1 : 0;
+  GROW = { kind, id: pcId, need, pick: new Set() };
+  growPaint();
+  $("#growOv").classList.add("on");
+}
+
+function growPick(id){
+  if(!GROW) return;
+  if(GROW.pick.has(id)) GROW.pick.delete(id);
+  else if(GROW.pick.size < GROW.need) GROW.pick.add(id);
+  growPaint();
+}
+
+function growPaint(res){
+  if(!GROW) return;
+  const me = ME.cards.find(c => c.id === GROW.id);
+  const c  = mc(me.card_id) ?? GHOST(me.card_id);
+  const k  = GROW.kind;
+  const t  = me.tier ?? 1, awk = me.awaken ?? 0;
+  const to = Math.min(5, t+1), an = Math.min(5, awk+1);
+
+  const title = k==="evolve" ? `진화 — ${t}성 → ${to}성`
+              : k==="awaken" ? `각성 — ${awk} → ${an}단계`
+              : k==="slot"   ? `접신 — 넋을 이 카드에 옮긴다`
+              : `유니크를 연다`;
+  const rate  = k==="evolve" ? rateOf(EVO_RATE[to], EVO_JEONG[to], me.evo_jeongseong, EVO_CAP)
+              : k==="awaken" ? rateOf(AWK_RATE[an], AWK_JEONG, me.awaken_jeongseong, AWK_CAP)
+              : k==="slot"   ? 100                       // 접신은 판정이 없다. 반드시 붙는다
+              : rateOf(UNQ_RATE, UNQ_JEONG, me.unique_jeongseong, UNQ_CAP);
+  const cost  = k==="evolve" ? `엽전 ${EVO_YEOP[to].toLocaleString()}`
+              : k==="awaken" ? `상급신물 ${AWK_SIN[an]}`
+              : k==="slot"   ? `카드 1장 (영영 사라진다)`
+              : `${esc(c.name)}의 신표 3`;
+
+  /* 결과가 왔으면 결과만 보여준다 */
+  if(res){
+    $("#growIn").innerHTML = `
+      <div class="ov-b" style="padding:20px 18px">
+        <div style="font-family:var(--serif);font-size:22px;font-weight:800;
+             color:${res.success?"var(--hwang-l)":"var(--jeok)"};text-align:center">
+          ${GROW.kind==="slot" ? "넋이 옮겨 붙었다" : (res.success ? "이루었다" : "이루지 못했다")}</div>
+        <div style="text-align:center;font-size:11px;color:var(--dim);margin-top:6px">
+          ${title} · 확률 ${res.rate_used ?? rate}%</div>
+        <dl style="margin-top:14px">
+          ${res.jeongseong != null
+            ? `<div class="row"><dt>정성</dt><dd>${res.jeongseong}${
+                res.next_rate!=null?` — 다음엔 <b style="color:var(--hwang)">${res.next_rate}%</b>`:""}</dd></div>`:""}
+          ${res.note ? `<div class="row"><dt>말</dt><dd>${esc(res.note)}</dd></div>`:""}
+        </dl>
+        <button class="btn" style="margin-top:14px" onclick="growDone()">물러난다</button>
+      </div>`;
+    return;
+  }
+
+  const feeds = k==="unique" ? [] : growFeeds(k, me);
+  const short = GROW.pick.size < GROW.need;
+
+  $("#growIn").innerHTML = `
+    <div class="ov-b" style="padding:16px 16px 18px">
+      <div style="font-family:var(--serif);font-size:17px;font-weight:800">${title}</div>
+      <div class="num" style="margin-top:8px">
+        <span>드는 것 <b>${cost}</b></span>
+        <span>성공 <b>${rate}%</b></span>
+        ${k!=="unique"?`<span>제물 <b>${GROW.pick.size}/${GROW.need}</b></span>`:""}
+      </div>
+      <div style="font-size:11px;color:var(--dim);margin-top:9px;line-height:1.7">
+        ${k==="evolve" ? `같은 <b>${t}성</b> 카드 ${GROW.need}장을 태운다. 실패해도 재료는 그대로다.`
+        : k==="awaken" ? `같은 카드 1장을 태운다. 실패해도 재료 카드는 남고 신물만 든다.`
+        : k==="slot"   ? `<b style="color:var(--jeok)">되돌릴 수 없다.</b> 바친 카드는 영영 사라지고,
+                          붙은 넋은 다시 뗄 수 없다. 자리는 둘뿐이다.`
+        : `실패해도 신표 하나만 나가고 정성이 쌓인다.`}
+      </div>
+
+      ${k!=="unique" ? (feeds.length
+        ? `<div class="grid" style="margin-top:12px;max-height:38vh;overflow:auto">
+             ${feeds.map(f=>{
+               const fc = mc(f.card_id) ?? GHOST(f.card_id);
+               const a  = artOf(fc), on = GROW.pick.has(f.id);
+               return `<div class="mini${on?" sel":""}" onclick="growPick(${f.id})">
+                 <span class="band f-${esc(fc.faction??"당")}"></span>
+                 ${a?`<img src="${a}" alt="" loading="lazy">`:""}
+                 <span class="blank" ${a?"hidden":""}></span>
+                 <span class="tr">${"★".repeat(f.tier??1)}</span>
+                 <div class="nm">${esc(fc.name??"")}</div></div>`;
+             }).join("")}
+           </div>`
+        : `<div class="err" style="margin-top:12px"><b>제물이 없다</b>
+             ${k==="evolve"?`${t}성 카드가 더 있어야 한다.`:`같은 카드가 한 장 더 있어야 한다.`}</div>`)
+        : ""}
+
+      <div id="growErr"></div>
+      <div style="display:flex;gap:6px;margin-top:13px">
+        <button class="btn ghost" style="flex:1" onclick="growClose()">그만둔다</button>
+        <button class="btn" style="flex:1.4" id="growGo"
+          ${k!=="unique" && short ? "disabled" : ""} onclick="growRun()">올린다</button>
+      </div>
+    </div>`;
+}
+
+/* ══ 무신도 회랑 — 노드를 연다 ══════════════
+   서버(hy v17)의 /grow/node · /grow/node_reset 을 그대로 쓴다. */
+let NODEV = null;   // {id}
+
+function nodeClose(){ NODEV=null; $("#growOv").classList.remove("on"); }
+
+function nodeOpen(pcId){
+  NODEV = { id: pcId };
+  nodePaint();
+  $("#growOv").classList.add("on");
+}
+
+function nodePaint(res){
+  if(!NODEV) return;
+  const me = ME.cards.find(c => c.id === NODEV.id);
+  if(!me) return nodeClose();
+  const gm = gmOf(me), reach = nodeReach(gm.nodes);
+  const yeop = Number(ME.player?.yeopjeon ?? 0);
+  const hon  = MAT(HON);
+
+  const lv = Number(me.level) || 1;
+
+  const rows = NODES.map(n=>{
+    const on = gm.nodes.includes(n.id);
+    const needLv = NODE_LV_GATE[n.level] || 1;
+    const seqLock = !on && n.level > reach;          // 앞 단계를 아직 안 열었다
+    const lvLock  = !on && lv < needLv;              // 격이 모자라다
+    const poor    = !on && !seqLock && !lvLock && (yeop < n.yeop || hon < n.hon);
+    let state;
+    if(on)           state = `<span style="color:var(--hwang)">열렸다</span>`;
+    else if(lvLock)  state = `<span style="color:var(--jeok)">격 ${needLv} 필요</span>`;
+    else if(seqLock) state = `<span style="color:#5C5347">앞 단계를 먼저</span>`;
+    else             state = `엽전 ${n.yeop.toLocaleString()} · ${HON} ${n.hon}`;
+    return `<div class="nrow${on?" on":""}${(seqLock||lvLock)?" lk":""}">
+      <div class="nn">${esc(n.name)}<span class="nl">${esc(n.eff)}</span></div>
+      <div class="nc">${state}</div>
+      ${on || seqLock || lvLock ? "" :
+        `<button class="btn sm" ${poor?"disabled":""} onclick="nodeRun('${n.id}')">${
+          poor ? "모자라다" : "연다"}</button>`}
+    </div>`;
+  }).join("");
+
+  $("#growIn").innerHTML = `
+    <div class="ov-b" style="padding:16px 16px 18px">
+      <div style="font-family:var(--serif);font-size:17px;font-weight:800">무신도 회랑 巫神圖</div>
+      <div class="num" style="margin-top:8px">
+        <span>격 <b>${lv}</b>/${CARD_LV_CAP(me.tier)}</span>
+        <span>엽전 <b>${yeop.toLocaleString()}</b></span>
+        <span>${HON} <b>${hon}</b></span>
+        <span>노드 <b>${gm.nodes.length}</b>/${NODES.length}</span>
+      </div>
+      <div style="font-size:11px;color:var(--dim);margin-top:9px;line-height:1.7">
+        앞 단계를 하나라도 열면 다음 단계가 열린다. 같은 단계는 몇이든 열 수 있다.<br>
+        회랑마다 격이 필요하다 — <b style="color:var(--hwang-l)">1단 격 10 · 2단 격 25 · 3단 격 40</b>.
+        격의 상한은 성급×8이라, 3단은 5성이라야 닿는다.
+      </div>
+      <div class="nodes">${rows}</div>
+      <div id="nodeErr">${res ? `<div class="err" style="margin-top:11px">${esc(res)}</div>` : ""}</div>
+      <div style="display:flex;gap:6px;margin-top:13px">
+        <button class="btn ghost" style="flex:1" onclick="nodeClose()">물러난다</button>
+        <button class="btn ghost" style="flex:1" ${gm.nodes.length?"":"disabled"}
+          onclick="nodeReset()">정화 (${NODE_RESET_FEE.toLocaleString()})</button>
+      </div>
+    </div>`;
+}
+
+async function nodeRun(nodeId){
+  if(!NODEV) return;
+  try{
+    await api("/grow/node", { card_id: NODEV.id, node_id: nodeId });
+    await refresh();
+    nodePaint();
+  }catch(e){ nodePaint(e?.message ?? "열지 못했다"); }
+}
+
+async function nodeReset(){
+  if(!NODEV) return;
+  try{
+    const r = await api("/grow/node_reset", { card_id: NODEV.id });
+    await refresh();
+    salpuriSweep();
+    nodePaint();
+    const el = $("#nodeErr");
+    if(el) el.innerHTML = `<div class="card" style="margin-top:11px;padding:10px 12px;
+      font-size:11.5px;color:var(--dim)">${esc(r.note ?? "노드를 씻어냈다")}</div>`;
+  }catch(e){ nodePaint(e?.message ?? "정화하지 못했다"); }
+}
+
+async function growDone(){
+  growClose();
+  try{ await refresh(); if(PANES[TAB]) PANES[TAB](); }catch(_){}
+}
+
+async function growRun(){
+  if(!GROW) return;
+  const b = $("#growGo"); if(b){ b.disabled = true; b.textContent = "…"; }
+  const { kind, id } = GROW;
+  const body = kind === "evolve" ? { player_card_id:id, feed_ids:[...GROW.pick] }
+             : kind === "awaken" ? { player_card_id:id, feed_id:[...GROW.pick][0] }
+             : kind === "slot"   ? { main_card_id:id, feed_card_id:[...GROW.pick][0] }
+             : { player_card_id:id };
+  try{
+    const r = await api(`/grow/${kind}`, body);
+    if(r.success) salpuriSweep();          // 이루어진 순간엔 천을 한 번 쓴다
+    growPaint(r);
+  }catch(e){
+    const el = $("#growErr");
+    if(el) el.innerHTML = fail(e);
+    if(b){ b.disabled = false; b.textContent = "올린다"; }
+  }
+}
+
+/* ══ 당 — 파티 ═════════════════════════════ */
+let PICK = [];
+function dang(){
+  const cap = SINRYEOK();
+  const costOf = id => {
+    const pc = ME.cards.find(c=>c.id===id);
+    return M.tiers.find(t=>t.tier===pc?.tier)?.cost ?? 0;
+  };
+  const cost = PICK.reduce((s,id)=>s+costOf(id), 0);
+  const over = cost > cap;
+
+  /* 슬롯 — 예전엔 그리드에 선택 표시만 있었다. 그러면 누가 앞장서는지가 화면에 없다.
+     리더 보너스가 걸리는데 리더가 안 보이면 그건 없는 기능이다. */
+  const lead = PICK[0] ? mc(ME.cards.find(c=>c.id===PICK[0])?.card_id) : null;
+  const slots = [0,1,2,3,4].map(i=>{
+    const id = PICK[i];
+    if (!id) return `<div class="sl"><span class="no">${i+1}</span><span class="e">비었다</span></div>`;
+    const pc = ME.cards.find(c=>c.id===id);
+    const c  = mc(pc.card_id) ?? GHOST(pc.card_id);
+    const src = artOf(c);
+    return `<div class="sl has ${i===0?"lead":""}" onclick="drop(${id})">
+      <span class="no">${i+1}</span>
+      ${src?`<img src="${src}" alt="">`:`<span class="e">${esc(c.name[0])}</span>`}
+      ${i===0?`<span class="ld">앞장선다</span>`:""}</div>`;
+  }).join("");
+
+  $("#p-dang").innerHTML = `
+    <h2>당 堂</h2>
+    <p class="sub">다섯 위(位)까지 모신다. <b style="color:var(--hwang)">1번 칸이 앞장선다</b> — 리더 보너스가 붙는다.<br>
+      슬롯을 누르면 내린다. 순서를 바꾸려면 내렸다가 다시 모신다.</p>
+
+    <div class="slots">${slots}</div>
+
+    <div class="card">
+      <div class="lbl">
+        <span>신력 神力</span>
+        <span style="color:${over?"var(--jeok)":"var(--hwang)"}"><b>${cost}</b> / ${cap}</span>
+      </div>
+      <div class="bar pg"><i style="width:${Math.min(100,cost/cap*100)}%;background:${over?"var(--jeok)":"var(--hwang)"}"></i></div>
+      <div style="font-size:11px;color:var(--dim);margin-top:7px;line-height:1.6">
+        ${PICK.length}위 · ${lead ? `<b style="color:var(--hwang)">${esc(lead.name)}</b>이 앞장선다 — ${esc(lead.leader_effect?.text ?? lead.leader_bonus ?? "리더 효과 없음")}` : "아직 아무도 없다"}
+        ${over?'<br><span style="color:var(--jeok)">상한을 넘었다. 한 위를 내려야 한다.</span>':""}
+      </div>
+      <button class="btn" style="margin-top:11px" ${(!PICK.length||over)?"disabled":""} onclick="saveParty()">
+        이 사람들로 간다
+      </button>
+    </div>
+
+    <div id="dangErr"></div>
+    <div class="grid">${ME.cards.map(pc=>mini(pc,{sel:PICK.includes(pc.id)})).join("")}</div>`;
+
+  $("#p-dang").querySelectorAll(".grid .mini").forEach(el=>{
+    el.onclick = ()=>{
+      const id = +el.dataset.id;
+      const i = PICK.indexOf(id);
+      if (i>=0) PICK.splice(i,1);
+      else if (PICK.length < 5) PICK.push(id);
+      dang();
+    };
+  });
+}
+function drop(id){ const i = PICK.indexOf(id); if(i>=0) PICK.splice(i,1); dang(); }
+async function saveParty(){
+  try{
+    await api("/party", { slot_no:1, card_ids:PICK, leader_idx:0 });
+    $("#dangErr").innerHTML = `<div class="card" style="border-color:var(--hwang)">
+      <h3>당에 모셨다</h3><div style="font-size:12px;color:var(--dim)">이제 길을 떠날 수 있다.</div></div>`;
+  }catch(e){ $("#dangErr").innerHTML = fail(e); }
+}
+
+/* ══ 길 — 던전 ═════════════════════════════ */
+/* ══ 길 — 목록 → 지도 → 보스 ═══════════════════════
+   지도 좌표는 DB에 없다. 흥양현의 실제 위치를 손으로 찍었다. */
+const PIN = {
+  D01:[353,300], D02:[408,238], D03:[430,170], D04:[456,158], D05:[482,150],
+  D06:[508,148], D07:[452,232], D08:[480,226], D09:[506,220], D10:[530,214],
+  D11:[188,392], D12:[196,196], D13:[524,286], D14:[276,656], D15:[270,722],
+  D16:[244,766], D17:[230,824], D18:[478,782], D19:[316,474], D20:[394,596],
+  S1:[120,600],  S2:[620,120],  S3:[478,192],  S4:[140,470],  S5:[552,868],
+};
+/* 입구에서 보이는 것. 스펙이 아니라 그 자리에 서면 보이는 것을 적는다. */
+const LOOK = {
+  D01:"장이 파한 뒤에도 사람 소리가 난다. 팔 것도 살 것도 없는데 흥정 소리가 들린다.",
+  D02:"절 마당에 무신도가 걸려 있다. 불가(佛家)의 것이 아니다. 누가 걸었는지 아무도 모른다.",
+  D03:"첫 봉우리. 갓 쓴 그림자가 바위에 앉아 글을 읽는다. 소리는 나지 않는다.",
+  D04:"대들보가 산에 섰다. 집이 없는데 성주가 앉아 있다.",
+  D05:"바위 틈으로 바람이 지나면 생황 소리가 난다. 굿가락이다.",
+  D06:"사자가 아니라 용이 바다로 내달리는 형상이라 했다. 벅수가 그 앞을 막고 섰다.",
+  D07:"다섯 늙은이가 다섯 방위에 앉았다. 하나가 비어 있다.",
+  D08:"안개가 봉우리에 걸려 내려가지 않는다. 사흘째다.",
+  D09:"일곱 바위가 북두처럼 놓였다. 밤에만 셀 수 있다.",
+  D10:"푸른 이끼가 바위를 덮었다. 밟으면 발자국이 오래 남는다.",
+  D11:"물이 빠지면 뻘 위에 발자국이 남는다. 사람 것이 아니고, 뭍으로 오르지 않는다.",
+  D12:"갯바위에 굴이 붙었다. 껍데기가 열려 있는 것이 몇 개 있다.",
+  D13:"바다였던 자리에 논이 섰다. 물이 아직 제 자리를 기억한다.",
+  D14:"배가 나가기 전에 뱃고사를 지낸다. 올해는 상이 하나 더 차려졌다.",
+  D15:"여기선 싸우지 않는다. 넋을 씻겨 보낼 뿐이다. 매듭 일곱을 풀어야 길이 열린다.",
+  D16:"다리 아래로 물살이 급하다. 다리가 놓이기 전에도 여기서 사람이 죽었다.",
+  D17:"말 울음이 산을 넘어온다. 절이도에 말은 없다. 목장은 오백 년 전에 걷혔다.",
+  D18:"삼치가 들면 바다 위에 장이 선다. 그중 한 척은 어디서 왔는지 아무도 모른다.",
+  D19:"아기장수가 죽자 용마가 울며 바위에 부딪혀 죽었다. 그 자리에 발자국이 남았다.",
+  D20:"신통(神筒)이 있었다는 자리. 통이 열린 뒤로 아무도 살지 않는다.",
+  S1:"열 왕이 차례로 묻는다. 대답을 잘못하면 다음 왕을 못 본다.",
+  S2:"두류봉과 칠성봉 사이, 바위가 갈라져 문이 되었다. 지나간 사람이 다 돌아오지는 않았다.",
+  S3:"여덟 봉우리가 물에 비치면 그림자가 아홉이다. 하나가 더 있다.",
+  S4:"물이 나가도 뻘이 안 드러나는 자리가 있다. 그 아래로 바다를 걸어 다니는 것이 있다.",
+  S5:"흥양에서 하늘로 쏘아 올린다. 통천문이 여기서 다시 열렸다.",
+};
+const MTS=[[430,196],[452,186],[474,180],[496,178],[452,208],[474,202],[496,196],[518,192],
+  [316,470],[230,822],[300,340],[360,392],[392,300],[268,560],[352,600]];
+
+let GATE_I = 0;                      // 지금 보고 있는 던전
+const openList = () => M.dungeons;   // 순서 그대로
+
+function gil(){
+  if (SESS) return dungeonRun();
+  const lv = ME.player.level;
+  const tk = Object.fromEntries(ME.tickets.map(t=>[t.dungeon_id,t.tickets]));
+
+  const row = d => {
+    const lock = lv < d.level_req, sp = d.kind==="특별", ten = !!(d.boss_seq?.length);
+    const t = tk[d.id] ?? 0;
+    return `<div class="dun ${lock?"lock":""}" data-d="${d.id}"
+      style="${ten?"border-color:var(--jeok);background:linear-gradient(90deg,#2A100E,#1A150F 60%)":""}">
+      <div class="dl" style="border-color:${ten?"var(--jeok)":lock?"var(--line)":"var(--hwang)"};
+        color:${ten?"#E08A80":lock?"var(--dim)":"var(--hwang)"}">${esc(d.id)}</div>
+      <div>
+        <div class="dn" style="${ten?"color:#E08A80":""}">${esc(d.name)}
+          ${!d.combat?'<span class="tag ui">의례</span>':""}
+          ${sp&&!ten?'<span class="tag">특별</span>':""}
+          ${ten?`<span class="tag" style="border-color:var(--jeok);color:#E08A80">열 왕</span>`:""}</div>
+        <div class="dm">${esc(d.region ?? "—")} · 격 ${d.level_req} · ${(d.factions??[]).join("·")}</div>
+      </div>
+      <div class="dc">${
+        lock ? `<b style="color:var(--dim)">잠김</b>격 ${d.level_req}`
+        : sp ? `<b>${t}</b>입장권`
+        : `<b>${d.hyang_cost}</b>향`}</div>
+    </div>`;
+  };
+
+  $("#p-gil").innerHTML = `
+    <h2>길 路</h2>
+    <p class="sub">열 걸음이면 한 판이다. 부정(不淨)이 가득 차면 더는 못 버틴다.</p>
+    <div id="gilErr"></div>
+    ${M.dungeons.map(row).join("")}`;
+
+  $("#p-gil").querySelectorAll(".dun").forEach(el=>{
+    el.onclick = ()=> openGate(M.dungeons.findIndex(d=>d.id===el.dataset.d));
+  });
+  drawMap();
+}
+
+/* ── 지도 — 재로 그린 땅. 바다는 없다. 땅만 있고 나머지는 어둠이다. ── */
+function drawMap(){
+  const lv = ME.player.level;
+  $("#mapg").innerHTML = `
+    <defs>
+      <filter id="ashf"><feTurbulence baseFrequency=".9" numOctaves="3" seed="7"/>
+        <feDisplacementMap in="SourceGraphic" scale="2"/></filter>
+      <filter id="softf"><feGaussianBlur stdDeviation="3.5" result="b"/>
+        <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      <linearGradient id="ashg" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#2A2620"/><stop offset="1" stop-color="#14120E"/></linearGradient>
+    </defs>
+    <rect width="720" height="940" fill="#0A0806"/>
+    <g filter="url(#ashf)">
+      <path d="M268 124 Q300 176 282 216 Q262 262 292 292 Q246 318 232 366 Q220 410 244 452
+               Q216 486 224 528 Q232 574 268 596 Q252 640 282 668 Q318 700 356 690 Q392 682 416 650
+               Q452 664 484 640 Q520 612 512 566 Q548 540 546 494 Q544 448 512 424 Q536 388 522 344
+               Q508 300 470 288 Q484 240 452 206 Q420 174 404 122 Q340 140 268 124 Z"
+            fill="url(#ashg)" stroke="#6E6455" stroke-width="2.2" filter="url(#softf)"/>
+      <path d="M244 700 q26 -16 50 2 q20 16 6 38 q-16 24 -44 14 q-26 -10 -12 -54 Z"
+            fill="url(#ashg)" stroke="#6E6455" stroke-width="1.6"/>
+      <path d="M182 790 q46 -30 96 -8 q44 20 32 66 q-12 48 -70 48 q-58 0 -70 -46 q-10 -38 12 -60 Z"
+            fill="url(#ashg)" stroke="#6E6455" stroke-width="1.8"/>
+      <path d="M446 748 q40 -18 66 8 q26 26 4 56 q-24 32 -60 16 q-32 -14 -10 -80 Z"
+            fill="url(#ashg)" stroke="#6E6455" stroke-width="1.6"/>
+      <path d="M508 830 q48 -14 74 20 q26 34 -6 62 q-34 30 -70 6 q-32 -22 2 -88 Z"
+            fill="url(#ashg)" stroke="#6E6455" stroke-width="1.6"/>
+    </g>
+    <g filter="url(#softf)">${MTS.map(([x,y],i)=>{
+      const w=i<8?24:(i<10?28:18), h=i<8?28:(i<10?32:20);
+      return `<path d="M${x-w} ${y+h} Q${x-w*.4} ${y+h*.2} ${x} ${y} Q${x+w*.4} ${y+h*.2} ${x+w} ${y+h} Z"
+        fill="none" stroke="#8B8275" stroke-width="1.3" opacity=".8"/>`;}).join("")}</g>
+    ${M.dungeons.map((d,i)=>{
+      const p = PIN[d.id]; if(!p) return "";
+      const [x,y]=p, lock=lv<d.level_req, sp=d.kind==="특별";
+      const f=(d.factions??["당"])[0], cl=FCOL_L[f] ?? "#C9C0AE";
+      return `<g class="pin ${lock?"lock":""}" data-i="${i}">
+        ${sp?`<rect x="${x-11}" y="${y-11}" width="22" height="22" fill="#140F0B"
+              stroke="${cl}" stroke-width="${d.boss_seq?.length?2.2:1.4}"/>`
+            :`<circle cx="${x}" cy="${y}" r="11" fill="#0F0D09" stroke="${cl}" stroke-width="1.4"/>`}
+        <text class="lv" x="${x}" y="${y+3}" text-anchor="middle" fill="${cl}">${d.level_req}</text>
+        <text class="lab" x="${x}" y="${y+24}" text-anchor="middle" fill="${cl}">${esc(d.name)}</text>
+      </g>`;
+    }).join("")}`;
+  $("#mapg").querySelectorAll(".pin").forEach(g=>{
+    g.onclick = ()=> openGate(+g.dataset.i);
+  });
+}
+
+/* ── 보스 전면 ── */
+function openGate(i){
+  if(i<0 || i>=M.dungeons.length) return;
+  GATE_I = i;
+  const d  = M.dungeons[i];
+  const bc = mc(d.boss_card);
+  const lv = ME.player.level, lock = lv < d.level_req;
+  const f  = (d.factions??["당"])[0];
+  const cl = FCOL_L[f] ?? "#C9C0AE";
+  const p  = PIN[d.id] ?? [360,470];
+  const seq = d.boss_seq ?? null;
+  const tk = Object.fromEntries(ME.tickets.map(t=>[t.dungeon_id,t.tickets]));
+  const src = bc ? artOf(bc) : null;
+
+  // 어느 왕까지 넘었나 — 서버가 boss:이름 으로 세고 있다
+  const done = seq ? seq.filter(k=>false).length : 0;
+
+  $("#gilMap").classList.add("on");
+  $("#mapg").style.transformOrigin = `${p[0]/720*100}% ${p[1]/940*100}%`;
+  $("#mapg").style.transform = "scale(2.6)";
+
+  const boss = seq ? seq[seq.length-1] : null;
+  const bname = boss ? boss.name : (d.bosses?.[0] ?? (bc?.name ?? ""));
+
+  $("#gate").innerHTML = `
+    ${src?`<div class="art"><img src="${src}" alt=""></div>`:""}
+    <div class="vig"></div>
+    <div class="where">${esc(d.name).split("").join(" ")}</div>
+    ${d.combat
+      ? `<div class="bn">${esc(bname)}</div>
+         <div class="bs" style="color:${cl}">${seq?"열 왕의 마지막":(d.factions??[]).join("·")}</div>
+         ${seq?`<div class="kings">
+            ${seq.map((k,n)=>`<i class="${n<done?"done":""}" title="${esc(k.name)}"></i>`).join("")}
+            <span class="kl">열 왕 — 한 걸음에 한 왕</span></div>`:""}`
+      : `<div class="bn">씻 김</div>
+         <div class="bs" style="color:${cl}">싸우지 않는다</div>`}
+    <div class="bd">
+      <div class="dn">${esc(d.name)}</div>
+      <div class="m">격 ${d.level_req} 이상 ·
+        ${d.kind==="특별" ? `입장권 ${tk[d.id]??0}` : `향 ${d.hyang_cost}`} · 10걸음</div>
+      <div class="desc">${esc(LOOK[d.id] ?? "")}</div>
+      <div id="gateErr" class="err"></div>
+      <div class="ways">
+        <button onclick="gatePrev()" ${i<=0?"disabled":""} style="flex:.8">‹ 이전</button>
+        <button class="go" ${lock?"disabled":""} onclick="gateEnter()">
+          ${lock?`격 ${d.level_req}가 되어야 든다`:"든 다"}</button>
+        <button class="nx" onclick="gateNext()" ${i>=M.dungeons.length-1?"disabled":""}
+          style="flex:.8">다음 ›</button>
+      </div>
+      <div style="display:flex;gap:6px;margin-top:6px;align-items:center">
+        <button onclick="gateClose()" style="flex:1;padding:10px 0;font-family:var(--serif);
+          font-size:12px;letter-spacing:.14em;border:1px solid var(--line);
+          background:rgba(16,13,9,.9);color:var(--dim)">지 도 로</button>
+        <span style="font-family:var(--serif);font-size:10.5px;color:var(--dim);
+          letter-spacing:.12em;padding:0 8px">${i+1} / ${M.dungeons.length}</span>
+      </div>
+    </div>`;
+  setTimeout(()=>$("#gate").classList.add("on"), 380);
+  const g = $("#gate");
+  if(!g.dataset.sw){ g.dataset.sw="1"; swipe(g, gatePrev, gateNext); }
+}
+function gateNext(){ if(GATE_I < M.dungeons.length-1) gateSlide(GATE_I+1,  1); }
+function gatePrev(){ if(GATE_I > 0)                        gateSlide(GATE_I-1, -1); }
+function gateSlide(i, dir){
+  openGate(i);
+  slide($("#gate .bd"), dir);
+  const a = $("#gate .art");
+  if(a){ a.style.transition="none"; a.style.opacity="0";
+    requestAnimationFrame(()=>{ a.style.transition="opacity .45s"; a.style.opacity="1"; }); }
+}
+function gateClose(){
+  $("#gate").classList.remove("on");
+  setTimeout(()=>{
+    $("#gilMap").classList.remove("on");
+    $("#mapg").style.transform = "";
+  }, 320);
+}
+async function gateEnter(){
+  const d = M.dungeons[GATE_I];
+  const b = $("#gate").querySelector(".go");
+  b.disabled = true; b.textContent = "…";
+  try{
+    const r = await api("/explore/start", { dungeon_id:d.id, slot_no:1 });
+    $("#gate").classList.remove("on");
+    $("#gilMap").classList.remove("on");
+    $("#mapg").style.transform = "";
+    await refresh();                       // 먼저 동기화하고
+    SESS = { id:r.session.id, dungeon:r.dungeon.name, dun:r.dungeon,
+             step:0, of:r.steps, bujeong:0, hp:r.session.hp_state,
+             ritual:!r.dungeon.combat, knots:[] };   // 그 다음에 세션을 세운다
+    dungeonRun();
+  }catch(e){
+    b.disabled = false; b.textContent = "든 다";
+    // 켜둔 채 껐다 오면 서버에 안 끝난 탐험이 남아 입장이 거부된다.
+    // 막다른 에러 대신 반드시 "이어하기/포기" 선택지를 준다.
+    if (isInProgress(e)) return recoverStuck("gateErr");
+    $("#gateErr").innerHTML = fail(e);
+  }
+}
+async function enter(id){
+  try{
+    const d = await api("/explore/start", { dungeon_id:id, slot_no:1 });
+    await refresh();                       // 먼저 동기화하고
+    SESS = { id:d.session.id, dungeon:d.dungeon.name, dun:d.dungeon,
+             step:0, of:d.steps, bujeong:0, hp:d.session.hp_state,
+             ritual:!d.dungeon.combat, knots:[] };   // 그 다음에 세션을 세운다
+    dungeonRun();
+  }catch(e){
+    // 게임을 켜둔 채 껐다가 오면 서버에 안 끝난 탐험이 남아 /explore/start 가 거부된다.
+    // 막다른 빨간 에러로 두면 빠져나갈 길이 없다 → 반드시 "이어하기/포기" 선택지를 준다.
+    if (isInProgress(e)) return recoverStuck();
+    const el=$("#gilErr"); if(el) el.innerHTML = fail(e);
+  }
+}
+
+/* 서버가 "진행 중인 탐험이 있다"고 거부하는 모든 형태를 폭넓게 잡는다.
+   (error 코드 / message / why / 한국어 문구 어느 쪽으로 와도 걸린다) */
+function isInProgress(e){
+  const s = `${e?.error??""} ${e?.message??""} ${e?.why??""} ${e?.detail??""}`;
+  return /IN[_\s-]?PROGRESS|진행\s*중|끝내지\s*않은|이미.*탐험|active.*session/i.test(s);
+}
+
+/* 안 끝난 탐험 복구 — 어떤 경우든 갇히지 않게 한다.
+   ① 서버 세션을 SESS 로 당겨와 이어하거나 포기하게 하고
+   ② /player 엔 안 잡히는 유령 세션이면 강제로 정리한다.
+   errId: 어느 에러 칸에 안내를 넣을지 (던전 지도=gateErr, 목록=gilErr). */
+async function recoverStuck(errId){
+  await refresh();                         // 서버의 active 탐험을 SESS 로 당겨온다
+  const el = $("#"+(errId||"gilErr"));
+  if (SESS){
+    if (el) el.innerHTML =
+      `<div class="err" style="border-color:var(--hwang)">
+         <b>안 끝난 탐험이 있다</b>${esc(SESS.dungeon)} · ${SESS.step}/${SESS.of} 걸음이 남았다.
+         <div style="display:flex;gap:8px;margin-top:10px">
+           <button class="btn" style="flex:1" onclick="resumeRun()">이어한다</button>
+           <button class="btn ghost" style="flex:1" onclick="abandonRun()">포기하고 나간다</button>
+         </div></div>`;
+    return;
+  }
+  // 서버는 "진행 중"이라는데 정작 세션이 안 잡히는 유령 상태 → 강제 정리 후 재시도 가능
+  try{ await api("/explore/leave", {}); }catch(_){}
+  SESS = null; await refresh();
+  if (el) el.innerHTML =
+    `<div class="err" style="border-color:var(--hwang)"><b>남아 있던 탐험을 정리했다</b>이제 다시 들어갈 수 있다.</div>`;
+}
+
+/* 던전 지도/입구 오버레이를 닫는다 (복구 후 실제 탐험 화면이 보이게) */
+function closeGateOverlay(){
+  const g=$("#gate");   if(g)  g.classList.remove("on");
+  const m=$("#gilMap"); if(m)  m.classList.remove("on");
+  const mg=$("#mapg");  if(mg) mg.style.transform="";
+}
+
+/* 이어한다 — 오버레이를 닫고 진행 중인 탐험 화면으로 간다 */
+function resumeRun(){
+  closeGateOverlay();
+  go("gil");            // gil() → SESS 있으면 dungeonRun (씻김이면 ssitgimUI)
+}
+
+/* 탐험 포기 — DOM 에 의존하지 않고 확실히 세션을 비우고 목록으로 돌려보낸다 */
+async function abandonRun(){
+  try{ await api("/explore/leave", {}); }catch(_){}
+  SESS = null; closeGateOverlay(); await refresh(); go("gil");
+}
+
+/* ══ 던전 — 전투 연출 ═════════════════════════════
+   서버가 로그를 통째로 내려준다. 클라이언트는 계산하지 않는다.
+   연출은 순수한 재생 문제다. 그래서 빨리감기·스킵이 공짜다. */
+const BROLE = { "탱커":{hp:1.05}, "밸런스":{hp:0.82}, "암살자":{hp:0.74} };
+let BS = null;    // 전투 상태
+
+/* 적의 체력을 서버가 안 보낸다. 엔진과 같은 공식으로 여기서 낸다.
+   tier·역할·던전 격·보스 배율이 다 있으므로 정확히 나온다. */
+function foeMax(e, dun, step){
+  const t = M.tiers.find(x=>x.tier===e.tier);
+  const c = mc(e.card_id) ?? mcName(e.name);
+  if(!t || !c) return 1;
+  const r = BROLE[c.role] ?? BROLE["밸런스"];
+  const seq = dun.boss_seq ?? null;
+  const k = seq ? (seq[Math.min(step, seq.length)-1]?.mult ?? 1)
+                : (e.boss ? 1.45 : 1);
+  return Math.max(1, Math.round(t.hp * r.hp * (1 + (dun.level_req ?? 1) * 0.008) * k * 0.78));
+}
+
+function dungeonRun(){
+  const s = SESS;
+  if (!s) return gil();
+  if (s.ritual) return ssitgimUI();
+
+  $("#p-gil").innerHTML = `
+    <h2>${esc(s.dungeon)}</h2>
+    <p class="sub">${esc(s.dun.region ?? "")} · ${(s.dun.factions??[]).join("·")}${
+      s.hell ? ` · <b style="color:#E08A80">${esc(s.hell)}</b>` : ""}</p>
+
+    <div class="dm-boss-state"><b>보스전 준비</b>　적의 예비동작을 읽고 빈틈이 열릴 때까지 기다린다.</div>
+    <div class="dm-battle-guide"><span><b>1</b>관찰</span><span><b>2</b>고정</span><span><b>3</b>동시</span><span><b>4</b>봉쇄</span><span><b>5</b>파괴</span></div>
+    <div class="card">
+      <div class="lbl"><span>걸음</span><span>${s.step} / ${s.of}</span></div>
+      <div class="bar pg"><i style="width:${s.step/s.of*100}%"></i></div>
+      <div class="lbl" style="margin-top:9px"><span>부정 不淨</span><span>${s.bujeong} / 100</span></div>
+      <div class="bar buj"><i style="width:${s.bujeong}%"></i></div>
+    </div>
+
+    <div id="stage">
+      <div id="altar">
+        <div id="nsc"><i class="post"></i><i class="beam"></i>
+          <i class="str l"></i><i class="pan l"></i><i class="str r"></i><i class="pan r"></i></div>
+        <svg id="mury" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor"
+          d="M12 2.6c-.9 0-1.6.7-1.6 1.6v.6C8 5.4 6.4 7.5 6.4 10v4l-1.5 2.4h14.2L17.6 14v-4c0-2.5-1.6-4.6-4-5.2v-.6c0-.9-.7-1.6-1.6-1.6zM9.9 18.2c0 1.2 1 2.1 2.1 2.1s2.1-.9 2.1-2.1H9.9z"/></svg>
+      </div>
+      <div id="flash"></div>
+      <div class="rank foes" id="foes"></div>
+      <div id="blog"></div>
+      <div class="rank usr" id="usr"></div>
+      <div id="clash"></div>
+      <div id="uniq"></div>
+    </div>
+
+    <div class="bctl">
+      <button class="main" id="stepBtn" onclick="step()">
+        ${s.step+1 >= s.of ? "마지막 — 보스가 기다린다" : "한 걸음 더"}</button>
+      <button id="ffBtn" onclick="toggleFF()" disabled>빨 리</button>
+      <button id="skBtn" onclick="skipLog()" disabled>넘 긴 다</button>
+      <button style="flex:.9" onclick="leave()">퇴 각</button>
+    </div>
+    <div id="battle" style="margin-top:10px"></div>`;
+
+  drawParty();
+}
+
+/* 우리 편만 먼저 세운다. 적은 걸음을 디딜 때 나타난다. */
+function drawParty(){
+  const s = SESS; if(!s) return;
+  $("#usr").innerHTML = s.hp.map(h=>{
+    const pc = ME.cards.find(c=>String(c.id)===String(h.uid));
+    const c = pc ? (mc(pc.card_id) ?? GHOST(pc.card_id)) : null; if(!c) return "";
+    const src = artOf(c);
+    return `<div class="bu ${h.alive?"":"gone"}" data-n="${esc(c.name)}" data-u="${h.uid}">
+      <span class="bd2 f-${c.faction}"></span>
+      ${src?`<img src="${src}" loading="lazy" alt="">`:""}
+      <div class="lit"></div><div class="stg"></div>
+      <div class="bn2">${esc(c.name)}</div>
+      <div class="hb"><i style="width:${Math.max(0,h.hp/h.maxhp*100)}%"></i></div>
+      <div class="sb"></div></div>`;
+  }).join("");
+  // 적은 건드리지 않는다. 쓰러진 적을 보고 있어야 한다.
+}
+
+async function step(){
+  const b = $("#stepBtn"); b.disabled = true; b.textContent = "…";
+  try{
+    const r = await api("/explore/step", { difficulty:"story", beginner_assist:true });
+    SESS.step = r.step; SESS.bujeong = r.bujeong; SESS.hp = r.hp_state; SESS.hell = r.hell ?? null;
+    if (r.boss) showEntrance(r);      // 보스면 먼저 온다
+    else playBattle(r);
+  }catch(e){
+    $("#battle").innerHTML = fail(e);
+    b.disabled = false; b.textContent = "한 걸음 더";
+  }
+}
+
+
+
+/* ══ 2.5D 시차 ═══════════════════════════════════
+   진짜 3D 메시는 이 그림들로 안 나온다. 우리 신들은 연기와 재로 되어 있어
+   윤곽이 흩어진다. 넣으면 연기로 된 신이 플라스틱 인형이 된다.
+   대신 밝기에서 깊이를 뽑아 시차를 준다. 형체가 살짝 떠오른다.
+   WebGL 이 없으면 조용히 원래 그림으로 돌아간다 — 옛 폰에서 안 깨진다. */
+const PX = (()=>{
+  const VS = `attribute vec2 a;varying vec2 v;
+    void main(){v=a*0.5+0.5;v.y=1.0-v.y;gl_Position=vec4(a,0.,1.);}`;
+  const FS = `precision mediump float;varying vec2 v;
+    uniform sampler2D t,d;uniform vec2 off,cover,focus;uniform float amp,fal;
+    void main(){
+      /* 비율 유지(cover) + 기준점(focus). 카드 그림은 얼굴이 위에 있으므로
+         가운데가 아니라 위쪽을 잡는다 — CSS object-position 과 같은 규칙. */
+      vec2 vc = v*cover + focus*(1.0-cover);
+      float z = texture2D(d, vc).r;
+      vec2 e = abs(v-0.5)*2.0;
+      float edge = 1.0 - smoothstep(1.0-fal, 1.0, max(e.x,e.y));   // 가장자리는 안 찢는다
+      vec2 uv = vc + off * (z - 0.35) * amp * edge;
+      vec4 c = texture2D(t, uv);
+      c.rgb *= 0.92 + z*0.16;                                       // 앞이 조금 더 밝다
+      gl_FragColor = c;
+    }`;
+
+  /* 캔버스 비율과 그림 비율이 다르면 늘어난다. object-fit:cover 처럼
+     짧은 쪽을 채우고 넘치는 쪽만 잘라내는 배율을 낸다. */
+  function coverVec(cw, ch, iw, ih){
+    if(!iw || !ih || !cw || !ch) return [1,1];
+    const r = (iw/ih) / (cw/ch);
+    return r > 1 ? [1/r, 1] : [1, r];
+  }
+
+  let live = [];            // 살아 있는 컨텍스트. 둘 넘게 안 연다.
+
+  function depthOf(img){
+    const W=160, H=214;
+    const c=document.createElement("canvas"); c.width=W; c.height=H;
+    const x=c.getContext("2d",{willReadFrequently:true});
+    x.drawImage(img,0,0,W,H);
+    const p=x.getImageData(0,0,W,H).data;
+    const L=new Float32Array(W*H), M=new Float32Array(W*H);
+    for(let i=0;i<W*H;i++){
+      const l=(p[i*4]*0.2126 + p[i*4+1]*0.7152 + p[i*4+2]*0.0722)/255;
+      L[i]=l; M[i]=Math.min(1,Math.max(0,(l-0.012)/0.06));
+    }
+    const blur=(src,r)=>{
+      const a=new Float32Array(W*H), b=new Float32Array(W*H);
+      for(let y=0;y<H;y++) for(let X=0;X<W;X++){ let s=0,n=0;
+        for(let k=-r;k<=r;k++){ const xx=X+k; if(xx<0||xx>=W) continue; s+=src[y*W+xx]; n++; }
+        a[y*W+X]=s/n; }
+      for(let y=0;y<H;y++) for(let X=0;X<W;X++){ let s=0,n=0;
+        for(let k=-r;k<=r;k++){ const yy=y+k; if(yy<0||yy>=H) continue; s+=a[yy*W+X]; n++; }
+        b[y*W+X]=s/n; }
+      return b;
+    };
+    const Lb=blur(L,6), Mb=blur(M,3);
+    const out=x.createImageData(W,H), q=out.data;
+    for(let y=0;y<H;y++) for(let X=0;X<W;X++){
+      const i=y*W+X;
+      const nx=(X/W-0.50)/0.62, ny=(y/H-0.42)/0.70;
+      const r=Math.sqrt(nx*nx+ny*ny);
+      const center=Math.min(1,Math.max(0,1-r*0.55));
+      let z=(Math.pow(Lb[i],0.6)*0.72 + center*0.28) * Mb[i];
+      const val=Math.min(1,Math.max(0,z))*255;
+      q[i*4]=q[i*4+1]=q[i*4+2]=val; q[i*4+3]=255;
+    }
+    x.putImageData(out,0,0);
+    return c;
+  }
+
+  function mount(host, url, opt={}){
+    if(!host || !url) return false;
+    let gl;
+    const cv = document.createElement("canvas");
+    cv.className = "px";
+    try{ gl = cv.getContext("webgl",{alpha:false,antialias:false,depth:false}); }catch(_){}
+    if(!gl) return false;                      // WebGL 이 없으면 원래 그림 그대로
+
+    const img = new Image(); img.crossOrigin = "anonymous";
+    const st = { gl, cv, host, raf:0, dead:false, ox:0, oy:0, tx:0, ty:0,
+                 amp:(opt.amp ?? 14)/1000, fal:(opt.fal ?? 0.55),
+                 mode:opt.mode ?? "auto", focus:opt.focus ?? [0.5,0.18],
+                 t0:performance.now() };
+
+    img.onerror = ()=> unmount(st);
+    img.onload = ()=>{
+      if(st.dead) return;
+      const sh=(t,src)=>{const o=gl.createShader(t);gl.shaderSource(o,src);gl.compileShader(o);return o;};
+      const pr=gl.createProgram();
+      gl.attachShader(pr,sh(gl.VERTEX_SHADER,VS));
+      gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,FS));
+      gl.linkProgram(pr);
+      if(!gl.getProgramParameter(pr,gl.LINK_STATUS)){ unmount(st); return; }
+      gl.useProgram(pr);
+      const b=gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER,b);
+      gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+      const a=gl.getAttribLocation(pr,"a");
+      gl.enableVertexAttribArray(a); gl.vertexAttribPointer(a,2,gl.FLOAT,false,0,0);
+      const uT=gl.getUniformLocation(pr,"t"), uD=gl.getUniformLocation(pr,"d"),
+            uOff=gl.getUniformLocation(pr,"off"), uAmp=gl.getUniformLocation(pr,"amp"),
+            uFal=gl.getUniformLocation(pr,"fal"), uCover=gl.getUniformLocation(pr,"cover"),
+            uFocus=gl.getUniformLocation(pr,"focus");
+      const mk=(src)=>{ const t=gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D,t);
+        gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,gl.RGB,gl.UNSIGNED_BYTE,src);
+        gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);
+        gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR); return t; };
+      const tex = mk(img), dep = mk(depthOf(img));
+
+      host.appendChild(cv);
+      host.querySelectorAll("img").forEach(e=>e.classList.add("px-off"));
+
+      const size=()=>{ const r=cv.getBoundingClientRect();
+        const dpr=Math.min(1.75, window.devicePixelRatio||1);
+        cv.width=Math.max(2,r.width*dpr); cv.height=Math.max(2,r.height*dpr);
+        st.cover = coverVec(cv.width, cv.height, img.naturalWidth, img.naturalHeight);
+        gl.viewport(0,0,cv.width,cv.height); };
+      size();
+      st.size = size;
+      window.addEventListener("resize", size);
+
+      const tick=()=>{
+        if(st.dead) return;
+        const t=(performance.now()-st.t0)/1000;
+        if(st.mode==="auto"){
+          st.tx = Math.sin(t*0.38)*0.55 + Math.sin(t*0.16)*0.18;
+          st.ty = Math.sin(t*0.28)*0.28;
+        }
+        st.ox += (st.tx-st.ox)*0.07;
+        st.oy += (st.ty-st.oy)*0.07;
+        gl.useProgram(pr);
+        gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D,tex); gl.uniform1i(uT,0);
+        gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D,dep); gl.uniform1i(uD,1);
+        gl.uniform2f(uOff, st.ox, st.oy);
+        gl.uniform2f(uCover, (st.cover||[1,1])[0], (st.cover||[1,1])[1]);
+        gl.uniform2f(uFocus, (st.focus||[.5,.18])[0], (st.focus||[.5,.18])[1]);
+        gl.uniform1f(uAmp, st.amp);
+        gl.uniform1f(uFal, st.fal);
+        gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+        st.raf = requestAnimationFrame(tick);
+      };
+      tick();
+
+      // 손가락으로 기울인다
+      if(st.mode==="tilt"){
+        const pt=e=>{
+          const p=e.touches?e.touches[0]:e;
+          const r=host.getBoundingClientRect();
+          st.tx = ((p.clientX-r.left)/r.width - 0.5)*2;
+          st.ty = ((p.clientY-r.top)/r.height - 0.5)*2;
+        };
+        st.pt = pt;
+        host.addEventListener("touchmove", pt, {passive:true});
+        host.addEventListener("mousemove", pt);
+        st.leave = ()=>{ st.tx=0; st.ty=0; };
+        host.addEventListener("touchend", st.leave, {passive:true});
+        host.addEventListener("mouseleave", st.leave);
+      }
+    };
+    img.src = url;
+
+    live.push(st);
+    while(live.length > 2) unmount(live[0]);    // 둘 넘게 안 연다
+    return true;
+  }
+
+  function unmount(st){
+    if(!st || st.dead) return;
+    st.dead = true;
+    cancelAnimationFrame(st.raf);
+    if(st.size) window.removeEventListener("resize", st.size);
+    if(st.pt && st.host){ st.host.removeEventListener("touchmove", st.pt);
+      st.host.removeEventListener("mousemove", st.pt);
+      st.host.removeEventListener("touchend", st.leave);
+      st.host.removeEventListener("mouseleave", st.leave); }
+    try{ st.gl.getExtension("WEBGL_lose_context")?.loseContext(); }catch(_){}
+    st.cv.remove();
+    st.host?.querySelectorAll("img").forEach(e=>e.classList.remove("px-off"));
+    live = live.filter(x=>x!==st);
+  }
+  function clear(){ [...live].forEach(unmount); }
+  return { mount, clear };
+})();
+
+/* ══ 보스 등장씬 ═══════════════════════════════════
+   광배(光背)가 곧 격(格)이다. 무신도에서 격이 높은 신일수록 광배가 크다.
+   그걸 시간으로 옮겼다 — 잡귀는 광배가 없고, 대신은 6초가 걸린다.
+   설명하지 않는다. 등장 길이로 안다. */
+const GRADE = {
+  "잡귀":   { rings:0, d:1.6 },
+  "하위신": { rings:1, d:2.4 },
+  "신령":   { rings:2, d:3.2 },
+  "상위신": { rings:2, d:4.4, spokes:true },
+  "대신":   { rings:3, d:6.0, spokes:true, sanskrit:true },
+};
+
+/* 보스가 하는 말. 전부 고증에서 나왔다. [평시, 격노] */
+const SAY = {
+  "떠도는 객귀":["장은 파했는데 나는 아직 못 갔다.<br>누가 내 이름을 부르는가.","물려 보내라. 물려 보내라!"],
+  "당집 지킴이":["저 무신도는 내가 걸지 않았다.<br>그런데 누가 걸었겠는가.","당집을 넘지 마라."],
+  "선비의 그림자":["소리가 나지 않는 글을 읽는다.<br>백 년째다.","책장을 덮지 마라."],
+  "대들보 성주":["집이 없어도 대들보는 선다.<br>내가 앉을 자리는 어디에나 있다.","이 집이 무너지면 너도 무너진다."],
+  "굿가락 악귀":["바람이 바위 틈을 지나면 생황이 운다.<br>그게 굿가락이다.","가락이 끊기면 넋도 끊긴다."],
+  "수문 벅수":["천하대장군이다.<br>어귀를 지키는 것이 내 일이다.","길목을 닫는다."],
+  "오방신장":["다섯이 다섯 방위에 앉았다.<br>하나가 비어 있다. 네가 앉겠느냐.","다섯이 다 돌아섰다."],
+  "머무는 안개":["사흘째 내려가지 않는다.<br>내려갈 생각도 없다.","앞이 안 보이지."],
+  "칠성 파수":["일곱 별이 사람의 수명을 센다.<br>네 것도 세었다.","한 별이 꺼졌다."],
+  "푸른 이끼 원귀":["밟으면 발자국이 오래 남는다.<br>네 것도 남을 것이다.","이끼가 발을 감는다."],
+  "물아래 김서방":["메밀 냄새가 났다. 그래서 왔다.<br>도깨비는 대접을 받으면 반드시 갚는다.","씨름 한 판 더 하자!"],
+  "갯것 무리":["뻘에서 솟는 것들이다.<br>세어 봐야 소용없다.","뻘이 발목을 잡는다."],
+  "폭주한 갯제 무녀":["만선(滿船)을 빌었다.<br>배가 안 돌아왔다.","바다가 다 가져갔다!"],
+  "뱃고사 원혼":["상이 하나 더 차려졌다.<br>그게 내 상이다.","고수레도 안 하고 지나가느냐."],
+  "다리 밑 수부":["다리가 놓이기 전에도<br>여기서 사람이 죽었다.","물살이 급하다."],
+  "절이도 백마":["목장은 오백 년 전에 걷혔다.<br>그런데 나는 아직 여기서 운다.","화살은 늦었다. 나는 늦지 않았다."],
+  "파시의 상인귀":["배가 배에 붙어 장을 이룬다.<br>그중 한 척이 나다.","값을 치러라."],
+  "박장사(아기장수)":["겨드랑이에 날개가 있었다.<br>그래서 죽었다.","좁쌀이 군졸이 된다. 세어 보아라."],
+  "신통(神筒)의 잔향":["통이 열린 뒤로<br>아무도 여기 살지 않는다.","치마폭을 다시 편다."],
+  "문을 여는 자":["나는 저승 문을 열고 들어가<br>염라를 잡아 나온 자다.","문은 내가 연다. 네가 아니라."],
+  "여덟 신령":["여덟이 물에 비치면 아홉이다.<br>아홉째가 누구인지 아느냐.","여덟이 하나로 선다."],
+  "개양할미":["물이 나가도 나는 안 드러난다.<br>나는 바다를 걸어 다닌다.","딸 여덟을 부른다."],
+  "통천문을 연 것":["저승의 주인은 염라가 아니다.<br>통천문을 연 것은 나다.","이제 내가 문을 닫는다."],
+  "진광대왕":["첫 왕이다. 초7일.<br>칼이 산을 이룬다.","칼산을 오르게 하라."],
+  "초강대왕":["강을 건너야 한다.<br>나루는 셋이다. 죄가 고른다.","끓는 물이 기다린다."],
+  "송제대왕":["얼면 움직이지 못한다.<br>움직이지 못하면 대답도 못 한다.","얼음이 입을 막는다."],
+  "오관대왕":["다섯 관리가 다섯 감각을 나눠 본다.<br>눈이 지은 죄를 눈이 안다.","가마솥이 끓는다."],
+  "염라대왕":["거울에 다 비친다.<br>변명은 필요 없다.","혀를 뽑아라."],
+  "변성대왕":["너는 이미 심판받았다.<br>그런데 죄가 남았다.","남은 죄에 뱀이 붙는다."],
+  "태산대왕":["나는 태어날 곳을 정한다.<br>명부에 적히면 끝이다.","적었다."],
+  "평등대왕":["나는 공평하다.<br>공평하다는 것은 봐주지 않는다는 뜻이다.","쇠평상이 닫힌다."],
+  "도시대왕":["죄를 저울에 단다.<br>무거운 자부터 얼음산에 갇힌다.","기울었다."],
+  "오도전륜대왕":["마지막이다.<br>다시 태어날 곳을 내가 정한다.","수레바퀴가 돈다."],
+};
+
+let ENT_R = null;   // 등장씬이 끝나면 이 판을 재생한다
+
+function haloSvg(g, col){
+  if(!g.rings) return "";
+  const R=[46,37,28], out=[];
+  for(let i=0;i<g.rings;i++){
+    const r=R[i], L=2*Math.PI*r;
+    out.push(`<circle class="${i===0?"gw":""}" cx="50" cy="50" r="${r}"
+      style="--L:${L.toFixed(1)};--d:${(g.d*0.55+i*0.35).toFixed(2)}s;stroke-width:${i===0?.9:.6}"/>`);
+  }
+  if(g.spokes) for(let k=0;k<12;k++){
+    const a=k*30*Math.PI/180;
+    const x1=(50+Math.cos(a)*47).toFixed(1), y1=(50+Math.sin(a)*47).toFixed(1);
+    const x2=(50+Math.cos(a)*52).toFixed(1), y2=(50+Math.sin(a)*52).toFixed(1);
+    out.push(`<path d="M${x1} ${y1} L${x2} ${y2}"
+      style="--L:6;--d:${(g.d*0.8+k*0.03).toFixed(2)}s;stroke-width:.8"/>`);
+  }
+  if(g.sanskrit) for(let k=0;k<8;k++){   // 범자(梵字) 자리 — 대신에게만
+    const a=k*45*Math.PI/180;
+    const x=(50+Math.cos(a)*46).toFixed(1), y=(50+Math.sin(a)*46).toFixed(1);
+    out.push(`<circle class="gw" cx="${x}" cy="${y}" r="1.6"
+      style="--L:10;--d:${(g.d*0.9+k*0.05).toFixed(2)}s;stroke-width:1.2"/>`);
+  }
+  return `<svg class="halo" viewBox="0 0 100 100" style="color:${col}">${out.join("")}</svg>`;
+}
+
+function showEntrance(r){
+  const e = r.enemies?.[0];
+  const c = e ? (mc(e.card_id) ?? mcName(e.name)) : null;
+  if(!e || !c) return playBattle(r);          // 카드를 못 찾으면 그냥 붙는다
+
+  ENT_R = r;
+  const g   = GRADE[c.godhood] ?? GRADE["신령"];
+  const col = FCOL_L[c.faction] ?? "#C9C0AE";
+  const nd  = (g.d*0.62).toFixed(2);
+  const say = (SAY[e.name] ?? ["", ""])[0];
+  const src = artOf(c);
+  const where = r.hell ? r.hell : (SESS.dun.factions??[]).join(" · ");
+
+  $("#entSc").innerHTML = `
+    <div class="smoke"></div>
+    ${haloSvg(g, col)}
+    <div class="boss" id="entBoss" style="--rise:${(g.d*0.7).toFixed(2)}s">
+      ${src?`<img src="${src}" alt="">`:""}</div>
+    <div class="vg"></div>
+    <div class="bnm" style="--nd:${nd}s;color:${col}">${esc(e.name)}</div>
+    <div class="brl" style="--nd:${nd}s;background:${col}"></div>
+    <div class="bsb" style="--nd:${nd}s;color:${col}">${esc(where).split("").join(" ")}</div>
+    ${say?`<div class="say" style="--nd:${nd}s">${say}</div>`:""}
+    <button class="skip" onclick="entGo()">넘 긴 다 ›</button>
+    <button class="go" style="--nd:${nd}s" onclick="entGo()">든 다</button>`;
+  $("#ent").classList.add("on");
+  // 보스가 어둠에서 떠오르며 천천히 돈다. 살아 있는 것처럼.
+  if(src) setTimeout(()=>PX.mount($("#entBoss"), src, { mode:"auto", amp:18, fal:0.5 }), 260);
+}
+function entGo(){
+  PX.clear();                       // 컨텍스트를 반드시 놓는다
+  $("#ent").classList.remove("on");
+  const r = ENT_R; ENT_R = null;
+  setTimeout(()=>{ $("#entSc").innerHTML = ""; if(r) playBattle(r); }, 420);
+}
+
+/* ── 재생 ── */
+function playBattle(r){
+  const dun = SESS.dun, step = r.step;
+  // 유닛 상태를 세운다. 로그는 이름으로 말하므로 이름 → 유닛.
+  BS = { by:{}, log:r.battle.log, i:0, ff:null, sp:1, res:r };
+  BS.beat = beatMs(BS.log);          // 이번 판 로그 길이에 맞춰 평타 박자를 정한다
+
+  // 적
+  $("#foes").innerHTML = r.enemies.map((e,i)=>{
+    /* 서버가 card_id 를 실어주면 그걸 쓰고, 아직 아니면 이름으로 찾는다. 배포 전후 둘 다 돈다. */
+    const c = mc(e.card_id) ?? mcName(e.name) ?? GHOST(e.name);
+    const max = foeMax(e, dun, step);
+    const src = artOf(c);
+    BS.by[e.name] = { hp:max, max, sh:0, st:[], fac:e.faction, sel:`[data-e="${i}"]` };
+    return `<div class="bu ${e.boss?"":""}" data-e="${i}" data-n="${esc(e.name)}">
+      <span class="bd2 f-${e.faction}"></span>
+      ${src?`<img src="${src}" loading="lazy" alt="">`:""}
+      <div class="lit"></div><div class="stg"></div>
+      <div class="bn2">${esc(e.name)}</div>
+      <div class="hb"><i style="width:100%"></i></div>
+      <div class="sb"></div></div>`;
+  }).join("");
+
+  // 우리 편 — 전투 시작 시점의 체력으로 되돌린다 (로그가 다시 깎는다)
+  const before = new Map((SESS.hpBefore ?? SESS.hp).map(h=>[String(h.uid), h]));
+  $("#usr").querySelectorAll(".bu").forEach(el=>{
+    const n = el.dataset.n, uid = el.dataset.u;
+    const h = before.get(String(uid));
+    const pc = ME.cards.find(c=>String(c.id)===String(uid));
+    const mx = h?.maxhp ?? 1;
+    BS.by[n] = { hp:h?.hp ?? mx, max:mx, sh:0, st:[],
+                 fac:(pc ? mc(pc.card_id) : null)?.faction ?? mcName(n)?.faction,
+                 sel:`[data-u="${uid}"]` };
+    el.classList.toggle("gone", !(h?.alive ?? true));
+  });
+
+  $("#blog").innerHTML = "";
+  $("#battle").innerHTML = "";
+  bbell(false); btide();            // 저울은 수평에서, 무령은 조용히 시작한다
+  $("#ffBtn").disabled = false; $("#skBtn").disabled = false;
+  const b=$("#stepBtn"); b.disabled = true; b.textContent = "…";
+  BS.timer = setTimeout(tick, 260);
+}
+
+/* 연출이 있는 박자는 제 시간을 지킨다. 나머지 평타는 로그 길이에 맞춰 줄인다.
+   서버 전투는 로그가 100줄을 훌쩍 넘길 때가 있는데(실측 134줄),
+   한 줄에 520ms 를 쓰면 한 걸음에 70초가 걸린다. 그건 전투가 아니라 기다림이다. */
+const BDUR = { unique:1500, rage:900, execute:800, down:600, summon:750, end:420 };
+const BEAT_BUDGET = 16000;   // 평타에 쓰는 총 시간 목표(ms)
+const BEAT_MAX = 520, BEAT_MIN = 110;
+function beatMs(log){
+  const plain = log.reduce((n,l)=> n + (BDUR[l.op] ? 0 : 1), 0);
+  if(plain <= 0) return BEAT_MAX;
+  return Math.max(BEAT_MIN, Math.min(BEAT_MAX, Math.round(BEAT_BUDGET / plain)));
+}
+function tick(){
+  if(!BS) return;
+  if(BS.i >= BS.log.length) return endBattle();
+  const l = BS.log[BS.i++];
+  beat(l);
+  if(l.op === "end") return;   // endBattle 은 beat 안에서 잡는다
+  const d = (BDUR[l.op] ?? BS.beat ?? BEAT_MAX) / BS.sp;
+  BS.timer = setTimeout(tick, d);
+}
+function toggleFF(){
+  if(!BS) return;
+  const b=$("#ffBtn");
+  if(BS.sp > 1){ BS.sp = 1; b.classList.remove("on"); b.textContent="빨 리"; }
+  else { BS.sp = 4; b.classList.add("on"); b.textContent="× 4"; }
+}
+function skipLog(){
+  if(!BS) return;
+  clearTimeout(BS.timer);
+  while(BS.i < BS.log.length){
+    const l = BS.log[BS.i++];
+    if(l.op === "end"){ beat(l); return; }
+    quiet(l);
+  }
+  endBattle();
+}
+/* 연출 없이 상태만 반영 */
+function quiet(l){
+  const t = l.target ? BS.by[l.target] : null;
+  if(!t) return;
+  if(l.op==="dmg"||l.op==="counter"||l.op==="dot_tick"){ t.hp=Math.max(0,t.hp-(l.val??0)); }
+  if(l.op==="heal"||l.op==="regen_tick"){ t.hp=Math.min(t.max,t.hp+(l.val??0)); }
+  if(l.op==="shield"){ t.sh=(t.sh??0)+(l.val??0); }
+  if(l.op==="down"||l.op==="execute"){ t.hp=0; }
+  if(l.op==="revive"){ t.hp=Math.max(1,Math.round(t.max*0.35)); }
+  paint(l.target);
+}
+
+const bel = n => { const u=BS?.by[n]; return u ? $("#stage").querySelector(u.sel) : null; };
+function paint(n){
+  const u = BS.by[n], e = bel(n); if(!u||!e) return;
+  e.querySelector(".hb i").style.width = Math.max(0, u.hp/u.max*100) + "%";
+  e.querySelector(".sb").style.width = Math.min(100, (u.sh??0)/u.max*100) + "%";
+  e.classList.toggle("gone", u.hp <= 0);
+  e.querySelector(".stg").innerHTML = (u.st??[]).map(x=>{
+    const cls = {"봉":"#9C8FB5","굳":"#8FC0E3","반":"#C8A24B","표":"#E08A80","벽":"#B5A88F"}[x] ?? "#8B8275";
+    return `<span style="border-color:${cls};color:${cls}">${x}</span>`;
+  }).join("");
+  btide();          // 체력이 움직였으니 저울도 기운다
+}
+function bfly(e, txt, color, big){
+  const st=$("#stage"), r=e.getBoundingClientRect(), p=st.getBoundingClientRect();
+  const d=document.createElement("div"); d.className="fly"+(big?" hv":"");
+  d.style.cssText=`left:${r.left-p.left+r.width*.1}px;top:${r.top-p.top+8}px;
+    font-size:${big?22:15}px;color:${color};text-shadow:0 0 12px rgba(0,0,0,.9)`;
+  d.textContent=txt; st.appendChild(d);
+  setTimeout(()=>d.remove(), 1000/(BS?.sp??1));
+}
+
+/* 역경직 — 급소가 들어간 순간 판을 굳혔다가 놓는다. 굳는 시간이 곧 무게다.
+   빨리감기 중에는 걸지 않는다(재생이 끈적해진다). */
+function bfreeze(ms=150){
+  if((BS?.sp ?? 1) > 1) return;
+  const st=$("#stage"); if(!st) return;
+  clearTimeout(bfreeze._t);
+  st.classList.add("frz");
+  bfreeze._t = setTimeout(()=>{ st.classList.remove("frz"); bshake(); }, ms);
+}
+
+/* 검풍 — 치는 쪽 카드에서 맞는 쪽 카드로 한 획을 긋는다.
+   두 카드의 중심을 이어 각도·길이를 낸다. 한쪽이 없으면 긋지 않는다. */
+function bsword(A, B, crit){
+  if(!A || !B) return;
+  const st=$("#stage"); if(!st) return;
+  const p=st.getBoundingClientRect(), a=A.getBoundingClientRect(), b=B.getBoundingClientRect();
+  const x1=a.left-p.left+a.width/2, y1=a.top-p.top+a.height/2;
+  const x2=b.left-p.left+b.width/2, y2=b.top-p.top+b.height/2;
+  const dx=x2-x1, dy=y2-y1, len=Math.hypot(dx,dy);
+  if(!isFinite(len) || len < 8) return;
+  const d=document.createElement("div");
+  d.className="swd"+(crit?" c":"");
+  d.style.cssText=`left:${x1}px;top:${y1}px;width:${len}px;
+    transform:rotate(${Math.atan2(dy,dx)*180/Math.PI}deg)`;
+  st.appendChild(d);
+  setTimeout(()=>d.remove(), 300/(BS?.sp??1));
+}
+/* 예보 한 마디 — 빨리감기 중에는 띄우지 않는다(글자가 겹쳐 방해된다) */
+function bomen(cls, big, sub){
+  if((BS?.sp ?? 1) > 1) return;
+  const el=$("#clash"); if(!el) return;
+  el.className = cls; el.innerHTML = `${big}<span class="h">${sub}</span>`;
+  el.classList.remove("on"); void el.offsetWidth; el.classList.add("on");
+}
+/* 합(合) — 치는 쪽과 맞는 쪽의 세력이 맞물리는지 본다.
+   서버가 주는 값이 아니라 이 게임의 상성 규칙에서 낸다(BEATS). 맞물리지 않으면 말하지 않는다.
+   ★ 기준은 '치는 쪽'이 아니라 '우리'다 — 적이 유리하게 치는 판은 흉망이어야 읽힌다. */
+function bclash(actor, target){
+  const a = BS?.by[actor], t = BS?.by[target];
+  if(!a || !t || !a.fac || !t.fac) return;
+  const adv = BEATS[a.fac] === t.fac ? 1 : (BEATS[t.fac] === a.fac ? -1 : 0);
+  if(!adv) return;                                   // 맞물리지 않으면 침묵
+  const ours = String(a.sel ?? "").startsWith("[data-u");   // 치는 쪽이 우리 편인가
+  const good = ours ? adv > 0 : adv < 0;
+  bomen(good ? "y" : "j", good ? "영 험" : "흉 망", good ? "靈 驗" : "凶 亡");
+}
+/* 부적이 찢겨 날린다 — 급소가 들어간 자리에서 사방으로 */
+function bbujeok(e, n){
+  const st=$("#stage"); if(!st || !e) return;
+  if((BS?.sp ?? 1) > 1) return;
+  const r=e.getBoundingClientRect(), p=st.getBoundingClientRect();
+  const cx=r.left-p.left+r.width/2, cy=r.top-p.top+r.height/2;
+  for(let i=0;i<n;i++){
+    const a=(-90 + (Math.random()-.5)*130) * Math.PI/180, d=38 + Math.random()*48;
+    const x=document.createElement("div"); x.className="bjk"; x.textContent="急急";
+    x.style.cssText=`left:${cx}px;top:${cy}px;--dx:${Math.cos(a)*d}px;--dy:${Math.sin(a)*d}px;
+      --rot:${Math.round((Math.random()-.5)*80)}deg`;
+    st.appendChild(x);
+    setTimeout(()=>x.remove(), 660);
+  }
+}
+
+/* 놋저울 — 양쪽이 성한 정도를 견준다. 서버가 주는 값이 아니라 지금 판의 체력에서 낸다.
+   우리가 성하면 우리 쪽으로 기운다. */
+function btide(){
+  const s=$("#nsc"); if(!s || !BS?.by) return;
+  let us=0, um=0, fo=0, fm=0;
+  for(const k in BS.by){
+    const u=BS.by[k]; if(!u || !u.max) continue;
+    if(String(u.sel ?? "").startsWith("[data-u")){ us+=Math.max(0,u.hp); um+=u.max; }
+    else { fo+=Math.max(0,u.hp); fm+=u.max; }
+  }
+  const a=(um?us/um:0)-(fm?fo/fm:0);
+  s.style.transform=`rotate(${(a*13).toFixed(2)}deg)`;
+}
+/* 무령 — 신벌이 오면 저 혼자 운다 */
+function bbell(on){
+  const b=$("#mury"); if(!b) return;
+  b.classList.toggle("on", !!on);
+  if(on){ clearTimeout(bbell._t); bbell._t=setTimeout(()=>b.classList.remove("on"), 1600); }
+}
+
+function bflash(bg){ const f=$("#flash"); f.style.background=bg;
+  f.classList.remove("on"); void f.offsetWidth; f.classList.add("on"); }
+function bshake(){ const p=$("#stage"); p.classList.remove("shake"); void p.offsetWidth; p.classList.add("shake"); }
+function bline(html){ const L=$("#blog"); const d=document.createElement("div"); d.innerHTML=html;
+  L.appendChild(d); while(L.children.length>3) L.removeChild(L.firstChild); }
+function addSt(n, tag){ const u=BS.by[n]; if(!u) return; u.st=[...new Set([...(u.st??[]),tag])]; paint(n); }
+
+function beat(l){
+  const T = 1/(BS?.sp ?? 1);
+  const A = l.actor ? bel(l.actor) : null;
+  const B = l.target ? bel(l.target) : null;
+
+  if(A && ["dmg","heal","unique","seal","stun","execute","summon","mark","shield","counter","drain","dispel","barrier"].includes(l.op)){
+    $("#stage").querySelectorAll(".bu.act").forEach(e=>e.classList.remove("act"));
+    A.classList.add("act");
+    setTimeout(()=>A.classList.remove("act"), 620*T);
+  }
+
+  switch(l.op){
+    case "unique": {
+      const m = /【(.+?)】\s*(.*)/.exec(l.text ?? "");
+      const u=$("#uniq");
+      u.innerHTML = `<div><div class="who">${esc(l.actor??"").split("").join(" ")}</div>
+        <div class="un">【${esc(m?.[1] ?? "")}】</div><div class="ur"></div>
+        <div class="ut">${esc(m?.[2] ?? "")}</div></div>`;
+      u.classList.remove("on"); void u.offsetWidth; u.classList.add("on");
+      bline(`<span class="u2">【${esc(m?.[1]??"")}】</span> <span class="a">${esc(l.actor??"")}</span>`);
+      break;
+    }
+    case "dmg": case "drain": {
+      if(!B){ bline(esc(l.text)); break; }
+      const t=BS.by[l.target]; let v=l.val ?? 0;
+      if(t.sh>0){ const a=Math.min(t.sh,v); t.sh-=a; v-=a; if(a>0) bfly(B,`−${a.toLocaleString()}`,"#8FC0E3",false); }
+      t.hp=Math.max(0,t.hp-v);
+      bclash(l.actor, l.target);   // 상성이 맞물리면 한 마디 예보한다
+      bsword(A, B, !!l.crit);          // 치는 쪽 → 맞는 쪽으로 한 획
+      B.classList.remove("hit"); void B.offsetWidth; B.classList.add("hit");
+      const lt=B.querySelector(".lit"); lt.classList.remove("on"); void lt.offsetWidth; lt.classList.add("on");
+      if(v>0) bfly(B, v.toLocaleString()+(l.crit?" 치명!":""), l.crit?"#F4C9C4":"#EDE7DA", !!l.crit);
+      if(l.crit){ bflash("radial-gradient(circle at 50% 45%, rgba(255,255,255,.9), transparent 60%)"); bfreeze(150); bbujeok(B,4); }
+      paint(l.target);
+      bline(`<span class="a">${esc(l.actor??"")}</span> → ${esc(l.target)}
+        <span class="${l.crit?"c":""}">${(l.val??0).toLocaleString()}${l.crit?" 치명!":""}</span>`);
+      break;
+    }
+    case "counter": {
+      if(!B) break;
+      const t=BS.by[l.target]; t.hp=Math.max(0,t.hp-(l.val??0)); paint(l.target);
+      bsword(A, B, false);
+      B.classList.remove("hit"); void B.offsetWidth; B.classList.add("hit");
+      bfly(B,(l.val??0).toLocaleString(),"#E3C888",false);
+      bline(`<span class="u2">${esc(l.actor??"")}</span>이 되돌린다 → ${esc(l.target)}
+        <span class="c">${(l.val??0).toLocaleString()}</span>`); break;
+    }
+    case "reflect": case "counter_on":
+      if(l.target) addSt(l.target,"반");
+      bline(`<span class="u2">${esc(l.text)}</span>`); break;
+
+    case "heal": case "regen_tick": {
+      if(!B){ bline(`<span class="h">${esc(l.text)}</span>`); break; }
+      const t=BS.by[l.target]; t.hp=Math.min(t.max,t.hp+(l.val??0)); paint(l.target);
+      bfly(B,"+"+(l.val??0).toLocaleString(),"#8FC0E3",false);
+      B.style.filter="brightness(1.35) saturate(1.2)";
+      setTimeout(()=>B.style.filter="", 340*T);
+      bline(`<span class="h">${esc(l.text)}</span>`); break;
+    }
+    case "shield": {
+      if(!B) break;
+      const t=BS.by[l.target]; t.sh=(t.sh??0)+(l.val??0); paint(l.target);
+      bfly(B,"◈ "+(l.val??0).toLocaleString(),"#8FC0E3",false);
+      bline(`<span class="h">${esc(l.text)}</span>`); break;
+    }
+    case "rage": {
+      if(A) A.classList.add("rage");
+      bomen("j", "신 벌", "神 罰"); bbell(true);
+      bflash("radial-gradient(circle at 50% 38%, rgba(184,53,46,.85), transparent 68%)"); bshake();
+      // 격노한 보스는 두 번째 말을 한다. 그 말도 고증에서 나왔다.
+      const say = (SAY[l.actor] ?? [])[1];
+      if(say){
+        let n = $("#ragel");
+        if(!n){ n=document.createElement("div"); n.id="ragel"; $("#stage").appendChild(n); }
+        n.innerHTML = `「${say}」`;
+        n.classList.remove("on"); void n.offsetWidth; n.classList.add("on");
+      }
+      bline(`<span class="r">${esc(l.text)}</span>`); break;
+    }
+    case "seal": case "stun": case "mark": case "barrier": {
+      if(!B) break;
+      const tag={seal:"봉",stun:"굳",mark:"표",barrier:"벽"}[l.op];
+      addSt(l.target, tag);
+      bfly(B, tag, {seal:"#9C8FB5",stun:"#8FC0E3",mark:"#E08A80",barrier:"#B5A88F"}[l.op], false);
+      bline(`<span class="a">${esc(l.text)}</span>`); break;
+    }
+    case "execute": {
+      if(!B) break;
+      const t=BS.by[l.target]; t.hp=0; paint(l.target);
+      bsword(A, B, true);
+      bflash("linear-gradient(transparent 44%, rgba(184,53,46,.9) 48%, transparent 52%)");
+      bfreeze(230);                    // 명줄이 끊기는 순간이 가장 무겁다
+      bbujeok(B,7);
+      bfly(B,"명줄","#E08A80",true);
+      bline(`<span class="c">${esc(l.text)}</span>`); break;
+    }
+    case "revive": {
+      if(!B) break;
+      const t=BS.by[l.target]; t.hp=Math.max(1,Math.round(t.max*0.35)); t.st=[]; paint(l.target);
+      B.classList.remove("gone");
+      bfly(B,"넋","#8FC0E3",true);
+      bflash("radial-gradient(circle at 50% 72%, rgba(143,192,227,.5), transparent 70%)");
+      bline(`<span class="h">${esc(l.text)}</span>`); break;
+    }
+    case "summon": {
+      const nm = l.target ?? "시자";
+      const src = mc(BS.res.enemies[0]?.card_id);
+      BS.by[nm] = { hp:1, max:1, sh:0, st:[], sel:`[data-n="${nm}"]` };
+      const d=document.createElement("div");
+      d.className="bu tmp"; d.dataset.n=nm;
+      d.innerHTML = `<span class="bd2 f-저승"></span>
+        ${src&&artOf(src)?`<img src="${artOf(src)}" alt="">`:""}
+        <div class="lit"></div><div class="stg"></div>
+        <div class="bn2">${esc(nm)}</div>
+        <div class="hb"><i style="width:100%"></i></div><div class="sb"></div>`;
+      d.style.opacity="0"; d.style.transform="translateY(14px) scale(.85)";
+      $("#foes").appendChild(d);
+      requestAnimationFrame(()=>{ d.style.transition="all .45s cubic-bezier(.2,1.3,.4,1)";
+        d.style.opacity=".85"; d.style.transform="none"; });
+      bline(`<span class="a">${esc(l.text)}</span>`); break;
+    }
+    case "stat": case "stack":
+      if((l.val??0) > 0) bflash("radial-gradient(circle at 50% 78%, rgba(200,162,75,.45), transparent 70%)");
+      bline(`<span class="u2">${esc(l.text)}</span>`); break;
+
+    case "down": {
+      if(!B) break;
+      const t=BS.by[l.target]; t.hp=0; t.st=[]; paint(l.target);
+      B.classList.add("gone");
+      bline(`<span style="color:#6E6455">${esc(l.text)}</span>`); break;
+    }
+    case "dot_tick": {
+      if(!B) break;
+      const t=BS.by[l.target]; t.hp=Math.max(0,t.hp-(l.val??0)); paint(l.target);
+      bfly(B, (l.val??0).toLocaleString(), "#C88A5A", false);
+      bline(`<span style="color:#C88A5A">${esc(l.text)}</span>`); break;
+    }
+    case "end":
+      bline(`<span class="u2">${esc(l.text)}</span>`);
+      setTimeout(endBattle, 500*T); break;
+
+    default: bline(esc(l.text ?? ""));
+  }
+}
+
+function endBattle(){
+  if(!BS) return;
+  clearTimeout(BS.timer);
+  const r = BS.res;
+  $("#ffBtn").disabled = true; $("#ffBtn").classList.remove("on"); $("#ffBtn").textContent="빨 리";
+  $("#skBtn").disabled = true;
+  BS = null;
+
+  // 전투 후 체력을 확정한다. 다음 걸음의 시작점이다.
+  SESS.hpBefore = r.hp_state;
+  drawParty();
+
+  // 부정·걸음 갱신
+  const bar = $("#p-gil").querySelectorAll(".bar i");
+  if(bar[0]) bar[0].style.width = SESS.step/SESS.of*100 + "%";
+  if(bar[1]) bar[1].style.width = SESS.bujeong + "%";
+  const lbl = $("#p-gil").querySelectorAll(".lbl span");
+  if(lbl[1]) lbl[1].textContent = `${SESS.step} / ${SESS.of}`;
+  if(lbl[3]) lbl[3].textContent = `${SESS.bujeong} / 100`;
+
+  // 신표
+  const notes = (r.sinpyo_note ?? []).map(n=>`<div style="color:var(--hwang);font-family:var(--serif);
+    font-size:12px;margin-top:4px">${esc(n)}</div>`).join("");
+  const drops = Object.entries(r.drops?.mats ?? {}).map(([k,v])=>`${esc(k)} ×${v}`).join(" · ");
+  if(drops || notes) $("#battle").innerHTML =
+    `<div class="card"><h3>얻은 것</h3><div style="font-size:12px;color:var(--dim)">${drops||"—"}</div>${notes}</div>`;
+
+  if(r.status !== "active"){
+    $("#battle").innerHTML = (r.reason?`<div class="card" style="border-color:var(--jeok)">
+      <div style="font-family:var(--serif);color:#E08A80">${esc(r.reason)}</div></div>`:"")
+      + rewardHtml(r.reward);
+    $("#stepBtn").disabled = true; $("#stepBtn").textContent = "끝났다";
+    // 클리어했으면 그 거리가 열린다. 이미 봤으면 안 뜬다.
+    if(r.status === "cleared" && SESS?.dun?.id){
+      const did = SESS.dun.id;
+      setTimeout(()=>{ SESS = null; geori(`clear:${did}`); }, 1600);
+    }
+  }else{
+    const b=$("#stepBtn"); b.disabled=false;
+    b.textContent = SESS.step+1 >= SESS.of ? "마지막 — 보스가 기다린다" : "한 걸음 더";
+  }
+}
+
+function rewardHtml(w){
+  const mats = Object.entries(w.materials??{}).map(([k,v])=>`${esc(k)} ×${v}`).join(" · ");
+  const cards = (w.cards??[]).map(c=>`<b style="color:var(--hwang)">${esc(c.name)}</b> ★${c.tier}`).join(" · ");
+  return `<div class="card" style="margin-top:9px;border-color:var(--hwang)">
+    <h3>${w.cleared?"길을 다 걸었다":"챙긴 것만 들고 나왔다"}</h3>
+    <dl>
+      ${mats?`<div class="row"><dt>재료</dt><dd>${mats}</dd></div>`:""}
+      ${cards?`<div class="row"><dt>신</dt><dd>${cards}</dd></div>`:""}
+      <div class="row"><dt>경험</dt><dd>+${w.exp}</dd></div>
+      <div class="row"><dt>엽전</dt><dd>+${w.yeopjeon.toLocaleString()}</dd></div>
+      ${w.level_up?`<div class="row"><dt>격</dt><dd style="color:var(--hwang)">
+        ${w.level_up.to} — 신력 ${w.level_up.sinryeok ?? w.level_up.cost_cap}</dd></div>`:""}
+    </dl>
+    <button class="btn ghost" style="margin-top:11px" onclick="SESS=null;go('gil')">돌아간다</button>
+  </div>`;
+}
+async function leave(){
+  try{
+    const r = await api("/explore/leave", {});
+    SESS = null; await refresh();
+    const bt=$("#battle"); if(bt) bt.innerHTML = rewardHtml(r.reward);
+    const sb=$("#stepBtn"); if(sb) sb.disabled = true;
+  }catch(e){ const bt=$("#battle"); if(bt) bt.innerHTML = fail(e); else await refresh(); }
+}
+
+/* ══ 씻김 — D15 ════════════════════════════ */
+const STEPN = ["초가망석","넋올림","고풀이","씻김","길닦음"];
+let KNOT_T = 0;
+function ssitgimUI(){
+  const s = SESS;
+  $("#p-gil").innerHTML = `
+    <h2>${esc(s.dungeon)}</h2>
+    <p class="sub">이곳에선 싸우지 않는다.<br>매듭을 하나씩 푼다. 서두르면 넋이 안 풀린다.</p>
+
+    <div class="card">
+      <div class="lbl"><span>${esc(STEPN[s.step] ?? "길닦음")}</span><span>${s.step} / 5</span></div>
+      <div class="bar pg"><i style="width:${s.step/5*100}%"></i></div>
+    </div>
+
+    <div class="card">
+      <h3>고풀이</h3>
+      <div style="font-size:11.5px;color:var(--dim);line-height:1.7;margin-bottom:2px">
+        일곱 매듭을 하나씩 푼다.
+        <span style="color:var(--jeok)">서두르면 넋이 달아난다 — 매듭마다 숨을 고른다.</span>
+      </div>
+      <div class="gopan" style="--rel:${(s.knots.length/7).toFixed(3)}">
+        <div class="salpuri" id="salpuri"></div>
+        <div class="cord"></div>
+        <div class="knots" id="knots">
+          ${[...Array(7)].map((_,i)=>{
+            const st = i<s.knots.length?"done":i===s.knots.length?"now":"";
+            return `<div class="knot ${st}">${i<s.knots.length?"解":"結"}</div>`;
+          }).join("")}
+        </div>
+      </div>
+      <button class="pull" id="pullBtn" onclick="pullKnot()" ${s.knots.length>=7?"disabled":""}>
+        ${s.knots.length>=7 ? "매듭을 다 풀었다" : (s.knots.length ? "다음 매듭" : "첫 매듭을 잡는다")}
+      </button>
+      ${s.knots.length ? `<div class="gp-avg">푼 매듭 ${s.knots.length} · 평균 ${Math.round(s.knots.reduce((a,b)=>a+b,0)/s.knots.length)}ms</div>` : ""}
+      ${s.knots.length>=7 ? `<button class="btn" style="margin-top:12px" onclick="doSsitgim()">넋을 씻는다</button>` : ""}
+    </div>
+
+    <div id="ssErr"></div>
+    <button class="btn ghost" onclick="leave()">물러난다</button>`;
+  if (s.knots.length === 0) KNOT_T = performance.now();   // 첫 매듭 전 무장: 개시~첫 매듭이 첫 값
+}
+function pullKnot(){
+  const s = SESS;
+  if (s.knots.length >= 7) return;
+  const now = performance.now();
+  s.knots.push(Math.max(1, Math.round(now - KNOT_T)));    // 매 탭마다 기록 → 7탭 = 7값
+  KNOT_T = now;
+  ssitgimUI();
+}
+async function doSsitgim(){
+  try{
+    const r = await api("/ssitgim", { knots: SESS.knots });
+    SESS.step = r.step; SESS.knots = []; SESS.bujeong = r.bujeong;
+    $("#ssErr").innerHTML = `<div class="card" style="border-color:${r.success?"var(--hwang)":"var(--line)"}">
+      <h3>${esc(r.name)}</h3>
+      <div style="font-family:var(--serif);font-size:13px;line-height:1.8">${esc(r.text)}</div>
+      <dl style="margin-top:9px">
+        <div class="row"><dt>정성</dt><dd>${r.gopuli.jeongseong} (평균 ${r.gopuli.avg_ms}ms)</dd></div>
+        <div class="row"><dt>성공률</dt><dd>${r.rate_used}%</dd></div>
+      </dl>
+    </div>`;
+    if (r.cleared){
+      const did = SESS?.dun?.id;
+      SESS = null; await refresh();
+      // 씻김을 마쳤으면 그 거리가 열린다 (D15 지전거리)
+      setTimeout(()=>{ if(!geori(`clear:${did}`)) home(); }, 1400);
+    }
+    else { const e = $("#ssErr").innerHTML; ssitgimUI(); $("#ssErr").innerHTML = e; }
+    if (r.success){ const sp = $("#salpuri"); if (sp){ void sp.offsetWidth; sp.classList.add("on"); } }
+  }catch(e){ $("#ssErr").innerHTML = fail(e); }
+}
+
+/* ══ 굿 — 가챠 ═════════════════════════════ */
+function gut(){
+  const R = M.rule.gacha_rate;
+  $("#p-gut").innerHTML = `
+    <h2>굿</h2>
+    <p class="sub">복채를 올리면 신이 온다. 어느 신이 올지는 신만 안다.</p>
+
+    <div class="card">
+      <h3>복채 ${ME.player.bokchae}</h3>
+      <div style="display:flex;gap:8px;margin-top:11px">
+        <button class="btn" onclick="pull(1)" ${ME.player.bokchae<30?"disabled":""}>한 번 · 30</button>
+        <button class="btn ghost" onclick="pull(10)" ${ME.player.bokchae<300?"disabled":""}>열 번 · 300</button>
+      </div>
+      <div class="rates">
+        ★4 ${(R[4]*100).toFixed(1)}% · ★3 ${(R[3]*100).toFixed(1)}% · ★2 ${(R[2]*100).toFixed(1)}% · ★1 ${(R[1]*100).toFixed(1)}%<br>
+        ${M.rule.gacha_pity}회 안에 ★4가 반드시 나온다. 지금 ${ME.player.gacha_pity}회째.<br>
+        <span style="color:var(--jeok)">★5는 어디서도 나오지 않는다. 오직 기르는 수밖에.</span>
+      </div>
+    </div>
+    <div id="gutRes"></div>`;
+}
+async function pull(n){
+  $("#gutRes").innerHTML = `<div class="mid"><span class="spin"></span></div>`;
+  try{
+    const r = await api("/gacha", { count:n });
+    await refresh();
+    $("#gutRes").innerHTML = `
+      <div class="card">
+        <h3>${r.cards.length}위가 오셨다</h3>
+        <div class="pull-res">${r.cards.map((c,i)=>
+          `<div style="animation:in .3s ${i*70}ms both">${mini({card_id:c.card_id,tier:c.tier,id:c.id})}</div>`
+        ).join("")}</div>
+        ${r.note?`<div style="font-size:11px;color:var(--hwang);margin-top:9px">${esc(r.note)}</div>`:""}
+      </div>`;
+    gutKeep();
+  }catch(e){ $("#gutRes").innerHTML = fail(e); }
+}
+function gutKeep(){
+  const h = $("#gutRes").innerHTML;
+  gut(); $("#gutRes").innerHTML = h;
+}
+
+/* ══ 도감 ═════════════════════════════════ */
+const GODS = ["잡귀","하위신","신령","상위신","대신"];
+let F = { fac:"", god:"", own:"" };   // own: "" 전부 / "y" 모신 것 / "n" 아직
+function setF(k,v){ F[k] = (F[k]===v ? "" : v); dogam(); }
+
+function dogam(){
+  /* 성급은 player_card 에서 뽑는다. 같은 카드를 여러 장 가졌으면 가장 높은 것을 보여준다.
+     이걸 안 보여주면 도감이 "모았다/안 모았다" 두 값밖에 없어서 수집한 보람이 없다. */
+  const top = new Map();
+  for (const pc of ME.cards) top.set(pc.card_id, Math.max(top.get(pc.card_id) ?? 0, pc.tier ?? 1));
+
+  const total = M.total_count ?? 120;
+  const seen  = top.size;
+  const chip = (k,v,lab,cls="") =>
+    `<button class="chip ${cls} ${F[k]===v?"on":""}" onclick="setF('${k}','${v}')">${lab}</button>`;
+
+  const list = M.cards.filter(c=>
+    (!F.fac || c.faction===F.fac) &&
+    (!F.god || c.godhood===F.god) &&
+    (!F.own || (F.own==="y") === top.has(c.id))
+  );
+  /* 넘기기는 지금 보고 있는 순서를 따른다. 필터를 걸었으면 그 안에서만 넘어간다. */
+  NAV = list.map(c=>c.id);
+
+  $("#p-dogam").innerHTML = `
+    <h2>도감 圖鑑</h2>
+    <p class="sub">${seen} / ${total} 위 &nbsp;·&nbsp; 숨은 신이 ${
+      Math.max(0,(M.hidden_count??0) - (ME.extra_cards?.length ?? 0))}위 더 있다.</p>
+    <div class="bar pg" style="margin:-8px 0 14px"><i style="width:${seen/total*100}%"></i></div>
+
+    <div class="filt">
+      <div class="frow"><span class="fl">세력</span>
+        ${["당","물","저승"].map(f=>chip("fac",f,f,"f-"+f)).join("")}</div>
+      <div class="frow"><span class="fl">신격</span>
+        ${GODS.map(g=>chip("god",g,g)).join("")}</div>
+      <div class="frow"><span class="fl">모심</span>
+        ${chip("own","y","모신 것")}${chip("own","n","아직")}</div>
+    </div>
+
+    <div class="grid">${list.map(c=>{
+      const t = top.get(c.id) ?? 0;
+      const has = t > 0;
+      const src = artOf(c);
+      /* 미획득 = 혼백(魂魄). 형체만 보인다.
+         예전엔 brightness(0) 이었는데, 그건 모든 픽셀을 0으로 만들어 그림을 통째로 지운다.
+         배경이 순검정이므로 밝기만 낮추면 형체가 그대로 남는다. */
+      const img = src
+        ? `<img src="${src}" alt="" loading="lazy" style="${has?"":"filter:grayscale(1) brightness(.5) contrast(1.15)"}"
+             onerror="this.style.display='none';this.nextElementSibling.hidden=false"><div class="blank" hidden></div>`
+        : `<div class="blank"></div>`;
+      return `<div class="mini f-${c.faction} ${has?"":"dim"}" data-card="${c.id}" onclick="detail('${c.id}')">
+        <span class="band"></span>${img}
+        ${src?"":`<span class="noart">그림 없음</span>`}
+        ${has?`<span class="tr">${"★".repeat(t)}</span>`:""}
+        <div class="nm">${esc(c.name)}</div></div>`;
+    }).join("")}
+    ${list.length?"":`<div class="mid" style="grid-column:1/-1">그런 신은 없다.</div>`}</div>`;
+}
+
+/* ══ 넘기기 ═══════════════════════════════════════
+   손가락으로 넘기는 게 버튼보다 빠르다. 둘 다 둔다. */
+let NAV = [];                       // 지금 보고 있는 목록의 순서
+
+function swipe(el, onPrev, onNext){
+  let x0=null, y0=null, t0=0;
+  el.addEventListener("touchstart", e=>{
+    const t=e.touches[0]; x0=t.clientX; y0=t.clientY; t0=Date.now();
+  }, {passive:true});
+  el.addEventListener("touchend", e=>{
+    if(x0===null) return;
+    const t=e.changedTouches[0];
+    const dx=t.clientX-x0, dy=t.clientY-y0, dt=Date.now()-t0;
+    x0=null;
+    if(dt>600) return;                       // 느리면 스크롤로 본다
+    if(Math.abs(dx) < 48) return;            // 너무 짧으면 무시
+    if(Math.abs(dy) > Math.abs(dx)*0.8) return;  // 세로가 크면 스크롤이다
+    (dx > 0 ? onPrev : onNext)();
+  }, {passive:true});
+}
+/* 넘길 때 살짝 밀려 들어온다 */
+function slide(el, dir){
+  if(!el) return;
+  el.style.transition = "none";
+  el.style.transform = `translateX(${dir>0 ? 26 : -26}px)`;
+  el.style.opacity = ".4";
+  requestAnimationFrame(()=>{
+    el.style.transition = "transform .26s cubic-bezier(.2,.9,.3,1), opacity .26s";
+    el.style.transform = "none";
+    el.style.opacity = "1";
+  });
+}
+
+/* ══ 카드 상세 — 아코디언 ═══════════════════
+   서버 v7이 skill_rate·skill_coef·sinpyo_id·unique_source 를 내려준다.
+   v6에서는 없으므로, 없으면 그 줄을 안 그린다. 배포 전후로 안 깨진다. */
+/* ★ 역할(탱커·밸런스·암살자)은 엔진 안에서만 산다. 화면엔 그 이름을 안 쓴다.
+   무신도에 탱커는 없다. 다만 "그 신이 실제로 뭘 하는지"는 보여줘야 한다 —
+   이름을 지우고 정보까지 지우면 그건 그냥 정보를 없앤 것이다. */
+const ROLE_TAGS = role => {
+  if (role === "탱커") return `
+    <span style="border-color:var(--hwang);color:var(--hwang)">앞에 선다 · 적이 72%로 이쪽을 친다</span>
+    <span>체력 <b>+25%</b></span><span>방어 <b>+20%</b></span>`;
+  if (role === "암살자") return `
+    <span style="border-color:#E08A80;color:#E08A80">방어를 절반 뚫고 가장 약한 자를 노린다</span>
+    <span>공격 <b>+20%</b></span><span>속도 <b>+8</b></span>`;
+  return `<span style="color:var(--dim)">치우침이 없다</span>`;   // 밸런스
+};
+
+const STYPE = { single:"단일 공격", aoe:"광역 공격", heal:"회복", buff:"아군 강화",
+                debuff:"적 약화", seal:"봉인", counter:"반격", revive:"부활",
+                summon:"소환", special:"판을 흔든다" };
+const BEATS = { "당":"저승", "저승":"물", "물":"당" };
+const LOSES = f => Object.keys(BEATS).find(k=>BEATS[k]===f);
+/* 무신도 노드 — 라이브 hy v17 의 NODE_COST_MAP 그대로다.
+   앞 단계를 하나라도 열면 다음 단계가 열린다(같은 단계는 몇 개든 열 수 있다).
+   ★ 노드가 전투에서 무엇을 하는지는 아직 서버에 정의되어 있지 않다.
+     비용만 있고 효과가 없으므로 화면에도 그렇게 적는다. 없는 효과를 지어내지 않는다. */
+const NODES = [
+  { id:"AP_1",   level:1, yeop:5000,  hon:2,  name:"살 一", eff:"공격 +15" },
+  { id:"AP_2",   level:1, yeop:5000,  hon:2,  name:"살 二", eff:"공격 +15" },
+  { id:"DP_1",   level:2, yeop:15000, hon:5,  name:"막 一", eff:"방어 +8" },
+  { id:"DP_2",   level:2, yeop:15000, hon:5,  name:"막 二", eff:"방어 +8" },
+  { id:"CRIT_1", level:3, yeop:40000, hon:12, name:"급소", eff:"치명 +1%p" },
+  { id:"COEF_1", level:3, yeop:40000, hon:12, name:"계수", eff:"평타 +0.02" }
+];
+/* 회랑은 격(레벨)이 닿아야 열린다 — 서버 NODE_LV_GATE 와 같다 */
+const NODE_LV_GATE = { 1:10, 2:25, 3:40 };
+const CARD_LV_CAP  = t => Math.max(1, Math.min(5, Number(t)||1)) * 8;   // 성급×8
+const CARD_LV_NEED = lv => lv * 60 + 40;
+const NODE_RESET_FEE = 20000;
+const HON = "영험한혼";
+/* 어디까지 열 수 있나 — 서버와 같은 계산 */
+const nodeReach = nodes => {
+  let r = 1;
+  if((nodes??[]).some(k=>String(k).startsWith("AP_"))) r = 2;
+  if((nodes??[]).some(k=>String(k).startsWith("DP_"))) r = 3;
+  return r;
+};
+const gmOf = pc => {
+  const g = pc && pc.growth_meta;
+  const m = (g && typeof g==="object" && !Array.isArray(g)) ? g : {};
+  return { slots: Array.isArray(m.slots)?m.slots:[], nodes: Array.isArray(m.nodes)?m.nodes:[],
+           split_count: Number(m.split_count)||0 };
+};
+
+const EVO_FEED={2:1,3:2,4:3,5:4}, EVO_YEOP={2:2000,3:8000,4:30000,5:120000},
+      EVO_RATE={2:90,3:65,4:35,5:12}, AWK_SIN=[0,20,40,80,160,320], AWK_RATE=[0,80,65,50,35,20];
+/* 정성은 카드마다 쌓인다. 서버는 최종확률 = min(상한, 기본 + 회당 × 정성) 으로 굴린다.
+   여태 화면엔 기본 확률만 떠서, 열 번 실패해도 12%라고 적혀 있었다. 실제와 다르다.
+   아래 값은 라이브 hy 의 규칙 그대로다(EVOLVE/AWAKEN/UNIQUE). */
+const EVO_JEONG={2:3,3:5,4:6,5:5}, EVO_CAP=95,
+      AWK_JEONG=5, AWK_CAP=95, UNQ_RATE=25, UNQ_JEONG=8, UNQ_CAP=90;
+const rateOf = (base, per, jeong, cap) =>
+  Math.min(cap, base + per * (Number(jeong) || 0));
+/* 정성이 쌓였을 때만 내역을 덧붙인다 — 0이면 군더더기다. */
+const jeongNote = (base, per, jeong, cap) => {
+  const j = Number(jeong) || 0;
+  if(j <= 0) return "";
+  const f = rateOf(base, per, j, cap);
+  return `<span style="color:var(--hwang)">정성 <b>${j}</b>회 · 지금 <b>${f}%</b>${
+    f >= cap ? " (상한)" : ""}</span>`;
+};
+
+function detail(id){
+  const c = mc(id) ?? GHOST(id);
+  const src = artOf(c);
+  // 같은 카드를 여러 장 가졌으면 가장 잘 기른 것을 보여준다
+  const mine = ME.cards.filter(pc=>pc.card_id===id)
+                       .sort((a,b)=> (b.tier??1)-(a.tier??1) || (b.awaken??0)-(a.awaken??0))[0];
+  const t   = mine?.tier ?? 0;
+  const awk = mine?.awaken ?? 0;
+  const unlocked = !!mine?.unique_unlocked;
+  const sp  = c.sinpyo_id ? MAT(c.sinpyo_id) : 0;
+  const col  = FCOL[c.faction]  ?? "var(--dim)";
+  const colL = FCOL_L[c.faction] ?? "#C9C0AE";   // 검은 그림 위에 얹을 밝은 변주
+
+  const sec = (k, title, body, lock=false, open=false) =>
+    `<details ${open?"open":""}><summary class="${lock?"lk":""}">
+       <span class="k">${k}</span>${title}</summary><div class="bd">${body}</div></details>`;
+
+  /* 스킬 — v7이면 발동 확률과 계수가 온다 */
+  const rate = c.skill_rate ?? null, coef = c.skill_coef ?? null;
+  const skillBody = `
+    <div>${STYPE[c.skill_type] ?? c.skill_type ?? "—"}${
+      rate ? ` · 매 행동마다 <b style="color:var(--hwang)">${rate}%</b> 확률로 터진다` : ""}</div>
+    <div class="num">
+      ${coef ? `<span>계수 <b>×${Number(coef).toFixed(2)}</b></span>` : ""}
+      ${ROLE_TAGS(c.role)}
+      ${c.spd_mod?`<span>속도 <b>${c.spd_mod>0?"+":""}${c.spd_mod}</b></span>`:""}
+      ${c.persona && Number(c.persona)!==1
+        ? `<span title="카드마다 타고난 미세한 차이">기질 <b>×${Number(c.persona).toFixed(2)}</b></span>` : ""}
+    </div>
+    <div style="margin-top:7px;color:#6E6455">
+      ${c.faction} → <b style="color:${FCOL_L[BEATS[c.faction]]}">${BEATS[c.faction]}</b>에게 +15% ·
+      <b style="color:${FCOL_L[LOSES(c.faction)]}">${LOSES(c.faction)}</b>에게 −10%</div>`;
+
+  /* 유니크 — 잠긴 상태를 정면으로 보여준다. 안 보이면 없는 기능이다. */
+  const ueff = c.unique_effect?.text ?? "";
+  /* 유니크도 자기 유형·발동확률·계수가 있다. 서버가 보내는데 안 쓰고 있었다. */
+  const uNums = `<div class="num">
+      ${c.unique_type?`<span>${STYPE[c.unique_type] ?? c.unique_type}</span>`:""}
+      ${c.unique_rate?`<span>발동 <b>${c.unique_rate}%</b></span>`:""}
+      ${Number(c.unique_coef)>0?`<span>계수 <b>×${Number(c.unique_coef).toFixed(2)}</b></span>`:""}
+    </div>`;
+  const uniqBody = unlocked
+    ? `<div class="t jk">【${esc(c.unique_skill)}】</div><div>${esc(ueff)}</div>${uNums}`
+    : `<div class="t" style="color:#5C5347">【${esc(c.unique_skill)}】</div><div>${esc(ueff)}</div>${uNums}
+       <div class="lockbar">
+         <div class="l1">${t<5 ? (t?`5성이 되어야 열린다 (지금 ${t}성)`:"먼저 모셔야 한다")
+                               : "신표가 셋 있어야 한다"}</div>
+         <div class="l2">${c.sinpyo_id
+             ? `${esc(c.name)}의 신표 <b style="color:var(--hwang)">${sp}</b> / 3 — 특별 던전에서 그 보스를 잡으면 나온다<br>`
+             : ""}여는 확률 <b style="color:var(--hwang)">${
+               rateOf(UNQ_RATE, UNQ_JEONG, mine?.unique_jeongseong, UNQ_CAP)}%</b>${
+               Number(mine?.unique_jeongseong) > 0
+                 ? ` <span style="color:var(--hwang)">(정성 ${mine.unique_jeongseong}회 쌓임)</span>` : ""
+               }. 실패해도 신표 하나만 나가고 정성이 +8%씩 쌓인다 (상한 90%)</div>
+       </div>`;
+
+  /* 기른다 */
+  const to = Math.min(5, t+1), an = Math.min(5, awk+1);
+  const growBody = `
+    <div class="t" style="font-size:13px">진화 — ${t||"—"}성 → ${t?to:"—"}성</div>
+    <div class="num">${ t && t<5
+      ? `<span>${t}성 카드 <b>${EVO_FEED[to]}장</b></span>
+         <span>엽전 <b>${EVO_YEOP[to].toLocaleString()}</b></span>
+         <span>성공 <b>${EVO_RATE[to]}%</b></span>
+         ${jeongNote(EVO_RATE[to], EVO_JEONG[to], mine?.evo_jeongseong, EVO_CAP)}`
+      : t>=5 ? `<span style="color:var(--hwang)">더 오를 곳이 없다</span>`
+             : `<span style="color:#5C5347">아직 안 모셨다</span>`}</div>
+    <div class="t" style="font-size:13px;margin-top:11px">각성 — ${awk} → ${t?an:"—"}단계</div>
+    <div class="num">${ t && awk<5
+      ? `<span>같은 카드 <b>1장</b></span><span>상급신물 <b>${AWK_SIN[an]}</b></span>
+         <span>성공 <b>${AWK_RATE[an]}%</b></span><span>단계마다 모든 능력 <b>+6%</b></span>
+         ${jeongNote(AWK_RATE[an], AWK_JEONG, mine?.awaken_jeongseong, AWK_CAP)}`
+      : t ? `<span style="color:var(--hwang)">각성이 끝났다</span>`
+          : `<span style="color:#5C5347">아직 안 모셨다</span>`}</div>
+    <div style="margin-top:7px;color:#6E6455">실패해도 재료는 그대로다. 정성이 쌓여 다음이 쉬워진다.</div>
+    ${ mine ? `<div style="display:flex;gap:6px;margin-top:11px">
+        ${ t && t<5 ? `<button class="btn sm" style="flex:1" onclick="growOpen('evolve',${mine.id})">진화한다</button>` : "" }
+        ${ t && awk<5 ? `<button class="btn sm ghost" style="flex:1" onclick="growOpen('awaken',${mine.id})">각성한다</button>` : "" }
+        ${ t>=5 && !mine.unique_unlocked && sp>=3
+             ? `<button class="btn sm ghost" style="flex:1" onclick="growOpen('unique',${mine.id})">유니크를 연다</button>` : "" }
+      </div>` : "" }`;
+
+  /* 격(格) — 탐험 정산 때 파티 다섯이 각자 전액을 받는다. 상한은 성급×8. */
+  const gLv   = mine ? (Number(mine.level) || 1) : 0;
+  const gCap  = mine ? CARD_LV_CAP(mine.tier) : 0;
+  const gExp  = mine ? (Number(mine.exp) || 0) : 0;
+  const gNeed = CARD_LV_NEED(gLv);
+  const gFull = mine && gLv >= gCap;
+  const gakBody = !mine ? "" : `
+    <div style="display:flex;align-items:baseline;gap:7px">
+      <div style="font-family:var(--serif);font-size:22px;font-weight:800;color:var(--hwang-l)">격 ${gLv}</div>
+      <div style="font-size:11.5px;color:var(--dim)">/ ${gCap} <span style="color:#5C5347">(${mine.tier ?? 1}성 상한)</span></div>
+    </div>
+    <div class="gbar"><i style="width:${gFull?100:Math.min(100,Math.round(gExp/gNeed*100))}%"></i></div>
+    <div style="font-size:11px;color:var(--dim);margin-top:5px">
+      ${gFull ? `상한이다. <b style="color:var(--hwang)">진화</b>해야 더 오른다.`
+              : `${gExp} / ${gNeed} — 탐험을 마치면 파티 다섯이 각자 전액을 받는다.`}
+    </div>`;
+
+  /* 접신·무신도 — 서버의 growth_meta 를 그대로 읽는다 */
+  const gm = mine ? gmOf(mine) : { slots:[], nodes:[], split_count:0 };
+  /* 넋의 종류를 사람 말로 — 서버 growSlot 이 정하는 op 그대로다 */
+  const slotSign = sl => {
+    const v = Number(sl.val) || 0;
+    switch(sl.op){
+      case "start_gauge_flat":    return [`개막 기세 +${v}`, "느려도 먼저 움직인다"];
+      case "skill_rate_add":      return [`술법 +${v}%p`,    "술법이 더 자주 터진다"];
+      case "dot_mitigation_flat": return [`불씨 −${v}`,       "지속 피해를 덜 받는다"];
+      case "faction_pierce_flat": return [`관통 +${v}`,       "상성에 눌려도 뚫는다"];
+      default: {
+        const nm = { ap:"공격", dp:"방어", hp:"생기" }[sl.stat] ?? sl.stat;
+        return [`${nm} +${v}`, ""];
+      }
+    }
+  };
+  const slotBox = i => {
+    const sl = gm.slots[i];
+    if(!sl) return `<div class="slotbox"><div class="empty">빈 자리</div></div>`;
+    const [head, note] = slotSign(sl);
+    return `<div class="slotbox on">
+      <div class="sv">${esc(head)}</div>
+      <div class="ss">${esc(sl.source ?? "")}의 넋${note ? ` · ${esc(note)}` : ""}</div></div>`;
+  };
+  const napBody = !mine ? `<div style="color:#5C5347">아직 안 모셨다</div>` : `
+    <div style="font-size:11.5px;color:var(--dim);line-height:1.7">
+      다른 카드를 태워 그 넋을 이 카드에 옮긴다. 자리는 둘뿐이고 <b style="color:var(--jeok)">되돌릴 수 없다.</b></div>
+    <div class="slots">${slotBox(0)}${slotBox(1)}</div>
+    <div style="display:flex;gap:6px;margin-top:11px">
+      ${gm.slots.length < 2
+        ? `<button class="btn sm" style="flex:1" onclick="growOpen('slot',${mine.id})">접신한다</button>`
+        : `<div style="flex:1;font-size:11px;color:#5C5347;align-self:center">자리가 다 찼다</div>`}
+      <button class="btn sm ghost" style="flex:1" onclick="nodeOpen(${mine.id})">
+        무신도 ${gm.nodes.length?`(${gm.nodes.length})`:""}</button>
+    </div>`;
+
+  /* 출전 — 고증률 88%가 이 게임의 정체성이다. 카드에 안 적히면 아무도 모른다. */
+  const srcBody = `<div class="src">
+    <b>${esc(c.name)}</b> — ${esc(c.source ?? "—")}
+    ${c.unique_source?`<br><b>【${esc(c.unique_skill)}】</b> — ${esc(c.unique_source)}`:""}</div>`;
+
+  const ov = $("#ovIn");
+  const ni = NAV.indexOf(id);          // 지금 보고 있는 목록에서 몇 번째인가
+  const hasNav = ni >= 0 && NAV.length > 1;
+  ov.className = "cd";
+  ov.innerHTML = `
+    <button class="x" onclick="PX.clear();$('#ov').classList.remove('on')">✕</button>
+    ${hasNav?`
+      <button class="arw l" onclick="navCard(-1)" ${ni<=0?"disabled":""}><span>‹</span></button>
+      <button class="arw r" onclick="navCard(1)"  ${ni>=NAV.length-1?"disabled":""}><span>›</span></button>
+      <div class="nvi">${ni+1} / ${NAV.length}</div>`:""}
+    <div class="art" id="cdArt">
+      ${src?`<img src="${src}" alt="">`:`<div class="blank" style="position:absolute;inset:0"></div>`}
+      ${t>=4?`<svg class="hl" viewBox="0 0 100 100" style="color:${colL}">
+        <circle cx="50" cy="50" r="46"/><circle cx="50" cy="50" r="37"/></svg>`:""}
+      <div class="g"></div>
+      <span class="band f-${c.faction}" style="position:absolute;left:0;top:0;bottom:0;width:3px;z-index:2"></span>
+    </div>
+    <div class="plate">
+      ${t?`<span class="st">${"★".repeat(t)}</span>`:""}
+      ${c.hidden?`<span class="sil">숨은 신</span>`:""}
+      <div class="nm">${esc(c.name)}</div>
+      <div class="rule" style="background:${colL}"></div>
+      <div class="sub" style="color:${colL}">${c.faction} · ${c.godhood}${awk?` · 각성 ${awk}`:""}</div>
+    </div>
+    ${sec("스킬", esc(c.skill ?? "—"), skillBody, false, true)}
+    ${sec("리더", esc((c.leader_effect?.text ?? c.leader_bonus ?? "—").split(" — ")[0]),
+          `<div class="t hw">${esc(c.leader_effect?.text ?? c.leader_bonus ?? "—")}</div>
+           <div style="margin-top:5px;color:#6E6455">가운데 자리(주신)에 세울 때만 걸린다.</div>`)}
+    ${sec(unlocked?"유니크":"잠김", `【${esc(c.unique_skill)}】`, uniqBody, !unlocked)}
+    ${mine ? sec("격", gFull ? `${gLv} · 상한` : `${gLv} / ${gCap}`, gakBody) : ""}
+    ${sec("기른다", t?`${t}성 · 각성 ${awk}`:"아직 안 모셨다", growBody)}
+    ${sec("접신", mine ? `넋 ${gm.slots.length}/2 · 노드 ${gm.nodes.length}/${NODES.length}` : "—", napBody)}
+    ${c.hidden && c.unlock_text ? sec("해금", "봉인이 풀린 까닭",
+        `<div class="t hw">${esc(c.unlock_text)}</div>
+         <div style="margin-top:6px;color:#6E6455">숨은 신은 뽑아서 얻는 것이 아니다. 해야 얻는다.</div>`) : ""}
+    ${sec("출전", "出典 · 고증", srcBody)}
+    <div style="padding:14px 16px 18px">
+      <button class="btn" onclick="go('dang');$('#ov').classList.remove('on')">당(堂)에 모신다</button>
+    </div>`;
+
+  // 하나라도 열리면 그림이 물러난다. 다 닫으면 다시 커진다.
+  ov.querySelectorAll("details").forEach(d=>d.addEventListener("toggle",()=>{
+    ov.classList.toggle("open", !!ov.querySelector("details[open]"));
+  }));
+  ov.classList.toggle("open", !!ov.querySelector("details[open]"));
+  $("#ov").classList.add("on");
+
+  // 손가락으로도 넘긴다
+  if(hasNav && !ov.dataset.sw){ ov.dataset.sw="1";
+    swipe(ov, ()=>navCard(-1), ()=>navCard(1)); }
+  CUR_CARD = id;
+
+  // 기울이면 형체가 따라 움직인다
+  PX.clear();
+  if(src) setTimeout(()=>PX.mount($("#cdArt"), src, { mode:"tilt", amp:13, fal:0.6 }), 120);
+}
+let CUR_CARD = null;
+function navCard(dir){
+  const i = NAV.indexOf(CUR_CARD);
+  if(i < 0) return;
+  const j = i + dir;
+  if(j < 0 || j >= NAV.length) return;
+  detail(NAV[j]);
+  slide($("#ovIn"), dir);
+}
+$("#ov").onclick = e => { if(e.target.id==="ov") $("#ov").classList.remove("on"); };
+
+/* ══ 갈피 ═════════════════════════════════ */
+function devilHome(){
+  const p=ME.player, cards=ME.cards||[], seen=new Set(cards.map(c=>c.card_id)).size;
+  const featured=cards.slice().sort((a,b)=>(b.tier||1)-(a.tier||1)).slice(0,4);
+  const cardHtml=featured.length?featured.map((pc,i)=>{const c=mc(pc.card_id)||GHOST(pc.card_id);return `<div class="mini" onclick="detail('${esc(pc.card_id)}')">${i===0?'<span class="dm-badge">LEADER</span>':''}<span class="band f-${esc(c.faction||'당')}"></span>${artOf(c)?`<img src="${artOf(c)}" alt="" loading="lazy">`:'<span class="blank"></span>'}<span class="st">${'★'.repeat(pc.tier||1)}</span><div class="nm">${esc(c.name)}</div></div>`}).join(''):'<div class="card" style="grid-column:1/-1;color:var(--dim);font-size:11px">아직 모신 신이 없다. 당에서 첫 소환을 시작한다.</div>';
+  $('#p-home').innerHTML=`<div class="dm-home"><section class="dm-hero"><div class="dm-kicker">TWILIGHT · CARD CHRONICLE</div><h2>오늘 밤, 누구를 모실까</h2><p>신과 귀를 모아 덱을 만들고<br>관찰과 파괴의 순서로 원을 푼다.</p><div class="dm-actions"><button class="btn" onclick="go('gil')">출격하기　›</button><button class="btn ghost" onclick="go('dang')">소환 / 편성</button></div></section><div class="dm-stats"><div class="dm-stat"><b>${cards.length}</b><small>보유 카드</small></div><div class="dm-stat"><b>${seen}/${M.total_count??120}</b><small>도감 수집</small></div><div class="dm-stat"><b>${p.level}</b><small>현재 격</small></div></div><div class="dm-section"><h3>오늘의 의뢰</h3><span>0 / 3 완료</span></div><div class="dm-quest"><span class="qicon">⚔</span><div><strong>길에 나가 보스의 예비동작을 읽어라</strong><small>출격 1회 · 보상 향 12, 엽전 300</small></div><button onclick="go('gil')">이동 ›</button></div><div class="dm-quest"><span class="qicon">✦</span><div><strong>새로운 신을 한 위 모셔라</strong><small>소환 1회 · 보상 복채 10</small></div><button onclick="go('dang')">이동 ›</button></div><div class="dm-section"><h3>주력 덱</h3><span>탭하여 상세 보기</span></div><div class="dm-featured">${cardHtml}</div><div class="card" style="margin-top:13px;border-color:#493c60;background:linear-gradient(110deg,rgba(128,102,184,.13),var(--heuk2))"><h3>황혼 기록</h3><div style="font-size:11px;color:var(--dim);line-height:1.7">관찰 → 고정 → 동시 → 봉쇄 → 파괴<br><b style="color:var(--hwang-l)">HP를 깎는 게임이 아니라, 빈틈을 증명하는 게임.</b></div></div></div>`;
+}
+const PANES = { home:devilHome, dang, gil, gut, dogam };
+let TAB = "home";
+function go(p){
+  PX.clear();          // 탭을 옮기면 WebGL 컨텍스트를 놓는다
+  TAB = p;
+  document.querySelectorAll(".pane").forEach(x=>x.classList.remove("on"));
+  document.querySelectorAll("nav button").forEach(x=>x.classList.toggle("on", x.dataset.p===p));
+  $("#p-"+p).classList.add("on");
+  PANES[p]();
+  window.scrollTo(0,0);
+}
+document.querySelectorAll("nav button").forEach(b=> b.onclick = ()=>go(b.dataset.p));
+
+/* ══ 시동 ═════════════════════════════════ */
+function head(){
+  const p = ME.player;
+  $("#who").textContent = p.nickname;
+  $("#lv").textContent = `격 ${p.level} · 신력 ${SINRYEOK()}`;
+  $("#hyang").textContent = p.hyang;
+  $("#bok").textContent = p.bokchae;
+  $("#yeop").textContent = Number(p.yeopjeon).toLocaleString();
+}
+async function refresh(){
+  ME = await api("/player");
+  head();
+  /* 서버는 /master 에서 히든 카드를 잘라낸다. 그런데 플레이어가 히든 카드를
+     가질 수 있다(던전 드랍, 씻김 100회의 C112 등). 그러면 mc()가 못 찾아
+     그 카드가 파티·전투·가챠 화면에서 통째로 사라진다.
+     /player 가 "가진 히든 카드"만 따로 실어 보내므로, 여기서 마스터에 합류시킨다. */
+  if (Array.isArray(ME.extra_cards) && ME.extra_cards.length && M){
+    const have = new Set(M.cards.map(c=>c.id));
+    for (const c of ME.extra_cards) if (!have.has(c.id)) M.cards.push(c);
+  }
+  // 서버가 진행 중인 탐험을 알려준다. 새로고침해도 안 갇힌다.
+  if (ME.active){
+    const a = ME.active;
+    SESS = { id:a.id, dungeon:a.dungeon_name, dun:a.dungeon,
+             step:a.step ?? 0, of:a.ritual ? (a.ssitgim_steps ?? 5) : (a.of ?? a.steps ?? a.dungeon?.steps ?? 10),
+             bujeong:a.bujeong ?? 0, hp:a.hp_state, ritual:a.ritual,
+             knots: SESS?.knots ?? [] };
+  } else SESS = null;
+}
+
+/* ══ 오프닝 ═══════════════════════════════════════
+   향이 타는 동안 신을 부른다. 로딩이 연출 뒤에 숨는다.
+   처음이면 「신을 받는다」(내림굿), 이어서면 「당(堂)으로 돌아간다」. */
+async function boot(){
+  $("#p-home").innerHTML = `<div class="mid"><span class="spin"></span><br><br>신을 부른다…</div>`;
+  PID = store.get();
+
+  // 오프닝은 먼저 뜬다. 마스터는 그 뒤에서 온다.
+  const loading = api("/master").then(m=>{ M = m; }).catch(e=>{ M = null; BOOT_ERR = e; });
+
+  await loading;
+  const total = M?.total_count ?? 124;
+
+  if (BOOT_ERR){
+    $("#openB").innerHTML = `<div class="err">${fail(BOOT_ERR)}</div>
+      <button class="p" onclick="location.reload()">다 시</button>`;
+    return;
+  }
+
+  if (!PID){
+    $("#openB").innerHTML = `
+      <div id="initErr" class="err"></div>
+      <input class="nick" id="nick" maxlength="12" placeholder="이름을 남긴다 (1~12자)">
+      <button class="p" onclick="init()">신 을 &nbsp;받 는 다</button>
+      <div class="v">고흥의 신과 귀 ${krNum(total)} 위</div>`;
+    return;
+  }
+
+  $("#openB").innerHTML = `
+    <button class="p" onclick="enterGame()">당(堂)으로 &nbsp;돌 아 간 다</button>
+    <div class="v">고흥의 신과 귀 ${krNum(total)} 위</div>`;
+}
+let BOOT_ERR = null;
+
+/* 백스물넉 — 숫자를 우리말로. 「124위」보다 이게 맞다. */
+function krNum(n){
+  const H=["","백","이백","삼백"], T=["","열","스물","서른","마흔","쉰","예순","일흔","여든","아흔"];
+  const U=["","한","두","석","넉","다섯","여섯","일곱","여덟","아홉"];
+  const h=Math.floor(n/100), t=Math.floor(n%100/10), u=n%10;
+  return (H[h]??"") + (T[t]??"") + (U[u]??"") || String(n);
+}
+
+async function enterGame(){
+  try{
+    await refresh();
+    loadTask();
+    home();
+    $("#open").classList.add("gone");
+    setTimeout(()=>{ const o=$("#open"); if(o) o.remove(); }, 950);
+    // 첫 실행이면 부정거리부터. 이미 봤으면 그냥 지나간다.
+    setTimeout(()=>geori("부정"), 1000);
+  }catch(e){
+    $("#openB").innerHTML = `<div class="err">${fail(e)}</div>
+      <button class="p" onclick="location.reload()">다 시</button>`;
+  }
+}
+async function init(){
+  const nick = $("#nick").value.trim();
+  const b = $("#openB .p");
+  if(b){ b.disabled = true; b.textContent = "…"; }
+  try{
+    const d = await api("/player/init", { nickname: nick });
+    PID = d.player.id;
+    store.set(PID);
+    await enterGame();
+  }catch(e){
+    $("#initErr").innerHTML = fail(e);
+    if(b){ b.disabled = false; b.textContent = "신 을  받 는 다"; }
+  }
+}
+boot();
+</script>
+</body>
+</html>
