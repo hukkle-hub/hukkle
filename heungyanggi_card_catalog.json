@@ -1,0 +1,2394 @@
+[
+  {
+    "id": "C122",
+    "name": "변성대왕",
+    "faction": "저승",
+    "godhood": "상위신",
+    "role": "암살자",
+    "skill": "독사(毒蛇)",
+    "unique_skill": "독사(毒蛇)",
+    "source": "시왕 제6. 육7일. 심판받고도 죄가 남은 자를 맡는다 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "심판"
+    }
+  },
+  {
+    "id": "C124",
+    "name": "도시대왕",
+    "faction": "저승",
+    "godhood": "상위신",
+    "role": "암살자",
+    "skill": "업칭(業秤)",
+    "unique_skill": "업칭(業秤)",
+    "source": "시왕 제9. 소상(小祥). 죄를 저울에 단다 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "심판"
+    }
+  },
+  {
+    "id": "C121",
+    "name": "오관대왕",
+    "faction": "저승",
+    "godhood": "상위신",
+    "role": "밸런스",
+    "skill": "검수(劍樹)",
+    "unique_skill": "검수(劍樹)",
+    "source": "시왕 제4. 사7일. 다섯 감각의 죄를 나눠 본다 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "심판"
+    }
+  },
+  {
+    "id": "C015",
+    "name": "업둥이",
+    "faction": "당",
+    "godhood": "하위신",
+    "role": "밸런스",
+    "skill": "복 물어오기",
+    "unique_skill": "복을 물어온다",
+    "source": "업신의 어린 형태 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "기록"
+    }
+  },
+  {
+    "id": "C055",
+    "name": "서낭(船王)",
+    "faction": "물",
+    "godhood": "하위신",
+    "role": "밸런스",
+    "skill": "뱃길 트기",
+    "unique_skill": "뱃길을 연다",
+    "source": "배의 신. 서낭풀이 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "기록"
+    }
+  },
+  {
+    "id": "C041",
+    "name": "갯것",
+    "faction": "물",
+    "godhood": "잡귀",
+    "role": "밸런스",
+    "skill": "갯벌 물기",
+    "unique_skill": "뻘에서 솟는다",
+    "source": "갯벌 잡귀 [실재 방언]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "해령"
+    }
+  },
+  {
+    "id": "C005",
+    "name": "정화수",
+    "faction": "당",
+    "godhood": "잡귀",
+    "role": "밸런스",
+    "skill": "첫물",
+    "unique_skill": "첫 새벽 물",
+    "source": "씻김 3액 중 마지막 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "기록"
+    }
+  },
+  {
+    "id": "C008",
+    "name": "시루",
+    "faction": "당",
+    "godhood": "잡귀",
+    "role": "밸런스",
+    "skill": "시루떡",
+    "unique_skill": "시루떡 고사",
+    "source": "고사 제물 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "기록"
+    }
+  },
+  {
+    "id": "C096",
+    "name": "삼우제 귀",
+    "faction": "저승",
+    "godhood": "하위신",
+    "role": "밸런스",
+    "skill": "사흘째",
+    "unique_skill": "사흘째",
+    "source": "[실재]",
+    "hidden": null,
+    "acquire": "천도·의례",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "넋"
+    }
+  },
+  {
+    "id": "C004",
+    "name": "황토 세 줌",
+    "faction": "당",
+    "godhood": "잡귀",
+    "role": "밸런스",
+    "skill": "황토뿌리기",
+    "unique_skill": "세 줌의 경계",
+    "source": "당제 부정막이 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "기록"
+    }
+  },
+  {
+    "id": "C002",
+    "name": "짐대",
+    "faction": "당",
+    "godhood": "잡귀",
+    "role": "밸런스",
+    "skill": "솟대오리",
+    "unique_skill": "하늘 기별",
+    "source": "솟대. 하늘에 소식을 전하는 새 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "기록"
+    }
+  },
+  {
+    "id": "C037",
+    "name": "제석(帝釋)",
+    "faction": "당",
+    "godhood": "대신",
+    "role": "밸런스",
+    "skill": "제석의 곳간",
+    "unique_skill": "제석굿",
+    "source": "제석천=환인 습합 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "기록"
+    }
+  },
+  {
+    "id": "C034",
+    "name": "제석삼불",
+    "faction": "당",
+    "godhood": "상위신",
+    "role": "밸런스",
+    "skill": "제석굿",
+    "unique_skill": "제석의 곳간",
+    "source": "제석=복·수명 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "기록"
+    }
+  },
+  {
+    "id": "C097",
+    "name": "상복동자",
+    "faction": "저승",
+    "godhood": "하위신",
+    "role": "밸런스",
+    "skill": "흰 옷",
+    "unique_skill": "흰 옷의 아이",
+    "source": "[창작]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "넋"
+    }
+  },
+  {
+    "id": "C006",
+    "name": "조왕단지",
+    "faction": "당",
+    "godhood": "잡귀",
+    "role": "밸런스",
+    "skill": "부뚜막 불씨",
+    "unique_skill": "부뚜막 불씨",
+    "source": "조왕신을 모신 단지 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "심판"
+    }
+  },
+  {
+    "id": "C026",
+    "name": "지신(地神)",
+    "faction": "당",
+    "godhood": "신령",
+    "role": "밸런스",
+    "skill": "지신밟기",
+    "unique_skill": "지신밟기",
+    "source": "지신밟기 [실재]",
+    "hidden": null,
+    "acquire": "천도·의례",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "기록"
+    }
+  },
+  {
+    "id": "C075",
+    "name": "해신 당골",
+    "faction": "물",
+    "godhood": "상위신",
+    "role": "밸런스",
+    "skill": "용신굿",
+    "unique_skill": "용신굿",
+    "source": "용신굿 [실재]",
+    "hidden": null,
+    "acquire": "천도·의례",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "해령"
+    }
+  },
+  {
+    "id": "C063",
+    "name": "넋건지기 무녀",
+    "faction": "물",
+    "godhood": "신령",
+    "role": "밸런스",
+    "skill": "넋 건지기",
+    "unique_skill": "넋을 건진다",
+    "source": "익사자의 넋을 건지는 굿 [실재]",
+    "hidden": null,
+    "acquire": "천도·의례",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "의례"
+    }
+  },
+  {
+    "id": "C115",
+    "name": "송제대왕",
+    "faction": "저승",
+    "godhood": "상위신",
+    "role": "밸런스",
+    "skill": "한빙(寒氷)",
+    "unique_skill": "한빙(寒氷)",
+    "source": "시왕 제3. 사음을 심판 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "심판"
+    }
+  },
+  {
+    "id": "C024",
+    "name": "칠성단",
+    "faction": "당",
+    "godhood": "신령",
+    "role": "밸런스",
+    "skill": "별빛 내림",
+    "unique_skill": "북두를 향하여",
+    "source": "칠성신을 모신 단 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "기록"
+    }
+  },
+  {
+    "id": "C045",
+    "name": "물비늘",
+    "faction": "물",
+    "godhood": "잡귀",
+    "role": "밸런스",
+    "skill": "윤슬",
+    "unique_skill": "윤슬",
+    "source": "[창작]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "해령"
+    }
+  },
+  {
+    "id": "C064",
+    "name": "삼치파시 상인",
+    "faction": "물",
+    "godhood": "신령",
+    "role": "밸런스",
+    "skill": "파시(波市)",
+    "unique_skill": "파시(波市)가 선다",
+    "source": "나로도 삼치 파시 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "기록"
+    }
+  },
+  {
+    "id": "C038",
+    "name": "마고할미",
+    "faction": "당",
+    "godhood": "대신",
+    "role": "밸런스",
+    "skill": "창세의 손길",
+    "unique_skill": "세상을 빚던 손",
+    "source": "창세 여신 [실재]",
+    "hidden": null,
+    "acquire": "천도·의례",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "의례"
+    }
+  },
+  {
+    "id": "C060",
+    "name": "해랑당 각시",
+    "faction": "물",
+    "godhood": "하위신",
+    "role": "밸런스",
+    "skill": "바다의 넋",
+    "unique_skill": "바다의 넋",
+    "source": "해랑당=어촌 여신당 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "의례"
+    }
+  },
+  {
+    "id": "C079",
+    "name": "흑룡",
+    "faction": "물",
+    "godhood": "대신",
+    "role": "밸런스",
+    "skill": "폭풍",
+    "unique_skill": "폭풍",
+    "source": "[실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "기록"
+    }
+  },
+  {
+    "id": "C073",
+    "name": "용왕차사",
+    "faction": "물",
+    "godhood": "상위신",
+    "role": "밸런스",
+    "skill": "용궁 소환장",
+    "unique_skill": "용궁의 부름",
+    "source": "[창작]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "심판"
+    }
+  },
+  {
+    "id": "C018",
+    "name": "애기미륵",
+    "faction": "당",
+    "godhood": "하위신",
+    "role": "밸런스",
+    "skill": "작은 미륵",
+    "unique_skill": "작은 돌부처",
+    "source": "마을 미륵 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "넋"
+    }
+  },
+  {
+    "id": "C025",
+    "name": "산신동자",
+    "faction": "당",
+    "godhood": "신령",
+    "role": "밸런스",
+    "skill": "선도(仙桃)",
+    "unique_skill": "선도(仙桃) 한 알",
+    "source": "산신도의 복숭아 든 동자 [실재]",
+    "hidden": null,
+    "acquire": "천도·의례",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "넋"
+    }
+  },
+  {
+    "id": "C016",
+    "name": "매굿패",
+    "faction": "당",
+    "godhood": "하위신",
+    "role": "밸런스",
+    "skill": "풍물 울림",
+    "unique_skill": "쇠를 울린다",
+    "source": "매굿=풍물로 악귀를 쫓음 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "기록"
+    }
+  },
+  {
+    "id": "C021",
+    "name": "업구렁이",
+    "faction": "당",
+    "godhood": "신령",
+    "role": "밸런스",
+    "skill": "재복 물기",
+    "unique_skill": "업이 든 집",
+    "source": "업신. 집을 지키는 재복신 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "기록"
+    }
+  },
+  {
+    "id": "C065",
+    "name": "미역할미",
+    "faction": "물",
+    "godhood": "신령",
+    "role": "밸런스",
+    "skill": "미역국",
+    "unique_skill": "첫국밥",
+    "source": "고흥 8품 미역. 산후조리 [실재]",
+    "hidden": null,
+    "acquire": "천도·의례",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "의례"
+    }
+  },
+  {
+    "id": "C114",
+    "name": "초강대왕",
+    "faction": "저승",
+    "godhood": "상위신",
+    "role": "밸런스",
+    "skill": "삼도천",
+    "unique_skill": "삼도천(三途川)",
+    "source": "시왕 제2. 도둑질을 심판 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "심판"
+    }
+  },
+  {
+    "id": "C019",
+    "name": "산지기",
+    "faction": "당",
+    "godhood": "하위신",
+    "role": "밸런스",
+    "skill": "산길 안내",
+    "unique_skill": "산길을 연다",
+    "source": "[창작]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "기록"
+    }
+  },
+  {
+    "id": "C062",
+    "name": "수부(水府) 사공",
+    "faction": "물",
+    "godhood": "신령",
+    "role": "밸런스",
+    "skill": "물길 돌리기",
+    "unique_skill": "물길을 되돌린다",
+    "source": "수부=용궁 관청 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "해령"
+    }
+  },
+  {
+    "id": "C071",
+    "name": "여자만 용녀",
+    "faction": "물",
+    "godhood": "상위신",
+    "role": "밸런스",
+    "skill": "만조",
+    "unique_skill": "만조(滿潮)",
+    "source": "여자만 [실재+창작]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "해령"
+    }
+  },
+  {
+    "id": "C072",
+    "name": "삼도천 사공",
+    "faction": "물",
+    "godhood": "상위신",
+    "role": "밸런스",
+    "skill": "강 건너기",
+    "unique_skill": "어느 나루로 건너겠는가",
+    "source": "초강대왕의 삼도천 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "해령"
+    }
+  },
+  {
+    "id": "C030",
+    "name": "삼신할매",
+    "faction": "당",
+    "godhood": "상위신",
+    "role": "밸런스",
+    "skill": "삼신 점지",
+    "unique_skill": "생명의 탯줄",
+    "source": "출산·육아신 [실재]",
+    "hidden": null,
+    "acquire": "천도·의례",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "기록"
+    }
+  },
+  {
+    "id": "C028",
+    "name": "마고의 손",
+    "faction": "당",
+    "godhood": "신령",
+    "role": "밸런스",
+    "skill": "산을 옮기다",
+    "unique_skill": "치마폭에 담은 산",
+    "source": "마고할미 창세 여신 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "기록"
+    }
+  },
+  {
+    "id": "C078",
+    "name": "사해용왕",
+    "faction": "물",
+    "godhood": "대신",
+    "role": "밸런스",
+    "skill": "사방의 물",
+    "unique_skill": "사방의 물",
+    "source": "[실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "심판"
+    }
+  },
+  {
+    "id": "C116",
+    "name": "바리공주",
+    "faction": "저승",
+    "godhood": "대신",
+    "role": "밸런스",
+    "skill": "약수(藥水)",
+    "unique_skill": "서천의 약수",
+    "source": "무조신. 저승에서 약수를 구해 아버지를 살림 [실재]",
+    "hidden": null,
+    "acquire": "천도·의례",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "의례"
+    }
+  },
+  {
+    "id": "C056",
+    "name": "뱃고사 상",
+    "faction": "물",
+    "godhood": "하위신",
+    "role": "밸런스",
+    "skill": "고수레",
+    "unique_skill": "고수레",
+    "source": "[실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "기록"
+    }
+  },
+  {
+    "id": "C043",
+    "name": "뻘밭 잡귀",
+    "faction": "물",
+    "godhood": "잡귀",
+    "role": "밸런스",
+    "skill": "진창",
+    "unique_skill": "발목을 잡는다",
+    "source": "[창작]",
+    "hidden": null,
+    "acquire": "천도·의례",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "넋"
+    }
+  },
+  {
+    "id": "C090",
+    "name": "상여꾼",
+    "faction": "저승",
+    "godhood": "잡귀",
+    "role": "밸런스",
+    "skill": "상여소리",
+    "unique_skill": "상여소리",
+    "source": "[실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "기록"
+    }
+  },
+  {
+    "id": "C089",
+    "name": "곡비(哭婢)",
+    "faction": "저승",
+    "godhood": "잡귀",
+    "role": "밸런스",
+    "skill": "곡소리",
+    "unique_skill": "대신 우는 소리",
+    "source": "곡을 대신 우는 여종 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "기록"
+    }
+  },
+  {
+    "id": "C081",
+    "name": "몽달귀",
+    "faction": "저승",
+    "godhood": "잡귀",
+    "role": "밸런스",
+    "skill": "떠도는 손",
+    "unique_skill": "장가도 못 가고",
+    "source": "총각귀신 [실재]",
+    "hidden": null,
+    "acquire": "천도·의례",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "넋"
+    }
+  },
+  {
+    "id": "C052",
+    "name": "도깨비불",
+    "faction": "물",
+    "godhood": "하위신",
+    "role": "밸런스",
+    "skill": "풍어의 불",
+    "unique_skill": "고기를 몰아온다",
+    "source": "도깨비불=풍어의 징표 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "기록"
+    }
+  },
+  {
+    "id": "C083",
+    "name": "넋(창호지)",
+    "faction": "저승",
+    "godhood": "잡귀",
+    "role": "밸런스",
+    "skill": "종이 몸",
+    "unique_skill": "오려낸 몸",
+    "source": "씻김굿 무구: 창호지를 오린 넋 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "기록"
+    }
+  },
+  {
+    "id": "C033",
+    "name": "조상신",
+    "faction": "당",
+    "godhood": "상위신",
+    "role": "밸런스",
+    "skill": "초가망석",
+    "unique_skill": "초가망석",
+    "source": "씻김굿 초가망석에서 청하는 신 [실재]",
+    "hidden": null,
+    "acquire": "천도·의례",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "기록"
+    }
+  },
+  {
+    "id": "C085",
+    "name": "지전(紙錢)",
+    "faction": "저승",
+    "godhood": "잡귀",
+    "role": "밸런스",
+    "skill": "저승 노잣돈",
+    "unique_skill": "저승 노잣돈",
+    "source": "무구 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "기록"
+    }
+  },
+  {
+    "id": "C053",
+    "name": "참봉 도깨비",
+    "faction": "물",
+    "godhood": "하위신",
+    "role": "밸런스",
+    "skill": "방망이",
+    "unique_skill": "방망이 한 번",
+    "source": "도깨비 별칭 참봉 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "기록"
+    }
+  },
+  {
+    "id": "C093",
+    "name": "저승길 초롱",
+    "faction": "저승",
+    "godhood": "하위신",
+    "role": "밸런스",
+    "skill": "길 밝히기",
+    "unique_skill": "길을 밝힌다",
+    "source": "[실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "기록"
+    }
+  },
+  {
+    "id": "C123",
+    "name": "평등대왕",
+    "faction": "저승",
+    "godhood": "상위신",
+    "role": "탱커",
+    "skill": "철상(鐵床)",
+    "unique_skill": "철상(鐵床)",
+    "source": "시왕 제8. 백일. 공평하게 죄와 복을 정한다 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "심판"
+    }
+  },
+  {
+    "id": "C048",
+    "name": "물때",
+    "faction": "물",
+    "godhood": "잡귀",
+    "role": "밸런스",
+    "skill": "조수 읽기",
+    "unique_skill": "물때를 읽는다",
+    "source": "물때=조수 주기 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "해령"
+    }
+  },
+  {
+    "id": "C047",
+    "name": "파래귀신",
+    "faction": "물",
+    "godhood": "잡귀",
+    "role": "밸런스",
+    "skill": "휘감기",
+    "unique_skill": "휘감는다",
+    "source": "[창작]",
+    "hidden": null,
+    "acquire": "천도·의례",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "넋"
+    }
+  },
+  {
+    "id": "C087",
+    "name": "골목귀",
+    "faction": "저승",
+    "godhood": "잡귀",
+    "role": "밸런스",
+    "skill": "골목 지킴",
+    "unique_skill": "골목을 지킨다",
+    "source": "[창작]",
+    "hidden": null,
+    "acquire": "천도·의례",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "넋"
+    }
+  },
+  {
+    "id": "C054",
+    "name": "갯제 무녀",
+    "faction": "물",
+    "godhood": "하위신",
+    "role": "밸런스",
+    "skill": "갯제",
+    "unique_skill": "만선(滿船)을 빈다",
+    "source": "어촌 바다 제사 [실재]",
+    "hidden": null,
+    "acquire": "천도·의례",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "의례"
+    }
+  },
+  {
+    "id": "C012",
+    "name": "터주대감",
+    "faction": "당",
+    "godhood": "하위신",
+    "role": "탱커",
+    "skill": "터 다지기",
+    "unique_skill": "터를 다진다",
+    "source": "집터신 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "수호"
+    }
+  },
+  {
+    "id": "C080",
+    "name": "나로의 물결",
+    "faction": "물",
+    "godhood": "대신",
+    "role": "탱커",
+    "skill": "해무 장막",
+    "unique_skill": "해무 장막",
+    "source": "나로도 [창작]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "해령"
+    }
+  },
+  {
+    "id": "C010",
+    "name": "당산나무",
+    "faction": "당",
+    "godhood": "잡귀",
+    "role": "탱커",
+    "skill": "뿌리내림",
+    "unique_skill": "천년의 뿌리",
+    "source": "마을 신목 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "수호"
+    }
+  },
+  {
+    "id": "C001",
+    "name": "벅수",
+    "faction": "당",
+    "godhood": "잡귀",
+    "role": "탱커",
+    "skill": "말뚝지킴",
+    "unique_skill": "천하대장군",
+    "source": "장승. 마을 어귀 수문장 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "수호"
+    }
+  },
+  {
+    "id": "C013",
+    "name": "문신(門神)",
+    "faction": "당",
+    "godhood": "하위신",
+    "role": "탱커",
+    "skill": "문 걸어잠그기",
+    "unique_skill": "문을 걸어 잠근다",
+    "source": "가택신 [실재]",
+    "hidden": null,
+    "acquire": "천도·의례",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "수호"
+    }
+  },
+  {
+    "id": "C042",
+    "name": "조개무지",
+    "faction": "물",
+    "godhood": "잡귀",
+    "role": "탱커",
+    "skill": "패총",
+    "unique_skill": "패총의 옛 뼈",
+    "source": "[실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "수호"
+    }
+  },
+  {
+    "id": "C007",
+    "name": "성주단지",
+    "faction": "당",
+    "godhood": "잡귀",
+    "role": "탱커",
+    "skill": "대들보",
+    "unique_skill": "대들보에 든 쌀",
+    "source": "성주신을 모신 항아리 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "수호"
+    }
+  },
+  {
+    "id": "C017",
+    "name": "서낭 돌무더기",
+    "faction": "당",
+    "godhood": "하위신",
+    "role": "탱커",
+    "skill": "돌 하나 얹기",
+    "unique_skill": "돌 하나 얹고 간다",
+    "source": "서낭당 누석단 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "수호"
+    }
+  },
+  {
+    "id": "C003",
+    "name": "금줄",
+    "faction": "당",
+    "godhood": "잡귀",
+    "role": "탱커",
+    "skill": "부정막이",
+    "unique_skill": "넘지 못하는 줄",
+    "source": "당제 때 신목에 두르는 줄 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "수호"
+    }
+  },
+  {
+    "id": "C022",
+    "name": "미륵바위",
+    "faction": "당",
+    "godhood": "신령",
+    "role": "탱커",
+    "skill": "돌의 인내",
+    "unique_skill": "천년을 서 있다",
+    "source": "당제 대상 미륵 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "수호"
+    }
+  },
+  {
+    "id": "C029",
+    "name": "성주신",
+    "faction": "당",
+    "godhood": "상위신",
+    "role": "탱커",
+    "skill": "대들보 세우기",
+    "unique_skill": "집이 서 있는 한",
+    "source": "집의 최고신. 대들보에 좌정 [실재]",
+    "hidden": null,
+    "acquire": "천도·의례",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "수호"
+    }
+  },
+  {
+    "id": "C067",
+    "name": "거북사자",
+    "faction": "물",
+    "godhood": "신령",
+    "role": "탱커",
+    "skill": "등껍질",
+    "unique_skill": "등껍질",
+    "source": "[창작]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "수호"
+    }
+  },
+  {
+    "id": "C020",
+    "name": "당할머니 시자",
+    "faction": "당",
+    "godhood": "하위신",
+    "role": "탱커",
+    "skill": "당집 지킴",
+    "unique_skill": "당집을 지킨다",
+    "source": "당할머니=마을 여신 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "수호"
+    }
+  },
+  {
+    "id": "C027",
+    "name": "벅수장군",
+    "faction": "당",
+    "godhood": "신령",
+    "role": "탱커",
+    "skill": "장승의 노려봄",
+    "unique_skill": "지하여장군",
+    "source": "[실재+창작]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "수호"
+    }
+  },
+  {
+    "id": "C117",
+    "name": "염라대왕",
+    "faction": "저승",
+    "godhood": "대신",
+    "role": "탱커",
+    "skill": "업경(業鏡)",
+    "unique_skill": "업경(業鏡)",
+    "source": "시왕 제5. 죄가 비치는 거울 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "심판"
+    }
+  },
+  {
+    "id": "C074",
+    "name": "청룡",
+    "faction": "물",
+    "godhood": "상위신",
+    "role": "탱커",
+    "skill": "동방의 비늘",
+    "unique_skill": "동방의 비늘",
+    "source": "사신 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "수호"
+    }
+  },
+  {
+    "id": "C044",
+    "name": "꼬막각시",
+    "faction": "물",
+    "godhood": "잡귀",
+    "role": "탱커",
+    "skill": "껍질 닫기",
+    "unique_skill": "껍질을 닫는다",
+    "source": "고흥 8품 꼬막 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "의례"
+    }
+  },
+  {
+    "id": "C050",
+    "name": "해무(海霧)",
+    "faction": "물",
+    "godhood": "잡귀",
+    "role": "탱커",
+    "skill": "안개 걸음",
+    "unique_skill": "안개에 든다",
+    "source": "[실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "수호"
+    }
+  },
+  {
+    "id": "C094",
+    "name": "명두(明斗)",
+    "faction": "저승",
+    "godhood": "하위신",
+    "role": "탱커",
+    "skill": "놋쇠 거울",
+    "unique_skill": "놋쇠에 비친다",
+    "source": "무구. 고대 동경 계열 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "수호"
+    }
+  },
+  {
+    "id": "C035",
+    "name": "오방신장",
+    "faction": "당",
+    "godhood": "상위신",
+    "role": "탱커",
+    "skill": "오방진",
+    "unique_skill": "오방을 닫는다",
+    "source": "다섯 방위신 [실재]",
+    "hidden": null,
+    "acquire": "천도·의례",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "수호"
+    }
+  },
+  {
+    "id": "C086",
+    "name": "허수아비",
+    "faction": "저승",
+    "godhood": "잡귀",
+    "role": "탱커",
+    "skill": "대신 맞기",
+    "unique_skill": "대신 맞는다",
+    "source": "허재비 제 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "수호"
+    }
+  },
+  {
+    "id": "C011",
+    "name": "조왕각시",
+    "faction": "당",
+    "godhood": "하위신",
+    "role": "암살자",
+    "skill": "부뚜막 화상",
+    "unique_skill": "부뚜막 불길",
+    "source": "부엌신. 불을 관장 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "심판"
+    }
+  },
+  {
+    "id": "C014",
+    "name": "측신",
+    "faction": "당",
+    "godhood": "하위신",
+    "role": "암살자",
+    "skill": "뒷간의 저주",
+    "unique_skill": "긴 머리카락",
+    "source": "변소신. 성질이 사납다 [실재]",
+    "hidden": null,
+    "acquire": "천도·의례",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "기록"
+    }
+  },
+  {
+    "id": "C036",
+    "name": "칠성(七星)",
+    "faction": "당",
+    "godhood": "대신",
+    "role": "암살자",
+    "skill": "칠성난타",
+    "unique_skill": "일곱 별의 셈",
+    "source": "북두칠성. 수명 관장. 7회 타격 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "기록"
+    }
+  },
+  {
+    "id": "C091",
+    "name": "처녀귀신",
+    "faction": "저승",
+    "godhood": "하위신",
+    "role": "암살자",
+    "skill": "한(恨)",
+    "unique_skill": "한(恨)이 자란다",
+    "source": "[실재]",
+    "hidden": null,
+    "acquire": "천도·의례",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "넋"
+    }
+  },
+  {
+    "id": "C095",
+    "name": "신칼",
+    "faction": "저승",
+    "godhood": "하위신",
+    "role": "암살자",
+    "skill": "넋 일구기",
+    "unique_skill": "넋을 일군다",
+    "source": "호남 씻김굿 필수 무구 [실재]",
+    "hidden": null,
+    "acquire": "천도·의례",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "기록"
+    }
+  },
+  {
+    "id": "C066",
+    "name": "별상(장군)",
+    "faction": "물",
+    "godhood": "신령",
+    "role": "암살자",
+    "skill": "청룡도",
+    "unique_skill": "청룡도 한 번",
+    "source": "무신도 별상: 전통 메고 청룡도·등채 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "기록"
+    }
+  },
+  {
+    "id": "C031",
+    "name": "여산신(호랑이)",
+    "faction": "당",
+    "godhood": "상위신",
+    "role": "암살자",
+    "skill": "산군(山君)",
+    "unique_skill": "산군(山君) 납신다",
+    "source": "여산신 전승 (선도성모·정견모주) [실재]",
+    "hidden": null,
+    "acquire": "천도·의례",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "기록"
+    }
+  },
+  {
+    "id": "C069",
+    "name": "인어",
+    "faction": "물",
+    "godhood": "상위신",
+    "role": "암살자",
+    "skill": "현혹",
+    "unique_skill": "사람고기의 노래",
+    "source": "남해 인어 전승 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "기록"
+    }
+  },
+  {
+    "id": "C046",
+    "name": "낙지귀신",
+    "faction": "물",
+    "godhood": "잡귀",
+    "role": "암살자",
+    "skill": "여덟 다리",
+    "unique_skill": "여덟 다리",
+    "source": "고흥 낙지 [실재]",
+    "hidden": null,
+    "acquire": "천도·의례",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "넋"
+    }
+  },
+  {
+    "id": "C049",
+    "name": "간재미",
+    "faction": "물",
+    "godhood": "잡귀",
+    "role": "암살자",
+    "skill": "꼬리치기",
+    "unique_skill": "꼬리 채찍",
+    "source": "[실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "기록"
+    }
+  },
+  {
+    "id": "C058",
+    "name": "그물귀신",
+    "faction": "물",
+    "godhood": "하위신",
+    "role": "암살자",
+    "skill": "투망",
+    "unique_skill": "걸린 채로",
+    "source": "[창작]",
+    "hidden": null,
+    "acquire": "천도·의례",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "해령"
+    }
+  },
+  {
+    "id": "C059",
+    "name": "물귀신",
+    "faction": "물",
+    "godhood": "하위신",
+    "role": "암살자",
+    "skill": "끌어내리기",
+    "unique_skill": "같이 가자",
+    "source": "[실재]",
+    "hidden": null,
+    "acquire": "천도·의례",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "해령"
+    }
+  },
+  {
+    "id": "C061",
+    "name": "이무기",
+    "faction": "물",
+    "godhood": "신령",
+    "role": "암살자",
+    "skill": "용이 못 된 뱀",
+    "unique_skill": "승천(昇天)",
+    "source": "진화 시 용 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "기록"
+    }
+  },
+  {
+    "id": "C077",
+    "name": "미르(용왕)",
+    "faction": "물",
+    "godhood": "대신",
+    "role": "암살자",
+    "skill": "등천(登天)",
+    "unique_skill": "등천(登天)",
+    "source": "고흥 용바위 용 등천 전설 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "심판"
+    }
+  },
+  {
+    "id": "C106",
+    "name": "야차",
+    "faction": "저승",
+    "godhood": "신령",
+    "role": "암살자",
+    "skill": "옥졸",
+    "unique_skill": "옥졸의 창",
+    "source": "[실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "기록"
+    }
+  },
+  {
+    "id": "C104",
+    "name": "원귀",
+    "faction": "저승",
+    "godhood": "신령",
+    "role": "암살자",
+    "skill": "원한",
+    "unique_skill": "풀리지 않는다",
+    "source": "[실재]",
+    "hidden": null,
+    "acquire": "천도·의례",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "넋"
+    }
+  },
+  {
+    "id": "C113",
+    "name": "진광대왕",
+    "faction": "저승",
+    "godhood": "상위신",
+    "role": "암살자",
+    "skill": "도산(刀山)",
+    "unique_skill": "도산(刀山)",
+    "source": "시왕 제1. 초7일 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "심판"
+    }
+  },
+  {
+    "id": "C109",
+    "name": "강림도령",
+    "faction": "저승",
+    "godhood": "상위신",
+    "role": "암살자",
+    "skill": "저승 명부",
+    "unique_skill": "염라를 잡아온 자",
+    "source": "차사본풀이의 저승차사 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "기록"
+    }
+  },
+  {
+    "id": "C102",
+    "name": "손님(마마신)",
+    "faction": "저승",
+    "godhood": "신령",
+    "role": "암살자",
+    "skill": "손님굿",
+    "unique_skill": "손님 배송",
+    "source": "역신. 손님굿으로 대접해 보냄 [실재]",
+    "hidden": null,
+    "acquire": "천도·의례",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "기록"
+    }
+  },
+  {
+    "id": "C108",
+    "name": "도산지옥 옥졸",
+    "faction": "저승",
+    "godhood": "신령",
+    "role": "암살자",
+    "skill": "칼산",
+    "unique_skill": "칼산을 오른다",
+    "source": "진광대왕의 지옥 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "기록"
+    }
+  },
+  {
+    "id": "C118",
+    "name": "태산대왕",
+    "faction": "저승",
+    "godhood": "대신",
+    "role": "암살자",
+    "skill": "명부(名簿)",
+    "unique_skill": "명부에 적는다",
+    "source": "시왕 제7. 태어날 곳을 정함 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "심판"
+    }
+  },
+  {
+    "id": "C105",
+    "name": "판관",
+    "faction": "저승",
+    "godhood": "신령",
+    "role": "암살자",
+    "skill": "붓과 명부",
+    "unique_skill": "붓끝에 달렸다",
+    "source": "시왕의 서기 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "기록"
+    }
+  },
+  {
+    "id": "C101",
+    "name": "저승사자",
+    "faction": "저승",
+    "godhood": "신령",
+    "role": "암살자",
+    "skill": "호명(呼名)",
+    "unique_skill": "명부에 적힌 이름",
+    "source": "대접을 받으면 돌아간다는 설화 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "기록"
+    }
+  },
+  {
+    "id": "C082",
+    "name": "객귀",
+    "faction": "저승",
+    "godhood": "잡귀",
+    "role": "암살자",
+    "skill": "길 위의 굶주림",
+    "unique_skill": "객귀물림",
+    "source": "무주고혼 [실재]",
+    "hidden": null,
+    "acquire": "천도·의례",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "넋"
+    }
+  },
+  {
+    "id": "C098",
+    "name": "액(厄)",
+    "faction": "저승",
+    "godhood": "하위신",
+    "role": "암살자",
+    "skill": "액운",
+    "unique_skill": "액이 든다",
+    "source": "액막이의 대상 [실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "기록"
+    }
+  },
+  {
+    "id": "C088",
+    "name": "달걀귀신",
+    "faction": "저승",
+    "godhood": "잡귀",
+    "role": "암살자",
+    "skill": "얼굴 없음",
+    "unique_skill": "얼굴이 없다",
+    "source": "[실재]",
+    "hidden": null,
+    "acquire": "천도·의례",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "넋"
+    }
+  },
+  {
+    "id": "C084",
+    "name": "상문살",
+    "faction": "저승",
+    "godhood": "잡귀",
+    "role": "암살자",
+    "skill": "상갓집 부정",
+    "unique_skill": "상갓집 부정",
+    "source": "[실재]",
+    "hidden": null,
+    "acquire": "일반 수집",
+    "evolution": {
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        "final"
+      ],
+      "route": "기록"
+    }
+  }
+]
