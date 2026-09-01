@@ -1026,6 +1026,36 @@ nav{background:rgba(255,255,255,.96)!important;border-top:1px solid var(--line)!
   display:grid;place-items:center;border:1px solid;font:800 8.5px var(--serif);
   background:rgba(11,10,8,.66)}
 #usr .bu.gone .bsg{opacity:.25}
+
+/* ══ D안 — 아트는 온전히, 글자는 전부 아래로 ═══════════════ */
+.cd .art.d{aspect-ratio:1;overflow:hidden;background:#000}
+.cd .art.d img{width:100%;height:100%;object-fit:cover;display:block}
+.cd .art.d .hem{position:absolute;left:0;right:0;bottom:0;height:15%;pointer-events:none;
+  background:linear-gradient(180deg,transparent,var(--heuk))}
+.cd .art.d .sil{z-index:3}
+
+.cd .plate{padding-top:2px}
+.cd .plate .ttl{display:flex;align-items:center;gap:10px}
+.cd .plate .nmx{font:800 26px var(--serif);color:var(--baek);letter-spacing:.03em;line-height:1.2}
+.cd .plate .sealx{margin-left:auto;flex:0 0 auto;width:28px;height:28px;display:grid;place-items:center;
+  border:1.5px solid;font:800 14px var(--serif);background:rgba(11,10,8,.5)}
+.cd .plate .stx{margin-top:5px;font-size:12px;letter-spacing:3px;color:var(--hwang-l)}
+.cd .plate .sub{margin-top:5px}
+
+/* 술법·앞장·유니크 — 접지 않는다 */
+.skwrap{margin-top:15px;display:flex;flex-direction:column;gap:9px}
+.skb{padding:11px 13px;background:linear-gradient(180deg,var(--heuk2),var(--heuk));
+  border:1px solid var(--line);border-left:2px solid var(--hwang)}
+.skb.dim{border-left-color:#3a3020;opacity:.72}
+.skb .skk{font:400 9.5px var(--serif);color:var(--cheong-l);letter-spacing:.3em}
+.skb.dim .skk{color:#6E6455}
+.skb .skn{margin-top:5px;font:800 16px var(--serif);color:var(--baek)}
+.skb.dim .skn{color:#8B8275}
+.skb .skd{margin-top:5px;font-size:11.5px;color:#A99E8C;line-height:1.75}
+.skb .skm{margin-top:8px;display:flex;flex-wrap:wrap;gap:5px}
+.skb .skm span{font-size:10px;color:var(--dim);letter-spacing:.04em;
+  padding:3px 7px;border:1px solid var(--line);background:rgba(0,0,0,.25)}
+.skb .skm b{color:var(--hwang-l);font-weight:700}
 </style>
 </head>
 <body>
@@ -1538,20 +1568,16 @@ function home(){
   const next   = opened.sort((a,b)=>(b.level_req??1)-(a.level_req??1))[0];
 
   const hero = !bc ? `
-    <div class="hero blank"><div class="mury"><i class="o"></i><i></i><i class="n"></i><b></b></div>
+    <div class="hero blank">
       <div class="hz"><div class="ht">興陽記</div><div class="hs">아직 아무도 모시지 않았다</div></div></div>`
-  : `<div class="hero">
+  : `<div class="hero" onclick="go('dogam');detail('${bc.id}')">
       ${bsrc?`<img src="${bsrc}" alt="">`:`<div class="blank" style="position:absolute;inset:0"></div>`}
-      <div class="mury"><i class="o"></i><i></i><i class="n"></i><b></b></div>
-      <span class="nh tl"></span><span class="nh tr"></span>
-      <span class="nh bl"></span><span class="nh br"></span>
-      <div class="fade"></div>
-      <div class="stele" onclick="go('dogam');detail('${bc.id}')">
-        <div class="n">${esc(bc.name)}</div>
-        ${best.tier?`<div class="s">${"★".repeat(best.tier)}</div>`:""}
-        <div class="seal" style="border-color:${bcol};color:${bcol}">${esc(bc.faction)}</div>
-      </div>
-      <div class="hloc">흥양현<br>고흥<br><span style="color:var(--hwang-l)">시간이 갈라진 자리</span></div>
+      <div class="hem"></div>
+    </div>
+    <div class="hbar" onclick="go('dogam');detail('${bc.id}')">
+      <div class="hn">${esc(bc.name)}</div>
+      ${best.tier?`<div class="hs2">${"★".repeat(best.tier)}</div>`:""}
+      <div class="hsl" style="border-color:${bcol};color:${bcol}">${esc(bc.faction)}</div>
     </div>`;
 
   $("#p-home").innerHTML = `
@@ -3616,6 +3642,38 @@ function detail(id){
     <b>${esc(c.name)}</b> — ${esc(c.source ?? "—")}
     ${c.unique_source?`<br><b>【${esc(c.unique_skill)}】</b> — ${esc(c.unique_source)}`:""}</div>`;
 
+  /* 술법·앞장·유니크 — 접어두지 않는다. 카드의 값어치는 여기서 결정된다. */
+  const numchip = (a) => a.filter(Boolean).map(x=>`<span>${x}</span>`).join("");
+  const skBlock = (kind, name, body, nums, dim) => `
+    <div class="skb${dim?" dim":""}">
+      <div class="skk">${kind}</div>
+      <div class="skn">${name}</div>
+      ${body?`<div class="skd">${body}</div>`:""}
+      ${nums?`<div class="skm">${nums}</div>`:""}
+    </div>`;
+
+  const skillPanel = `
+    <div class="skwrap">
+      ${skBlock("술법 術法", esc(c.skill ?? "—"),
+        esc(c.skill_desc ?? ""),
+        numchip([ STYPE[c.skill_type] ?? c.skill_type,
+                  c.skill_rate ? `발동 <b>${c.skill_rate}%</b>` : null,
+                  Number(c.skill_coef)>0 ? `계수 <b>×${Number(c.skill_coef).toFixed(2)}</b>` : null ]))}
+
+      ${skBlock("앞장 領", esc((c.leader_effect?.text ?? c.leader_bonus ?? "—").split(" — ")[0]),
+        esc((c.leader_effect?.text ?? c.leader_bonus ?? "").split(" — ")[1] ?? ""),
+        numchip([ "당의 맨 앞에 세울 때만" ]))}
+
+      ${ c.unique_skill ? skBlock(unlocked ? "유니크 唯一" : "잠김 封",
+        `【${esc(c.unique_skill)}】`,
+        esc(c.unique_effect?.text ?? ""),
+        numchip([ c.unique_type ? (STYPE[c.unique_type] ?? c.unique_type) : null,
+                  c.unique_rate ? `발동 <b>${c.unique_rate}%</b>` : null,
+                  Number(c.unique_coef)>0 ? `계수 <b>×${Number(c.unique_coef).toFixed(2)}</b>` : null,
+                  unlocked ? null : `5성 · ${esc(c.name)}의 신표 3` ]),
+        !unlocked) : "" }
+    </div>`;
+
   /* 攻防命格 — 한자 부수 라벨, 금빛 농담 밑줄이 상대 크기를 보여준다 */
   const S = mine ? statOf(c, mine) : null;
   const srow = (hanja, kr, num, w) =>
@@ -3643,35 +3701,22 @@ function detail(id){
       <button class="arw l" onclick="navCard(-1)" ${ni<=0?"disabled":""}><span>‹</span></button>
       <button class="arw r" onclick="navCard(1)"  ${ni>=NAV.length-1?"disabled":""}><span>›</span></button>
       <div class="nvi">${ni+1} / ${NAV.length}</div>`:""}
-    <div class="art" id="cdArt">
+    <!-- D안: 아트 위에 아무것도 올리지 않는다. 원륜·능화·격패 전부 아래로 내렸다.
+         아트와 패널 사이만 짧게 어두워진다. -->
+    <div class="art d" id="cdArt">
       ${src?`<img src="${src}" alt="">`:`<div class="blank" style="position:absolute;inset:0"></div>`}
-      <!-- 무령(巫鈴) 원륜 — 12방위 눈금 이중선. 인물 뒤로 눌러 초상이 주인공이 되게 한다. -->
-      <div class="muryeong" aria-hidden="true">
-        <div class="ring o"></div><div class="ring"></div><div class="ring i"></div>
-        <div class="bell"></div>
-      </div>
-      <!-- 금 능화(綾花) — 네 모서리 마름모 점 -->
-      <span class="neunghwa tl"></span><span class="neunghwa tr"></span>
-      <span class="neunghwa bl"></span><span class="neunghwa br"></span>
-      <div class="g"></div>
-      <span class="band f-${c.faction}" style="position:absolute;left:0;top:0;bottom:0;width:3px;z-index:2"></span>
-      <!-- 세로 격패(格牌) + 인주(印朱) 인장 -->
-      <div class="stele">
-        <div class="sn">${esc(c.name)}</div>
-        ${t?`<div class="ss">${"★".repeat(t)}</div>`:""}
-        <div class="seal" style="border-color:${colL};color:${colL}">${esc(c.faction)}</div>
-      </div>
-      ${c.hidden?`<span class="sil">숨은 신</span>`:""}
+      <div class="hem"></div>
     </div>
     <div class="plate">
+      <div class="ttl">
+        <div class="nmx">${esc(c.name)}</div>
+        <div class="sealx" style="border-color:${colL};color:${colL}">${esc(c.faction)}</div>
+      </div>
+      ${t?`<div class="stx">${"★".repeat(t)}</div>`:""}
       <div class="sub" style="color:${colL}">${c.godhood}${awk?` · 각성 ${awk}`:""}${c.rarity?` · ${c.rarity}`:""}</div>
       ${stBox}
+      ${skillPanel}
     </div>
-    ${sec("스킬", esc(c.skill ?? "—"), skillBody, false, true)}
-    ${sec("리더", esc((c.leader_effect?.text ?? c.leader_bonus ?? "—").split(" — ")[0]),
-          `<div class="t hw">${esc(c.leader_effect?.text ?? c.leader_bonus ?? "—")}</div>
-           <div style="margin-top:5px;color:#6E6455">가운데 자리(주신)에 세울 때만 걸린다.</div>`)}
-    ${sec(unlocked?"유니크":"잠김", `【${esc(c.unique_skill)}】`, uniqBody, !unlocked)}
     ${mine ? sec("격", gFull ? `${gLv} · 상한` : `${gLv} / ${gCap}`, gakBody) : ""}
     ${sec("기른다", t?`${t}성 · 각성 ${awk}`:"아직 안 모셨다", growBody)}
     ${sec("접신", mine ? `넋 ${gm.slots.length}/2 · 노드 ${gm.nodes.length}/${NODES.length}` : "—", napBody)}
