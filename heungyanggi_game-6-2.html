@@ -990,6 +990,42 @@ nav{background:rgba(255,255,255,.96)!important;border-top:1px solid var(--line)!
 .homewrap .strip small{display:block;margin-top:3px;font-size:9.5px;color:#6E6455;letter-spacing:.1em}
 .homewrap>.card{margin-left:14px;margin-right:14px}
 @media (prefers-reduced-motion:reduce){ .hero .mury{animation:none} }
+
+/* ══ 당(堂) — 다섯 위패 ═══════════════════════════════════ */
+.dhead{margin:-2px 0 14px}
+.dhead .k{font:400 10px var(--serif);color:var(--cheong-l);letter-spacing:.34em}
+.dhead .t{font:800 23px var(--serif);color:var(--baek);margin-top:6px;letter-spacing:.06em}
+.dhead .m{font-size:11px;color:var(--dim);margin-top:6px;line-height:1.7}
+.slots{display:grid;grid-template-columns:1.28fr repeat(4,1fr);gap:6px;align-items:end}
+.slots .sl{position:relative;aspect-ratio:3/4.4;overflow:hidden;background:#0C0A07;
+  border:1px solid var(--line);display:grid;place-items:center;
+  clip-path:polygon(50% 0,100% 7%,100% 100%,0 100%,0 7%)}
+.slots .sl.has{border-color:#3a3020;cursor:pointer}
+.slots .sl.lead{border-color:var(--hwang);box-shadow:0 0 16px rgba(200,162,75,.22)}
+.slots .sl img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 14%}
+.slots .sl .vg{position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 34%,rgba(11,10,8,.9) 82%,#0B0A08 100%)}
+.slots .sl .e{font:800 22px var(--serif);color:#3a3020}
+.slots .sl .nm{position:absolute;left:0;right:0;bottom:19px;z-index:2;text-align:center;
+  font:700 11px var(--serif);color:var(--baek);letter-spacing:.02em;
+  text-shadow:0 1px 6px rgba(0,0,0,.95);padding:0 2px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.slots .sl.lead .nm{font-size:13px;bottom:22px}
+.slots .sl .st{position:absolute;left:0;right:0;bottom:7px;z-index:2;text-align:center;
+  font-size:8.5px;letter-spacing:1px;color:var(--hwang-l);text-shadow:0 1px 5px #000}
+.slots .sl .sg{position:absolute;left:4px;top:9px;z-index:2;width:15px;height:15px;
+  display:grid;place-items:center;border:1px solid;font:800 9px var(--serif);
+  background:rgba(11,10,8,.6)}
+.slots .sl .ld{position:absolute;right:4px;top:9px;z-index:2;padding:2px 4px;
+  font:800 9px var(--serif);color:#1A140A;background:var(--hwang);letter-spacing:.06em}
+.slots .sl:not(.has) .no,.slots .sl .no{display:none}
+.slots .sl:not(.has)::after{content:"位";position:absolute;font:400 19px var(--serif);color:#2A2418}
+
+/* ══ 전투 — 세력 인주 ══════════════════════════════ */
+#usr .bu .bsg{position:absolute;left:3px;top:3px;z-index:4;width:14px;height:14px;
+  display:grid;place-items:center;border:1px solid;font:800 8.5px var(--serif);
+  background:rgba(11,10,8,.66)}
+#usr .bu.gone .bsg{opacity:.25}
 </style>
 </head>
 <body>
@@ -1947,16 +1983,22 @@ function dang(){
     const pc = ME.cards.find(c=>c.id===id);
     const c  = mc(pc.card_id) ?? GHOST(pc.card_id);
     const src = artOf(c, pc.tier);
+    const col = FCOL_L[c.faction] ?? "var(--hwang-l)";
     return `<div class="sl has ${i===0?"lead":""}" onclick="drop(${id})">
-      <span class="no">${i+1}</span>
       ${src?`<img src="${src}" alt="">`:`<span class="e">${esc(c.name[0])}</span>`}
-      ${i===0?`<span class="ld">앞장선다</span>`:""}</div>`;
+      <span class="vg"></span>
+      <span class="nm">${esc(c.name)}</span>
+      ${pc.tier?`<span class="st">${"★".repeat(pc.tier)}</span>`:""}
+      <span class="sg" style="border-color:${col};color:${col}">${esc(c.faction)}</span>
+      ${i===0?`<span class="ld">앞</span>`:""}</div>`;
   }).join("");
 
   $("#p-dang").innerHTML = `
-    <h2>당 堂</h2>
-    <p class="sub">다섯 위(位)까지 모신다. <b style="color:var(--hwang)">1번 칸이 앞장선다</b> — 리더 보너스가 붙는다.<br>
-      슬롯을 누르면 내린다. 순서를 바꾸려면 내렸다가 다시 모신다.</p>
+    <div class="dhead">
+      <div class="k">당 堂</div>
+      <div class="t">다섯 위(位)를 세운다</div>
+      <div class="m">맨 앞이 앞장선다 — 리더 보너스가 붙는다. 눌러서 내린다.</div>
+    </div>
 
     <div class="slots">${slots}</div>
 
@@ -2380,11 +2422,13 @@ function drawParty(){
   $("#usr").innerHTML = s.hp.map(h=>{
     const pc = ME.cards.find(c=>String(c.id)===String(h.uid));
     const c = pc ? (mc(pc.card_id) ?? GHOST(pc.card_id)) : null; if(!c) return "";
-    const src = artOf(c);
+    const src = artOf(c, pc.tier);
+    const col = FCOL_L[c.faction] ?? "var(--hwang-l)";
     return `<div class="bu ${h.alive?"":"gone"}" data-n="${esc(c.name)}" data-u="${h.uid}">
       <span class="bd2 f-${c.faction}"></span>
       ${src?`<img src="${src}" loading="lazy" alt="">`:""}
       <div class="lit"></div><div class="stg"></div>
+      <span class="bsg" style="border-color:${col};color:${col}">${esc(c.faction)}</span>
       <div class="bn2">${esc(c.name)}</div>
       <div class="hb"><i style="width:${Math.max(0,h.hp/h.maxhp*100)}%"></i></div>
       <div class="sb"></div></div>`;

@@ -16,7 +16,7 @@ const MASTER = {
             role:"밸런스", skill:"염병", skill_type:"single", skill_rate:12, skill_coef:1.3,
             sinpyo_id:"SP_121", unique_skill:"업경대", unique_effect:{text:"죄를 비춘다"},
             leader_effect:{text:"저승 공격 +8%"} }],
-  dungeons: [], tiers: [1,2,3,4,5].map(t=>({tier:t, cost:12*t, ap:100*t, dp:80*t, hp:600*t, spd_base:100})),
+  dungeons: [{id:'D01',name:'흥양 저잣거리',level_req:1,kind:'normal',hyang_cost:8,combat:true}], tiers: [1,2,3,4,5].map(t=>({tier:t, cost:12*t, ap:100*t, dp:80*t, hp:600*t, spd_base:100})),
   rule: {}
 };
 let PLAYER = {
@@ -162,7 +162,35 @@ const E = expr => w.eval(expr);
   ok("단계 그림 없는 카드는 연출 안 함", w.evoScene("C999", 1, 2) === false);
   ok("같은 그림이면 연출 안 함", w.evoScene("C121", 5, 5) === false);
 
-  console.log("\n[7] 신격상세 — 승인본 언어가 실제로 렌더되나");
+  console.log("\n[7] 본향(홈) — 본존이 화면을 지배하나");
+  w.home();
+  const hm = w.document.querySelector("#p-home").innerHTML;
+  ok("본존 영역", /class="hero"/.test(hm));
+  ok("실제 그림이 들어감", /<img src="redraw\/C121_t2\.webp"/.test(hm),
+     (hm.match(/<img src="[^"]*"/)||["없음"])[0]);
+  ok("무령 원륜", /class="mury"/.test(hm));
+  ok("능화 네 모서리", (hm.match(/class="nh /g)||[]).length === 4);
+  ok("세로 격패에 이름", /class="stele"[\s\S]{0,120}오관대왕/.test(hm));
+  ok("다음 걸음 카드", /class="step"/.test(hm) && /흥양 저잣거리/.test(hm));
+  ok("출정 버튼", /출 정/.test(hm));
+  ok("재화 스트립", (hm.match(/class="strip"/g)||[]).length === 2);
+  ok("옛 v34 진단줄 사라짐", !/v34 · 격·무신도/.test(hm));
+
+  console.log("\n[8] 당(堂) — 다섯 위패");
+  E("PICK.length=0; PICK.push(1,2,3)");   // 최상위 let 은 window 에 안 붙는다
+  w.dang();
+  const dg = w.document.querySelector("#p-dang").innerHTML;
+  ok("위패 다섯 자리", (dg.match(/class="sl[ "]/g)||[]).length === 5,
+     (dg.match(/class="sl[ "]/g)||[]).length + "자리");
+  ok("셋은 채워지고 둘은 비었다", (dg.match(/class="sl has/g)||[]).length === 2 + 1,
+     (dg.match(/class="sl has/g)||[]).length + "채움");
+  ok("앞장서는 자리 표시", /class="sl has lead"/.test(dg));
+  ok("위패에 실제 그림", /<img src="redraw\//.test(dg));
+  ok("이름이 위패에", /class="nm">오관대왕/.test(dg));
+  ok("세력 인주", /class="sg"/.test(dg));
+  ok("머리말 교체", /class="dhead"/.test(dg) && !/1번 칸이 앞장선다/.test(dg));
+
+  console.log("\n[9] 신격상세 — 승인본 언어가 실제로 렌더되나");
   w.NAV = ["C121"];
   w.detail("C121");
   const cd = w.document.querySelector("#ovIn").innerHTML;
@@ -181,7 +209,7 @@ const E = expr => w.eval(expr);
   ok("능력치를 서버 공식으로 계산", !!S && S.ap > 0 && S.dp > 0,
      S ? `공격 ${S.ap} 방어 ${S.dp} 치명 ${S.crit}%` : "null");
 
-  console.log("\n[8] 진화 실행 (제물 2장 → 3성)");
+  console.log("\n[10] 진화 실행 (제물 2장 → 3성)");
   w.growOpen("evolve", 1);
   w.growPick(2); w.growPick(3);
   await w.growRun();
@@ -195,7 +223,7 @@ const E = expr => w.eval(expr);
      /C121_t3\.webp/.test(ov2.innerHTML));
   ok("결과 화면 표시", /이루었다/.test(w.document.querySelector("#growIn").innerHTML));
 
-  console.log("\n[9] 런타임 에러");
+  console.log("\n[11] 런타임 에러");
   ok("에러 없음", errs.length === 0, errs.join(" | "));
 
   console.log(`\n${"=".repeat(40)}\n통과 ${PASS} · 실패 ${FAIL}\n${"=".repeat(40)}`);
