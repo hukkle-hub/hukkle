@@ -928,6 +928,68 @@ nav{background:rgba(255,255,255,.96)!important;border-top:1px solid var(--line)!
 .cd .plate .sub{font-size:11px;letter-spacing:.1em}
 @media (prefers-reduced-motion:reduce){ .cd .muryeong{animation:none} }
 
+
+/* ══ 본향(홈) — 본존이 화면을 지배한다 ═══════════════════════ */
+.homewrap{margin:-14px -14px 0}
+.hero{position:relative;aspect-ratio:3/4;max-height:62vh;overflow:hidden;background:#000}
+.hero img{width:100%;height:100%;object-fit:cover;object-position:center 16%;
+  filter:saturate(1.04) contrast(1.03)}
+.hero.blank{aspect-ratio:4/5;background:radial-gradient(ellipse at 50% 38%,#241c13,#0a0806 68%)}
+.hero .fade{position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(11,10,8,.72) 0%,transparent 22% 52%,rgba(11,10,8,.86) 88%,var(--heuk) 100%)}
+.hero .hz{position:absolute;inset:0;display:grid;place-content:center;text-align:center;gap:9px}
+.hero .ht{font:900 34px var(--serif);letter-spacing:.2em;color:var(--baek)}
+.hero .hs{font-size:11.5px;color:var(--dim);letter-spacing:.14em}
+
+.hero .mury{position:absolute;left:50%;top:37%;width:76%;aspect-ratio:1;
+  transform:translate(-50%,-50%);pointer-events:none;animation:hmRot 110s linear infinite}
+.hero .mury i{position:absolute;inset:0;border-radius:50%;display:block;
+  border:1px solid rgba(200,162,75,.15)}
+.hero .mury i.o{inset:-7%;border-color:rgba(200,162,75,.08)}
+.hero .mury i.n{inset:13%;border-color:rgba(200,162,75,.11)}
+.hero .mury b{position:absolute;left:50%;top:50%;width:6px;height:6px;transform:translate(-50%,-50%);
+  border-radius:50%;background:var(--hwang);box-shadow:0 0 12px var(--hwang-l),0 0 3px #fff;opacity:.7}
+@keyframes hmRot{to{transform:translate(-50%,-50%) rotate(360deg)}}
+
+.hero .nh{position:absolute;width:9px;height:9px;transform:rotate(45deg);opacity:.55;z-index:3;
+  background:linear-gradient(135deg,var(--hwang-l),var(--hwang));box-shadow:0 0 7px rgba(200,162,75,.32)}
+.hero .nh.tl{left:14px;top:14px}   .hero .nh.tr{right:14px;top:14px}
+.hero .nh.bl{left:14px;bottom:14px}.hero .nh.br{right:14px;bottom:14px}
+
+.hero .stele{position:absolute;right:18px;bottom:20px;z-index:4;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:8px}
+.hero .stele .n{font:900 30px var(--serif);color:var(--baek);writing-mode:vertical-rl;
+  line-height:1.3;text-shadow:0 2px 14px rgba(0,0,0,.92)}
+.hero .stele .s{font-size:11px;letter-spacing:2px;color:var(--hwang-l);
+  text-shadow:0 1px 6px rgba(0,0,0,.9)}
+.hero .stele .seal{width:26px;height:26px;display:grid;place-items:center;border:1.5px solid;
+  font:800 13px var(--serif);background:rgba(11,10,8,.55)}
+.hero .hloc{position:absolute;left:18px;bottom:22px;z-index:4;
+  font:400 11px var(--serif);color:#9C9280;line-height:1.95;letter-spacing:.1em}
+
+.homewrap .step{margin:-6px 14px 0;position:relative;z-index:5;cursor:pointer;
+  padding:13px 15px;background:linear-gradient(180deg,rgba(23,19,14,.97),rgba(11,10,8,.97));
+  border:1px solid #3a3020}
+.homewrap .step.now{border-color:var(--hwang)}
+.homewrap .step .k{font:400 9.5px var(--serif);color:var(--cheong-l);letter-spacing:.28em}
+.homewrap .step.now .k{color:var(--hwang-l)}
+.homewrap .step .t{font:800 19px var(--serif);color:var(--baek);margin-top:5px}
+.homewrap .step .m{font-size:10.5px;color:#6E6455;margin-top:4px}
+
+.homewrap .cta{display:flex;gap:8px;margin:10px 14px 0}
+.homewrap .cta .btn{flex:1;padding:13px 0;font:700 13px var(--serif);letter-spacing:.22em;
+  color:#1A140A;background:linear-gradient(180deg,var(--hwang-l),var(--hwang));border:1px solid #6b5426;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 4px 14px rgba(200,162,75,.2)}
+.homewrap .cta .btn.g{color:var(--hwang-l);background:rgba(10,9,7,.72);
+  border-color:#3a3020;box-shadow:none}
+
+.homewrap .strip{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin:10px 14px 0;
+  background:var(--line);border:1px solid var(--line)}
+.homewrap .strip>div{background:var(--heuk2);padding:11px 6px;text-align:center}
+.homewrap .strip b{display:block;font:800 18px var(--serif);color:var(--hwang-l)}
+.homewrap .strip small{display:block;margin-top:3px;font-size:9.5px;color:#6E6455;letter-spacing:.1em}
+.homewrap>.card{margin-left:14px;margin-right:14px}
+@media (prefers-reduced-motion:reduce){ .hero .mury{animation:none} }
 </style>
 </head>
 <body>
@@ -1424,46 +1486,75 @@ function guideHtml(){
 function home(){
   const p = ME.player, cap = SINRYEOK();
   const owned = ME.cards.length;
-  const seen = new Set(ME.cards.map(c=>c.card_id)).size;
-  /* 진단줄 — 옛 파일을 캐시로 보고 있으면 이 줄 자체가 안 보인다.
-     그림이 안 뜰 때 "몇 장이 서버에 있는지"를 바로 알 수 있다. */
-  const art = M.cards.filter(c=>artOf(c)).length;
-  $("#p-home").innerHTML = `
-    <h2>본향 本鄕</h2>
-    <p class="sub">고흥의 신과 귀 백스무 위(位).<br>모시고, 기르고, 원(冤)을 푼다.</p>
-    <p class="sub" style="font-size:11px;color:#5C5347">
-      v34 · 격·무신도 효과 · 그림 ${M.with_art ?? "?"}/${M.total_count ?? 120}장 · 도감 ${seen}/${M.total_count ?? 120}위</p>
+  const seen  = new Set(ME.cards.map(c=>c.card_id)).size;
+  const total = M.total_count ?? 124;
 
-    ${guideHtml()}
+  /* ── 본존(本尊) — 가장 잘 기른 신이 화면을 지배한다.
+     시안이 밋밋했던 건 인물 자리가 비어 있어서였다. 여기엔 실제 그림이 온다. */
+  const best = [...ME.cards].sort((a,b)=>
+      (b.tier??1)-(a.tier??1) || (b.awaken??0)-(a.awaken??0) || (b.level??1)-(a.level??1))[0];
+  const bc   = best ? (mc(best.card_id) ?? GHOST(best.card_id)) : null;
+  const bsrc = bc ? artOf(bc, best.tier) : null;
+  const bcol = bc ? (FCOL_L[bc.faction] ?? "var(--hwang-l)") : "var(--hwang-l)";
 
-    ${SESS ? `<div class="card" style="border-color:var(--hwang)">
-      <h3>가던 길이 있다</h3>
-      <div class="lbl"><span>${esc(SESS.dungeon)}</span><span>${SESS.step}/${SESS.of} 걸음</span></div>
-      <div class="bar pg"><i style="width:${SESS.step/SESS.of*100}%"></i></div>
-      <button class="btn" onclick="go('gil')">이어서 간다</button>
-    </div>` : ""}
+  /* 다음 걸음 — 가던 길이 있으면 그것, 없으면 들 수 있는 가장 깊은 곳 */
+  const opened = (M.dungeons ?? []).filter(d => (d.level_req ?? 1) <= p.level && d.kind !== "special");
+  const next   = opened.sort((a,b)=>(b.level_req??1)-(a.level_req??1))[0];
 
-    <div class="card">
-      <h3>모신 신</h3>
-      <div class="lbl"><span>보유 ${owned}위</span><span>도감 ${seen}/120</span></div>
-      <div class="bar pg"><i style="width:${seen/120*100}%"></i></div>
-      <div style="font-size:11.5px;color:var(--dim);margin-top:9px;line-height:1.7">
-        신력 <b style="color:var(--hwang)">${cap}</b> (격 ${p.level})<br>
-        <span style="font-size:10.5px">5성 다섯을 한 자리에 세우려면 신력 410. 격 175가 필요하다 — 닿을 수 없다.</span>
+  const hero = !bc ? `
+    <div class="hero blank"><div class="mury"><i class="o"></i><i></i><i class="n"></i><b></b></div>
+      <div class="hz"><div class="ht">興陽記</div><div class="hs">아직 아무도 모시지 않았다</div></div></div>`
+  : `<div class="hero">
+      ${bsrc?`<img src="${bsrc}" alt="">`:`<div class="blank" style="position:absolute;inset:0"></div>`}
+      <div class="mury"><i class="o"></i><i></i><i class="n"></i><b></b></div>
+      <span class="nh tl"></span><span class="nh tr"></span>
+      <span class="nh bl"></span><span class="nh br"></span>
+      <div class="fade"></div>
+      <div class="stele" onclick="go('dogam');detail('${bc.id}')">
+        <div class="n">${esc(bc.name)}</div>
+        ${best.tier?`<div class="s">${"★".repeat(best.tier)}</div>`:""}
+        <div class="seal" style="border-color:${bcol};color:${bcol}">${esc(bc.faction)}</div>
       </div>
-    </div>
+      <div class="hloc">흥양현<br>고흥<br><span style="color:var(--hwang-l)">시간이 갈라진 자리</span></div>
+    </div>`;
 
-    <div class="card">
-      <h3>재화</h3>
-      <dl>
-        <div class="row"><dt>향 香</dt><dd>${p.hyang} / 120 <span style="color:var(--dim);font-size:11px">— 6분에 하나씩 찬다</span></dd></div>
-        <div class="row"><dt>복채 福債</dt><dd>${p.bokchae} <span style="color:var(--dim);font-size:11px">— 굿 한 번에 30</span></dd></div>
-        <div class="row"><dt>엽전 錢</dt><dd>${Number(p.yeopjeon).toLocaleString()}</dd></div>
-        <div class="row"><dt>인정 人情</dt><dd>${p.injeong}</dd></div>
-      </dl>
-    </div>
+  $("#p-home").innerHTML = `
+    <div class="homewrap">
+      ${hero}
 
-    ${sinmulHtml()}`;
+      ${ SESS ? `
+      <div class="step now" onclick="go('gil')">
+        <div class="k">가던 길</div>
+        <div class="t">${esc(SESS.dungeon)}</div>
+        <div class="m">${SESS.step} / ${SESS.of} 걸음 · 부정 ${SESS.bujeong ?? 0}</div>
+        <div class="bar pg" style="margin-top:9px"><i style="width:${SESS.step/SESS.of*100}%"></i></div>
+      </div>`
+      : next ? `
+      <div class="step" onclick="go('gil')">
+        <div class="k">다음 걸음</div>
+        <div class="t">${esc(next.name)}</div>
+        <div class="m">香 ${next.hyang_cost ?? 0} · 열 걸음 · 당 다섯 위</div>
+      </div>` : "" }
+
+      <div class="cta">
+        <button class="btn g" onclick="go('dang')">당을 세운다</button>
+        <button class="btn" onclick="go('gil')">출 정</button>
+      </div>
+
+      <div class="strip">
+        <div><b>${p.hyang}</b><small>香 향</small></div>
+        <div><b>${p.bokchae}</b><small>福 복채</small></div>
+        <div><b>${Number(p.yeopjeon).toLocaleString()}</b><small>錢 엽전</small></div>
+      </div>
+      <div class="strip">
+        <div><b>${owned}</b><small>모신 신</small></div>
+        <div><b>${seen}/${total}</b><small>도감</small></div>
+        <div><b>${cap}</b><small>신력 (격 ${p.level})</small></div>
+      </div>
+
+      ${guideHtml()}
+      ${sinmulHtml()}
+    </div>`;
 }
 
 /* 신물 궤 — 창고에 뭐가 쌓였는지 보여준다. 여태 개수 조회만 하고 보여주지는 않았다.
