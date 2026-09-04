@@ -1,0 +1,15 @@
+{
+  "name": "흥양기 — 얼굴 없는 밤굿",
+  "short_name": "흥양기",
+  "description": "고흥의 생활 풍경에서 시작되는 한국 설화·의례 카드 RPG 세로 슬라이스",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#050809",
+  "theme_color": "#050809",
+  "lang": "ko-KR",
+  "icons": [
+    {"src":"./icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
+  ]
+}
