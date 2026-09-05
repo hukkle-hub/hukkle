@@ -1,0 +1,19 @@
+{
+  "version": "39.7.0",
+  "result": "PASS",
+  "checks": {
+    "version": true,
+    "js_syntax": true,
+    "approved_battle": true,
+    "real_icons": true,
+    "cinematics": true,
+    "taboo_choice": true,
+    "break_system": true
+  },
+  "cinematic_durations": {
+    "raid_intro_nokdong.mp4": 2.8,
+    "raid_skill_yongshingut.mp4": 2.27,
+    "raid_knot_break.mp4": 1.47,
+    "raid_victory_nokdong.mp4": 2.7
+  }
+}
