@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#090c0e">
 <meta name="color-scheme" content="dark">
-<meta name="hy-version" content="38.0.0">
+<meta name="hy-version" content="40.1.0">
 <meta name="hy-build" content="__DEPLOY_SHA__">
 <meta name="hy-api-base" content="https://ybflkszmymalhafzzdbs.supabase.co/functions/v1/hy">
 <meta name="description" content="흥양기 — 현대 고흥을 여행하며 오래된 전승과 존재의 사연을 기록하는 지역 설화 탐험 RPG">
@@ -25,6 +25,10 @@ body:before{content:"";position:fixed;inset:0;background:radial-gradient(circle 
 .orientation{display:none;position:fixed;inset:0;z-index:999;background:#050709;color:#eee;align-items:center;justify-content:center;text-align:center;padding:30px}.orientation b{display:block;font-size:25px;margin-bottom:9px}@media(max-aspect-ratio:1/1){.orientation{display:flex}}
 /* home */
 .home-media{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#050607}.home-vignette{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.08),transparent 34% 73%,rgba(0,0,0,.08));pointer-events:none}.home-hit{position:absolute;bottom:7.5%;height:17%;background:transparent;border:1px solid transparent;border-radius:14px;z-index:20}.home-hit:after{content:attr(aria-label);position:absolute;left:50%;top:-30px;translate:-50% 0;white-space:nowrap;background:rgba(5,7,8,.83);border:1px solid var(--line);border-radius:999px;padding:5px 10px;font-size:10px;opacity:0;transition:.2s}.home-hit:hover,.home-hit:focus-visible{border-color:rgba(255,224,160,.68);box-shadow:inset 0 0 25px rgba(221,184,111,.22),0 0 24px rgba(221,184,111,.16)}.home-hit:hover:after,.home-hit:focus-visible:after{opacity:1}.home-hit[data-screen="map"]{left:16.1%;width:10.4%}.home-hit[data-screen="inventory"]{left:27.1%;width:10.3%}.home-hit[data-screen="cards"]{left:38%;width:10.5%}.home-hit[data-screen="codex"]{left:49%;width:10.4%}.home-hit[data-screen="party"]{left:59.9%;width:10.5%}.home-hit[data-screen="shop"]{left:70.9%;width:10.5%}.home-hit[data-screen="missions"]{left:81.8%;width:10.5%}
+.home-hit{touch-action:manipulation}.home-hit::before{content:"";position:absolute;inset:0;border-radius:14px}.home-hit:active::before{background:rgba(255,224,160,.10)}
+.route-debug{position:absolute;left:50%;bottom:1.5%;transform:translateX(-50%);z-index:29;display:none;padding:5px 10px;border-radius:999px;background:rgba(0,0,0,.65);font-size:9px;color:#ffe0a0;pointer-events:none}
+body[data-hy-route-debug="1"] .route-debug{display:block}
+
 .home-action{position:absolute;right:3.2%;top:18%;z-index:24;width:20%;padding:15px 16px;border-radius:16px;border:1px solid rgba(255,224,160,.2);background:linear-gradient(180deg,rgba(12,16,19,.8),rgba(4,7,9,.92));backdrop-filter:blur(16px);box-shadow:0 18px 50px rgba(0,0,0,.3);text-align:left}.home-action small{color:var(--gold);letter-spacing:.12em}.home-action b{display:block;font-family:"Noto Serif KR",serif;font-size:20px;margin:6px 0}.home-action span{font-size:11px;color:var(--muted)}.home-action .go{margin-top:12px;display:flex;justify-content:space-between;align-items:center;color:var(--gold2);font-weight:800;font-size:12px}.home-action:hover{border-color:rgba(255,224,160,.5);transform:translateY(-2px)}
 .top-hit{position:absolute;top:1.5%;width:4.4%;height:7.5%;z-index:25;background:transparent;border-radius:12px}.top-hit.mail{right:8.9%}.top-hit.settings{right:4.2%}.top-hit:hover{box-shadow:inset 0 0 25px rgba(255,224,160,.18)}
 
@@ -127,6 +131,583 @@ body:before{content:"";position:fixed;inset:0;background:radial-gradient(circle 
   .home-live-clock{width:112px;min-height:48px;padding:6px 8px;font-size:12px}.home-live-clock small{font-size:6px}.home-live-money{height:32px}.home-action{padding:8px}.home-action b{font-size:12px}.home-action span{font-size:7px}
 }
 </style>
+
+<style id="hy-ui-completion-v382">
+/* v38.2 UI completion layer */
+.screen{will-change:opacity,transform}
+.screen.hy-soft-enter{animation:hyScreenIn .34s cubic-bezier(.2,.8,.2,1)}
+@keyframes hyScreenIn{from{opacity:.15;filter:blur(5px);transform:scale(1.008)}to{opacity:1;filter:none;transform:none}}
+.nav button.active{background:rgba(221,184,111,.12);box-shadow:inset 0 0 0 1px rgba(255,224,160,.18)}
+.inv-cine-layer .inv-cine-phase{display:none!important}
+.inv-cine-layer:after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 50% 55%,transparent 35%,rgba(0,0,0,.24) 100%)}
+.hy-inline-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
+.hy-inline-actions button{min-height:38px;padding:0 13px;border-radius:999px}
+.hy-track-card{margin-top:12px;padding:12px;border-radius:14px;border:1px solid rgba(255,224,160,.16);background:rgba(221,184,111,.055)}
+.hy-track-card small{display:block;color:#9c9485;font-size:9px}
+.hy-track-card b{display:block;margin:4px 0 8px;font-size:13px}
+.mission{cursor:pointer;transition:.18s}
+.mission.hy-tracked{border-color:rgba(255,224,160,.42)!important;box-shadow:0 0 0 1px rgba(255,224,160,.10),0 12px 30px rgba(0,0,0,.2)}
+.good{transition:.18s}
+.good:active,.mission:active,.bag-slot:active,.roster-card-v6:active{transform:scale(.985)}
+.hy-party-ready{margin-top:10px;padding:10px 12px;border-radius:13px;background:rgba(102,178,156,.08);border:1px solid rgba(102,178,156,.24);font-size:10px;color:#bfe9dc}
+.hy-modal-sheet{max-width:560px}
+.hy-modal-sheet h2{margin:5px 0 8px;font-family:"Noto Serif KR",serif}
+.hy-modal-sheet .hero{font-size:46px;margin:6px 0 10px}
+.hy-route-note{position:absolute;left:50%;bottom:2.2%;translate:-50% 0;z-index:70;padding:5px 10px;border-radius:999px;background:rgba(2,4,5,.66);backdrop-filter:blur(10px);font-size:9px;color:#a89f90;opacity:0;pointer-events:none;transition:.2s}
+body[data-hy-route-debug="1"] .hy-route-note{opacity:1}
+@media(max-width:760px){
+  .hy-inline-actions button{min-height:34px;font-size:9px}
+  .hy-track-card{padding:9px}
+}
+</style>
+
+
+<style id="hy-yeojaman-v383">
+#hy-tutorial{position:fixed;inset:0;z-index:2147481000;background:#06090a;color:#f5efe2;display:none;font-family:Pretendard,"Noto Sans KR","Apple SD Gothic Neo",system-ui,sans-serif}
+#hy-tutorial.active{display:block}
+#hy-tutorial .hy-scene{position:absolute;inset:0;overflow:hidden;background:#071012}
+#hy-tutorial .hy-scene:before{content:"";position:absolute;inset:-4%;background:
+linear-gradient(180deg,rgba(4,8,10,.10),rgba(2,5,7,.78)),
+url('./assets/hub_poster.png') center/cover no-repeat;filter:saturate(.72) contrast(1.08) brightness(.72);transform:scale(1.05)}
+#hy-tutorial[data-step="travel"] .hy-scene:before{filter:saturate(.56) contrast(1.08) brightness(.66);transform:scale(1.12) translateX(-2%)}
+#hy-tutorial[data-step="arrival"] .hy-scene:before{filter:saturate(.64) contrast(1.04) brightness(.79);transform:scale(1.06) translateY(2%)}
+#hy-tutorial[data-step="observe"] .hy-scene:before{filter:saturate(.52) contrast(1.15) brightness(.64);transform:scale(1.13) translateX(2%)}
+#hy-tutorial[data-step="anomaly"] .hy-scene:before{filter:saturate(.38) contrast(1.25) brightness(.48);transform:scale(1.17)}
+#hy-tutorial[data-step="encounter"] .hy-scene:before{filter:saturate(.38) contrast(1.18) brightness(.42);transform:scale(1.18) translateX(-3%)}
+#hy-tutorial .hy-vignette{position:absolute;inset:0;background:radial-gradient(circle at 50% 45%,transparent 28%,rgba(0,0,0,.24) 72%,rgba(0,0,0,.62) 100%);pointer-events:none}
+#hy-tutorial .hy-film{position:absolute;inset:0;opacity:.055;mix-blend-mode:screen;pointer-events:none;background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.1) 0 1px,transparent 1px 3px)}
+#hy-tutorial .hy-top{position:absolute;left:max(18px,env(safe-area-inset-left));right:max(18px,env(safe-area-inset-right));top:max(14px,env(safe-area-inset-top));z-index:4;display:flex;justify-content:space-between;align-items:center;gap:16px}
+#hy-tutorial .hy-top .crumb{font-size:10px;letter-spacing:.16em;color:#d7b66f;font-weight:850}
+#hy-tutorial .hy-top .progress{width:min(300px,42vw);height:3px;border-radius:99px;background:rgba(255,255,255,.12);overflow:hidden}
+#hy-tutorial .hy-top .progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,#d7b66f,#ffe1a0);transition:.45s}
+#hy-tutorial .hy-panel{position:absolute;z-index:5;left:max(22px,env(safe-area-inset-left));bottom:max(22px,calc(env(safe-area-inset-bottom) + 18px));width:min(600px,calc(100vw - 44px));padding:18px 20px;border:1px solid rgba(255,226,160,.18);border-radius:20px;background:linear-gradient(155deg,rgba(9,13,15,.90),rgba(3,6,8,.94));backdrop-filter:blur(18px);box-shadow:0 28px 80px rgba(0,0,0,.4)}
+#hy-tutorial .hy-panel small{display:block;color:#d7b66f;font-size:9px;letter-spacing:.16em;font-weight:850}
+#hy-tutorial .hy-panel h1{font:700 clamp(21px,3.2vw,34px)/1.2 "Noto Serif KR",serif;margin:7px 0 8px}
+#hy-tutorial .hy-panel p{margin:0;color:#c2baaa;font-size:12px;line-height:1.75}
+#hy-tutorial .hy-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+#hy-tutorial button{min-height:42px;padding:0 16px;border-radius:999px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.055);color:#f5efe2;font-weight:800;font-size:11px}
+#hy-tutorial button.primary{border:0;background:linear-gradient(#f0d28c,#b9843e);color:#171006}
+#hy-tutorial .hy-record{position:absolute;right:max(22px,env(safe-area-inset-right));bottom:max(26px,calc(env(safe-area-inset-bottom) + 20px));z-index:5;width:min(320px,30vw);padding:14px 15px;border-radius:16px;border:1px solid rgba(102,178,156,.23);background:rgba(6,14,14,.76);backdrop-filter:blur(16px);box-shadow:0 18px 55px rgba(0,0,0,.35)}
+#hy-tutorial .hy-record b{display:block;color:#bce8dc;font-size:11px;margin-bottom:4px}.hy-record span{display:block;color:#a8b7b1;font-size:9px;line-height:1.55}
+#hy-tutorial .hy-silhouette{position:absolute;z-index:3;right:14%;bottom:9%;width:17%;aspect-ratio:.55;border-radius:46% 46% 18% 18%;background:linear-gradient(180deg,rgba(218,225,229,.40),rgba(77,86,91,.04));filter:blur(.4px);opacity:0;transform:translateY(14px);transition:.7s}
+#hy-tutorial[data-step="encounter"] .hy-silhouette{opacity:.86;transform:none}
+#hy-tutorial .hy-waterline{position:absolute;left:0;right:0;bottom:17%;height:2px;background:linear-gradient(90deg,transparent,rgba(196,214,218,.42),transparent);opacity:.5}
+#hy-tutorial .hy-glitch{position:absolute;left:9%;top:36%;width:15%;height:7%;border-top:1px solid rgba(190,220,224,.5);border-bottom:1px solid rgba(190,220,224,.2);opacity:0;filter:blur(.3px);transform:skewX(-18deg)}
+#hy-tutorial[data-step="anomaly"] .hy-glitch,#hy-tutorial[data-step="encounter"] .hy-glitch{opacity:.78;animation:hyAnom 2.4s ease-in-out infinite}
+@keyframes hyAnom{50%{transform:translateX(14px) skewX(-18deg);opacity:.35}}
+#hy-tutorial .hy-skip{position:absolute;z-index:7;right:max(18px,env(safe-area-inset-right));top:max(52px,calc(env(safe-area-inset-top) + 44px));background:rgba(3,5,6,.58);backdrop-filter:blur(10px)}
+@media(max-width:760px){#hy-tutorial .hy-panel{width:min(560px,72vw);padding:14px 16px}.hy-record{display:none!important}#hy-tutorial .hy-panel p{font-size:10px}#hy-tutorial .hy-panel h1{font-size:21px}#hy-tutorial button{min-height:36px;font-size:9px;padding:0 12px}}
+</style>
+
+
+<style id="hy-cine-polish-v384">
+/* 흥양기 v38.4 — 메뉴 행동형 시네마틱 통일 */
+.cine-layer,.inv-cine-layer,.card-cine-layer,.codex-cine-layer{
+  background:#020304!important;
+  transition:opacity .22s ease,visibility .22s ease!important;
+}
+.cine-layer video,.inv-cine-layer video,.card-cine-layer video,.codex-cine-layer video{
+  object-fit:cover!important;
+  background:#020304!important;
+  image-rendering:auto;
+  transform:translateZ(0);
+}
+.cine-phase,.inv-cine-phase,.card-cine-phase,.codex-cine-phase{
+  display:none!important;
+}
+.cine-progress{
+  opacity:.26!important;
+  height:1px!important;
+}
+.cine-skip{
+  opacity:0!important;
+  pointer-events:none!important;
+  transition:opacity .18s ease!important;
+}
+.cine-layer.active.hy-show-skip .cine-skip,
+.inv-cine-layer.active.hy-show-skip .cine-skip,
+.card-cine-layer.active.hy-show-skip .cine-skip,
+.codex-cine-layer.active.hy-show-skip .cine-skip{
+  opacity:.72!important;
+  pointer-events:auto!important;
+}
+.cine-layer:after,.inv-cine-layer:after,.card-cine-layer:after,.codex-cine-layer:after{
+  content:"";position:absolute;inset:0;z-index:3;pointer-events:none;
+  background:
+    radial-gradient(circle at 50% 52%,transparent 48%,rgba(0,0,0,.18) 100%),
+    linear-gradient(180deg,rgba(0,0,0,.08),transparent 22%,transparent 80%,rgba(0,0,0,.14));
+}
+body.hy-cine-playing #hy-update-root{opacity:.15;pointer-events:none}
+@media(max-width:760px){
+  .cine-layer video,.inv-cine-layer video,.card-cine-layer video,.codex-cine-layer video{object-fit:cover!important}
+}
+</style>
+
+
+<style id="hy-ui-final-v385">
+/* v38.5 final web-prototype polish */
+.hy-context-cine{position:absolute;inset:0;z-index:258;opacity:0;visibility:hidden;pointer-events:none;background:#020304;transition:opacity .18s ease,visibility .18s}
+.hy-context-cine.active{opacity:1;visibility:visible;pointer-events:auto}
+.hy-context-bg{position:absolute;inset:-3%;background:url('./assets/hub_poster.png') center/cover no-repeat;filter:brightness(.28) blur(2px);transform:scale(1.025);animation:hyCtx .72s cubic-bezier(.2,.8,.2,1)}
+@keyframes hyCtx{from{filter:brightness(.6) blur(0);transform:scale(1)}to{filter:brightness(.28) blur(2px);transform:scale(1.025)}}
+#partyCinematic video{object-fit:cover!important}
+#partyCinematic .card-cine-phase{display:none!important}
+#partyCinematic .card-cine-skip{opacity:0;transition:.2s}
+#partyCinematic.active.hy-show-skip .card-cine-skip{opacity:.72}
+.bag-slots{align-content:start}
+.bag-slot{min-width:0}
+.bag-slot .qty{font-variant-numeric:tabular-nums}
+.card-grid{align-content:start}
+.card-item{transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease}
+.card-item:active{transform:scale(.985)}
+#goodGrid .good,#missionList .mission{touch-action:manipulation}
+.screen[data-screen="shop"] .content,.screen[data-screen="missions"] .content{animation:hyPanelIn .24s ease}
+@keyframes hyPanelIn{from{opacity:.35;transform:translateY(4px)}to{opacity:1;transform:none}}
+@media(max-width:760px){
+  .hy-context-bg{background-position:center}
+}
+</style>
+
+
+<style id="hy-free-explore-v386">
+#hy-region-visit{position:fixed;inset:0;z-index:2147480500;display:none;background:#06090a;color:#f5efe2;font-family:Pretendard,"Noto Sans KR","Apple SD Gothic Neo",system-ui,sans-serif}
+#hy-region-visit.active{display:block}
+#hy-region-visit .bg{position:absolute;inset:0;background:
+linear-gradient(180deg,rgba(2,6,8,.08),rgba(2,5,7,.78)),
+radial-gradient(circle at 58% 34%,rgba(98,145,150,.24),transparent 28%),
+url('./assets/hub_poster.png') center/cover no-repeat;filter:saturate(.62) brightness(.72);transform:scale(1.04)}
+#hy-region-visit[data-region="palyoung"] .bg{filter:saturate(.42) brightness(.58);background-position:center top}
+#hy-region-visit[data-region="nokdong"] .bg{filter:saturate(.72) brightness(.72)}
+#hy-region-visit[data-region="naro"] .bg{filter:saturate(.66) brightness(.72);background-position:65% center}
+#hy-region-visit[data-region="geogeum"] .bg{filter:saturate(.62) brightness(.69)}
+#hy-region-visit[data-region="sorok"] .bg{filter:saturate(.28) brightness(.67)}
+#hy-region-visit .shade{position:absolute;inset:0;background:radial-gradient(circle at 55% 45%,transparent 34%,rgba(0,0,0,.58) 100%)}
+#hy-region-visit .top{position:absolute;z-index:3;left:max(20px,env(safe-area-inset-left));right:max(20px,env(safe-area-inset-right));top:max(16px,env(safe-area-inset-top));display:flex;justify-content:space-between;align-items:center}
+#hy-region-visit .top b{font:800 11px "Noto Serif KR",serif;color:#e0bc73;letter-spacing:.13em}
+#hy-region-visit .steps{display:flex;gap:5px}.steps i{width:34px;height:3px;border-radius:99px;background:rgba(255,255,255,.13)}.steps i.on{background:#ddb86f}
+#hy-region-visit .panel{position:absolute;z-index:4;left:max(24px,env(safe-area-inset-left));bottom:max(24px,calc(env(safe-area-inset-bottom) + 20px));width:min(640px,calc(100vw - 48px));padding:19px 21px;border-radius:21px;border:1px solid rgba(255,226,160,.18);background:linear-gradient(150deg,rgba(9,13,15,.91),rgba(3,6,8,.95));backdrop-filter:blur(18px);box-shadow:0 30px 90px rgba(0,0,0,.42)}
+#hy-region-visit .panel small{color:#ddb86f;font-size:9px;letter-spacing:.15em;font-weight:850}
+#hy-region-visit .panel h1{font:700 clamp(23px,3vw,36px)/1.2 "Noto Serif KR",serif;margin:7px 0 9px}
+#hy-region-visit .panel p{margin:0;color:#c2baaa;font-size:12px;line-height:1.75}
+#hy-region-visit .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
+#hy-region-visit button{min-height:42px;padding:0 16px;border-radius:999px;border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.055);color:#f5efe2;font-size:10px;font-weight:850}
+#hy-region-visit button.primary{border:0;background:linear-gradient(#f0d28c,#b9843e);color:#171006}
+#hy-region-visit .record{position:absolute;right:max(24px,env(safe-area-inset-right));bottom:max(28px,calc(env(safe-area-inset-bottom) + 24px));z-index:4;width:min(320px,27vw);padding:14px 15px;border-radius:15px;background:rgba(6,12,14,.74);border:1px solid rgba(102,178,156,.23);backdrop-filter:blur(15px)}
+#hy-region-visit .record b{display:block;color:#bfe8dc;font-size:10px}.record span{display:block;margin-top:5px;color:#9faeaa;font-size:9px;line-height:1.55}
+#hy-free-unlocked{position:absolute;left:50%;top:2%;translate:-50% 0;z-index:73;padding:6px 12px;border-radius:999px;border:1px solid rgba(255,224,160,.18);background:rgba(3,6,8,.7);backdrop-filter:blur(12px);font-size:9px;color:#d8c69e;pointer-events:none}
+@media(max-width:760px){#hy-region-visit .panel{width:min(560px,72vw);padding:14px 16px}.record{display:none!important}#hy-region-visit .panel p{font-size:10px}#hy-region-visit .panel h1{font-size:21px}#hy-region-visit button{min-height:36px;font-size:9px}}
+</style>
+
+
+<style id="hy-nokdong-v387">
+#hy-nokdong-story{position:fixed;inset:0;z-index:2147480400;display:none;background:#03070a;color:#f5efe2;font-family:Pretendard,"Noto Sans KR","Apple SD Gothic Neo",system-ui,sans-serif}
+#hy-nokdong-story.active{display:block}
+#hy-nokdong-story .scene{position:absolute;inset:0;overflow:hidden;background:#071014}
+#hy-nokdong-story .scene:before{content:"";position:absolute;inset:-4%;background:
+linear-gradient(180deg,rgba(2,6,8,.08),rgba(2,5,7,.82)),
+radial-gradient(circle at 68% 30%,rgba(92,151,167,.20),transparent 24%),
+url('./assets/hub_poster.png') center/cover no-repeat;filter:saturate(.56) brightness(.55);transform:scale(1.08);transition:.55s}
+#hy-nokdong-story[data-step="bus"] .scene:before{transform:scale(1.14) translateX(-2%);filter:saturate(.50) brightness(.58)}
+#hy-nokdong-story[data-step="market"] .scene:before{filter:saturate(.70) brightness(.62)}
+#hy-nokdong-story[data-step="harbor"] .scene:before{filter:saturate(.48) brightness(.52)}
+#hy-nokdong-story[data-step="anomaly"] .scene:before{filter:saturate(.30) contrast(1.16) brightness(.40);transform:scale(1.13)}
+#hy-nokdong-story[data-step="named"] .scene:before{filter:saturate(.28) contrast(1.2) brightness(.34);transform:scale(1.16)}
+#hy-nokdong-story .shade{position:absolute;inset:0;background:radial-gradient(circle at 52% 43%,transparent 28%,rgba(0,0,0,.65) 100%)}
+#hy-nokdong-story .rope{position:absolute;left:5%;right:5%;bottom:27%;height:2px;background:linear-gradient(90deg,transparent,rgba(210,212,204,.08),rgba(210,212,204,.62),rgba(210,212,204,.12),transparent);opacity:0;transform:rotate(-1.8deg);transition:.4s}
+#hy-nokdong-story[data-step="anomaly"] .rope,#hy-nokdong-story[data-step="named"] .rope{opacity:.85;animation:hyRope 1.8s ease-in-out infinite}
+@keyframes hyRope{50%{transform:rotate(-1.8deg) translateY(-3px)}}
+#hy-nokdong-story .lamp{position:absolute;right:16%;bottom:27%;width:10px;height:10px;border-radius:50%;background:#e7c478;box-shadow:0 0 24px 10px rgba(231,196,120,.18);opacity:0;transition:.5s}
+#hy-nokdong-story[data-step="named"] .lamp{opacity:.9}
+#hy-nokdong-story .top{position:absolute;left:max(18px,env(safe-area-inset-left));right:max(18px,env(safe-area-inset-right));top:max(14px,env(safe-area-inset-top));z-index:5;display:flex;justify-content:space-between;align-items:center}
+#hy-nokdong-story .top b{font:800 10px "Noto Serif KR",serif;color:#dfbc74;letter-spacing:.14em}
+#hy-nokdong-story .meter{display:flex;gap:5px}.meter i{width:30px;height:3px;border-radius:99px;background:rgba(255,255,255,.12)}.meter i.on{background:#ddb86f}
+#hy-nokdong-story .panel{position:absolute;left:max(22px,env(safe-area-inset-left));bottom:max(22px,calc(env(safe-area-inset-bottom) + 18px));z-index:5;width:min(650px,calc(100vw - 44px));padding:18px 20px;border:1px solid rgba(255,226,160,.17);border-radius:20px;background:linear-gradient(155deg,rgba(8,12,14,.92),rgba(3,5,7,.96));backdrop-filter:blur(18px);box-shadow:0 30px 90px rgba(0,0,0,.46)}
+#hy-nokdong-story .panel small{display:block;color:#ddb86f;font-size:9px;letter-spacing:.15em;font-weight:850}
+#hy-nokdong-story .panel h1{font:700 clamp(22px,3vw,34px)/1.2 "Noto Serif KR",serif;margin:7px 0 9px}
+#hy-nokdong-story .panel p{margin:0;color:#c2baaa;font-size:12px;line-height:1.75}
+#hy-nokdong-story .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+#hy-nokdong-story button{min-height:42px;padding:0 16px;border-radius:999px;border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.055);color:#f5efe2;font-size:10px;font-weight:850}
+#hy-nokdong-story button.primary{border:0;background:linear-gradient(#f0d28c,#b9843e);color:#171006}
+#hy-nokdong-story .source{position:absolute;right:max(22px,env(safe-area-inset-right));bottom:max(26px,calc(env(safe-area-inset-bottom) + 20px));z-index:5;width:min(330px,28vw);padding:13px 14px;border-radius:15px;border:1px solid rgba(102,178,156,.21);background:rgba(4,12,13,.75);backdrop-filter:blur(15px)}
+#hy-nokdong-story .source b{display:block;color:#bfe7dc;font-size:10px;margin-bottom:5px}.source span{display:block;color:#9faea8;font-size:9px;line-height:1.55}
+@media(max-width:760px){#hy-nokdong-story .panel{width:min(570px,73vw);padding:14px 16px}.source{display:none!important}#hy-nokdong-story .panel p{font-size:10px}#hy-nokdong-story .panel h1{font-size:21px}#hy-nokdong-story button{min-height:36px;font-size:9px;padding:0 12px}}
+</style>
+
+
+<style id="hy-palyoung-v388">
+#hy-palyoung-story{position:fixed;inset:0;z-index:2147480350;display:none;background:#030507;color:#f5efe2;font-family:Pretendard,"Noto Sans KR","Apple SD Gothic Neo",system-ui,sans-serif}
+#hy-palyoung-story.active{display:block}
+#hy-palyoung-story .scene{position:absolute;inset:0;overflow:hidden;background:#07100d}
+#hy-palyoung-story .scene:before{content:"";position:absolute;inset:-5%;background:
+linear-gradient(180deg,rgba(4,8,7,.08),rgba(2,5,4,.80)),
+radial-gradient(circle at 50% 20%,rgba(125,152,111,.18),transparent 28%),
+url('./assets/hub_poster.png') center/cover no-repeat;filter:saturate(.38) brightness(.48);transform:scale(1.08);transition:.55s}
+#hy-palyoung-story[data-step="trail"] .scene:before{filter:saturate(.45) brightness(.52);transform:scale(1.10) translateY(-1%)}
+#hy-palyoung-story[data-step="wind"] .scene:before{filter:saturate(.34) contrast(1.08) brightness(.45);transform:scale(1.13)}
+#hy-palyoung-story[data-step="overlap"] .scene:before{filter:saturate(.24) contrast(1.18) brightness(.36);transform:scale(1.16) translateX(1%)}
+#hy-palyoung-story[data-step="voice"] .scene:before{filter:saturate(.20) contrast(1.24) brightness(.32);transform:scale(1.18)}
+#hy-palyoung-story[data-step="named"] .scene:before{filter:saturate(.16) contrast(1.28) brightness(.27);transform:scale(1.20)}
+#hy-palyoung-story .shade{position:absolute;inset:0;background:radial-gradient(circle at 49% 42%,transparent 30%,rgba(0,0,0,.70) 100%)}
+#hy-palyoung-story .oldpath{position:absolute;left:10%;right:12%;bottom:21%;height:16%;opacity:0;transform:perspective(500px) rotateX(60deg);background:linear-gradient(90deg,transparent 0 12%,rgba(219,199,147,.12) 22%,rgba(219,199,147,.42) 48%,rgba(219,199,147,.10) 78%,transparent 100%);filter:blur(1px);transition:.5s}
+#hy-palyoung-story[data-step="overlap"] .oldpath,#hy-palyoung-story[data-step="voice"] .oldpath,#hy-palyoung-story[data-step="named"] .oldpath{opacity:.78;animation:hyOldPath 2.6s ease-in-out infinite}
+@keyframes hyOldPath{50%{transform:perspective(500px) rotateX(60deg) translateX(8px);opacity:.48}}
+#hy-palyoung-story .tree-mark{position:absolute;right:20%;top:26%;width:2px;height:21%;background:linear-gradient(#d8c37f,rgba(216,195,127,.06));box-shadow:0 0 16px rgba(216,195,127,.20);opacity:0}
+#hy-palyoung-story[data-step="named"] .tree-mark{opacity:.9}
+#hy-palyoung-story .top{position:absolute;left:max(18px,env(safe-area-inset-left));right:max(18px,env(safe-area-inset-right));top:max(14px,env(safe-area-inset-top));z-index:5;display:flex;justify-content:space-between;align-items:center}
+#hy-palyoung-story .top b{font:800 10px "Noto Serif KR",serif;color:#dfbc74;letter-spacing:.14em}
+#hy-palyoung-story .meter{display:flex;gap:5px}.meter i{width:28px;height:3px;border-radius:99px;background:rgba(255,255,255,.12)}.meter i.on{background:#ddb86f}
+#hy-palyoung-story .panel{position:absolute;left:max(22px,env(safe-area-inset-left));bottom:max(22px,calc(env(safe-area-inset-bottom) + 18px));z-index:5;width:min(650px,calc(100vw - 44px));padding:18px 20px;border:1px solid rgba(255,226,160,.17);border-radius:20px;background:linear-gradient(155deg,rgba(8,11,9,.92),rgba(3,5,4,.96));backdrop-filter:blur(18px);box-shadow:0 30px 90px rgba(0,0,0,.48)}
+#hy-palyoung-story .panel small{display:block;color:#ddb86f;font-size:9px;letter-spacing:.15em;font-weight:850}
+#hy-palyoung-story .panel h1{font:700 clamp(22px,3vw,34px)/1.2 "Noto Serif KR",serif;margin:7px 0 9px}
+#hy-palyoung-story .panel p{margin:0;color:#c2baaa;font-size:12px;line-height:1.75}
+#hy-palyoung-story .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+#hy-palyoung-story button{min-height:42px;padding:0 16px;border-radius:999px;border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.055);color:#f5efe2;font-size:10px;font-weight:850}
+#hy-palyoung-story button.primary{border:0;background:linear-gradient(#f0d28c,#b9843e);color:#171006}
+#hy-palyoung-story .record{position:absolute;right:max(22px,env(safe-area-inset-right));bottom:max(26px,calc(env(safe-area-inset-bottom) + 20px));z-index:5;width:min(330px,28vw);padding:13px 14px;border-radius:15px;border:1px solid rgba(102,178,156,.21);background:rgba(5,12,9,.75);backdrop-filter:blur(15px)}
+#hy-palyoung-story .record b{display:block;color:#bfe7dc;font-size:10px;margin-bottom:5px}.record span{display:block;color:#9faea8;font-size:9px;line-height:1.55}
+@media(max-width:760px){#hy-palyoung-story .panel{width:min(570px,73vw);padding:14px 16px}.record{display:none!important}#hy-palyoung-story .panel p{font-size:10px}#hy-palyoung-story .panel h1{font-size:21px}#hy-palyoung-story button{min-height:36px;font-size:9px;padding:0 12px}}
+</style>
+
+
+<style id="hy-geogeum-v389">
+#hy-geogeum-story{position:fixed;inset:0;z-index:2147480300;display:none;background:#030709;color:#f5efe2;font-family:Pretendard,"Noto Sans KR","Apple SD Gothic Neo",system-ui,sans-serif}
+#hy-geogeum-story.active{display:block}
+#hy-geogeum-story .scene{position:absolute;inset:0;overflow:hidden;background:#071216}
+#hy-geogeum-story .scene:before{content:"";position:absolute;inset:-5%;background:
+linear-gradient(180deg,rgba(3,7,9,.06),rgba(2,5,7,.78)),
+radial-gradient(circle at 68% 30%,rgba(93,153,169,.20),transparent 27%),
+url('./assets/hub_poster.png') center/cover no-repeat;filter:saturate(.55) brightness(.55);transform:scale(1.08);transition:.55s}
+#hy-geogeum-story[data-step="road"] .scene:before{transform:scale(1.13) translateX(-1%);filter:saturate(.61) brightness(.58)}
+#hy-geogeum-story[data-step="marker"] .scene:before{filter:saturate(.48) contrast(1.08) brightness(.50);transform:scale(1.14)}
+#hy-geogeum-story[data-step="sea"] .scene:before{filter:saturate(.34) contrast(1.16) brightness(.43);transform:scale(1.16)}
+#hy-geogeum-story[data-step="anomaly"] .scene:before{filter:saturate(.26) contrast(1.2) brightness(.37);transform:scale(1.18) translateX(1%)}
+#hy-geogeum-story[data-step="named"] .scene:before{filter:saturate(.22) contrast(1.23) brightness(.33);transform:scale(1.20)}
+#hy-geogeum-story .shade{position:absolute;inset:0;background:radial-gradient(circle at 54% 44%,transparent 30%,rgba(0,0,0,.68) 100%)}
+#hy-geogeum-story .roadline{position:absolute;left:12%;right:9%;bottom:20%;height:3px;background:linear-gradient(90deg,transparent,rgba(232,216,154,.18),rgba(232,216,154,.50),rgba(232,216,154,.12),transparent);opacity:.25;transform:rotate(-3deg)}
+#hy-geogeum-story .arrowghost{position:absolute;left:58%;top:34%;width:0;height:0;border-top:13px solid transparent;border-bottom:13px solid transparent;border-left:26px solid rgba(214,232,235,.0);filter:drop-shadow(0 0 10px rgba(214,232,235,.2));transition:.45s}
+#hy-geogeum-story[data-step="sea"] .arrowghost,#hy-geogeum-story[data-step="anomaly"] .arrowghost,#hy-geogeum-story[data-step="named"] .arrowghost{border-left-color:rgba(214,232,235,.66);animation:hyArrow 1.8s ease-in-out infinite}
+@keyframes hyArrow{50%{transform:translateX(-8px);opacity:.45}}
+#hy-geogeum-story .reflect{position:absolute;right:17%;bottom:18%;width:17%;height:2px;background:linear-gradient(90deg,transparent,rgba(180,223,230,.72),transparent);opacity:0;transform:rotate(5deg)}
+#hy-geogeum-story[data-step="anomaly"] .reflect,#hy-geogeum-story[data-step="named"] .reflect{opacity:.9;animation:hyReflect 2s ease-in-out infinite}
+@keyframes hyReflect{50%{transform:rotate(5deg) translateY(6px);opacity:.35}}
+#hy-geogeum-story .top{position:absolute;left:max(18px,env(safe-area-inset-left));right:max(18px,env(safe-area-inset-right));top:max(14px,env(safe-area-inset-top));z-index:5;display:flex;justify-content:space-between;align-items:center}
+#hy-geogeum-story .top b{font:800 10px "Noto Serif KR",serif;color:#dfbc74;letter-spacing:.14em}
+#hy-geogeum-story .meter{display:flex;gap:5px}.meter i{width:28px;height:3px;border-radius:99px;background:rgba(255,255,255,.12)}.meter i.on{background:#ddb86f}
+#hy-geogeum-story .panel{position:absolute;left:max(22px,env(safe-area-inset-left));bottom:max(22px,calc(env(safe-area-inset-bottom) + 18px));z-index:5;width:min(650px,calc(100vw - 44px));padding:18px 20px;border:1px solid rgba(255,226,160,.17);border-radius:20px;background:linear-gradient(155deg,rgba(8,12,14,.92),rgba(3,5,7,.96));backdrop-filter:blur(18px);box-shadow:0 30px 90px rgba(0,0,0,.48)}
+#hy-geogeum-story .panel small{display:block;color:#ddb86f;font-size:9px;letter-spacing:.15em;font-weight:850}
+#hy-geogeum-story .panel h1{font:700 clamp(22px,3vw,34px)/1.2 "Noto Serif KR",serif;margin:7px 0 9px}
+#hy-geogeum-story .panel p{margin:0;color:#c2baaa;font-size:12px;line-height:1.75}
+#hy-geogeum-story .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+#hy-geogeum-story button{min-height:42px;padding:0 16px;border-radius:999px;border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.055);color:#f5efe2;font-size:10px;font-weight:850}
+#hy-geogeum-story button.primary{border:0;background:linear-gradient(#f0d28c,#b9843e);color:#171006}
+#hy-geogeum-story .record{position:absolute;right:max(22px,env(safe-area-inset-right));bottom:max(26px,calc(env(safe-area-inset-bottom) + 20px));z-index:5;width:min(330px,28vw);padding:13px 14px;border-radius:15px;border:1px solid rgba(102,178,156,.21);background:rgba(5,12,14,.75);backdrop-filter:blur(15px)}
+#hy-geogeum-story .record b{display:block;color:#bfe7dc;font-size:10px;margin-bottom:5px}.record span{display:block;color:#9faea8;font-size:9px;line-height:1.55}
+@media(max-width:760px){#hy-geogeum-story .panel{width:min(570px,73vw);padding:14px 16px}.record{display:none!important}#hy-geogeum-story .panel p{font-size:10px}#hy-geogeum-story .panel h1{font-size:21px}#hy-geogeum-story button{min-height:36px;font-size:9px;padding:0 12px}}
+</style>
+
+
+<style id="hy-sorok-v391">
+#hy-sorok-story{position:fixed;inset:0;z-index:2147480200;display:none;background:#050708;color:#f5efe2;font-family:Pretendard,"Noto Sans KR","Apple SD Gothic Neo",system-ui,sans-serif}
+#hy-sorok-story.active{display:block}
+#hy-sorok-story .scene{position:absolute;inset:0;overflow:hidden;background:#0a0d0e}
+#hy-sorok-story .scene:before{content:"";position:absolute;inset:-4%;background:linear-gradient(180deg,rgba(6,9,10,.03),rgba(5,7,8,.62)),radial-gradient(circle at 55% 34%,rgba(168,156,128,.15),transparent 30%),url('./assets/hub_poster.png') center/cover no-repeat;filter:saturate(.56) brightness(.66);transform:scale(1.07);transition:.5s}
+#hy-sorok-story .shade{position:absolute;inset:0;background:radial-gradient(circle at 50% 43%,transparent 36%,rgba(0,0,0,.48) 100%)}
+#hy-sorok-story .top{position:absolute;left:max(18px,env(safe-area-inset-left));right:max(18px,env(safe-area-inset-right));top:max(14px,env(safe-area-inset-top));z-index:5;display:flex;justify-content:space-between;align-items:center}
+#hy-sorok-story .top b{font:800 10px "Noto Serif KR",serif;color:#d8bd86;letter-spacing:.14em}
+#hy-sorok-story .meter{display:flex;gap:5px}.meter i{width:28px;height:3px;border-radius:99px;background:rgba(255,255,255,.12)}.meter i.on{background:#cdb47c}
+#hy-sorok-story .panel{position:absolute;left:max(22px,env(safe-area-inset-left));bottom:max(22px,calc(env(safe-area-inset-bottom) + 18px));z-index:5;width:min(680px,calc(100vw - 44px));padding:18px 20px;border:1px solid rgba(221,204,164,.18);border-radius:20px;background:linear-gradient(155deg,rgba(11,13,14,.93),rgba(5,7,8,.96));backdrop-filter:blur(18px);box-shadow:0 30px 90px rgba(0,0,0,.42)}
+#hy-sorok-story .panel small{display:block;color:#d8bd86;font-size:9px;letter-spacing:.15em;font-weight:850}
+#hy-sorok-story .panel h1{font:700 clamp(22px,3vw,34px)/1.2 "Noto Serif KR",serif;margin:7px 0 9px}
+#hy-sorok-story .panel p{margin:0;color:#c7c0b3;font-size:12px;line-height:1.8}
+#hy-sorok-story .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+#hy-sorok-story button{min-height:42px;padding:0 16px;border-radius:999px;border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.05);color:#f5efe2;font-size:10px;font-weight:850}
+#hy-sorok-story button.primary{border:0;background:linear-gradient(#e7cf99,#b48d50);color:#17120a}
+#hy-sorok-story .record{position:absolute;right:max(22px,env(safe-area-inset-right));bottom:max(26px,calc(env(safe-area-inset-bottom) + 20px));z-index:5;width:min(350px,29vw);padding:13px 14px;border-radius:15px;border:1px solid rgba(175,196,187,.20);background:rgba(8,12,12,.75);backdrop-filter:blur(15px)}
+#hy-sorok-story .record b{display:block;color:#c9ddd5;font-size:10px;margin-bottom:5px}.record span{display:block;color:#a8b2ae;font-size:9px;line-height:1.6}
+#hy-sorok-story .no-combat{position:absolute;left:50%;top:8%;translate:-50% 0;z-index:5;padding:7px 12px;border-radius:999px;background:rgba(7,10,11,.66);border:1px solid rgba(221,204,164,.16);color:#d7c8aa;font-size:9px;letter-spacing:.08em}
+#hy-memory-travel{position:fixed;inset:0;z-index:2147480610;display:none;background:#020304}
+#hy-memory-travel.active{display:block}
+#hy-memory-travel video{width:100%;height:100%;object-fit:cover;background:#020304}
+#hy-memory-travel .veil{position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,transparent 48%,rgba(0,0,0,.20) 100%);pointer-events:none}
+#hy-memory-travel .label{position:absolute;left:max(18px,env(safe-area-inset-left));bottom:max(18px,calc(env(safe-area-inset-bottom) + 14px));padding:7px 11px;border-radius:999px;background:rgba(5,7,8,.62);backdrop-filter:blur(10px);border:1px solid rgba(221,204,164,.12);color:#d8c8aa;font-size:9px;letter-spacing:.08em}
+#hy-memory-travel button{position:absolute;right:max(18px,env(safe-area-inset-right));top:max(16px,env(safe-area-inset-top));min-height:36px;padding:0 13px;border-radius:999px;border:1px solid rgba(255,255,255,.13);background:rgba(5,7,8,.58);color:#eee;font-size:9px;opacity:.72}
+@media(max-width:760px){#hy-sorok-story .panel{width:min(590px,75vw);padding:14px 16px}.record{display:none!important}#hy-sorok-story .panel p{font-size:10px}#hy-sorok-story .panel h1{font-size:21px}#hy-sorok-story button{min-height:36px;font-size:9px;padding:0 12px}}
+</style>
+
+
+<style id="hy-worldprogress-v392">
+#hy-world-progress{position:fixed;right:max(14px,env(safe-area-inset-right));top:max(72px,calc(env(safe-area-inset-top) + 58px));z-index:2147480000;width:min(330px,calc(100vw - 28px));display:none;border:1px solid rgba(255,226,160,.18);border-radius:18px;background:linear-gradient(155deg,rgba(9,13,15,.95),rgba(3,6,8,.97));box-shadow:0 24px 70px rgba(0,0,0,.45);backdrop-filter:blur(18px);padding:15px;color:#f5efe2}
+#hy-world-progress.open{display:block}
+#hy-world-progress small{color:#ddb86f;font-size:9px;letter-spacing:.14em;font-weight:850}
+#hy-world-progress h3{font:700 20px "Noto Serif KR",serif;margin:6px 0 10px}
+.hy-world-list{display:grid;gap:8px}
+.hy-world-row{padding:10px 11px;border-radius:13px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.025)}
+.hy-world-row .topline{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.hy-world-row b{font-size:11px}.hy-world-row em{font-style:normal;font-size:9px;color:#b8ad9b}
+.hy-world-row .bar{height:4px;background:rgba(255,255,255,.08);border-radius:99px;margin-top:7px;overflow:hidden}.hy-world-row .bar i{display:block;height:100%;background:linear-gradient(90deg,#b9843e,#f0d28c);width:0}
+.hy-world-row.bonus{border-color:rgba(102,178,156,.22);background:rgba(102,178,156,.05)}
+.hy-world-row.bonus b{color:#bfe8dc}
+#hy-world-chip{position:absolute;z-index:72;right:3.4%;top:10.8%;min-height:34px;padding:0 12px;border-radius:999px;border:1px solid rgba(255,224,160,.18);background:rgba(5,8,10,.68);backdrop-filter:blur(12px);color:#e8d7b4;font-size:9px;font-weight:850}
+
+#hy-sorok-bonus{position:fixed;inset:0;z-index:2147480150;display:none;background:#050708;color:#f5efe2;font-family:Pretendard,"Noto Sans KR","Apple SD Gothic Neo",system-ui,sans-serif}
+#hy-sorok-bonus.active{display:block}
+#hy-sorok-bonus .scene{position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,8,9,.06),rgba(5,7,8,.72)),url('./assets/hub_poster.png') center/cover no-repeat;filter:saturate(.62) brightness(.68)}
+#hy-sorok-bonus .shade{position:absolute;inset:0;background:radial-gradient(circle at 50% 42%,transparent 36%,rgba(0,0,0,.5) 100%)}
+#hy-sorok-bonus .panel{position:absolute;left:max(22px,env(safe-area-inset-left));bottom:max(22px,calc(env(safe-area-inset-bottom) + 18px));z-index:4;width:min(690px,calc(100vw - 44px));padding:18px 20px;border-radius:20px;border:1px solid rgba(175,196,187,.22);background:linear-gradient(155deg,rgba(10,13,14,.93),rgba(5,7,8,.97));backdrop-filter:blur(18px);box-shadow:0 30px 90px rgba(0,0,0,.42)}
+#hy-sorok-bonus small{display:block;color:#bfe8dc;font-size:9px;letter-spacing:.14em;font-weight:850}
+#hy-sorok-bonus h1{font:700 clamp(22px,3vw,34px)/1.2 "Noto Serif KR",serif;margin:7px 0 9px}
+#hy-sorok-bonus p{margin:0;color:#c8c1b5;font-size:12px;line-height:1.8}
+#hy-sorok-bonus .reward{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+#hy-sorok-bonus .reward div{padding:11px;border-radius:13px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.025);text-align:center}
+#hy-sorok-bonus .reward b{display:block;font-size:11px}.hy-reward-sub{font-size:8px;color:#9da9a5;margin-top:3px}
+#hy-sorok-bonus .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+#hy-sorok-bonus button{min-height:40px;padding:0 15px;border-radius:999px;border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.05);color:#f5efe2;font-size:10px;font-weight:850}
+#hy-sorok-bonus button.primary{border:0;background:linear-gradient(#d8eadf,#77a993);color:#102018}
+@media(max-width:760px){#hy-world-progress{top:auto;bottom:62px;right:10px}.hy-world-row{padding:8px 9px}#hy-sorok-bonus .panel{width:min(590px,75vw);padding:14px 16px}#hy-sorok-bonus p{font-size:10px}#hy-sorok-bonus h1{font-size:21px}}
+</style>
+
+
+<style id="hy-unlock-v393">
+#hy-unlock-panel{position:fixed;left:50%;top:50%;translate:-50% -50%;z-index:2147480900;width:min(640px,calc(100vw - 28px));max-height:min(720px,calc(100vh - 28px));overflow:auto;display:none;border:1px solid rgba(255,226,160,.18);border-radius:22px;background:linear-gradient(155deg,rgba(10,14,16,.98),rgba(3,6,8,.99));box-shadow:0 36px 120px rgba(0,0,0,.62);padding:20px;color:#f5efe2;backdrop-filter:blur(18px)}
+#hy-unlock-panel.open{display:block}
+#hy-unlock-panel small{color:#ddb86f;font-size:9px;letter-spacing:.15em;font-weight:850}
+#hy-unlock-panel h2{font:700 25px "Noto Serif KR",serif;margin:6px 0 10px}
+#hy-unlock-panel p{color:#afa697;font-size:11px;line-height:1.7;margin:0}
+.hy-unlock-list{display:grid;gap:10px;margin-top:15px}
+.hy-unlock-card{padding:13px;border-radius:15px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.025)}
+.hy-unlock-card.ready{border-color:rgba(102,178,156,.26);background:rgba(102,178,156,.055)}
+.hy-unlock-card.locked{opacity:.78}
+.hy-unlock-head{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.hy-unlock-head b{font-size:12px}.hy-unlock-head span{font-size:9px;color:#9c9486}
+.hy-reqs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.hy-req{padding:5px 8px;border-radius:999px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);font-size:8px;color:#b9b1a3}
+.hy-req.ok{color:#bfe8dc;border-color:rgba(102,178,156,.25);background:rgba(102,178,156,.06)}
+.hy-req.no{color:#c6a6a0;border-color:rgba(198,84,80,.22);background:rgba(198,84,80,.05)}
+.hy-unlock-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
+.hy-unlock-actions button{min-height:40px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.05);color:#f5efe2;font-size:9px;font-weight:850}
+.hy-unlock-actions button.primary{border:0;background:linear-gradient(#f0d28c,#b9843e);color:#171006}
+#hy-unlock-chip{position:absolute;z-index:74;right:3.4%;top:15.2%;min-height:34px;padding:0 12px;border-radius:999px;border:1px solid rgba(255,224,160,.18);background:rgba(5,8,10,.68);backdrop-filter:blur(12px);color:#e8d7b4;font-size:9px;font-weight:850}
+.hy-lock-badge{position:absolute;right:8px;top:8px;z-index:9;padding:4px 7px;border-radius:999px;background:rgba(4,7,9,.72);border:1px solid rgba(255,255,255,.10);font-size:8px;color:#aaa}
+.geo-pin.hy-locked{filter:grayscale(.8);opacity:.48}
+.geo-pin.hy-ready{box-shadow:0 0 0 2px rgba(221,184,111,.15),0 0 28px rgba(221,184,111,.18)}
+@media(max-width:760px){#hy-unlock-panel{width:min(620px,92vw);padding:15px}#hy-unlock-chip{top:16%;right:2%}}
+</style>
+
+
+<style id="hy-encounter-v394">
+#hy-encounter-panel{position:fixed;inset:0;z-index:2147480950;display:none;background:rgba(1,4,6,.88);backdrop-filter:blur(16px);color:#f5efe2;font-family:Pretendard,"Noto Sans KR","Apple SD Gothic Neo",system-ui,sans-serif}
+#hy-encounter-panel.active{display:grid;place-items:center;padding:18px}
+.hy-enc-card{width:min(720px,100%);border:1px solid rgba(255,226,160,.18);border-radius:24px;background:linear-gradient(155deg,rgba(10,14,16,.98),rgba(3,6,8,.99));box-shadow:0 36px 120px rgba(0,0,0,.6);padding:22px}
+.hy-enc-card small{color:#ddb86f;font-size:9px;letter-spacing:.16em;font-weight:850}
+.hy-enc-card h2{font:700 clamp(24px,3vw,34px)/1.2 "Noto Serif KR",serif;margin:7px 0 10px}
+.hy-enc-card p{margin:0;color:#bdb5a7;font-size:12px;line-height:1.75}
+.hy-enc-meta{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px}
+.hy-enc-meta div{padding:10px;border:1px solid rgba(255,255,255,.08);border-radius:13px;background:rgba(255,255,255,.025)}
+.hy-enc-meta b{display:block;font-size:10px}.hy-enc-meta span{display:block;margin-top:3px;color:#9d9588;font-size:8px}
+.hy-enc-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
+.hy-enc-actions button{min-height:40px;padding:0 15px;border-radius:999px;border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.05);color:#f5efe2;font-size:9px;font-weight:850}
+.hy-enc-actions button.primary{border:0;background:linear-gradient(#f0d28c,#b9843e);color:#171006}
+#hy-condition-chip{position:absolute;z-index:75;right:3.4%;top:19.6%;min-height:34px;padding:0 12px;border-radius:999px;border:1px solid rgba(255,224,160,.18);background:rgba(5,8,10,.68);backdrop-filter:blur(12px);color:#e8d7b4;font-size:9px;font-weight:850}
+#hy-condition-panel{position:fixed;right:max(12px,env(safe-area-inset-right));top:max(120px,calc(env(safe-area-inset-top) + 110px));z-index:2147480890;width:min(360px,calc(100vw - 24px));display:none;border:1px solid rgba(255,226,160,.18);border-radius:18px;background:linear-gradient(155deg,rgba(9,13,15,.97),rgba(3,6,8,.98));box-shadow:0 24px 70px rgba(0,0,0,.45);padding:15px;color:#f5efe2}
+#hy-condition-panel.open{display:block}
+#hy-condition-panel small{color:#ddb86f;font-size:9px;letter-spacing:.14em;font-weight:850}
+#hy-condition-panel h3{font:700 19px "Noto Serif KR",serif;margin:6px 0 10px}
+.hy-cond-row{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:9px}
+.hy-cond-row:last-child{border-bottom:0}.hy-cond-row b{color:#ddd4c4}.hy-cond-row span{color:#a9a193;text-align:right}
+.hy-rare{color:#bfe8dc!important}
+@media(max-width:760px){.hy-enc-meta{grid-template-columns:repeat(2,1fr)}#hy-condition-panel{top:auto;bottom:60px;right:10px}.hy-enc-card{padding:16px}}
+</style>
+
+
+<style id="hy-bossloop-v395">
+#hy-bossloop{position:fixed;inset:0;z-index:2147481100;display:none;background:#020304;color:#f5efe2;font-family:Pretendard,"Noto Sans KR","Apple SD Gothic Neo",system-ui,sans-serif}
+#hy-bossloop.active{display:block}
+#hy-bossloop .scene{position:absolute;inset:0;background:
+linear-gradient(180deg,rgba(3,5,6,.06),rgba(2,3,4,.84)),
+radial-gradient(circle at 50% 32%,rgba(175,145,83,.12),transparent 24%),
+url('./assets/hub_poster.png') center/cover no-repeat;filter:saturate(.34) brightness(.38);transform:scale(1.08)}
+#hy-bossloop[data-stage="dungeon"] .scene{filter:saturate(.28) brightness(.32)}
+#hy-bossloop[data-stage="ritual"] .scene{filter:saturate(.20) contrast(1.18) brightness(.28)}
+#hy-bossloop .shade{position:absolute;inset:0;background:radial-gradient(circle at 50% 42%,transparent 28%,rgba(0,0,0,.72) 100%)}
+#hy-bossloop .top{position:absolute;left:max(18px,env(safe-area-inset-left));right:max(18px,env(safe-area-inset-right));top:max(14px,env(safe-area-inset-top));z-index:5;display:flex;justify-content:space-between;align-items:center}
+#hy-bossloop .top b{font:800 10px "Noto Serif KR",serif;color:#dfbc74;letter-spacing:.14em}
+#hy-bossloop .knots{display:flex;gap:7px}
+#hy-bossloop .knot{width:13px;height:13px;border-radius:50%;border:1px solid rgba(255,226,160,.34);background:rgba(221,184,111,.16);box-shadow:0 0 10px rgba(221,184,111,.08)}
+#hy-bossloop .knot.broken{background:rgba(198,84,80,.14);border-color:rgba(198,84,80,.36);box-shadow:none}
+#hy-bossloop .panel{position:absolute;left:max(22px,env(safe-area-inset-left));bottom:max(22px,calc(env(safe-area-inset-bottom) + 18px));z-index:5;width:min(700px,calc(100vw - 44px));padding:18px 20px;border:1px solid rgba(255,226,160,.17);border-radius:20px;background:linear-gradient(155deg,rgba(8,11,13,.94),rgba(3,5,7,.97));backdrop-filter:blur(18px);box-shadow:0 30px 90px rgba(0,0,0,.50)}
+#hy-bossloop .panel small{display:block;color:#ddb86f;font-size:9px;letter-spacing:.15em;font-weight:850}
+#hy-bossloop .panel h1{font:700 clamp(22px,3vw,34px)/1.2 "Noto Serif KR",serif;margin:7px 0 9px}
+#hy-bossloop .panel p{margin:0;color:#c2baaa;font-size:12px;line-height:1.75}
+#hy-bossloop .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+#hy-bossloop button{min-height:42px;padding:0 16px;border-radius:999px;border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.055);color:#f5efe2;font-size:10px;font-weight:850}
+#hy-bossloop button.primary{border:0;background:linear-gradient(#f0d28c,#b9843e);color:#171006}
+#hy-bossloop button.danger{border-color:rgba(198,84,80,.28);color:#e8c2bd}
+#hy-bossloop .side{position:absolute;right:max(22px,env(safe-area-inset-right));bottom:max(26px,calc(env(safe-area-inset-bottom) + 20px));z-index:5;width:min(350px,30vw);padding:13px 14px;border-radius:15px;border:1px solid rgba(102,178,156,.20);background:rgba(5,10,12,.76);backdrop-filter:blur(15px)}
+#hy-bossloop .side b{display:block;color:#bfe8dc;font-size:10px;margin-bottom:5px}.side span{display:block;color:#9faea8;font-size:9px;line-height:1.55}
+#hy-bossloop .boss-shape{position:absolute;left:50%;top:17%;translate:-50% 0;width:18%;aspect-ratio:.62;border-radius:46% 46% 20% 20%;background:linear-gradient(180deg,rgba(210,214,218,.28),rgba(30,34,36,.02));filter:blur(.7px);opacity:.15;transition:.45s}
+#hy-bossloop[data-stage="ritual"] .boss-shape{opacity:.72;transform:scale(1.08)}
+#hy-boss-hub-chip{position:absolute;z-index:76;right:3.4%;top:24%;min-height:34px;padding:0 12px;border-radius:999px;border:1px solid rgba(255,224,160,.18);background:rgba(5,8,10,.68);backdrop-filter:blur(12px);color:#e8d7b4;font-size:9px;font-weight:850}
+#hy-boss-status{position:fixed;left:50%;top:50%;translate:-50% -50%;z-index:2147481000;width:min(680px,calc(100vw - 28px));display:none;border:1px solid rgba(255,226,160,.18);border-radius:22px;background:linear-gradient(155deg,rgba(9,13,15,.98),rgba(3,6,8,.99));box-shadow:0 36px 120px rgba(0,0,0,.62);padding:20px;color:#f5efe2}
+#hy-boss-status.open{display:block}
+#hy-boss-status small{color:#ddb86f;font-size:9px;letter-spacing:.15em;font-weight:850}
+#hy-boss-status h2{font:700 25px "Noto Serif KR",serif;margin:6px 0 10px}
+.hy-boss-row{padding:11px;border:1px solid rgba(255,255,255,.08);border-radius:14px;background:rgba(255,255,255,.025);margin-top:8px}
+.hy-boss-row.ready{border-color:rgba(102,178,156,.24);background:rgba(102,178,156,.05)}
+.hy-boss-row b{display:flex;justify-content:space-between;font-size:11px}.hy-boss-row span{color:#9f978a;font-size:9px}
+@media(max-width:760px){#hy-bossloop .panel{width:min(590px,75vw);padding:14px 16px}.side{display:none!important}#hy-bossloop .panel p{font-size:10px}#hy-bossloop .panel h1{font-size:21px}#hy-bossloop button{min-height:36px;font-size:9px;padding:0 12px}}
+</style>
+
+
+<style id="hy-cardraid-v396">
+/* ===== 흥양기 v39.6 premium card-combat / raid ===== */
+#hy-card-unlock-chip{
+  position:absolute;z-index:78;right:3.4%;top:28.4%;min-height:34px;padding:0 12px;border-radius:999px;
+  border:1px solid rgba(255,224,160,.24);background:linear-gradient(180deg,rgba(18,18,18,.76),rgba(5,7,9,.78));
+  color:#f2ddb0;backdrop-filter:blur(12px);font-size:9px;font-weight:900;letter-spacing:.06em;
+  box-shadow:0 8px 28px rgba(0,0,0,.32),inset 0 0 18px rgba(221,184,111,.05)
+}
+#hy-field-card{
+  position:fixed;right:max(14px,env(safe-area-inset-right));bottom:max(18px,calc(env(safe-area-inset-bottom) + 14px));
+  z-index:2147480800;width:min(390px,calc(100vw - 28px));display:none;
+  border:1px solid rgba(255,226,160,.20);border-radius:20px;
+  background:linear-gradient(155deg,rgba(8,12,14,.97),rgba(3,6,8,.985));
+  box-shadow:0 26px 90px rgba(0,0,0,.52),inset 0 0 34px rgba(221,184,111,.035);
+  color:#f5efe2;overflow:hidden
+}
+#hy-field-card.open{display:block}
+.hy-field-hero{display:grid;grid-template-columns:82px 1fr;gap:12px;padding:13px;border-bottom:1px solid rgba(255,255,255,.07)}
+.hy-field-hero img{width:82px;height:106px;object-fit:cover;border-radius:12px;border:1px solid rgba(255,225,162,.28);
+  box-shadow:0 12px 26px rgba(0,0,0,.4)}
+.hy-field-hero small{display:block;color:#ddb86f;font-size:8px;letter-spacing:.13em;font-weight:900}
+.hy-field-hero h3{font:800 18px "Noto Serif KR",serif;margin:5px 0 5px}
+.hy-field-hero p{margin:0;color:#aaa294;font-size:9px;line-height:1.55}
+.hy-field-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;padding:10px}
+.hy-field-skill{min-height:66px;padding:9px;border:1px solid rgba(255,255,255,.09);border-radius:13px;
+  background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.018));color:#eee;text-align:left}
+.hy-field-skill b{display:block;font-size:10px;color:#f2d79c}.hy-field-skill span{display:block;margin-top:4px;font-size:8px;color:#9e978b;line-height:1.4}
+.hy-field-footer{display:flex;justify-content:space-between;align-items:center;padding:9px 12px;border-top:1px solid rgba(255,255,255,.06);font-size:8px;color:#8f887d}
+.hy-field-footer button{padding:6px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.11);background:transparent;color:#ccc;font-size:8px}
+
+/* RAID */
+#hy-raid-combat{
+  position:fixed;inset:0;z-index:2147481300;display:none;background:#020304;color:#fff;
+  font-family:Pretendard,"Noto Sans KR","Apple SD Gothic Neo",system-ui,sans-serif;overflow:hidden
+}
+#hy-raid-combat.active{display:block}
+#hy-raid-combat .raid-bg{position:absolute;inset:0;background:url('./assets/battle_nokdong_muldung_v2.png') center/cover no-repeat;
+  transform:scale(1.015);filter:contrast(1.04) saturate(1.04);animation:hyRaidBreath 9s ease-in-out infinite alternate}
+@keyframes hyRaidBreath{to{transform:scale(1.032) translateY(-.4%)}}
+#hy-raid-combat .raid-grade{position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(circle at 56% 44%,transparent 28%,rgba(0,0,0,.12) 58%,rgba(0,0,0,.56) 100%),
+             linear-gradient(180deg,rgba(1,5,9,.13),transparent 30%,transparent 72%,rgba(0,0,0,.34))}
+.raid-top{position:absolute;z-index:8;left:2%;right:2%;top:max(14px,env(safe-area-inset-top));display:grid;grid-template-columns:1fr minmax(320px,42%) 1fr;align-items:start;gap:18px}
+.raid-boss-name small,.raid-player small{display:block;color:#cbb68f;font-size:8px;letter-spacing:.15em;font-weight:900}
+.raid-boss-name h1{font:900 clamp(24px,3vw,42px) "Noto Serif KR",serif;margin:3px 0 3px;text-shadow:0 3px 14px #000}
+.raid-boss-name p{margin:0;color:#c5bdb0;font-size:9px}
+.raid-hpbox{padding:9px 12px;border:1px solid rgba(255,220,157,.16);border-radius:14px;background:rgba(3,7,10,.70);backdrop-filter:blur(14px)}
+.raid-hpline{display:flex;justify-content:space-between;align-items:center;font-size:9px;color:#ddd5c9}
+.raid-hptrack{height:7px;border-radius:999px;margin-top:6px;background:rgba(255,255,255,.09);overflow:hidden;box-shadow:inset 0 1px 2px #000}
+.raid-hptrack i{display:block;height:100%;width:100%;background:linear-gradient(90deg,#7f1f28,#d85b48,#f19c68);box-shadow:0 0 14px rgba(239,105,78,.35);transition:.38s}
+.raid-player{text-align:right}.raid-player b{font-size:11px}.raid-player span{display:block;margin-top:4px;color:#c6b99e;font-size:9px}
+.raid-rule{
+  position:absolute;z-index:9;left:2%;top:16%;width:min(350px,31vw);padding:12px 14px;border-radius:15px;
+  border:1px solid rgba(211,67,66,.28);background:linear-gradient(145deg,rgba(52,9,12,.82),rgba(10,7,9,.84));
+  box-shadow:0 15px 42px rgba(0,0,0,.34);backdrop-filter:blur(12px)
+}
+.raid-rule small{color:#ff9789;font-size:8px;letter-spacing:.12em;font-weight:900}.raid-rule b{display:block;margin-top:5px;font:800 15px "Noto Serif KR",serif}
+.raid-rule p{margin:5px 0 0;color:#d8c3bd;font-size:8px;line-height:1.5}
+.raid-knots{display:flex;gap:8px;margin-top:9px}
+.raid-knot{width:22px;height:22px;background:url('./assets/raid_knot_active.png') center/contain no-repeat;opacity:.98;transition:.28s;filter:drop-shadow(0 0 8px rgba(255,116,74,.38))}
+.raid-knot.broken{background-image:url('./assets/raid_knot_broken.png');opacity:.56;transform:scale(.88);filter:none}
+.raid-damage{position:absolute;z-index:14;left:55%;top:39%;translate:-50% -50%;font:900 clamp(48px,7vw,104px)/1 "Noto Serif KR",serif;
+  color:#ffd991;text-shadow:0 3px 10px #000,0 0 22px rgba(255,188,74,.42);opacity:0;pointer-events:none}
+.raid-damage.show{animation:hyDamage .82s cubic-bezier(.2,.8,.2,1)}
+@keyframes hyDamage{0%{opacity:0;transform:translateY(18px) scale(.78)}18%{opacity:1;transform:translateY(0) scale(1.08)}75%{opacity:1}100%{opacity:0;transform:translateY(-28px) scale(.96)}}
+.raid-skillname{position:absolute;z-index:14;left:55%;top:31%;translate:-50% -50%;font:900 18px "Noto Serif KR",serif;color:#ffe1a6;
+  text-shadow:0 2px 10px #000;opacity:0}.raid-skillname.show{animation:hySkillName .9s ease}
+@keyframes hySkillName{15%{opacity:1;transform:translateY(-4px)}80%{opacity:1}100%{opacity:0;transform:translateY(-18px)}}
+.raid-flash{position:absolute;inset:0;z-index:12;pointer-events:none;opacity:0;background:radial-gradient(circle at 53% 47%,rgba(255,224,158,.55),transparent 24%)}
+.raid-flash.show{animation:hyFlash .42s ease}@keyframes hyFlash{30%{opacity:1}100%{opacity:0}}
+.raid-party{
+  position:absolute;z-index:9;left:2%;bottom:2.5%;width:min(370px,30vw);display:grid;grid-template-columns:repeat(5,1fr);gap:6px
+}
+.raid-avatar{position:relative;aspect-ratio:.73;border-radius:12px;overflow:hidden;border:1px solid rgba(255,226,160,.18);
+  background:#091015;box-shadow:0 10px 25px rgba(0,0,0,.36);transition:.2s}
+.raid-avatar img{width:100%;height:100%;object-fit:cover}.raid-avatar.active{border-color:#ffd789;box-shadow:0 0 0 1px rgba(255,215,137,.34),0 0 26px rgba(255,177,64,.22);transform:translateY(-6px)}
+.raid-avatar .role{position:absolute;left:4px;right:4px;bottom:4px;padding:3px;border-radius:7px;background:rgba(2,5,7,.72);font-size:7px;text-align:center;color:#e7dcc8}
+.raid-manifest{
+  position:absolute;z-index:10;left:32%;bottom:10%;width:15%;aspect-ratio:.67;opacity:0;filter:drop-shadow(0 16px 28px rgba(0,0,0,.55));
+  transition:.22s;pointer-events:none
+}
+.raid-manifest.show{opacity:.94;animation:hyManifest 1.1s cubic-bezier(.17,.84,.44,1)}
+.raid-manifest img{width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:18px;
+  -webkit-mask-image:linear-gradient(to bottom,#000 78%,transparent 100%);mask-image:linear-gradient(to bottom,#000 78%,transparent 100%)}
+@keyframes hyManifest{0%{opacity:0;transform:translateY(22px) scale(.86)}35%{opacity:1;transform:none}100%{opacity:.94}}
+.raid-hand{position:absolute;z-index:10;left:50%;bottom:2%;translate:-50% 0;width:min(820px,61vw);display:flex;justify-content:center;align-items:end;gap:7px}
+.raid-card{
+  position:relative;width:min(148px,12vw);aspect-ratio:.69;border-radius:14px;overflow:hidden;border:1px solid rgba(255,230,178,.20);
+  background:#0a1116;box-shadow:0 18px 44px rgba(0,0,0,.48);transform-origin:bottom center;transition:.18s
+}
+.raid-card:hover,.raid-card:focus-visible{transform:translateY(-13px) scale(1.025);border-color:rgba(255,220,148,.62);z-index:4}
+.raid-card:disabled{opacity:.38;filter:saturate(.4)}
+.raid-card img{position:absolute;inset:0;width:100%;height:57%;object-fit:cover}
+.raid-card:after{content:"";position:absolute;inset:40% 0 0;background:linear-gradient(180deg,transparent,rgba(8,11,14,.96) 28%,#080b0e)}
+.raid-card .cost{position:absolute;z-index:3;left:7px;top:7px;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;
+  background:rgba(4,8,13,.90);border:1px solid rgba(149,204,255,.34);color:#cde7ff;font-weight:900;font-size:10px}
+.raid-card .text{position:absolute;z-index:3;left:8px;right:8px;bottom:8px}.raid-card .text b{display:block;font:800 13px "Noto Serif KR",serif;color:#f4e6c9}
+.raid-card .text span{display:block;margin-top:3px;color:#9d9588;font-size:7px;line-height:1.35}
+.raid-card.unique{border-color:rgba(255,204,106,.45);box-shadow:0 18px 44px rgba(0,0,0,.48),inset 0 0 22px rgba(221,184,111,.06)}
+.raid-bottom-right{position:absolute;z-index:10;right:2%;bottom:3%;width:min(250px,19vw);padding:12px;border:1px solid rgba(255,226,160,.16);border-radius:15px;
+  background:rgba(4,8,11,.74);backdrop-filter:blur(14px)}
+.raid-energy{display:flex;justify-content:space-between;align-items:center;font-size:9px}.raid-orbs{display:flex;gap:5px;margin-top:7px}
+.raid-orb{width:22px;height:22px;background:url('./assets/raid_energy.png') center/contain no-repeat;filter:drop-shadow(0 0 9px rgba(92,183,255,.42));opacity:1}
+.raid-orb.off{filter:grayscale(1) brightness(.36);opacity:.36}
+.raid-trait{margin-top:10px;padding-top:9px;border-top:1px solid rgba(255,255,255,.07);font-size:8px;color:#bbb3a5;line-height:1.55}
+.raid-trait b{display:block;color:#ffda91;font-size:9px;margin-bottom:3px}
+.raid-turn{margin-top:9px;width:100%;min-height:42px;border-radius:12px;border:1px solid rgba(255,224,160,.20);background:linear-gradient(#3b2b16,#191109);color:#f4dfb6;font-weight:900}
+.raid-result{position:absolute;z-index:30;inset:0;display:none;place-items:center;background:rgba(1,4,6,.80);backdrop-filter:blur(16px)}
+.raid-result.open{display:grid}.raid-result article{width:min(540px,calc(100vw - 30px));padding:24px;border:1px solid rgba(255,224,160,.22);border-radius:24px;
+  background:linear-gradient(145deg,#111619,#06090b);box-shadow:0 36px 120px #000}
+.raid-result small{color:#ddb86f;font-size:9px;letter-spacing:.15em;font-weight:900}.raid-result h2{font:900 31px "Noto Serif KR",serif;margin:7px 0 9px}.raid-result p{color:#b7afa1;font-size:11px;line-height:1.7}
+.raid-result button{margin-top:14px;min-height:44px;padding:0 17px;border:0;border-radius:999px;background:linear-gradient(#f0d28c,#b9843e);color:#171006;font-weight:900}
+@media(max-width:900px){
+  .raid-top{grid-template-columns:1fr 1.2fr;gap:10px}.raid-player{display:none}.raid-rule{top:18%;width:38vw}
+  .raid-party{width:31vw}.raid-hand{width:68vw}.raid-card{width:13vw}.raid-bottom-right{width:23vw}
+}
+
+.raid-breakline{display:flex;justify-content:space-between;margin-top:7px;color:#c8b99e;font-size:7px;letter-spacing:.1em}.raid-breakline b{color:#f0cb82}
+.raid-breaktrack{height:3px;margin-top:3px;background:rgba(255,255,255,.07);overflow:hidden}.raid-breaktrack i{display:block;width:0;height:100%;background:linear-gradient(90deg,#bb8741,#ffe09a);box-shadow:0 0 10px rgba(255,204,103,.32);transition:.32s}
+#hy-raid-combat[data-knot-danger="1"] .raid-bg{animation:hyRaidDanger 1.8s ease-in-out infinite alternate}@keyframes hyRaidDanger{from{transform:scale(1.035)}to{transform:scale(1.065) translateY(-1%);filter:contrast(1.12) saturate(.9) brightness(.82)}}
+#hy-raid-combat[data-knot-danger="2"] .raid-bg{transform:scale(1.09);filter:contrast(1.15) saturate(.78) brightness(.72)}
+.raid-damage:after{content:attr(data-break);display:block;margin-top:5px;font:900 18px/1 Pretendard,sans-serif;color:#ffb253;letter-spacing:.15em}
+.raid-taboo-prompt{position:absolute;z-index:40;inset:0;display:none;place-items:center;background:rgba(1,4,6,.72);backdrop-filter:blur(10px)}.raid-taboo-prompt.open{display:grid}
+.raid-taboo-prompt article{width:min(560px,calc(100vw - 30px));padding:24px;border:1px solid rgba(215,71,62,.26);border-radius:24px;background:linear-gradient(150deg,rgba(31,9,12,.97),rgba(6,7,9,.98));box-shadow:0 36px 120px #000}
+.raid-taboo-prompt small{color:#ff8e82;font-size:8px;letter-spacing:.16em;font-weight:900}.raid-taboo-prompt h2{font:900 29px "Noto Serif KR",serif;margin:7px 0 5px}.raid-taboo-prompt p{color:#dfd2c8;font:700 18px "Noto Serif KR",serif}
+.raid-taboo-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:16px}.raid-taboo-actions button{min-height:48px;border-radius:14px;border:1px solid rgba(255,255,255,.12);font-weight:900}.raid-taboo-actions .correct{background:linear-gradient(#304f67,#142635);color:#e4f3ff}.raid-taboo-actions .wrong{background:linear-gradient(#4a1d22,#211014);color:#f5d8d5}
+.raid-cutscene{position:absolute;z-index:60;inset:0;display:none;background:#020304}.raid-cutscene.open{display:block}.raid-cutscene video{width:100%;height:100%;object-fit:cover}.raid-cutscene button{position:absolute;z-index:4;right:18px;top:16px;min-height:36px;padding:0 13px;border-radius:999px;border:1px solid rgba(255,255,255,.16);background:rgba(3,6,8,.58);color:#eee;font-size:8px}
+.raid-card[data-skill="c075"]{border-color:rgba(255,204,106,.68);box-shadow:0 20px 52px rgba(0,0,0,.50),0 0 26px rgba(255,177,64,.12)}.raid-card[data-skill="c075"] .text b{color:#ffe0a0}
+
+.raid-cut-loading{position:absolute;z-index:3;left:50%;bottom:7%;translate:-50% 0;padding:7px 11px;border-radius:999px;background:rgba(3,6,8,.58);border:1px solid rgba(255,255,255,.11);color:#cfc7b9;font-size:8px;letter-spacing:.07em;pointer-events:none}
+.raid-cutscene video:not([src])+.raid-cut-loading{display:block}
+
+.raid-boss-action{position:absolute;z-index:12;right:2%;top:31%;max-width:290px;padding:8px 11px;border-radius:12px;border:1px solid rgba(255,255,255,.10);background:rgba(3,7,10,.66);backdrop-filter:blur(12px);font:800 9px/1.45 "Noto Serif KR",serif;color:#ded5c6;opacity:.84}
+.raid-boss-approach{position:absolute;z-index:7;right:-1%;top:13%;width:30%;height:70%;opacity:0;pointer-events:none;transition:.42s;filter:drop-shadow(0 18px 40px rgba(0,0,0,.58))}
+.raid-boss-approach img{width:100%;height:100%;object-fit:cover;object-position:center top;-webkit-mask-image:linear-gradient(to bottom,#000 76%,transparent 100%);mask-image:linear-gradient(to bottom,#000 76%,transparent 100%)}
+#hy-raid-combat[data-knots="3"] .raid-boss-approach{opacity:.22;transform:scale(1.02)}
+#hy-raid-combat[data-knots="2"] .raid-boss-approach{opacity:.42;transform:scale(1.06)}
+#hy-raid-combat[data-knots="1"] .raid-boss-approach{opacity:.72;transform:scale(1.12) translateX(-3%)}
+.raid-avatar .hp{position:absolute;left:4px;right:4px;bottom:20px;height:3px;background:rgba(0,0,0,.55);overflow:hidden}
+.raid-avatar .hp i{display:block;height:100%;background:linear-gradient(90deg,#b74d3e,#e8b66d);transition:.3s}
+.raid-avatar.down{filter:grayscale(1) brightness(.42);opacity:.5}
+.raid-seal-card{border-color:rgba(255,211,117,.82)!important;box-shadow:0 0 0 1px rgba(255,211,117,.22),0 0 34px rgba(255,189,74,.24)!important}
+.raid-seal-card .text b{color:#ffe1a0!important}
+.raid-ritual-ready{position:absolute;z-index:13;left:50%;bottom:22%;translate:-50% 0;padding:7px 12px;border-radius:999px;border:1px solid rgba(255,222,154,.28);background:rgba(23,15,5,.72);backdrop-filter:blur(12px);font:900 9px "Noto Serif KR",serif;color:#f5d692;opacity:0;transition:.25s}
+.raid-ritual-ready.show{opacity:1}
+.raid-hit-player{position:absolute;z-index:16;left:17%;top:46%;font:900 42px "Noto Serif KR",serif;color:#ff8d7d;text-shadow:0 2px 12px #000;opacity:0}
+.raid-hit-player.show{animation:hyPlayerHit .65s ease}
+@keyframes hyPlayerHit{15%{opacity:1;transform:translateY(-6px)}70%{opacity:1}100%{opacity:0;transform:translateY(-24px)}}
+</style>
+
 </head>
 <body>
 <div class="orientation"><div><b>가로 화면으로 돌려주세요</b><span>흥양기 UI는 가로 화면을 기준으로 제작되었습니다.</span></div></div>
@@ -140,7 +721,7 @@ body:before{content:"";position:fixed;inset:0;background:radial-gradient(circle 
     <div class="home-live-clock" id="homeLiveClock" aria-label="현재 시간">--:--<small>----</small></div>
     <button class="home-action" data-route="map"><small>첫 이야기</small><b>여자만의 바람</b><span>지도를 펼쳐 첫 목적지를 확인합니다.</span><div class="go">이어가기 <b>›</b></div></button>
     <button class="top-hit mail" aria-label="소식함" id="mailBtn"></button><button class="top-hit settings" aria-label="설정" id="settingsBtn"></button>
-    <button class="home-hit" data-screen="map" aria-label="지도"></button><button class="home-hit" data-screen="inventory" aria-label="인벤토리"></button><button class="home-hit" data-screen="cards" aria-label="카드"></button><button class="home-hit" data-screen="codex" aria-label="도감"></button><button class="home-hit" data-screen="party" aria-label="파티"></button><button class="home-hit" data-screen="shop" aria-label="상점"></button><button class="home-hit" data-screen="missions" aria-label="임무"></button>
+    <button type="button" class="home-hit" data-screen="map" aria-label="지도"></button><button type="button" class="home-hit" data-screen="inventory" aria-label="인벤토리"></button><button type="button" class="home-hit" data-screen="cards" aria-label="카드"></button><button type="button" class="home-hit" data-screen="codex" aria-label="도감"></button><button type="button" class="home-hit" data-screen="party" aria-label="파티"></button><button type="button" class="home-hit" data-screen="shop" aria-label="상점"></button><button type="button" class="home-hit" data-screen="missions" aria-label="임무"></button><div class="route-debug" id="routeDebug">HOME</div>
   </section>
 
   <div class="cine-layer" id="mapCinematic" aria-hidden="true">
@@ -172,6 +753,17 @@ body:before{content:"";position:fixed;inset:0;background:radial-gradient(circle 
     <button class="codex-cine-skip" id="codexCineSkip">건너뛰기</button>
     <div class="codex-cine-phase" id="codexCinePhase">아인이 기록책을 꺼낸다.</div>
     <div class="codex-cine-progress"><i id="codexCineProgress"></i></div>
+  </div>
+
+  <div class="card-cine-layer" id="partyCinematic" aria-hidden="true">
+    <video id="partyCineVideo" playsinline preload="auto"></video>
+    <button class="card-cine-skip cine-skip" id="partyCineSkip">건너뛰기</button>
+    <div class="card-cine-phase" aria-hidden="true"></div>
+    <div class="card-cine-progress cine-progress"><i id="partyCineProgress"></i></div>
+  </div>
+
+  <div class="hy-context-cine" id="contextCinematic" aria-hidden="true">
+    <div class="hy-context-bg"></div>
   </div>
 
   <!-- MAP -->
@@ -317,7 +909,7 @@ const invCineLayer=document.getElementById('inventoryCinematic'),invCineVideo=do
 let invCineBusy=false,invCineDone=null,invCineMode='open';
 const invCinePhases={open:[['아인이 백팩을 앞으로 내린다.',0],['양팔로 가방을 받치고 지퍼를 연다.',.26],['필요한 소지품을 확인한다.',.66]],close:[['소지품을 정리한다.',0],['양손으로 가방을 닫고 지퍼를 잠근다.',.32],['백팩을 다시 멘다.',.68]]};
 function finishInventoryCine(){if(!invCineBusy)return;invCineBusy=false;if(document.body.dataset.hyUpdateLock==='inventory-cinematic')document.body.removeAttribute('data-hy-update-lock');invCineVideo.pause();invCineLayer.classList.remove('active');invCineLayer.setAttribute('aria-hidden','true');invCineProgress.style.width='0%';const cb=invCineDone;invCineDone=null;setTimeout(()=>cb&&cb(),110)}
-function playInventoryCine(mode,onDone){if(invCineBusy)return;invCineBusy=true;document.body.dataset.hyUpdateLock='inventory-cinematic';invCineMode=mode;invCineDone=onDone;invCineVideo.src=mode==='open'?'assets/inventory_open_sequence.mp4':'assets/inventory_close_sequence.mp4';invCineVideo.muted=!state.sound;invCineVideo.volume=.7;invCineLayer.classList.add('active');invCineLayer.setAttribute('aria-hidden','false');invCinePhase.textContent=invCinePhases[mode][0][0];invCineVideo.currentTime=0;const p=invCineVideo.play();if(p)p.catch(()=>{invCineVideo.muted=true;invCineVideo.play().catch(finishInventoryCine)})}
+function playInventoryCine(mode,onDone){if(invCineBusy)return;invCineBusy=true;document.body.dataset.hyUpdateLock='inventory-cinematic';invCineMode=mode;invCineDone=onDone;invCineVideo.src=mode==='open'?'assets/inventory_open_sequence.mp4':'assets/inventory_close_sequence.mp4';invCineVideo.muted=!state.sound;invCineVideo.volume=.7;invCineLayer.classList.add('active');invCineLayer.setAttribute('aria-hidden','false');invCinePhase.textContent='';invCinePhase.style.display='none';invCineVideo.currentTime=0;const p=invCineVideo.play();if(p)p.catch(()=>{invCineVideo.muted=true;invCineVideo.play().catch(finishInventoryCine)})}
 invCineVideo.addEventListener('timeupdate',()=>{const d=invCineVideo.duration||1,p=invCineVideo.currentTime/d;invCineProgress.style.width=(p*100)+'%';for(const [txt,at] of invCinePhases[invCineMode]||[])if(p>=at)invCinePhase.textContent=txt});invCineVideo.addEventListener('ended',finishInventoryCine);invCineVideo.addEventListener('error',finishInventoryCine);invCineSkip.onclick=finishInventoryCine;
 
 
@@ -334,9 +926,58 @@ cardCineVideo.addEventListener('timeupdate',()=>{const d=cardCineVideo.duration|
 // codex action cinematic
 const codexCineLayer=document.getElementById('codexCinematic'),codexCineVideo=document.getElementById('codexCineVideo'),codexCinePhase=document.getElementById('codexCinePhase'),codexCineProgress=document.getElementById('codexCineProgress'),codexCineSkip=document.getElementById('codexCineSkip');let codexCineBusy=false,codexCineDone=null,codexCineMode='open';const codexCinePhases={open:[['아인이 가방에서 기록책을 꺼낸다.',0],['낡은 표지를 손끝으로 쓸어본다.',.28],['양손으로 기록책을 펼친다.',.57],['지금까지 모은 기록이 페이지 위에 나타난다.',.81]],close:[['마지막 문장을 기록한다.',0],['페이지를 조심스럽게 덮는다.',.32],['기록책을 가방 안쪽에 넣는다.',.62],['유자 키링이 흔들리고 아인이 다시 풍경을 본다.',.84]]};function finishCodexCine(){if(!codexCineBusy)return;codexCineBusy=false;if(document.body.dataset.hyUpdateLock==='codex-cinematic')document.body.removeAttribute('data-hy-update-lock');codexCineVideo.pause();codexCineLayer.classList.remove('active');codexCineLayer.setAttribute('aria-hidden','true');codexCineProgress.style.width='0';const cb=codexCineDone;codexCineDone=null;if(cb)cb()}function playCodexCine(mode,onDone){if(codexCineBusy)return;codexCineBusy=true;document.body.dataset.hyUpdateLock='codex-cinematic';codexCineMode=mode;codexCineDone=onDone;codexCineVideo.src=mode==='open'?'assets/codex_open_sequence.mp4':'assets/codex_close_sequence.mp4';codexCineVideo.muted=!state.sound;codexCineVideo.volume=.68;codexCineLayer.classList.add('active');codexCineLayer.setAttribute('aria-hidden','false');codexCinePhase.textContent=codexCinePhases[mode][0][0];codexCineVideo.currentTime=0;const p=codexCineVideo.play();if(p)p.catch(()=>{codexCineVideo.muted=true;codexCineVideo.play().catch(finishCodexCine)})}codexCineVideo.addEventListener('timeupdate',()=>{const d=codexCineVideo.duration||1,p=codexCineVideo.currentTime/d;codexCineProgress.style.width=(p*100)+'%';for(const [txt,at] of codexCinePhases[codexCineMode]||[])if(p>=at)codexCinePhase.textContent=txt});codexCineVideo.addEventListener('ended',finishCodexCine);codexCineVideo.addEventListener('error',finishCodexCine);codexCineSkip.onclick=finishCodexCine;
 
-function route(name,opts={}){if(!document.querySelector(`[data-screen="${name}"]`))return;if(name==='map'&&state.screen==='home'&&!opts.direct&&state.motion){return playCinematic('open',()=>route('map',{direct:true}))}if(name==='inventory'&&state.screen==='home'&&!opts.direct&&state.motion){return playInventoryCine('open',()=>route('inventory',{direct:true}))}if(name==='home'&&state.screen==='inventory'&&!opts.direct&&state.motion){return playInventoryCine('close',()=>route('home',{direct:true}))}if(name==='cards'&&state.screen==='home'&&!opts.direct&&state.motion){return playCardCine('open',()=>route('cards',{direct:true}))}if(name==='home'&&state.screen==='cards'&&!opts.direct&&state.motion){return playCardCine('close',()=>route('home',{direct:true}))}if(name==='codex'&&state.screen==='home'&&!opts.direct&&state.motion){return playCodexCine('open',()=>route('codex',{direct:true}))}if(name==='home'&&state.screen==='codex'&&!opts.direct&&state.motion){return playCodexCine('close',()=>route('home',{direct:true}))}if(name==='party'&&state.screen==='home'&&!opts.direct&&state.motion){return playCardCine('open',()=>route('party',{direct:true}))}if(name==='home'&&state.screen==='party'&&!opts.direct&&state.motion){return playCardCine('close',()=>route('home',{direct:true}))}screens.forEach(s=>s.classList.toggle('active',s.dataset.screen===name));state.screen=name;document.body.dataset.hyScreen=name;save();window.dispatchEvent(new CustomEvent('hy:screen-changed',{detail:{screen:name}}));document.querySelectorAll('.nav').forEach(nav=>nav.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b.dataset.route===name)));if(name==='map')setTimeout(()=>map&&map.invalidateSize(),80)}
-window.hyRoute=route;function renderNav(){document.querySelectorAll('.nav').forEach(nav=>{nav.innerHTML=navItems.map(([id,label,ico])=>`<button data-route="${id}"><span class="ico">${ico}</span>${label}</button>`).join('');nav.querySelectorAll('button').forEach(b=>b.onclick=()=>route(b.dataset.route))})}
-document.querySelectorAll('[data-route]').forEach(b=>b.onclick=()=>route(b.dataset.route));document.querySelectorAll('.home-hit').forEach(b=>b.onclick=()=>route(b.dataset.screen));renderNav();
+const ROUTES=new Set(['home','map','inventory','cards','codex','party','shop','missions']);
+let routing=false;
+function route(name,opts={}){
+  name=String(name||'home').replace(/^#/,'');
+  if(!ROUTES.has(name)) name='home';
+  if(routing&&!opts.direct)return;
+  const current=state.screen||'home';
+  const go=(target)=>{
+    screens.forEach(el=>el.classList.toggle('active',el.dataset.screen===target));
+    state.screen=target;document.body.dataset.hyScreen=target;save();
+    const dbg=document.getElementById('routeDebug');if(dbg)dbg.textContent=target.toUpperCase();
+    document.querySelectorAll('.nav').forEach(nav=>nav.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b.dataset.route===target)));
+    if(target==='map')setTimeout(()=>map&&map.invalidateSize(),80);
+    if(!opts.noHistory){
+      const marker={hyScreen:target};
+      if(opts.replace)history.replaceState(marker,'',location.pathname+location.search);
+      else if(history.state?.hyScreen!==target)history.pushState(marker,'',location.pathname+location.search);
+    }
+    window.dispatchEvent(new CustomEvent('hy:screen-changed',{detail:{screen:target}}));
+  };
+  const done=(target)=>{routing=false;go(target)};
+  if(name===current){go(name);return}
+  routing=true;
+  if(name==='map'&&current==='home'&&!opts.direct&&state.motion)return playCinematic('open',()=>done('map'));
+  if(name==='inventory'&&current==='home'&&!opts.direct&&state.motion)return playInventoryCine('open',()=>done('inventory'));
+  if(name==='cards'&&current==='home'&&!opts.direct&&state.motion)return playCardCine('open',()=>done('cards'));
+  if(name==='codex'&&current==='home'&&!opts.direct&&state.motion)return playCodexCine('open',()=>done('codex'));
+  if(name==='party'&&current==='home'&&!opts.direct&&state.motion)return playCardCine('open',()=>done('party'));
+  if(name==='home'&&current==='inventory'&&!opts.direct&&state.motion)return playInventoryCine('close',()=>done('home'));
+  if(name==='home'&&current==='cards'&&!opts.direct&&state.motion)return playCardCine('close',()=>done('home'));
+  if(name==='home'&&current==='codex'&&!opts.direct&&state.motion)return playCodexCine('close',()=>done('home'));
+  if(name==='home'&&current==='party'&&!opts.direct&&state.motion)return playCardCine('close',()=>done('home'));
+  done(name);
+}
+window.hyRoute=route;
+function renderNav(){
+  document.querySelectorAll('.nav').forEach(nav=>{
+    nav.innerHTML=navItems.map(([id,label,ico])=>`<button type="button" data-route="${id}" aria-label="${label}"><span class="ico">${ico}</span>${label}</button>`).join('');
+  });
+}
+renderNav();
+function bindInternalRoutes(){
+  document.addEventListener('click',(e)=>{
+    const el=e.target.closest('[data-route],[data-screen].home-hit');
+    if(!el)return;
+    const target=el.dataset.route||el.dataset.screen;
+    if(!ROUTES.has(target))return;
+    e.preventDefault();e.stopPropagation();route(target);
+  },true);
+}
+bindInternalRoutes();
+
 function syncMoney(){document.querySelectorAll('[data-gold]').forEach(x=>x.textContent=state.gold.toLocaleString());document.querySelectorAll('[data-gem]').forEach(x=>x.textContent=state.gem.toLocaleString())}
 function syncHomeClock(){const el=document.getElementById('homeLiveClock');if(!el)return;const d=new Date(),days=['일','월','화','수','목','금','토'];el.childNodes[0].nodeValue=String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');const s=el.querySelector('small');if(s)s.textContent=d.getFullYear()+'. '+String(d.getMonth()+1).padStart(2,'0')+'. '+String(d.getDate()).padStart(2,'0')+'. ('+days[d.getDay()]+')'}
 syncMoney();syncHomeClock();setInterval(syncHomeClock,30000);
@@ -436,7 +1077,12 @@ const entries=[
 {id:'yeoja',cat:'지역',src:'實',name:'여자만',sub:'첫 이야기의 권역',title:'여자만 — 물길이 기억을 품는 곳',progress:42,status:'조사 중',sigil:'汐',tags:['고흥','갯벌','첫 이야기'],record:'첫 지도에서 목적지로 지정된 권역. 낮에는 넓은 갯벌과 생활 풍경이 먼저 보이고, 기록이 쌓인 뒤 같은 길에서 작은 어긋남이 발견된다.',fact:'여자만은 고흥의 실제 해안·갯벌 권역이다. 게임 화면은 실제 지형과 생활 풍경을 바탕으로 플레이 동선에 맞게 축약·재구성한다.',interpret:'흥양기에서는 물길이 끊기는 순간을 “잊힌 이야기가 길을 바꾸는 징후”로 해석한다. 이상현상과 갯마리는 창작 설정이다.',sourceNote:'實 — 실제 장소 기반. 초자연 사건은 創으로 별도 표기.',related:['route','gaet','waterLore'],unlocked:true},
 {id:'goheung',cat:'지역',src:'實',name:'고흥읍',sub:'여행의 생활 거점',title:'고흥읍 — 떠나고 돌아오는 자리',progress:58,status:'기록 중',sigil:'邑',tags:['고흥','생활','교통'],record:'아인이 가방을 정리하고 지도를 펼치는 생활 거점. 상점과 임무, 소식함, 교통이 이곳에서 이어진다.',fact:'실제 생활 공간은 관광 세트처럼 과장하지 않고 읍내의 평범한 시간과 이동을 우선해 표현한다.',interpret:'귀신이 없는 낮의 일상도 충분히 머물고 싶은 공간으로 만든다. 그래야 같은 장소의 밤과 이면이 더 강하게 느껴진다.',sourceNote:'實 — 실제 지역을 모티브로 한 게임용 재구성.',related:['route','ain'],unlocked:true},
 {id:'palyoung',cat:'지역',src:'實',name:'팔영산',sub:'아직 먼 산길',title:'팔영산 — 여덟 봉우리의 그림자',progress:8,status:'미조사',sigil:'山',tags:['산','전망','미발견'],record:'지도에는 이름만 적혀 있다. 산길의 사건과 네임드는 아직 열리지 않았다.',fact:'실제 장소의 산세와 탐방 환경을 조사한 뒤 게임용 지역으로 재구성한다.',interpret:'밤에는 옛길이 현대 등산로 위로 겹치는 “이면 산행” 후보 지역.',sourceNote:'實 — 실제 장소. 사건 내용은 추후 자료 조사 후 實·傳·創 분리.',related:['goheung'],unlocked:true},
-{id:'ain',cat:'인물',src:'創',name:'아인',sub:'현재를 사는 기록자',title:'아인 — 이야기를 먼저 판단하지 않는 사람',progress:36,status:'동행 중',sigil:'人',tags:['주인공','현대','기록'],record:'현대 고흥을 여행하며 오래된 이야기를 직접 보고 기록한다. 처음부터 퇴마사가 아니라, 사건을 겪으며 카드와 의례 도구의 쓰임을 배운다.',fact:'현대 복장, 백팩, 유자 키링 같은 생활 소품은 모든 장면에서 동일성을 유지한다.',interpret:'플레이어의 선택은 아인의 문장으로 흥양기에 남는다. 같은 존재라도 누구의 기록인지에 따라 결말의 의미가 달라진다.',sourceNote:'創 — 흥양기 주인공.',related:['goheung','gaet'],unlocked:true},
+
+{id:'nokdong',cat:'지역',src:'實',name:'녹동항',sub:'남부권 항구 생활 거점',title:'녹동항 — 바닷길과 생활이 만나는 곳',progress:6,status:'첫 방문 가능',sigil:'港',tags:['항구','생활','자유 탐험'],record:'첫 방문에서는 항구 생활과 이동 동선을 먼저 기록한다. 사건은 나중에 열린다.',fact:'고흥 남부권의 실제 항구 권역을 바탕으로 게임용 탐험 공간을 재구성한다.',interpret:'같은 항구를 반복 방문할수록 루트 기억과 사건의 겹침이 달라지는 지역으로 설계한다.',sourceNote:'實 — 실제 장소 기반. 초자연 사건은 별도 創 표기.',related:['goheung','route'],unlocked:true},
+{id:'geogeum',cat:'지역',src:'實',name:'거금도',sub:'해안도로와 섬 생활',title:'거금도 — 길 자체가 기억이 되는 섬',progress:4,status:'첫 방문 가능',sigil:'島',tags:['섬','해안도로','자유 탐험'],record:'해안도로와 마을 사이의 거리감을 첫 방문 기준으로 기록한다.',fact:'실제 섬 지형과 생활권을 바탕으로 이동 콘텐츠를 구성한다.',interpret:'반복 방문 때 같은 길의 작은 변화가 사건 신호가 되는 루트 기억 중심 지역.',sourceNote:'實 — 실제 장소 기반.',related:['route','goheung'],unlocked:true},
+{id:'naro',cat:'지역',src:'實',name:'나로도',sub:'동쪽 바닷길과 현대의 풍경',title:'나로도 — 멀리 가는 길도 이야기다',progress:4,status:'첫 방문 가능',sigil:'路',tags:['섬','이동','자유 탐험'],record:'고흥에서 나로도로 향하는 이동과 도착 풍경을 하나의 여정으로 기록한다.',fact:'실제 나로도 권역과 교통 동선을 조사해 게임용 이동 루트로 재구성한다.',interpret:'해무와 밤길 사건은 첫 방문 이후 루트 기억이 생긴 뒤 해금한다.',sourceNote:'實 — 실제 장소 기반. 사건은 創.',related:['route','goheung'],unlocked:true},
+{id:'sorok',cat:'지역',src:'實',name:'소록도',sub:'역사와 기억을 존중하는 공간',title:'소록도 — 사건보다 먼저 기억을 읽는 곳',progress:3,status:'기록 중심',sigil:'憶',tags:['기억','역사','별도 서사'],record:'첫 방문은 전투나 공포가 아니라 장소와 사람의 기억을 읽는 데 집중한다.',fact:'실제 역사적 장소이므로 게임적 괴담과 사실 기록을 엄격히 분리한다.',interpret:'흥양기의 초자연 서사는 역사적 고통을 소비하지 않는 범위에서만 별도 층위로 다룬다.',sourceNote:'實 — 실제 장소. 역사적 사실과 創 설정을 분리.',related:['goheung'],unlocked:true},
+{id:'nokdong_named',cat:'신령',src:'創',name:'물등 사공',sub:'녹동항 · 미해결 네임드',title:'물등 사공 — 이름을 부르는 등불',progress:18,status:'관찰 1회',sigil:'燈',tags:['녹동항','대답하지 말 것','네임드'],record:'배가 없는 계류 자리에서 수면 높이로 움직이는 등불. 주변 사람에게는 목소리가 들리지 않는 것으로 보인다.',fact:'실제 녹동항의 지리·생활권과 분리하여 기록한다. 이 존재 자체는 실제 전승으로 확인된 것이 아니다.',interpret:'흥양기의 創 설정. “대답하지 말 것” 금기를 가진 항구 네임드의 첫 관찰 단계.',sourceNote:'創 — 흥양기 창작. 실제 설화·역사로 표기 금지.',related:['nokdong','route'],unlocked:true},{id:'palyoung_named',cat:'신령',src:'創',name:'등짐객',sub:'팔영산 · 미해결 네임드',title:'등짐객 — 옛길 앞을 걷는 형상',progress:16,status:'관찰 1회',sigil:'路',tags:['팔영산','뒤돌지 말 것','옛길'],record:'갈림길 너머에서 오래된 등짐을 진 형상이 잠깐 보였다. 얼굴은 확인되지 않았다.',fact:'실제 팔영산의 장소성과 분리해 기록한다. 이 존재 자체는 실제 전승으로 확인된 것이 아니다.',interpret:'흥양기 창작 네임드. 현재 등산로와 옛길 후보가 겹칠 때만 나타나는 안내자/유인자 성격의 존재.',sourceNote:'創 — 흥양기 창작. 실제 설화·역사로 표기 금지.',related:['palyoung','route'],unlocked:true},{id:'geogeum_named',cat:'신령',src:'創',name:'해안 표식꾼',sub:'거금도 · 미해결 네임드',title:'해안 표식꾼 — 어느 쪽도 가리키지 않는 사람',progress:15,status:'관찰 1회',sigil:'標',tags:['거금도','세지 말 것','해안도로'],record:'도로 가장자리 표지판 뒤에 선 그림자. 손을 들었지만 방향은 읽히지 않았다.',fact:'실제 거금도의 해안도로 풍경과 분리해 기록한다. 이 존재는 실제 전승으로 확인된 것이 아니다.',interpret:'흥양기 창작 네임드. 방향 어긋남과 반복 표식이 나타날 때만 관찰 가능하다.',sourceNote:'創 — 흥양기 창작. 실제 설화·역사로 표기 금지.',related:['geogeum','route'],unlocked:true},{id:'sorok_memory_01',cat:'지역',src:'實',name:'소록도 기억 기록',sub:'전투 없는 별도 서사',title:'소록도 — 기억하고 배우는 것도 해결이다',progress:22,status:'기억 기록 1단계',sigil:'憶',tags:['소록도','인권','기억','전투 없음'],record:'소록도에서는 네임드 처치나 퇴치율 대신 장소의 역사, 삶, 인권의 기록을 읽고 저장한다.',fact:'국립소록도병원 한센병박물관은 한센병, 인권, 삶, 병원과 사람들의 관계를 이해할 수 있는 자료와 전시를 제공한다.',interpret:'흥양기는 이 지역을 공포 던전으로 소비하지 않고 기억·기록·인식 개선을 완료 조건으로 삼는다.',sourceNote:'實 — 국립소록도병원/한센병박물관 공식 자료 기반. 초자연 창작 사건 미사용.',related:['sorok','goheung'],unlocked:true},{id:'ain',cat:'인물',src:'創',name:'아인',sub:'현재를 사는 기록자',title:'아인 — 이야기를 먼저 판단하지 않는 사람',progress:36,status:'동행 중',sigil:'人',tags:['주인공','현대','기록'],record:'현대 고흥을 여행하며 오래된 이야기를 직접 보고 기록한다. 처음부터 퇴마사가 아니라, 사건을 겪으며 카드와 의례 도구의 쓰임을 배운다.',fact:'현대 복장, 백팩, 유자 키링 같은 생활 소품은 모든 장면에서 동일성을 유지한다.',interpret:'플레이어의 선택은 아인의 문장으로 흥양기에 남는다. 같은 존재라도 누구의 기록인지에 따라 결말의 의미가 달라진다.',sourceNote:'創 — 흥양기 주인공.',related:['goheung','gaet'],unlocked:true},
 {id:'driver',cat:'인물',src:'創',name:'농어촌버스 기사',sub:'첫 이동의 안내자',title:'버스 기사 — 익숙한 길을 아는 사람',progress:12,status:'한 번 만남',sigil:'路',tags:['버스','주민','이동'],record:'첫 이동에서 목적지와 길의 변화를 짧게 알려주는 인물. 긴 설명보다 창밖 풍경을 이해할 단서를 건넨다.',fact:'차량·정류장·표지판은 실제 고흥 교통 자료를 우선 확인해 재구성한다.',interpret:'재방문에서는 같은 기사의 말이 조금씩 달라져 루트 기억의 변화를 알려줄 수 있다.',sourceNote:'創 — 실제 특정인을 모델로 하지 않은 합성 인물.',related:['route'],unlocked:true},
 {id:'gaet',cat:'귀신·신령',src:'創',name:'갯마리',sub:'물길 사이의 임시 기록',title:'갯마리 — 아직 이름이 아닌 이름',progress:18,status:'임시 기록',sigil:'沫',tags:['여자만','물','미확인'],record:'여자만의 첫 탐험에서 잠깐 마주치는 또래의 존재. 외형은 호감을 주지만, 물의 흐름과 움직임이 맞지 않는다.',fact:'실제 여자만 전승으로 소개하지 않는다. 발견 장소만 실제이고 존재와 사건은 창작이다.',interpret:'공격 대상인지 안내자인지 처음에는 판단할 수 없다. 관찰과 대화가 쌓여야 카드의 진짜 역할이 열린다.',sourceNote:'創 — 흥양기 창작 존재.',related:['yeoja','waterLore'],unlocked:true},
 {id:'ridgeShade',cat:'귀신·신령',src:'創',name:'논둑의 검은 아이',sub:'잠긴 기록',title:'기록이 봉해져 있다',progress:0,status:'미발견',sigil:'?',tags:['잠김'],record:'아직 만나지 못한 존재다.',fact:'기록 없음.',interpret:'기록 없음.',sourceNote:'발견 조건을 충족하면 페이지가 열린다.',related:[],unlocked:false},
@@ -494,8 +1140,1879 @@ renderMissions();
 
 window.HYGame={getState:()=>JSON.parse(JSON.stringify(state)),save,isSafeForUpdate:()=>!cineBusy&&!invCineBusy&&!cardCineBusy&&!codexCineBusy&&!document.body.dataset.hyUpdateLock,route};
 window.addEventListener('hy:before-update',save);
-route(state.screen||'home');
-window.addEventListener('hashchange',()=>{const h=location.hash.slice(1);if(h)route(h)});
+history.replaceState({hyScreen:state.screen||'home'},'',location.pathname+location.search);
+route(state.screen||'home',{direct:true,noHistory:true});
+window.addEventListener('popstate',(e)=>{const target=e.state?.hyScreen||'home';route(target,{direct:true,noHistory:true})});
 })();
 </script>
+
+<script id="hy-ui-completion-v382-js">
+(() => {
+  'use strict';
+
+  const q = (sel, root=document) => root.querySelector(sel);
+  const qa = (sel, root=document) => [...root.querySelectorAll(sel)];
+
+  // Never allow a game-menu click to escape into another HTML page / external URL.
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('#game a[href]');
+    if (!a) return;
+    const href = a.getAttribute('href') || '';
+    if (/^(https?:|\/|\.\/|..\/)/i.test(href) && !href.startsWith('#')) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      window.HYGame?.route?.('home');
+    }
+  }, true);
+
+  // Keep the bottom navigation visibly in sync with the actual internal screen.
+  function syncNav(screen) {
+    qa('.nav button').forEach(btn => btn.classList.toggle('active', btn.dataset.route === screen));
+    qa('.screen').forEach(s => {
+      if (s.classList.contains('active')) {
+        s.classList.remove('hy-soft-enter');
+        void s.offsetWidth;
+        s.classList.add('hy-soft-enter');
+      }
+    });
+  }
+
+  const originalRoute = window.HYGame?.route;
+  if (originalRoute) {
+    window.HYGame.route = (screen, opts) => {
+      originalRoute(screen, opts);
+      syncNav(screen);
+      setTimeout(() => syncNav(screen), 30);
+    };
+  }
+
+  window.addEventListener('popstate', () => setTimeout(() => {
+    const active = q('.screen.active')?.dataset.screen || 'home';
+    syncNav(active);
+  }, 25));
+
+  // Inventory: keep this a tactile bag interaction rather than a subtitle sequence.
+  const invVideo = q('#inventoryCineVideo');
+  if (invVideo) {
+    invVideo.setAttribute('playsinline','');
+    invVideo.setAttribute('preload','auto');
+    invVideo.style.objectFit = 'cover';
+  }
+
+  // Codex: useful cross-links without leaving the game.
+  function enhanceCodex() {
+    const meta = q('#codexMeta');
+    if (!meta || meta.querySelector('.hy-inline-actions')) return;
+    const wrap = document.createElement('div');
+    wrap.className = 'hy-inline-actions';
+    wrap.innerHTML = '<button class="secondary" data-hy-codex-map>지도에서 보기</button><button class="secondary" data-hy-codex-card>관련 카드</button>';
+    meta.appendChild(wrap);
+    wrap.querySelector('[data-hy-codex-map]').onclick = () => window.HYGame?.route?.('map');
+    wrap.querySelector('[data-hy-codex-card]').onclick = () => window.HYGame?.route?.('cards');
+  }
+  new MutationObserver(enhanceCodex).observe(q('#codexMeta') || document.body,{childList:true,subtree:true});
+  enhanceCodex();
+
+  // Party: make "준비 완료" a real state and return naturally to the hub.
+  document.addEventListener('click', (e) => {
+    if (e.target?.id !== 'partyConfirm') return;
+    const side = q('#partyDetailV6');
+    if (side) {
+      side.querySelector('.hy-party-ready')?.remove();
+      const note = document.createElement('div');
+      note.className = 'hy-party-ready';
+      note.textContent = '동행 준비가 저장되었습니다. 대기화면에서 바로 여자만 여정을 이어갈 수 있습니다.';
+      side.appendChild(note);
+    }
+    setTimeout(() => window.HYGame?.route?.('home'), 850);
+  });
+
+  // Shop preview: previously it looked clickable but did nothing.
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('#goodDetail button.secondary');
+    if (!btn || !/미리보기/.test(btn.textContent)) return;
+    const title = q('#goodDetail h2')?.textContent || '물건';
+    const desc = q('#goodDetail p')?.textContent || '';
+    const icon = q('#goodDetail .detail-icon')?.textContent || '◇';
+    const layer = q('#modalLayer'), modal = q('#modal');
+    if (!layer || !modal) return;
+    modal.classList.add('hy-modal-sheet');
+    modal.innerHTML = `<div class="hero">${icon}</div><small class="section-label">실물 확인</small><h2>${title}</h2><p>${desc}</p><p class="muted">구매 전 아인이 물건을 직접 확인하는 미리보기입니다. 구매 후에는 인벤토리에 즉시 반영됩니다.</p><div class="buttons"><button class="primary" data-hy-modal-close>확인</button></div>`;
+    layer.classList.remove('hidden');
+    modal.querySelector('[data-hy-modal-close]').onclick = () => layer.classList.add('hidden');
+  });
+
+  // Mission tracking: tapping a mission now gives it a concrete next action.
+  let trackedMission = localStorage.getItem('hy_tracked_mission') || '';
+  function wireMissions() {
+    qa('#missionList .mission').forEach(card => {
+      const claim = card.querySelector('.claim');
+      const title = card.querySelector('b')?.textContent || '';
+      card.classList.toggle('hy-tracked', title === trackedMission);
+      card.onclick = (e) => {
+        if (e.target.closest('.claim')) return;
+        trackedMission = title;
+        localStorage.setItem('hy_tracked_mission', trackedMission);
+        wireMissions();
+        renderTrackedMission();
+      };
+    });
+    renderTrackedMission();
+  }
+  function renderTrackedMission() {
+    const box = q('.mission-summary');
+    if (!box) return;
+    let panel = box.querySelector('.hy-track-card');
+    if (!panel) {
+      panel = document.createElement('div');
+      panel.className = 'hy-track-card';
+      box.appendChild(panel);
+    }
+    panel.innerHTML = trackedMission
+      ? `<small>추적 중인 기록</small><b>${trackedMission}</b><div class="hy-inline-actions"><button class="secondary" data-hy-mission-map>지도에서 보기</button><button class="secondary" data-hy-mission-clear>추적 해제</button></div>`
+      : `<small>추적 중인 기록</small><b>선택된 임무 없음</b>`;
+    panel.querySelector('[data-hy-mission-map]')?.addEventListener('click', () => window.HYGame?.route?.('map'));
+    panel.querySelector('[data-hy-mission-clear]')?.addEventListener('click', () => {
+      trackedMission = '';
+      localStorage.removeItem('hy_tracked_mission');
+      wireMissions();
+    });
+  }
+  new MutationObserver(wireMissions).observe(q('#missionList') || document.body,{childList:true,subtree:true});
+  wireMissions();
+
+  // A tiny route indicator is only visible in debug mode, useful for mobile QA.
+  const game = q('#game');
+  if (game && !q('.hy-route-note')) {
+    const note = document.createElement('div');
+    note.className='hy-route-note';
+    note.textContent='내부 라우팅 v38.2';
+    game.appendChild(note);
+  }
+
+  const active = q('.screen.active')?.dataset.screen || 'home';
+  syncNav(active);
+})();
+</script>
+
+
+<script id="hy-yeojaman-v383-js">
+(() => {
+  'use strict';
+  const STORAGE = 'hy_tutorial_yeojaman_v1';
+  const tutorial = document.createElement('section');
+  tutorial.id = 'hy-tutorial';
+  tutorial.dataset.step = 'travel';
+  tutorial.innerHTML = `
+    <div class="hy-scene"></div><div class="hy-vignette"></div><div class="hy-film"></div>
+    <div class="hy-waterline"></div><div class="hy-glitch"></div><div class="hy-silhouette"></div>
+    <div class="hy-top"><span class="crumb">여자만 · 첫 기록</span><div class="progress"><i></i></div></div>
+    <button class="hy-skip" data-hy-tut-skip>튜토리얼 종료</button>
+    <article class="hy-panel"><small data-hy-kicker>첫 여정</small><h1 data-hy-title></h1><p data-hy-copy></p><div class="hy-actions" data-hy-actions></div></article>
+    <aside class="hy-record"><b data-hy-record-title>기록 없음</b><span data-hy-record-copy>아직 이상 징후를 기록하지 않았습니다.</span></aside>`;
+  document.body.appendChild(tutorial);
+
+  const steps = [
+    {id:'travel', kicker:'첫 여정', title:'여자만으로 가는 길', copy:'처음에는 아무 일도 일어나지 않는다. 창밖으로 바다와 낮은 마을이 지나가고, 아인은 그 풍경을 그대로 기억한다.', actions:[['계속 이동','arrival']]},
+    {id:'arrival', kicker:'도착', title:'낯설지 않은 풍경', copy:'바람, 물비린내, 멀리 보이는 갯벌. 첫 방문에서는 “이상한 곳”보다 “실제로 존재하는 장소”라는 감각을 먼저 준다.', actions:[['주변을 살핀다','observe']]},
+    {id:'observe', kicker:'관찰', title:'기록할 만한 것', copy:'길 가장자리의 흔적과 물가의 작은 변화가 눈에 들어온다. 정답을 보여주지 않고, 플레이어가 하나씩 관찰하도록 한다.', actions:[['물가의 흔적 기록','anomaly'],['조금 더 걷는다','anomaly']]},
+    {id:'anomaly', kicker:'첫 이상', title:'물결이 늦게 따라온다', copy:'몸은 움직이지 않았는데 반사된 형상만 아주 조금 늦게 고개를 든다. 공포 얼굴 대신 행동의 어긋남으로 첫 이상을 만든다.', record:['관찰 기록 추가','水面의 반응이 실제 움직임과 맞지 않는다.'], actions:[['가까이 가지 않고 지켜본다','encounter']]},
+    {id:'encounter', kicker:'첫 조우', title:'갯마리', copy:'같은 또래로 보이는 조용한 인물. 처음부터 적대적으로 보이지 않는다. 이름과 정체는 아직 확정하지 않고 관찰 기록만 열린다.', record:['임시 기록 · 갯마리','傳/創 미확정. 외형보다 행동의 이상이 먼저 기록된다.'], actions:[['기록하고 돌아간다','finish']]},
+    {id:'finish', kicker:'기록 갱신', title:'이제 고흥을 자유롭게 둘러볼 수 있다', copy:'여자만의 첫 기록이 도감에 남고, 지도에서 다른 지역을 선택할 수 있게 된다. 이후 같은 길을 다시 지나면 이전에는 없던 단서가 추가된다.', record:['루트 기억 활성','여자만 1단계 · 발견됨'], actions:[['대기화면으로','done'],['도감에서 확인','codex']]}
+  ];
+
+  let index = 0;
+  function render() {
+    const s = steps[index];
+    tutorial.dataset.step = s.id;
+    tutorial.querySelector('[data-hy-kicker]').textContent = s.kicker;
+    tutorial.querySelector('[data-hy-title]').textContent = s.title;
+    tutorial.querySelector('[data-hy-copy]').textContent = s.copy;
+    tutorial.querySelector('.progress i').style.width = `${((index+1)/steps.length)*100}%`;
+    const actions = tutorial.querySelector('[data-hy-actions]');
+    actions.innerHTML = '';
+    s.actions.forEach(([label,next],i) => {
+      const b = document.createElement('button');
+      b.className = i===0 ? 'primary' : '';
+      b.textContent = label;
+      b.onclick = () => go(next);
+      actions.appendChild(b);
+    });
+    if (s.record) {
+      tutorial.querySelector('[data-hy-record-title]').textContent = s.record[0];
+      tutorial.querySelector('[data-hy-record-copy]').textContent = s.record[1];
+    }
+  }
+  function go(next) {
+    if (next === 'done') return finish('home');
+    if (next === 'codex') return finish('codex');
+    const i = steps.findIndex(x => x.id === next);
+    if (i >= 0) { index = i; render(); }
+  }
+  function start() {
+    index = 0;
+    tutorial.classList.add('active');
+    document.body.dataset.hyUpdateLock = 'tutorial';
+    render();
+  }
+  function finish(route='home') {
+    const completedAt = new Date().toISOString();
+    localStorage.setItem(STORAGE, JSON.stringify({completed:true, routeMemory:1, completedAt}));
+    try {
+      const main = JSON.parse(localStorage.getItem('hy-ui-state') || '{}');
+      main.tutorialComplete = true;
+      main.selectedRegion = 'yeojaman';
+      main.firstDestination = null;
+      main.routeMemory = {...(main.routeMemory||{}), yeojaman:1};
+      main.regionVisits = {...(main.regionVisits||{}), yeojaman:Math.max(1, Number(main.regionVisits?.yeojaman||0))};
+      localStorage.setItem('hy-ui-state', JSON.stringify(main));
+    } catch {}
+    tutorial.classList.remove('active');
+    document.body.removeAttribute('data-hy-update-lock');
+    window.HYGame?.route?.(route);
+    window.dispatchEvent(new CustomEvent('hy:tutorial-complete',{detail:{area:'여자만',routeMemory:1,completedAt}}));
+    setTimeout(()=>location.reload(), route==='home'?450:700);
+  }
+  tutorial.querySelector('[data-hy-tut-skip]').onclick = () => finish('home');
+
+  // Home's main action becomes the first-story entry until tutorial completion.
+  function wireHomeAction() {
+    const btn = document.querySelector('.home-action');
+    if (!btn || btn.dataset.hyTutWired) return;
+    btn.dataset.hyTutWired = '1';
+    const completed = (() => { try { return JSON.parse(localStorage.getItem(STORAGE)||'{}').completed; } catch { return false; }})();
+    if (!completed) {
+      btn.classList.add('destination-ready');
+      btn.querySelector('small') && (btn.querySelector('small').textContent = '첫 이야기');
+      btn.querySelector('b') && (btn.querySelector('b').textContent = '여자만 · 첫 기록');
+      btn.querySelector('span') && (btn.querySelector('span').textContent = '첫 이동과 관찰을 시작합니다.');
+      btn.onclick = (e) => { e.preventDefault(); e.stopPropagation(); start(); };
+    }
+  }
+  wireHomeAction();
+
+  // Map tutorial: during first run, selecting the story destination starts the same tutorial.
+  document.addEventListener('click', (e) => {
+    const story = e.target.closest('.geo-pin.story,.map-info .primary');
+    if (!story) return;
+    let completed = false;
+    try { completed = JSON.parse(localStorage.getItem(STORAGE)||'{}').completed; } catch {}
+    if (!completed) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      start();
+    }
+  }, true);
+
+  window.HYTutorial = {start, finish, state: () => {
+    try { return JSON.parse(localStorage.getItem(STORAGE)||'{}'); } catch { return {}; }
+  }};
+})();
+</script>
+
+
+<script id="hy-cine-polish-v384-js">
+(() => {
+  'use strict';
+  const selectors = [
+    '#mapCineVideo',
+    '#inventoryCineVideo',
+    '#cardCineVideo',
+    '#codexCineVideo'
+  ];
+  const videos = selectors.map(s => document.querySelector(s)).filter(Boolean);
+
+  function warmVideo(video){
+    video.setAttribute('playsinline','');
+    video.setAttribute('webkit-playsinline','');
+    video.setAttribute('preload','auto');
+    video.muted = true;
+    video.playsInline = true;
+    try { video.load(); } catch {}
+  }
+  videos.forEach(warmVideo);
+
+  function activeLayer(video){
+    return video.closest('.cine-layer,.inv-cine-layer,.card-cine-layer,.codex-cine-layer') || video.parentElement;
+  }
+
+  videos.forEach(video => {
+    const layer = activeLayer(video);
+    if (!layer) return;
+
+    video.addEventListener('play', () => {
+      document.body.classList.add('hy-cine-playing');
+      document.body.dataset.hyUpdateLock = 'menu-cinematic';
+      layer.classList.remove('hy-show-skip');
+      clearTimeout(layer._hySkipTimer);
+      layer._hySkipTimer = setTimeout(() => layer.classList.add('hy-show-skip'), 1400);
+    });
+
+    const done = () => {
+      document.body.classList.remove('hy-cine-playing');
+      if (document.body.dataset.hyUpdateLock === 'menu-cinematic') {
+        document.body.removeAttribute('data-hy-update-lock');
+      }
+      layer.classList.remove('hy-show-skip');
+    };
+    video.addEventListener('ended', done);
+    video.addEventListener('pause', () => {
+      if (video.currentTime >= video.duration - .12) done();
+    });
+
+    // First user tap reveals skip rather than interrupting the cinematic.
+    layer.addEventListener('pointerdown', e => {
+      if (e.target.closest('.cine-skip')) return;
+      layer.classList.add('hy-show-skip');
+    }, {passive:true});
+  });
+
+  // Card / codex: remove legacy instructional text if dynamically rewritten.
+  const scrub = () => {
+    document.querySelectorAll('.cine-phase,.inv-cine-phase,.card-cine-phase,.codex-cine-phase')
+      .forEach(el => { el.textContent=''; el.style.display='none'; });
+  };
+  scrub();
+  new MutationObserver(scrub).observe(document.body,{subtree:true,childList:true,characterData:true});
+
+  // Prewarm likely next assets after idle.
+  const warmSources = [
+    './assets/inventory_open_sequence.mp4',
+    './assets/inventory_close_sequence.mp4',
+    './assets/card_open_sequence.mp4',
+    './assets/card_close_sequence.mp4',
+    './assets/codex_open_sequence.mp4',
+    './assets/codex_close_sequence.mp4',
+    './assets/map_open_sequence.mp4',
+    './assets/map_stow_sequence.mp4'
+  ];
+  const prewarm = () => warmSources.forEach(src => {
+    const v = document.createElement('video');
+    v.preload='metadata'; v.muted=true; v.src=src;
+  });
+  if ('requestIdleCallback' in window) requestIdleCallback(prewarm,{timeout:2500});
+  else setTimeout(prewarm,1200);
+})();
+</script>
+
+
+<script id="hy-ui-final-v385-js">
+(() => {
+  'use strict';
+  const q = s => document.querySelector(s);
+  const partyLayer=q('#partyCinematic'), partyVideo=q('#partyCineVideo'), partySkip=q('#partyCineSkip'), partyProgress=q('#partyCineProgress');
+  let partyBusy=false, partyDone=null;
+
+  function finishParty(){
+    if(!partyBusy) return;
+    partyBusy=false;
+    partyVideo.pause();
+    partyLayer.classList.remove('active','hy-show-skip');
+    partyLayer.setAttribute('aria-hidden','true');
+    partyProgress.style.width='0%';
+    if(document.body.dataset.hyUpdateLock==='party-cinematic') document.body.removeAttribute('data-hy-update-lock');
+    const cb=partyDone; partyDone=null; cb && cb();
+  }
+  window.HYPartyCine = function(mode,onDone){
+    if(partyBusy) return;
+    partyBusy=true; partyDone=onDone;
+    document.body.dataset.hyUpdateLock='party-cinematic';
+    partyVideo.src=mode==='open'?'assets/party_open_sequence.mp4':'assets/party_close_sequence.mp4';
+    partyVideo.muted=true; partyVideo.currentTime=0;
+    partyLayer.classList.add('active'); partyLayer.setAttribute('aria-hidden','false');
+    setTimeout(()=>partyLayer.classList.add('hy-show-skip'),1400);
+    const p=partyVideo.play(); if(p) p.catch(finishParty);
+  };
+  partyVideo.addEventListener('timeupdate',()=>{const d=partyVideo.duration||1;partyProgress.style.width=((partyVideo.currentTime/d)*100)+'%'});
+  partyVideo.addEventListener('ended',finishParty);
+  partyVideo.addEventListener('error',finishParty);
+  partySkip.onclick=finishParty;
+
+  const ctx=q('#contextCinematic');
+  window.HYContextCine=(onDone)=>{
+    ctx.classList.add('active');ctx.setAttribute('aria-hidden','false');
+    document.body.dataset.hyUpdateLock='context-cinematic';
+    setTimeout(()=>{
+      ctx.classList.remove('active');ctx.setAttribute('aria-hidden','true');
+      if(document.body.dataset.hyUpdateLock==='context-cinematic')document.body.removeAttribute('data-hy-update-lock');
+      onDone&&onDone();
+    },620);
+  };
+
+  // Wrap the public route function so party gets its own physical-action slot and
+  // shop/mission never jump or feel like a raw page swap.
+  const baseRoute=window.HYGame?.route || window.hyRoute;
+  if(baseRoute){
+    const wrapped=(name,opts={})=>{
+      const current=window.HYGame?.getState?.().screen || document.querySelector('.screen.active')?.dataset.screen || 'home';
+      if(opts.__v385) return baseRoute(name,opts);
+      if(name==='party' && current==='home' && !opts.direct){
+        return window.HYPartyCine('open',()=>baseRoute('party',{...opts,direct:true,__v385:true}));
+      }
+      if(name==='home' && current==='party' && !opts.direct){
+        return window.HYPartyCine('close',()=>baseRoute('home',{...opts,direct:true,__v385:true}));
+      }
+      if((name==='shop'||name==='missions') && current==='home' && !opts.direct){
+        return window.HYContextCine(()=>baseRoute(name,{...opts,direct:true,__v385:true}));
+      }
+      if(name==='home' && (current==='shop'||current==='missions') && !opts.direct){
+        return window.HYContextCine(()=>baseRoute('home',{...opts,direct:true,__v385:true}));
+      }
+      return baseRoute(name,opts);
+    };
+    window.hyRoute=wrapped;
+    if(window.HYGame) window.HYGame.route=wrapped;
+  }
+
+  // Inventory: guarantee stable, orderly slots after any dynamic rerender.
+  function normalizeInventory(){
+    const grid=q('#itemGrid');
+    if(!grid) return;
+    [...grid.children].forEach((el,i)=>{el.style.order=i;el.setAttribute('data-slot-index',String(i+1).padStart(2,'0'))});
+  }
+  normalizeInventory();
+  const invGrid=q('#itemGrid'); if(invGrid)new MutationObserver(normalizeInventory).observe(invGrid,{childList:true});
+
+  // Card list: maintain deterministic visual ordering and visible selected card.
+  function normalizeCards(){
+    const grid=document.querySelector('.card-grid');
+    if(!grid)return;
+    [...grid.children].forEach((el,i)=>{el.style.order=i;});
+    const selected=grid.querySelector('.selected,.active');
+    if(selected) selected.scrollIntoView?.({block:'nearest',inline:'nearest'});
+  }
+  normalizeCards();
+  document.addEventListener('click',e=>{
+    if(e.target.closest('.card-item,.card-card,.roster-card-v6')) setTimeout(normalizeCards,0);
+  });
+
+  // Prevent any accidental browser navigation from game UI.
+  document.addEventListener('click',e=>{
+    const a=e.target.closest('#game a[href]');
+    if(!a)return;
+    const href=a.getAttribute('href')||'';
+    if(href && href!=='#'){
+      e.preventDefault();e.stopImmediatePropagation();
+    }
+  },true);
+})();
+</script>
+
+
+<script id="hy-free-explore-v386-js">
+(() => {
+  'use strict';
+  const regionData = {
+    nokdong:{
+      name:'녹동항', kicker:'자유 탐험 · 항구',
+      steps:[
+        ['첫 방문','항구의 생활부터 본다','배와 사람, 가게와 길이 먼저 보인다. 첫 방문에서는 초자연 사건보다 “지금 살아 있는 항구”의 리듬을 기억한다.'],
+        ['관찰','바닷길과 육지길이 만나는 곳','멀리 보이는 섬과 교량, 바다를 오가는 생활 동선을 기록한다. 이후 사건이 열리면 같은 풍경의 의미가 달라진다.'],
+        ['장소의 기억','녹동항 1차 기록','첫 방문 기록이 저장됐다. 네임드 사건은 지역 기록과 조건이 쌓인 뒤 별도로 열린다.']
+      ]
+    },
+    palyoung:{
+      name:'팔영산', kicker:'자유 탐험 · 산',
+      steps:[
+        ['첫 방문','산은 아직 조용하다','첫 산행에서는 능선과 숲, 시야가 열리는 순간을 먼저 기억한다. 이면 산행은 아직 시작되지 않는다.'],
+        ['관찰','현재의 길을 익힌다','등산로와 갈림길, 바람이 바뀌는 지점을 기록한다. 훗날 옛길이 겹칠 때 무엇이 달라졌는지 비교하기 위한 기준이다.'],
+        ['장소의 기억','팔영산 1차 기록','풍경 탐험이 열렸다. 핵심 사건은 별도 조건을 충족하면 나타난다.']
+      ]
+    },
+    geogeum:{
+      name:'거금도', kicker:'자유 탐험 · 섬길',
+      steps:[
+        ['첫 방문','섬의 속도를 익힌다','해안도로와 마을, 바다를 끼고 도는 길을 먼저 보여준다. 이동 자체가 지역을 이해하는 콘텐츠가 된다.'],
+        ['관찰','같은 바다도 방향마다 다르다','도로의 굴곡과 바람 방향, 생활 공간의 거리감을 기록한다. 반복 방문 때 루트 기억이 이 차이를 활용한다.'],
+        ['장소의 기억','거금도 1차 기록','일반 탐험이 저장됐다. 사건은 지역 기록 단계에 따라 해금된다.']
+      ]
+    },
+    naro:{
+      name:'나로도', kicker:'자유 탐험 · 동쪽 바닷길',
+      steps:[
+        ['첫 방문','멀리 가는 길부터 기억한다','고흥에서 나로도로 이어지는 이동 자체를 하나의 여행으로 취급한다. 도착 전에 풍경과 거리감을 충분히 준다.'],
+        ['관찰','섬과 현대가 함께 보인다','마을과 해안, 현대적인 시설이 한 권역 안에 겹쳐 있는 느낌을 기록한다.'],
+        ['장소의 기억','나로도 1차 기록','첫 이동 기록이 저장됐다. 해무·밤길 사건은 이후 단계에서 별도로 열린다.']
+      ]
+    },
+    sorok:{
+      name:'소록도', kicker:'기억의 장소',
+      steps:[
+        ['첫 방문','빠르게 소비하지 않는다','이곳은 공포 던전으로 만들지 않는다. 먼저 실제 장소의 역사와 기억을 존중하며 천천히 바라보는 구간으로 둔다.'],
+        ['관찰','사건보다 기록을 우선한다','게임적 괴담을 얹기 전에 장소가 가진 역사와 사람의 흔적을 분리해 기록한다.'],
+        ['장소의 기억','소록도 1차 기록','전투나 네임드가 아니라 기록 중심의 별도 서사 권역으로 저장됐다.']
+      ]
+    }
+  };
+
+  const layer=document.createElement('section');
+  layer.id='hy-region-visit';
+  layer.innerHTML=`
+    <div class="bg"></div><div class="shade"></div>
+    <div class="top"><b data-r-crumb>자유 탐험</b><div class="steps"><i></i><i></i><i></i></div></div>
+    <article class="panel"><small data-r-kicker></small><h1 data-r-title></h1><p data-r-copy></p><div class="actions"><button class="primary" data-r-next>계속</button><button data-r-exit>지도</button></div></article>
+    <aside class="record"><b data-r-record>장소의 기억</b><span data-r-record-copy>첫 방문의 풍경을 기록합니다.</span></aside>`;
+  document.body.appendChild(layer);
+
+  let current=null,step=0;
+  function saveVisit(id){
+    try{
+      const s=JSON.parse(localStorage.getItem('hy-ui-state')||'{}');
+      s.regionVisits={...(s.regionVisits||{})};
+      s.regionVisits[id]=Math.max(1,Number(s.regionVisits[id]||0));
+      s.routeMemory={...(s.routeMemory||{})};
+      s.routeMemory[id]=Math.max(0,Number(s.routeMemory[id]||0));
+      localStorage.setItem('hy-ui-state',JSON.stringify(s));
+    }catch{}
+  }
+  function render(){
+    const d=regionData[current],s=d.steps[step];
+    layer.dataset.region=current;
+    layer.querySelector('[data-r-crumb]').textContent=`${d.name} · 첫 방문`;
+    layer.querySelector('[data-r-kicker]').textContent=s[0];
+    layer.querySelector('[data-r-title]').textContent=s[1];
+    layer.querySelector('[data-r-copy]').textContent=s[2];
+    [...layer.querySelectorAll('.steps i')].forEach((i,n)=>i.classList.toggle('on',n<=step));
+    layer.querySelector('[data-r-next]').textContent=step===2?'기록하고 돌아가기':'계속';
+    layer.querySelector('[data-r-record]').textContent=step===2?`${d.name} · 장소의 기억`:'장소의 기억';
+    layer.querySelector('[data-r-record-copy]').textContent=step===2?'첫 방문 기록 1단계가 저장됩니다.':'처음 본 풍경을 기준으로 남깁니다.';
+  }
+  function start(id){
+    if(!regionData[id])return;
+    current=id;step=0;
+    document.body.dataset.hyUpdateLock='region-visit';
+    layer.classList.add('active');layer.setAttribute('aria-hidden','false');render();
+  }
+  function exit(){
+    if(current)saveVisit(current);
+    layer.classList.remove('active');layer.setAttribute('aria-hidden','true');
+    if(document.body.dataset.hyUpdateLock==='region-visit')document.body.removeAttribute('data-hy-update-lock');
+    window.HYGame?.route?.('map',{direct:true});
+  }
+  layer.querySelector('[data-r-next]').onclick=()=>{if(step<2){step++;render()}else exit()};
+  layer.querySelector('[data-r-exit]').onclick=exit;
+
+  // Show that free exploration is genuinely unlocked after 여자만.
+  function tutorialDone(){
+    try{
+      const s=JSON.parse(localStorage.getItem('hy-ui-state')||'{}');
+      return !!s.tutorialComplete;
+    }catch{return false}
+  }
+  if(tutorialDone()){
+    const mapScreen=document.querySelector('.screen[data-screen="map"]');
+    if(mapScreen&&!document.getElementById('hy-free-unlocked')){
+      const chip=document.createElement('div');
+      chip.id='hy-free-unlocked';chip.textContent='첫 기록 완료 · 자유 탐험 개방';
+      mapScreen.appendChild(chip);
+    }
+  }
+
+  // Intercept first-visit departures for newly opened regions.
+  document.addEventListener('click',e=>{
+    const depart=e.target.closest('#mapDepart');
+    if(!depart||!tutorialDone())return;
+    let s={};try{s=JSON.parse(localStorage.getItem('hy-ui-state')||'{}')}catch{}
+    const id=s.selectedRegion;
+    if(regionData[id]){
+      e.preventDefault();e.stopImmediatePropagation();
+      start(id);
+    }
+  },true);
+
+  window.HYRegionVisit={start};
+})();
+</script>
+
+
+<script id="hy-nokdong-v387-js">
+(() => {
+  'use strict';
+  const SAVE='hy_nokdong_story_v1';
+  const layer=document.createElement('section');
+  layer.id='hy-nokdong-story';
+  layer.dataset.step='bus';
+  layer.innerHTML=`
+    <div class="scene"></div><div class="shade"></div><div class="rope"></div><div class="lamp"></div>
+    <div class="top"><b>녹동항 · 두 번째 기록</b><div class="meter">${'<i></i>'.repeat(6)}</div></div>
+    <article class="panel"><small data-n-kicker></small><h1 data-n-title></h1><p data-n-copy></p><div class="actions" data-n-actions></div></article>
+    <aside class="source"><b data-n-source-title>實 · 실제 장소 기반</b><span data-n-source-copy>현실의 지리·교통 정보와 흥양기 창작 사건을 분리해 기록합니다.</span></aside>`;
+  document.body.appendChild(layer);
+
+  const steps=[
+    {id:'bus',k:'實 · 이동',t:'녹동터미널에서 항구 쪽으로',c:'두 번째 방문에서는 길 자체가 단서가 된다. 터미널을 출발해 전통시장, 금산선창, 녹동항으로 이어지는 실제 생활 동선을 기준으로 이동 기록을 갱신한다.',src:['實 · 교통','고흥군 공개 버스시간표의 녹동터미널–전통시장–금산선창–녹동항 경유 동선을 현실 앵커로 사용한다.'],a:[['항구 쪽으로 이동','market']]},
+    {id:'market',k:'實 · 생활',t:'사람이 있는 곳부터 본다',c:'시장과 가게 불빛, 늦게까지 움직이는 사람들을 먼저 본다. 흥양기의 이상은 현실의 생활감이 충분히 보인 뒤에만 겹친다.',src:['實 · 현실층','장소의 실제 생활 기능을 우선하고, 사건은 이후 創 층위로 분리한다.'],a:[['선창 쪽을 기록한다','harbor']]},
+    {id:'harbor',k:'관찰',t:'배보다 밧줄이 먼저 움직인다',c:'바람은 약한데 계류줄 하나만 팽팽해졌다가 풀린다. 배는 거의 움직이지 않는다. 처음에는 단순한 파도인지 판단하기 어렵다.',src:['創 · 흥양기 사건','이 장면과 원인은 실제 설화가 아니라 흥양기의 창작 사건이다.'],a:[['멀리서 계속 본다','anomaly'],['기록만 남긴다','anomaly']]},
+    {id:'anomaly',k:'첫 금기',t:'누가 부르는 소리에 대답하지 않는다',c:'항구의 소음 사이로 이름을 부르는 목소리가 섞인다. 방향은 바다 쪽인데, 주변 사람은 아무 반응도 하지 않는다. 플레이어에게 “대답하지 말 것”이라는 첫 금기 후보가 열린다.',src:['創 · 금기','녹동항 사건의 금기와 존재는 흥양기 창작이며 실제 지역 전승으로 표기하지 않는다.'],a:[['대답하지 않고 바라본다','named'],['뒤로 물러선다','named']]},
+    {id:'named',k:'創 · 네임드 관찰',t:'물등 사공',c:'배가 없는 자리에서 작은 등불 하나가 수면과 같은 높이로 움직인다. 사람의 형상은 끝내 선명해지지 않는다. 이번 조우에서는 공격하지 않고, “이름을 부르는 이유”만 미해결 기록으로 남긴다.',src:['創 · 임시 명칭','물등 사공은 흥양기 창작 네임드. 역사·민속 사실과 혼동되지 않도록 도감에 創 표식을 고정한다.'],a:[['기록을 확정한다','finish']]},
+    {id:'finish',k:'루트 기억 2단계',t:'녹동항의 밤이 달라졌다',c:'이제 같은 항구를 다시 방문하면 생활 풍경 위에 금기 단서가 겹친다. 다음 단계에서는 시간 조건과 동행 카드에 따라 다른 목소리와 흔적이 열린다.',src:['기록 완료','녹동항 루트 기억 +1 · “대답하지 말 것” 금기 후보 등록'],a:[['지도으로 돌아가기','done'],['도감에서 보기','codex']]}
+  ];
+  let i=0;
+  function render(){
+    const s=steps[i];layer.dataset.step=s.id;
+    layer.querySelector('[data-n-kicker]').textContent=s.k;
+    layer.querySelector('[data-n-title]').textContent=s.t;
+    layer.querySelector('[data-n-copy]').textContent=s.c;
+    layer.querySelector('[data-n-source-title]').textContent=s.src[0];
+    layer.querySelector('[data-n-source-copy]').textContent=s.src[1];
+    [...layer.querySelectorAll('.meter i')].forEach((x,n)=>x.classList.toggle('on',n<=i));
+    const a=layer.querySelector('[data-n-actions]');a.innerHTML='';
+    s.a.forEach(([label,next],n)=>{const b=document.createElement('button');b.className=n===0?'primary':'';b.textContent=label;b.onclick=()=>go(next);a.appendChild(b)});
+  }
+  function go(next){
+    if(next==='done')return finish('map');
+    if(next==='codex')return finish('codex');
+    const ni=steps.findIndex(x=>x.id===next);if(ni>=0){i=ni;render()}
+  }
+  function start(){
+    i=0;layer.classList.add('active');layer.setAttribute('aria-hidden','false');
+    document.body.dataset.hyUpdateLock='nokdong-story';render();
+  }
+  function finish(route){
+    const at=new Date().toISOString();
+    localStorage.setItem(SAVE,JSON.stringify({completed:true,taboo:'대답하지 말 것',named:'물등 사공',completedAt:at}));
+    try{
+      const s=JSON.parse(localStorage.getItem('hy-ui-state')||'{}');
+      s.routeMemory={...(s.routeMemory||{}),nokdong:Math.max(2,Number(s.routeMemory?.nokdong||0))};
+      s.regionVisits={...(s.regionVisits||{}),nokdong:Math.max(2,Number(s.regionVisits?.nokdong||0))};
+      s.tabooCandidates={...(s.tabooCandidates||{}),nokdong:'대답하지 말 것'};
+      localStorage.setItem('hy-ui-state',JSON.stringify(s));
+    }catch{}
+    layer.classList.remove('active');
+    if(document.body.dataset.hyUpdateLock==='nokdong-story')document.body.removeAttribute('data-hy-update-lock');
+    window.HYGame?.route?.(route,{direct:true});
+  }
+
+  // If 녹동항 has already been visited once, the next departure becomes the second-visit story.
+  document.addEventListener('click',e=>{
+    const depart=e.target.closest('#mapDepart');if(!depart)return;
+    let s={};try{s=JSON.parse(localStorage.getItem('hy-ui-state')||'{}')}catch{}
+    if(s.selectedRegion!=='nokdong')return;
+    const visits=Number(s.regionVisits?.nokdong||0);
+    if(visits===1){
+      e.preventDefault();e.stopImmediatePropagation();start();
+    }
+  },true);
+
+  window.HYNokdong={start};
+})();
+</script>
+
+
+<script id="hy-palyoung-v388-js">
+(() => {
+  'use strict';
+  const SAVE='hy_palyoung_story_v1';
+  const layer=document.createElement('section');
+  layer.id='hy-palyoung-story';
+  layer.dataset.step='trail';
+  layer.innerHTML=`
+    <div class="scene"></div><div class="shade"></div><div class="oldpath"></div><div class="tree-mark"></div>
+    <div class="top"><b>팔영산 · 두 번째 기록</b><div class="meter">${'<i></i>'.repeat(6)}</div></div>
+    <article class="panel"><small data-p-kicker></small><h1 data-p-title></h1><p data-p-copy></p><div class="actions" data-p-actions></div></article>
+    <aside class="record"><b data-p-record-title>루트 기억</b><span data-p-record-copy>현재 길과 이전 기록을 비교합니다.</span></aside>`;
+  document.body.appendChild(layer);
+
+  const steps=[
+    {id:'trail',k:'현재의 길',t:'지난번에 걸었던 등산로',c:'첫 방문 때 기록한 갈림길과 경사, 바람의 방향을 다시 확인한다. 이상을 보기 전에 “정상적인 길”의 기준을 먼저 되살린다.',r:['루트 기억','팔영산 첫 방문 기록과 현재 위치를 겹쳐 본다.'],a:[['기록을 대조한다','wind']]},
+    {id:'wind',k:'관찰',t:'바람이 갈림길마다 다르게 분다',c:'한쪽 길은 나뭇잎이 흔들리는데 다른 쪽은 완전히 고요하다. 같은 능선인데 바람이 끊긴 구간이 생겼다.',r:['관찰 기록 추가','바람이 자연스럽게 이어지지 않는 구간 발견.'],a:[['고요한 길을 확인한다','overlap'],['원래 길을 유지한다','overlap']]},
+    {id:'overlap',k:'이면의 겹침',t:'없던 길이 기록 위에 포개진다',c:'첫 방문 지도에는 없던 희미한 산길이 현재 등산로와 겹쳐 보인다. 완전히 다른 공간이 아니라, 오래된 이동의 흔적이 현실 위에 포개진 형태다.',r:['루트 기억 2단계','현재 길 위에 “옛길 후보”가 나타남.'],a:[['옛길의 입구만 본다','voice']]},
+    {id:'voice',k:'금기 후보',t:'뒤에서 발소리가 나도 돌아보지 않는다',c:'누군가 일정한 간격으로 뒤를 따라온다. 멈추면 같이 멈춘다. 소리는 가까워지지만 모습은 보이지 않는다. “뒤돌지 말 것” 금기 후보가 열린다.',r:['금기 후보','뒤돌지 말 것 — 아직 확정 아님.'],a:[['앞만 보고 걷는다','named'],['발소리만 기록한다','named']]},
+    {id:'named',k:'創 · 네임드 관찰',t:'등짐객',c:'갈림길 너머 나무 사이에 오래된 등짐을 진 형상이 잠깐 보인다. 얼굴은 끝내 확인되지 않는다. 길을 막지 않고, 마치 앞장서듯 옛길 쪽으로 사라진다.',r:['임시 네임드 · 등짐객','실제 전승으로 확인된 존재가 아닌 흥양기 창작 네임드.'],a:[['기록을 확정한다','finish']]},
+    {id:'finish',k:'루트 기억 2단계',t:'팔영산의 길이 하나 더 생겼다',c:'이제 팔영산 재방문 시 현재 등산로와 옛길 후보가 동시에 기록된다. 이후 시간·날씨·동행 카드에 따라 옛길의 깊이가 달라진다.',r:['기록 완료','팔영산 루트 기억 +1 · “뒤돌지 말 것” 금기 후보 등록'],a:[['지도로 돌아가기','done'],['도감에서 보기','codex']]}
+  ];
+
+  let i=0;
+  function render(){
+    const s=steps[i];layer.dataset.step=s.id;
+    layer.querySelector('[data-p-kicker]').textContent=s.k;
+    layer.querySelector('[data-p-title]').textContent=s.t;
+    layer.querySelector('[data-p-copy]').textContent=s.c;
+    layer.querySelector('[data-p-record-title]').textContent=s.r[0];
+    layer.querySelector('[data-p-record-copy]').textContent=s.r[1];
+    [...layer.querySelectorAll('.meter i')].forEach((x,n)=>x.classList.toggle('on',n<=i));
+    const a=layer.querySelector('[data-p-actions]');a.innerHTML='';
+    s.a.forEach(([label,next],n)=>{const b=document.createElement('button');b.className=n===0?'primary':'';b.textContent=label;b.onclick=()=>go(next);a.appendChild(b)});
+  }
+  function go(next){
+    if(next==='done')return finish('map');
+    if(next==='codex')return finish('codex');
+    const ni=steps.findIndex(x=>x.id===next);if(ni>=0){i=ni;render()}
+  }
+  function start(){
+    i=0;layer.classList.add('active');layer.setAttribute('aria-hidden','false');
+    document.body.dataset.hyUpdateLock='palyoung-story';render();
+  }
+  function finish(route){
+    const at=new Date().toISOString();
+    localStorage.setItem(SAVE,JSON.stringify({completed:true,taboo:'뒤돌지 말 것',named:'등짐객',completedAt:at}));
+    try{
+      const s=JSON.parse(localStorage.getItem('hy-ui-state')||'{}');
+      s.routeMemory={...(s.routeMemory||{}),palyoung:Math.max(2,Number(s.routeMemory?.palyoung||0))};
+      s.regionVisits={...(s.regionVisits||{}),palyoung:Math.max(2,Number(s.regionVisits?.palyoung||0))};
+      s.tabooCandidates={...(s.tabooCandidates||{}),palyoung:'뒤돌지 말 것'};
+      s.oldPathUnlocked={...(s.oldPathUnlocked||{}),palyoung:true};
+      localStorage.setItem('hy-ui-state',JSON.stringify(s));
+    }catch{}
+    layer.classList.remove('active');
+    if(document.body.dataset.hyUpdateLock==='palyoung-story')document.body.removeAttribute('data-hy-update-lock');
+    window.HYGame?.route?.(route,{direct:true});
+  }
+
+  document.addEventListener('click',e=>{
+    const depart=e.target.closest('#mapDepart');if(!depart)return;
+    let s={};try{s=JSON.parse(localStorage.getItem('hy-ui-state')||'{}')}catch{}
+    if(s.selectedRegion!=='palyoung')return;
+    const visits=Number(s.regionVisits?.palyoung||0);
+    if(visits===1){
+      e.preventDefault();e.stopImmediatePropagation();start();
+    }
+  },true);
+
+  window.HYPalyoung={start};
+})();
+</script>
+
+
+<script id="hy-geogeum-v389-js">
+(() => {
+  'use strict';
+  const SAVE='hy_geogeum_story_v1';
+  const layer=document.createElement('section');
+  layer.id='hy-geogeum-story';
+  layer.dataset.step='road';
+  layer.innerHTML=`
+    <div class="scene"></div><div class="shade"></div><div class="roadline"></div><div class="arrowghost"></div><div class="reflect"></div>
+    <div class="top"><b>거금도 · 두 번째 기록</b><div class="meter">${'<i></i>'.repeat(6)}</div></div>
+    <article class="panel"><small data-g-kicker></small><h1 data-g-title></h1><p data-g-copy></p><div class="actions" data-g-actions></div></article>
+    <aside class="record"><b data-g-record-title>루트 기억</b><span data-g-record-copy>같은 해안도로의 방향과 표식을 대조합니다.</span></aside>`;
+  document.body.appendChild(layer);
+
+  const steps=[
+    {id:'road',k:'두 번째 주행',t:'같은 해안도로를 다시 돈다',c:'첫 방문에서 기록한 굽이와 시야가 다시 나타난다. 이번에는 풍경을 감상하는 대신, 도로 표식과 바다 방향을 서로 비교한다.',r:['루트 기억','첫 방문의 방향 기록과 현재 시야를 대조한다.'],a:[['도로 표식을 확인한다','marker']]},
+    {id:'marker',k:'관찰',t:'표지판은 오른쪽을 가리킨다',c:'도로 표지는 분명 오른쪽으로 이어지는데, 바다 쪽 반사광은 왼쪽에서 같은 방향표시처럼 보인다. 우연인지 착시인지 애매하다.',r:['관찰 기록 추가','도로 표식과 수면 반사가 서로 다른 방향을 가리킴.'],a:[['바다 쪽 반사를 본다','sea'],['표지판만 따라간다','sea']]},
+    {id:'sea',k:'루트 어긋남',t:'같은 바다가 다른 길을 가리킨다',c:'곡선을 하나 지나자 수면의 반사선이 도로와 반대로 움직인다. 실제 지형은 그대로인데 “길의 방향”만 잠깐 뒤집힌 것처럼 느껴진다.',r:['루트 기억 2단계','해안도로에 방향 어긋남 패턴이 등록됨.'],a:[['차를 세우지 않고 지나간다','anomaly']]},
+    {id:'anomaly',k:'금기 후보',t:'두 번 같은 표지판을 세지 않는다',c:'조금 전 본 표지판과 똑같은 모양이 또 나타난다. 세 번째까지 확인하려 들면 루트가 반복되는지 길이 이어지는지 판단이 흐려진다. “세지 말 것” 금기 후보가 열린다.',r:['금기 후보','세지 말 것 — 반복 표식을 숫자로 확인하지 않는다.'],a:[['숫자를 세지 않는다','named'],['그냥 지나간다','named']]},
+    {id:'named',k:'創 · 네임드 관찰',t:'해안 표식꾼',c:'도로 가장자리, 표지판 뒤에 누군가 서 있는 듯한 그림자가 잠깐 보인다. 손을 들지만 어느 방향을 가리키는지는 끝내 알 수 없다. 돌아보면 이미 표지판만 남아 있다.',r:['임시 네임드 · 해안 표식꾼','실제 전승이 아닌 흥양기 창작 네임드.'],a:[['기록을 확정한다','finish']]},
+    {id:'finish',k:'루트 기억 2단계',t:'거금도의 길은 방향을 기억한다',c:'이제 거금도 재방문 시 해안도로의 일부 구간에 “방향 어긋남” 상태가 붙는다. 날씨·시간·동행 카드에 따라 반복 구간과 탈출 단서가 달라진다.',r:['기록 완료','거금도 루트 기억 +1 · “세지 말 것” 금기 후보 등록'],a:[['지도로 돌아가기','done'],['도감에서 보기','codex']]}
+  ];
+  let i=0;
+  function render(){
+    const s=steps[i];layer.dataset.step=s.id;
+    layer.querySelector('[data-g-kicker]').textContent=s.k;
+    layer.querySelector('[data-g-title]').textContent=s.t;
+    layer.querySelector('[data-g-copy]').textContent=s.c;
+    layer.querySelector('[data-g-record-title]').textContent=s.r[0];
+    layer.querySelector('[data-g-record-copy]').textContent=s.r[1];
+    [...layer.querySelectorAll('.meter i')].forEach((x,n)=>x.classList.toggle('on',n<=i));
+    const a=layer.querySelector('[data-g-actions]');a.innerHTML='';
+    s.a.forEach(([label,next],n)=>{const b=document.createElement('button');b.className=n===0?'primary':'';b.textContent=label;b.onclick=()=>go(next);a.appendChild(b)});
+  }
+  function go(next){
+    if(next==='done')return finish('map');
+    if(next==='codex')return finish('codex');
+    const ni=steps.findIndex(x=>x.id===next);if(ni>=0){i=ni;render()}
+  }
+  function start(){
+    i=0;layer.classList.add('active');layer.setAttribute('aria-hidden','false');
+    document.body.dataset.hyUpdateLock='geogeum-story';render();
+  }
+  function finish(route){
+    const at=new Date().toISOString();
+    localStorage.setItem(SAVE,JSON.stringify({completed:true,taboo:'세지 말 것',named:'해안 표식꾼',completedAt:at}));
+    try{
+      const s=JSON.parse(localStorage.getItem('hy-ui-state')||'{}');
+      s.routeMemory={...(s.routeMemory||{}),geogeum:Math.max(2,Number(s.routeMemory?.geogeum||0))};
+      s.regionVisits={...(s.regionVisits||{}),geogeum:Math.max(2,Number(s.regionVisits?.geogeum||0))};
+      s.tabooCandidates={...(s.tabooCandidates||{}),geogeum:'세지 말 것'};
+      s.directionAnomaly={...(s.directionAnomaly||{}),geogeum:true};
+      localStorage.setItem('hy-ui-state',JSON.stringify(s));
+    }catch{}
+    layer.classList.remove('active');
+    if(document.body.dataset.hyUpdateLock==='geogeum-story')document.body.removeAttribute('data-hy-update-lock');
+    window.HYGame?.route?.(route,{direct:true});
+  }
+
+  document.addEventListener('click',e=>{
+    const depart=e.target.closest('#mapDepart');if(!depart)return;
+    let s={};try{s=JSON.parse(localStorage.getItem('hy-ui-state')||'{}')}catch{}
+    if(s.selectedRegion!=='geogeum')return;
+    const visits=Number(s.regionVisits?.geogeum||0);
+    if(visits===1){
+      e.preventDefault();e.stopImmediatePropagation();start();
+    }
+  },true);
+
+  window.HYGeogeum={start};
+})();
+</script>
+
+
+<script id="hy-sorok-v391-js">
+(() => {
+  'use strict';
+  const SAVE='hy_sorok_memory_v1';
+  const travel=document.createElement('section');
+  travel.id='hy-memory-travel';
+  travel.innerHTML=`<video playsinline muted preload="auto"></video><div class="veil"></div><div class="label">이동 중</div><button>건너뛰기</button>`;
+  document.body.appendChild(travel);
+  const tv=travel.querySelector('video'), tlabel=travel.querySelector('.label');
+  let travelDone=null;
+  function playTravel(src,label,onDone){
+    travelDone=onDone;
+    document.body.dataset.hyUpdateLock='memory-travel';
+    travel.classList.add('active');
+    tv.src=src;tv.currentTime=0;tv.muted=true;tv.playsInline=true;
+    tlabel.textContent=label;
+    const p=tv.play();if(p)p.catch(finishTravel);
+  }
+  function finishTravel(){
+    tv.pause();travel.classList.remove('active');
+    if(document.body.dataset.hyUpdateLock==='memory-travel')document.body.removeAttribute('data-hy-update-lock');
+    const cb=travelDone;travelDone=null;cb&&cb();
+  }
+  tv.onended=finishTravel;tv.onerror=finishTravel;travel.querySelector('button').onclick=finishTravel;
+
+  const layer=document.createElement('section');
+  layer.id='hy-sorok-story';layer.dataset.step='arrive';
+  layer.innerHTML=`
+    <div class="scene"></div><div class="shade"></div><div class="no-combat">기억 서사 · 전투 없음</div>
+    <div class="top"><b>소록도 · 기억의 기록</b><div class="meter">${'<i></i>'.repeat(6)}</div></div>
+    <article class="panel"><small data-s-kicker></small><h1 data-s-title></h1><p data-s-copy></p><div class="actions" data-s-actions></div></article>
+    <aside class="record"><b data-s-record-title></b><span data-s-record-copy></span></aside>`;
+  document.body.appendChild(layer);
+
+  const steps=[
+    {id:'arrive',k:'實 · 장소',t:'먼저 조용히 도착한다',c:'이 구간에는 귀신 네임드나 전투가 없다. 이동 풍경을 보고, 소록도가 지금도 실제 생활과 의료의 공간이라는 사실을 먼저 받아들인다.',r:['원칙','실제 역사와 사람의 삶을 공포 장치로 소비하지 않는다.'],a:[['섬 안으로 이동한다','travel1']]},
+    {id:'museum',k:'實 · 박물관',t:'기록을 통해 먼저 배운다',c:'한센병박물관의 전시 방향처럼 질병 자체만이 아니라 인권, 삶, 병원, 사람들의 관계를 함께 보는 방식으로 기록을 구성한다.',r:['공식 전시 방향','질병·인권·삶·병원과 사람들의 기록을 중심으로 이해한다.'],a:[['전시 기록을 이어본다','travel2']]},
+    {id:'rights',k:'實 · 인권',t:'이곳의 이야기를 “괴담”으로 부르지 않는다',c:'차별과 고립의 역사를 자극적인 장치로 바꾸지 않는다. 플레이어가 해야 할 일은 사실을 읽고, 그 사실이 지금의 시선에 어떤 질문을 남기는지 기록하는 것이다.',r:['기억 기록','공포도, 퇴치도, 수집도 아닌 별도 기록 카테고리로 저장한다.'],a:[['사람들의 삶을 기록한다','memory']]},
+    {id:'memory',k:'삶의 흔적',t:'사건 대신 한 사람의 생활을 기억한다',c:'게임은 특정 실존 인물을 임의로 캐릭터화하지 않는다. 대신 생활 도구, 글, 공간, 봉사와 돌봄 같은 기록을 통해 “한 사람의 삶이 있었다”는 감각을 남긴다.',r:['해석 원칙','사실 자료를 바탕으로 하되 실존인의 고통을 수집 캐릭터로 소비하지 않는다.'],a:[['박물관 밖으로 이동한다','travel3']]},
+    {id:'reflection',k:'흥양기의 해석',t:'“잊지 않는 것”도 해결 방식이다',c:'흥양기의 다른 지역은 봉인·천도·화해 같은 선택이 있지만, 소록도에서는 기억하고 배우는 행위 자체가 하나의 완료 조건이 된다.',r:['별도 해결 방식','기억 · 기록 · 인식 개선'],a:[['기억 기록을 저장한다','finish']]},
+    {id:'finish',k:'기억 기록 완료',t:'소록도는 기억장에 남는다',c:'이 지역은 네임드 처치율이나 보스 공략률로 표시하지 않는다. 이후 재방문 때도 역사 자료와 장소의 변화, 사람들의 이야기를 더 읽는 방식으로 확장한다.',r:['완료','소록도 기억 기록 1단계 · 전투 없음'],a:[['지도로 돌아가기','done'],['도감에서 확인','codex']]}
+  ];
+
+  let i=0;
+  function render(){
+    const s=steps[i];layer.dataset.step=s.id;
+    layer.querySelector('[data-s-kicker]').textContent=s.k;
+    layer.querySelector('[data-s-title]').textContent=s.t;
+    layer.querySelector('[data-s-copy]').textContent=s.c;
+    layer.querySelector('[data-s-record-title]').textContent=s.r[0];
+    layer.querySelector('[data-s-record-copy]').textContent=s.r[1];
+    [...layer.querySelectorAll('.meter i')].forEach((x,n)=>x.classList.toggle('on',n<=i));
+    const a=layer.querySelector('[data-s-actions]');a.innerHTML='';
+    s.a.forEach(([label,next],n)=>{const b=document.createElement('button');b.className=n===0?'primary':'';b.textContent=label;b.onclick=()=>go(next);a.appendChild(b)});
+  }
+  function setStep(id){const ni=steps.findIndex(x=>x.id===id);if(ni>=0){i=ni;render()}}
+  function go(next){
+    if(next==='done')return finish('map');
+    if(next==='codex')return finish('codex');
+    if(next==='travel1')return playTravel('./assets/sorok_travel_01_bridge.mp4','소록도 · 들어가는 길',()=>setStep('museum'));
+    if(next==='travel2')return playTravel('./assets/sorok_travel_02_walk.mp4','소록도 · 기억의 길',()=>setStep('rights'));
+    if(next==='travel3')return playTravel('./assets/sorok_travel_03_museum.mp4','박물관 밖 · 현재의 소록도',()=>setStep('reflection'));
+    setStep(next);
+  }
+  function start(){
+    i=0;layer.classList.add('active');layer.setAttribute('aria-hidden','false');
+    document.body.dataset.hyUpdateLock='sorok-memory';render();
+  }
+  function finish(route){
+    const at=new Date().toISOString();
+    localStorage.setItem(SAVE,JSON.stringify({completed:true,mode:'memory',combat:false,completedAt:at}));
+    try{
+      const s=JSON.parse(localStorage.getItem('hy-ui-state')||'{}');
+      s.routeMemory={...(s.routeMemory||{}),sorok:Math.max(1,Number(s.routeMemory?.sorok||0))};
+      s.regionVisits={...(s.regionVisits||{}),sorok:Math.max(2,Number(s.regionVisits?.sorok||0))};
+      s.memoryRecords={...(s.memoryRecords||{}),sorok:{level:1,combat:false,completedAt:at}};
+      localStorage.setItem('hy-ui-state',JSON.stringify(s));
+    }catch{}
+    layer.classList.remove('active');
+    if(document.body.dataset.hyUpdateLock==='sorok-memory')document.body.removeAttribute('data-hy-update-lock');
+    window.HYGame?.route?.(route,{direct:true});
+  }
+
+  document.addEventListener('click',e=>{
+    const depart=e.target.closest('#mapDepart');if(!depart)return;
+    let s={};try{s=JSON.parse(localStorage.getItem('hy-ui-state')||'{}')}catch{}
+    if(s.selectedRegion!=='sorok')return;
+    const visits=Number(s.regionVisits?.sorok||0);
+    if(visits>=1){
+      e.preventDefault();e.stopImmediatePropagation();start();
+    }
+  },true);
+
+  window.HYSorok={start};
+})();
+</script>
+
+
+<script id="hy-worldprogress-v392-js">
+(() => {
+  'use strict';
+  const qs=s=>document.querySelector(s);
+
+  // World progress panel
+  const panel=document.createElement('section');
+  panel.id='hy-world-progress';
+  panel.innerHTML=`<small>WORLD RECORD</small><h3>고흥 탐험 진행도</h3><div class="hy-world-list"></div>`;
+  document.body.appendChild(panel);
+
+  function getState(){try{return JSON.parse(localStorage.getItem('hy-ui-state')||'{}')}catch{return {}}}
+  const regions=[
+    ['yeojaman','여자만',2,false],
+    ['sorok','소록도',2,true],
+    ['nokdong','녹동항',3,false],
+    ['palyoung','팔영산',3,false],
+    ['geogeum','거금도',3,false],
+    ['naro','나로도',3,false]
+  ];
+  function renderWorld(){
+    const s=getState(), list=panel.querySelector('.hy-world-list'); list.innerHTML='';
+    regions.forEach(([id,name,max,bonus])=>{
+      const visits=Math.min(max,Number(s.regionVisits?.[id]||0));
+      const pct=Math.round((visits/max)*100);
+      const row=document.createElement('div'); row.className='hy-world-row'+(bonus?' bonus':'');
+      row.innerHTML=`<div class="topline"><b>${name}${bonus?' · 보너스':''}</b><em>${visits}/${max}</em></div><div class="bar"><i style="width:${pct}%"></i></div>`;
+      list.appendChild(row);
+    });
+  }
+  renderWorld();
+
+  // add chip to map
+  const map=qs('.screen[data-screen="map"]');
+  if(map&&!qs('#hy-world-chip')){
+    const chip=document.createElement('button');chip.id='hy-world-chip';chip.textContent='탐험 진행도';
+    chip.onclick=()=>{renderWorld();panel.classList.toggle('open')};
+    map.appendChild(chip);
+  }
+
+  // Sorok bonus zone: easy card acquisition, unlocked right after Yeojaman.
+  const bonus=document.createElement('section');
+  bonus.id='hy-sorok-bonus';
+  bonus.innerHTML=`
+    <div class="scene"></div><div class="shade"></div>
+    <article class="panel"><small>보너스 구역 · 소록도</small><h1>기억을 읽고, 카드는 조금 쉽게 얻는다</h1>
+    <p>여자만 다음에 열리는 휴식형 보너스 구역입니다. 전투 난이도를 낮추고, 기록·관찰·간단한 상호작용만으로 카드 조각과 저등급 카드를 안정적으로 얻을 수 있습니다. 역사 서사는 그대로 존중하고, 카드 보상은 별도 ‘기억 교환’ 시스템으로 분리합니다.</p>
+    <div class="reward"><div><b>일반 카드</b><span class="hy-reward-sub">획득률 상향</span></div><div><b>카드 조각</b><span class="hy-reward-sub">확정 보상</span></div><div><b>회복 재료</b><span class="hy-reward-sub">탐험 보조</span></div></div>
+    <div class="actions"><button class="primary" data-sb-claim>기억 보상 받기</button><button data-sb-memory>기억 서사 보기</button><button data-sb-exit>지도로</button></div></article>`;
+  document.body.appendChild(bonus);
+
+  function yeojamanDone(){
+    const s=getState();
+    return !!s.tutorialComplete || Number(s.regionVisits?.yeojaman||0)>=1;
+  }
+  function openBonus(){
+    if(!yeojamanDone()) return;
+    bonus.classList.add('active');
+    document.body.dataset.hyUpdateLock='sorok-bonus';
+  }
+  function closeBonus(){
+    bonus.classList.remove('active');
+    if(document.body.dataset.hyUpdateLock==='sorok-bonus')document.body.removeAttribute('data-hy-update-lock');
+    window.HYGame?.route?.('map',{direct:true});
+  }
+  bonus.querySelector('[data-sb-claim]').onclick=()=>{
+    try{
+      const s=getState();
+      s.sorokBonusClaims=Number(s.sorokBonusClaims||0)+1;
+      s.cardShards=Number(s.cardShards||0)+8;
+      s.coins=Number(s.coins||0)+600;
+      s.regionVisits={...(s.regionVisits||{}),sorok:Math.max(1,Number(s.regionVisits?.sorok||0))};
+      localStorage.setItem('hy-ui-state',JSON.stringify(s));
+      localStorage.setItem('hy_sorok_bonus_last',new Date().toISOString());
+    }catch{}
+    bonus.querySelector('[data-sb-claim]').textContent='보상 획득 완료';
+    bonus.querySelector('[data-sb-claim]').disabled=true;
+    renderWorld();
+  };
+  bonus.querySelector('[data-sb-memory]').onclick=()=>{
+    bonus.classList.remove('active');
+    if(document.body.dataset.hyUpdateLock==='sorok-bonus')document.body.removeAttribute('data-hy-update-lock');
+    window.HYSorok?.start?.();
+  };
+  bonus.querySelector('[data-sb-exit]').onclick=closeBonus;
+
+  // Intercept Sorok departure so it opens as bonus region immediately after Yeojaman.
+  document.addEventListener('click',e=>{
+    const depart=e.target.closest('#mapDepart');if(!depart)return;
+    const s=getState();
+    if(s.selectedRegion==='sorok' && yeojamanDone() && Number(s.regionVisits?.sorok||0)<2){
+      e.preventDefault();e.stopImmediatePropagation();openBonus();
+    }
+  },true);
+
+  // Reorder conceptual progression through a helper for future systems.
+  window.HYWorldProgress={
+    order:['yeojaman','sorok','nokdong','palyoung','geogeum','naro'],
+    render:renderWorld,
+    openSorokBonus:openBonus
+  };
+})();
+</script>
+
+
+<script id="hy-unlock-v393-js">
+(() => {
+  'use strict';
+
+  const CONFIG = {
+    sorok:{name:'소록도', type:'bonus', req:{tutorial:true, level:1}, note:'여자만 완료 직후 개방되는 보너스 구역'},
+    nokdong:{name:'녹동항', type:'story', req:{level:2, records:1}, note:'소록도 보너스 또는 여자만 기록 이후'},
+    palyoung:{name:'팔영산', type:'story', req:{level:3, records:2, cards:3}, note:'기본 카드 풀이 어느 정도 갖춰진 뒤'},
+    geogeum:{name:'거금도', type:'story', req:{level:4, records:3, cards:4}, note:'중반 자유 탐험'},
+    naro:{name:'나로도', type:'story', req:{level:5, records:4, cards:5, condition:'night_or_fog'}, note:'밤/해무 조건이 있으면 특수 사건 활성'},
+  };
+
+  function state(){
+    try { return JSON.parse(localStorage.getItem('hy-ui-state')||'{}'); }
+    catch { return {}; }
+  }
+
+  function derived(){
+    const s=state();
+    const tutorial=!!s.tutorialComplete;
+    const visits=s.regionVisits||{};
+    const records=Object.values(visits).filter(v=>Number(v)>0).length;
+    const cards=Number(s.ownedCardCount || s.cardCount || 0);
+    const level=Number(s.playerLevel || s.level || 1);
+    const hour=new Date().getHours();
+    const weather=String(s.weather || '').toLowerCase();
+    const night=hour>=19 || hour<6;
+    const fog=/fog|mist|해무|안개/.test(weather);
+    return {tutorial,records,cards,level,night,fog};
+  }
+
+  function checkReq(id){
+    const d=derived(), cfg=CONFIG[id];
+    if(!cfg) return {ready:true, details:[]};
+    const req=cfg.req, details=[];
+    const add=(label,ok)=>details.push({label,ok});
+    if(req.tutorial) add('여자만 완료',d.tutorial);
+    if(req.level) add(`레벨 ${req.level}+`,d.level>=req.level);
+    if(req.records) add(`지역 기록 ${req.records}+`,d.records>=req.records);
+    if(req.cards) add(`보유 카드 ${req.cards}+`,d.cards>=req.cards);
+    if(req.condition==='night_or_fog') add('밤 또는 해무',d.night||d.fog);
+    return {ready:details.every(x=>x.ok), details, derived:d};
+  }
+
+  function unlockStatus(id){
+    const c=checkReq(id);
+    const s=state();
+    const hardUnlocked=Boolean(s.unlockedRegions?.[id]);
+    return {...c, ready:hardUnlocked || c.ready};
+  }
+
+  function persistUnlocks(){
+    const s=state();
+    s.unlockedRegions={...(s.unlockedRegions||{})};
+    Object.keys(CONFIG).forEach(id=>{
+      if(checkReq(id).ready) s.unlockedRegions[id]=true;
+    });
+    localStorage.setItem('hy-ui-state',JSON.stringify(s));
+  }
+
+  const panel=document.createElement('section');
+  panel.id='hy-unlock-panel';
+  panel.innerHTML=`<small>REGION UNLOCK</small><h2>지역 해금 조건</h2><p>레벨, 지역 기록, 카드 수집, 시간/날씨 조건이 실제 지역 진입과 사건 해금에 연결됩니다.</p><div class="hy-unlock-list"></div><div class="hy-unlock-actions"><button class="primary" data-u-refresh>다시 계산</button><button data-u-close>닫기</button></div>`;
+  document.body.appendChild(panel);
+
+  function renderPanel(){
+    persistUnlocks();
+    const list=panel.querySelector('.hy-unlock-list');
+    list.innerHTML='';
+    Object.entries(CONFIG).forEach(([id,cfg])=>{
+      const st=unlockStatus(id);
+      const card=document.createElement('div');
+      card.className='hy-unlock-card '+(st.ready?'ready':'locked');
+      card.innerHTML=`<div class="hy-unlock-head"><b>${cfg.name}</b><span>${st.ready?'해금됨':'잠김'}</span></div><div class="hy-reqs">${st.details.map(r=>`<span class="hy-req ${r.ok?'ok':'no'}">${r.ok?'✓':'·'} ${r.label}</span>`).join('')}</div><p style="margin-top:8px">${cfg.note}</p>`;
+      list.appendChild(card);
+    });
+  }
+  panel.querySelector('[data-u-refresh]').onclick=renderPanel;
+  panel.querySelector('[data-u-close]').onclick=()=>panel.classList.remove('open');
+
+  const map=document.querySelector('.screen[data-screen="map"]');
+  if(map&&!document.querySelector('#hy-unlock-chip')){
+    const chip=document.createElement('button');
+    chip.id='hy-unlock-chip'; chip.textContent='해금 조건';
+    chip.onclick=()=>{renderPanel();panel.classList.add('open')};
+    map.appendChild(chip);
+  }
+
+  function applyMapLocks(){
+    persistUnlocks();
+    const s=state();
+    document.querySelectorAll('.geo-pin').forEach(pin=>{
+      const id=pin.dataset.id || pin.dataset.region || pin.getAttribute('data-region');
+      if(!id || !CONFIG[id]) return;
+      const st=unlockStatus(id);
+      pin.classList.toggle('hy-locked',!st.ready);
+      pin.classList.toggle('hy-ready',st.ready);
+      let badge=pin.querySelector('.hy-lock-badge');
+      if(!badge){badge=document.createElement('span');badge.className='hy-lock-badge';pin.appendChild(badge)}
+      badge.textContent=st.ready?'OPEN':'LOCK';
+    });
+  }
+  applyMapLocks();
+
+  // Block departures for locked regions and show exact missing requirements.
+  document.addEventListener('click',e=>{
+    const depart=e.target.closest('#mapDepart');
+    if(!depart) return;
+    const s=state(), id=s.selectedRegion;
+    if(!CONFIG[id]) return;
+    const st=unlockStatus(id);
+    if(st.ready) return;
+    e.preventDefault(); e.stopImmediatePropagation();
+    renderPanel(); panel.classList.add('open');
+  },true);
+
+  // Give simple progression rewards when major records complete.
+  function grantProgress(reason){
+    const s=state();
+    s.playerLevel=Number(s.playerLevel||1);
+    s.ownedCardCount=Number(s.ownedCardCount||0);
+    if(reason==='tutorial'){s.playerLevel=Math.max(s.playerLevel,2);s.ownedCardCount=Math.max(s.ownedCardCount,2)}
+    if(reason==='sorok'){s.playerLevel=Math.max(s.playerLevel,2);s.ownedCardCount=Math.max(s.ownedCardCount,3)}
+    if(reason==='nokdong'){s.playerLevel=Math.max(s.playerLevel,3);s.ownedCardCount=Math.max(s.ownedCardCount,3)}
+    if(reason==='palyoung'){s.playerLevel=Math.max(s.playerLevel,4);s.ownedCardCount=Math.max(s.ownedCardCount,4)}
+    if(reason==='geogeum'){s.playerLevel=Math.max(s.playerLevel,5);s.ownedCardCount=Math.max(s.ownedCardCount,5)}
+    localStorage.setItem('hy-ui-state',JSON.stringify(s));
+    persistUnlocks(); applyMapLocks();
+  }
+
+  window.addEventListener('hy:tutorial-complete',()=>grantProgress('tutorial'));
+  window.addEventListener('storage',applyMapLocks);
+
+  // Poll lightweight progression states created by prior content.
+  setInterval(()=>{
+    const s=state();
+    if(Number(s.regionVisits?.sorok||0)>=1) grantProgress('sorok');
+    if(Number(s.regionVisits?.nokdong||0)>=2) grantProgress('nokdong');
+    if(Number(s.regionVisits?.palyoung||0)>=2) grantProgress('palyoung');
+    if(Number(s.regionVisits?.geogeum||0)>=2) grantProgress('geogeum');
+  },4000);
+
+  window.HYUnlock={config:CONFIG,check:unlockStatus,refresh:()=>{persistUnlocks();applyMapLocks();renderPanel()}};
+})();
+</script>
+
+
+<script id="hy-encounter-v394-js">
+(() => {
+  'use strict';
+  const q=s=>document.querySelector(s);
+
+  const EVENTS = {
+    yeojaman:[
+      {id:'yeo_reflection',name:'늦게 따라오는 반사',rarity:'희귀',base:.16,time:['dawn','night'],weather:['fog','rain'],traits:['water','observe'],named:'갯마리의 흔적',reward:{shards:4},copy:'물가의 반사가 실제 움직임보다 늦게 반응한다. 갯마리와 관련된 추가 기록이 열린다.'}
+    ],
+    sorok:[
+      {id:'sorok_memory_bonus',name:'기억 교환 보너스',rarity:'보너스',base:.34,time:['day'],weather:['clear','cloud'],traits:['observe','support'],named:null,reward:{shards:5,coins:300},copy:'전투 없이 기록을 읽고 추가 카드 조각을 받는다. 역사 서사와 보상은 분리된다.'}
+    ],
+    nokdong:[
+      {id:'nokdong_lightboat',name:'물등의 흔적',rarity:'희귀',base:.12,time:['night'],weather:['fog','clear'],traits:['water','ritual'],named:'물등 사공',reward:{shards:6},copy:'계류 자리의 빛이 수면 높이로 이동한다. 이름을 부르는 목소리는 아직 들리지 않는다.'}
+    ],
+    palyoung:[
+      {id:'palyoung_oldpath',name:'옛길의 발자국',rarity:'희귀',base:.11,time:['dawn','night'],weather:['fog','cloud'],traits:['track','mountain'],named:'등짐객',reward:{shards:6},copy:'현재 등산로 옆에 오래된 발자국이 잠깐 겹친다. 뒤돌아보지 않으면 기록이 남는다.'}
+    ],
+    geogeum:[
+      {id:'geogeum_marker',name:'반대쪽 표식',rarity:'희귀',base:.10,time:['day','dusk'],weather:['clear','cloud'],traits:['observe','water'],named:'해안 표식꾼',reward:{shards:6},copy:'도로 표식과 수면 반사가 서로 다른 방향을 가리킨다. 숫자를 세지 않으면 루트가 끊기지 않는다.'}
+    ],
+    naro:[
+      {id:'naro_foglight',name:'해무 속 불빛',rarity:'희귀',base:.14,time:['night'],weather:['fog'],traits:['observe','water'],named:'해무등',reward:{shards:8},copy:'차선 바깥에서 불빛이 따라온다. 기록된 도로를 유지하면 추가 조우가 열린다.'}
+    ]
+  };
+
+  function state(){try{return JSON.parse(localStorage.getItem('hy-ui-state')||'{}')}catch{return {}}}
+  function save(s){localStorage.setItem('hy-ui-state',JSON.stringify(s))}
+  function timeBand(){
+    const h=new Date().getHours();
+    if(h>=5&&h<8)return 'dawn';
+    if(h>=8&&h<17)return 'day';
+    if(h>=17&&h<20)return 'dusk';
+    return 'night';
+  }
+  function weather(){
+    const s=state();
+    const raw=String(s.weather||'clear').toLowerCase();
+    if(/fog|mist|해무|안개/.test(raw))return 'fog';
+    if(/rain|비/.test(raw))return 'rain';
+    if(/cloud|흐림/.test(raw))return 'cloud';
+    return 'clear';
+  }
+  function companionTraits(){
+    const s=state();
+    const arr = s.companionTraits || s.exploreTraits || [];
+    if(Array.isArray(arr)&&arr.length)return arr.map(x=>String(x).toLowerCase());
+    const name=String(s.exploreCompanion||s.companion||'').toLowerCase();
+    const out=[];
+    if(/cat|고양이/.test(name))out.push('observe');
+    if(/dog|개/.test(name))out.push('track');
+    if(/otter|수달/.test(name))out.push('water');
+    if(/magpie|까치/.test(name))out.push('observe');
+    return out;
+  }
+
+  function chanceFor(ev){
+    const tb=timeBand(), w=weather(), traits=companionTraits();
+    let p=ev.base;
+    if(ev.time.includes(tb))p+=.10;
+    if(ev.weather.includes(w))p+=.10;
+    const match=ev.traits.filter(t=>traits.includes(t)).length;
+    p+=match*.07;
+    const s=state();
+    const pity=Number(s.encounterPity?.[ev.id]||0);
+    p+=Math.min(.18,pity*.03);
+    return Math.min(.68,p);
+  }
+
+  function rollRegion(region){
+    const events=EVENTS[region]||[];
+    if(!events.length)return null;
+    const s=state();
+    s.encounterPity={...(s.encounterPity||{})};
+    for(const ev of events){
+      const p=chanceFor(ev);
+      if(Math.random()<p){
+        s.encounterPity[ev.id]=0; save(s);
+        return {...ev,chance:p};
+      }
+      s.encounterPity[ev.id]=Number(s.encounterPity[ev.id]||0)+1;
+    }
+    save(s); return null;
+  }
+
+  const modal=document.createElement('section');
+  modal.id='hy-encounter-panel';
+  modal.innerHTML=`<article class="hy-enc-card"><small>HIDDEN ENCOUNTER</small><h2 data-e-title></h2><p data-e-copy></p><div class="hy-enc-meta">
+    <div><b data-e-time></b><span>시간대</span></div><div><b data-e-weather></b><span>날씨</span></div><div><b data-e-trait></b><span>동행 특성</span></div><div><b data-e-rate></b><span>이번 조우율</span></div>
+    </div><div class="hy-enc-actions"><button class="primary" data-e-claim>기록하고 보상 받기</button><button data-e-close>지도로</button></div></article>`;
+  document.body.appendChild(modal);
+  let currentEvent=null;
+
+  function show(ev){
+    currentEvent=ev;
+    modal.querySelector('[data-e-title]').textContent=ev.name+(ev.named?` · ${ev.named}`:'');
+    modal.querySelector('[data-e-copy]').textContent=ev.copy;
+    modal.querySelector('[data-e-time]').textContent=timeBand();
+    modal.querySelector('[data-e-weather]').textContent=weather();
+    modal.querySelector('[data-e-trait]').textContent=companionTraits().join(', ')||'없음';
+    modal.querySelector('[data-e-rate]').textContent=Math.round(ev.chance*100)+'%';
+    modal.classList.add('active'); document.body.dataset.hyUpdateLock='hidden-encounter';
+  }
+  function close(){
+    modal.classList.remove('active');
+    if(document.body.dataset.hyUpdateLock==='hidden-encounter')document.body.removeAttribute('data-hy-update-lock');
+    currentEvent=null;
+  }
+  modal.querySelector('[data-e-close]').onclick=close;
+  modal.querySelector('[data-e-claim]').onclick=()=>{
+    if(!currentEvent)return close();
+    const s=state();
+    s.hiddenEncounters={...(s.hiddenEncounters||{})};
+    s.hiddenEncounters[currentEvent.id]=Number(s.hiddenEncounters[currentEvent.id]||0)+1;
+    s.cardShards=Number(s.cardShards||0)+Number(currentEvent.reward?.shards||0);
+    s.coins=Number(s.coins||0)+Number(currentEvent.reward?.coins||0);
+    if(currentEvent.named){
+      s.namedClues={...(s.namedClues||{})};
+      s.namedClues[currentEvent.named]=Number(s.namedClues[currentEvent.named]||0)+1;
+    }
+    save(s); close();
+  };
+
+  // condition viewer
+  const cpanel=document.createElement('section');
+  cpanel.id='hy-condition-panel';
+  cpanel.innerHTML=`<small>LIVE CONDITIONS</small><h3>현재 조우 조건</h3><div class="hy-cond-row"><b>시간대</b><span data-c-time></span></div><div class="hy-cond-row"><b>날씨</b><span data-c-weather></span></div><div class="hy-cond-row"><b>동행 특성</b><span data-c-trait></span></div><div class="hy-cond-row"><b>희귀 조우</b><span class="hy-rare" data-c-rare></span></div>`;
+  document.body.appendChild(cpanel);
+
+  function renderConditions(){
+    const s=state(), region=s.selectedRegion;
+    cpanel.querySelector('[data-c-time]').textContent=timeBand();
+    cpanel.querySelector('[data-c-weather]').textContent=weather();
+    cpanel.querySelector('[data-c-trait]').textContent=companionTraits().join(', ')||'없음';
+    const ev=(EVENTS[region]||[])[0];
+    cpanel.querySelector('[data-c-rare]').textContent=ev?`${Math.round(chanceFor(ev)*100)}% · ${ev.name}`:'해당 없음';
+  }
+  const map=q('.screen[data-screen="map"]');
+  if(map&&!q('#hy-condition-chip')){
+    const chip=document.createElement('button'); chip.id='hy-condition-chip'; chip.textContent='조우 조건';
+    chip.onclick=()=>{renderConditions();cpanel.classList.toggle('open')};
+    map.appendChild(chip);
+  }
+
+  // Once a region has at least two visits, every later departure can roll a hidden encounter.
+  document.addEventListener('click',e=>{
+    const depart=e.target.closest('#mapDepart'); if(!depart)return;
+    const s=state(), region=s.selectedRegion;
+    if(!EVENTS[region])return;
+    if(Number(s.regionVisits?.[region]||0)<2)return;
+    const ev=rollRegion(region);
+    if(!ev)return; // normal departure continues
+    e.preventDefault(); e.stopImmediatePropagation();
+    show(ev);
+  },true);
+
+  window.HYEncounter={
+    events:EVENTS,
+    roll:rollRegion,
+    chance:(region)=>{const ev=(EVENTS[region]||[])[0];return ev?chanceFor(ev):0},
+    conditions:()=>({time:timeBand(),weather:weather(),traits:companionTraits()})
+  };
+})();
+</script>
+
+
+<script id="hy-bossloop-v395-js">
+(() => {
+  'use strict';
+  const q=s=>document.querySelector(s);
+  const BOSSES = {
+    nokdong:{region:'녹동항',named:'물등 사공',taboo:'대답하지 말 것',clues:3,ritual:['금줄','정화수','명두','신칼','봉면']},
+    palyoung:{region:'팔영산',named:'등짐객',taboo:'뒤돌지 말 것',clues:3,ritual:['금줄','향','명두','호명','봉면']},
+    geogeum:{region:'거금도',named:'해안 표식꾼',taboo:'세지 말 것',clues:3,ritual:['금줄','표식 지우기','명두','정화수','봉면']},
+    naro:{region:'나로도',named:'해무등',taboo:'불빛을 따라가지 말 것',clues:3,ritual:['금줄','등불 끄기','명두','정화수','봉면']}
+  };
+
+  function state(){try{return JSON.parse(localStorage.getItem('hy-ui-state')||'{}')}catch{return {}}}
+  function save(s){localStorage.setItem('hy-ui-state',JSON.stringify(s))}
+  function status(id){
+    const s=state(), b=BOSSES[id];
+    const clue=Number(s.namedClues?.[b.named]||0);
+    const memory=Number(s.routeMemory?.[id]||0);
+    const unlocked=clue>=b.clues && memory>=2;
+    const dungeon=Boolean(s.otherSideCleared?.[id]);
+    const ritual=unlocked && dungeon;
+    const defeated=Boolean(s.bossResolved?.[id]);
+    return {clue,memory,unlocked,dungeon,ritual,defeated};
+  }
+
+  const panel=document.createElement('section');
+  panel.id='hy-boss-status';
+  panel.innerHTML=`<small>NAMED / BOSS PROGRESS</small><h2>네임드와 굿판 해금</h2><div data-bs-list></div><div style="margin-top:14px"><button data-bs-close>닫기</button></div>`;
+  document.body.appendChild(panel);
+  panel.querySelector('[data-bs-close]').onclick=()=>panel.classList.remove('open');
+
+  function renderStatus(){
+    const list=panel.querySelector('[data-bs-list]');list.innerHTML='';
+    Object.entries(BOSSES).forEach(([id,b])=>{
+      const st=status(id);
+      const row=document.createElement('div');row.className='hy-boss-row '+(st.unlocked?'ready':'');
+      row.innerHTML=`<b>${b.region} · ${b.named}<span>${st.defeated?'해결됨':st.ritual?'굿판 가능':st.dungeon?'이면 조사 완료':st.unlocked?'이면 해금':'단서 수집 중'}</span></b><div style="margin-top:7px;color:#b7ad9d;font-size:9px">단서 ${st.clue}/${b.clues} · 루트 기억 ${st.memory}/2 · 금기: ${b.taboo}</div>`;
+      list.appendChild(row);
+    });
+  }
+
+  const map=q('.screen[data-screen="map"]');
+  if(map&&!q('#hy-boss-hub-chip')){
+    const chip=document.createElement('button');chip.id='hy-boss-hub-chip';chip.textContent='네임드/굿판';
+    chip.onclick=()=>{renderStatus();panel.classList.add('open')};
+    map.appendChild(chip);
+  }
+
+  const loop=document.createElement('section');
+  loop.id='hy-bossloop'; loop.dataset.stage='dungeon';
+  loop.innerHTML=`
+    <div class="scene"></div><div class="shade"></div><div class="boss-shape"></div>
+    <div class="top"><b data-b-top>이면 조사</b><div class="knots">${'<i class="knot"></i>'.repeat(7)}</div></div>
+    <article class="panel"><small data-b-kicker></small><h1 data-b-title></h1><p data-b-copy></p><div class="actions" data-b-actions></div></article>
+    <aside class="side"><b data-b-side-title></b><span data-b-side-copy></span></aside>`;
+  document.body.appendChild(loop);
+
+  let current=null, phase='dungeon', ritualIndex=0, knots=7;
+
+  function renderDungeon(){
+    const b=BOSSES[current];
+    loop.dataset.stage='dungeon';
+    loop.querySelector('[data-b-top]').textContent=`${b.region} · 이면 조사`;
+    loop.querySelector('[data-b-kicker]').textContent='이면 던전';
+    loop.querySelector('[data-b-title]').textContent=`${b.named}의 흔적을 따라간다`;
+    loop.querySelector('[data-b-copy]').textContent='현실 장소 위에 겹친 기억과 금기 흔적을 조사한다. 전투보다 관찰·기록·금기 확인이 우선이며, 조사 완료 후에만 굿판 보스가 열린다.';
+    loop.querySelector('[data-b-side-title]').textContent='해금 조건';
+    loop.querySelector('[data-b-side-copy]').textContent=`네임드 단서 3개 + 루트 기억 2단계 필요 · 현재 금기: ${b.taboo}`;
+    const a=loop.querySelector('[data-b-actions]');a.innerHTML='';
+    [['금기 흔적 확인','observe'],['이면 조사 완료','clear'],['지도로 돌아가기','exit']].forEach(([label,act],i)=>{
+      const btn=document.createElement('button');btn.textContent=label;btn.className=i===0?'primary':'';
+      btn.onclick=()=>dungeonAct(act);a.appendChild(btn);
+    });
+  }
+
+  function dungeonAct(act){
+    const s=state(), b=BOSSES[current];
+    if(act==='observe'){
+      s.namedClues={...(s.namedClues||{})};
+      s.namedClues[b.named]=Math.max(3,Number(s.namedClues[b.named]||0));
+      save(s);
+      loop.querySelector('[data-b-copy]').textContent=`금기 “${b.taboo}”가 이면 전체에 반복된다. 굿판에서는 이 규칙을 지키지 않으면 매듭이 하나씩 끊어진다.`;
+      return;
+    }
+    if(act==='clear'){
+      s.otherSideCleared={...(s.otherSideCleared||{}),[current]:true};
+      save(s);
+      if(window.HYCardBattle?.startRaid){
+        loop.classList.remove('active');
+        if(document.body.dataset.hyUpdateLock==='boss-loop')document.body.removeAttribute('data-hy-update-lock');
+        window.HYCardBattle.startRaid(current,{boss:b});
+        return;
+      }
+      startRitual(current); return;
+    }
+    closeLoop();
+  }
+
+  function startRitual(id){
+    current=id;phase='ritual';ritualIndex=0;knots=7;
+    loop.dataset.stage='ritual';updateKnots();renderRitual();
+  }
+  function updateKnots(){
+    [...loop.querySelectorAll('.knot')].forEach((k,i)=>k.classList.toggle('broken',i>=knots));
+  }
+  function renderRitual(){
+    const b=BOSSES[current], action=b.ritual[ritualIndex] || '봉면';
+    loop.querySelector('[data-b-top]').textContent=`${b.region} · 금기 굿판`;
+    loop.querySelector('[data-b-kicker]').textContent=`7매듭 · ${knots}개 남음`;
+    loop.querySelector('[data-b-title]').textContent= ritualIndex===0 ? `${b.named}을 직접 죽이지 않는다` : `${action}`;
+    loop.querySelector('[data-b-copy]').textContent=`굿판의 목표는 HP를 깎는 것이 아니라 금기 “${b.taboo}”를 지키면서 올바른 의례 순서를 완성하는 것이다. 실패하면 매듭이 끊어지고 존재가 가까워진다.`;
+    loop.querySelector('[data-b-side-title]').textContent='현재 의례';
+    loop.querySelector('[data-b-side-copy]').textContent=`${ritualIndex+1}/${b.ritual.length} · ${action}`;
+    const a=loop.querySelector('[data-b-actions]');a.innerHTML='';
+    const ok=document.createElement('button');ok.className='primary';ok.textContent=`${action} 수행`;ok.onclick=ritualSuccess;a.appendChild(ok);
+    const fail=document.createElement('button');fail.className='danger';fail.textContent='금기를 어긴다';fail.onclick=ritualFail;a.appendChild(fail);
+    const exit=document.createElement('button');exit.textContent='중단';exit.onclick=closeLoop;a.appendChild(exit);
+  }
+  function ritualSuccess(){
+    const b=BOSSES[current];
+    ritualIndex++;
+    if(ritualIndex>=b.ritual.length){
+      const s=state();
+      s.bossResolved={...(s.bossResolved||{}),[current]:true};
+      s.cardShards=Number(s.cardShards||0)+15;
+      s.coins=Number(s.coins||0)+1500;
+      save(s);
+      loop.querySelector('[data-b-kicker]').textContent='해결';
+      loop.querySelector('[data-b-title]').textContent=`${b.named}의 굿판이 끝났다`;
+      loop.querySelector('[data-b-copy]').textContent='퇴치가 아니라 금기와 의례를 통해 관계를 정리했다. 도감에는 금기, 사연, 해결 방식이 새로 기록된다.';
+      const a=loop.querySelector('[data-b-actions]');a.innerHTML='';
+      const done=document.createElement('button');done.className='primary';done.textContent='기록하고 돌아가기';done.onclick=closeLoop;a.appendChild(done);
+      return;
+    }
+    renderRitual();
+  }
+  function ritualFail(){
+    knots=Math.max(0,knots-1);updateKnots();
+    if(knots<=0){
+      const s=state(), b=BOSSES[current];
+      s.bossDeaths={...(s.bossDeaths||{})};
+      s.bossDeaths[current]=Number(s.bossDeaths[current]||0)+1;
+      s.namedClues={...(s.namedClues||{})};
+      s.namedClues[b.named]=Number(s.namedClues[b.named]||0)+1;
+      save(s);
+      loop.querySelector('[data-b-kicker]').textContent='전멸 · 조사 기록 추가';
+      loop.querySelector('[data-b-title]').textContent='마지막 매듭이 끊어졌다';
+      loop.querySelector('[data-b-copy]').textContent='실패는 무의미하지 않다. 금기 위반 기록과 네임드 단서가 추가되고, 다음 굿판에서 더 정확한 선택을 할 수 있다.';
+      const a=loop.querySelector('[data-b-actions]');a.innerHTML='';
+      const retry=document.createElement('button');retry.className='primary';retry.textContent='다시 준비한다';retry.onclick=()=>startRitual(current);a.appendChild(retry);
+      const exit=document.createElement('button');exit.textContent='지도로';exit.onclick=closeLoop;a.appendChild(exit);
+      return;
+    }
+    renderRitual();
+  }
+
+  function openDungeon(id){
+    const st=status(id);
+    if(!st.unlocked)return;
+    current=id;phase='dungeon';
+    loop.classList.add('active');document.body.dataset.hyUpdateLock='boss-loop';renderDungeon();
+  }
+  function closeLoop(){
+    loop.classList.remove('active');
+    if(document.body.dataset.hyUpdateLock==='boss-loop')document.body.removeAttribute('data-hy-update-lock');
+    window.HYGame?.route?.('map',{direct:true});
+    renderStatus();
+  }
+
+  // Departure on an unlocked named region can branch into its other-side dungeon.
+  document.addEventListener('click',e=>{
+    const depart=e.target.closest('#mapDepart');if(!depart)return;
+    const s=state(), id=s.selectedRegion;
+    if(!BOSSES[id])return;
+    const st=status(id);
+    if(st.defeated)return;
+    if(st.unlocked && Number(s.regionVisits?.[id]||0)>=2){
+      e.preventDefault();e.stopImmediatePropagation();openDungeon(id);
+    }
+  },true);
+
+  window.HYBossLoop={bosses:BOSSES,status,openDungeon,startRitual};
+})();
+</script>
+
+
+<script id="hy-cardraid-v396-js">
+(() => {
+  'use strict';
+  const q=s=>document.querySelector(s);
+
+  const CARD_DB = {
+    c075:{name:'해신 당골',img:'assets/c075_base.webp',skill:'용신굿',role:'의례·지원',cost:3,damage:12480,unique:'깨진 매듭 1개 복구 + 부정 정화'},
+    c071:{name:'여자만 용녀',img:'assets/c071.jpg',skill:'만조',role:'영역·파훼',cost:2,damage:7600,unique:'다음 의례 스킬 피해 +35%'},
+    c045:{name:'물비늘',img:'assets/c045.jpg',skill:'윤슬',role:'지속·파훼',cost:1,damage:3800,unique:'비늘 표식 1중첩 · 방어 약화'},
+    c121:{name:'오관대왕',img:'assets/c121.jpg',skill:'검수',role:'심판·파훼',cost:2,damage:6900,unique:'현재 금기의 거짓 단서 판별'},
+    c034:{name:'제석삼불',img:'assets/c034.jpg',skill:'제석의 곳간',role:'지원·공명',cost:2,damage:3200,unique:'신력 1 회복 + 다음 수호 강화'},
+    c038:{name:'마고할미',img:'assets/c038.jpg',skill:'창세의 손길',role:'지형·영역',cost:3,damage:8800,unique:'이면 지형 고정 · 보스 접근 지연'},
+    c018:{name:'애기미륵',img:'assets/c018.jpg',skill:'작은 미륵',role:'수호·회복',cost:2,damage:1800,unique:'다음 금기 실수 1회 무효'}
+  };
+
+  const RITUALS = {
+    nokdong:{boss:'물등 사공',taboo:'대답하지 말 것',hp:68000,weak:'c075'},
+    palyoung:{boss:'등짐객',taboo:'뒤돌지 말 것',hp:72000,weak:'c038'},
+    geogeum:{boss:'해안 표식꾼',taboo:'세지 말 것',hp:76000,weak:'c121'},
+    naro:{boss:'해무등',taboo:'불빛을 따라가지 말 것',hp:82000,weak:'c071'}
+  };
+
+  function getState(){try{return JSON.parse(localStorage.getItem('hy-ui-state')||'{}')}catch{return {}}}
+  function saveState(s){localStorage.setItem('hy-ui-state',JSON.stringify(s))}
+
+  // Card system unlock: tutorial introduces cards; Sorok bonus makes the system fully usable.
+  function ensureUnlock(){
+    const s=getState();
+    if(s.tutorialComplete) s.cardSystemIntroduced=true;
+    if(Number(s.regionVisits?.sorok||0)>=1 || Number(s.sorokBonusClaims||0)>=1){
+      s.cardSystemUnlocked=true;
+      s.ownedCardCount=Math.max(3,Number(s.ownedCardCount||0));
+      s.starterCards=Array.from(new Set([...(s.starterCards||[]),'c075','c071','c018']));
+    }
+    saveState(s);
+    return s;
+  }
+  ensureUnlock();
+
+  // FIELD CARD panel: cards are useful outside raids without all companions permanently standing on screen.
+  const field=document.createElement('section');
+  field.id='hy-field-card';
+  field.innerHTML=`<div class="hy-field-hero"><img data-f-img><div><small>FIELD CARD</small><h3 data-f-name></h3><p data-f-desc></p></div></div>
+    <div class="hy-field-actions">
+      <button class="hy-field-skill" data-f-act="observe"><b>관찰</b><span>숨은 단서와 금기 후보 확인</span></button>
+      <button class="hy-field-skill" data-f-act="protect"><b>수호</b><span>다음 위험 판정 1회 완화</span></button>
+      <button class="hy-field-skill" data-f-act="skill"><b data-f-skill></b><span>동행 카드 고유 스킬 사용</span></button>
+    </div><div class="hy-field-footer"><span>일반 탐험에서는 짧은 현신 후 다시 카드로 돌아갑니다.</span><button data-f-close>닫기</button></div>`;
+  document.body.appendChild(field);
+
+  function companion(){
+    const s=getState(), id=s.companionCard||'c075';
+    return {id,...(CARD_DB[id]||CARD_DB.c075)};
+  }
+  function renderField(){
+    const c=companion();
+    field.querySelector('[data-f-img]').src=c.img;
+    field.querySelector('[data-f-name]').textContent=c.name;
+    field.querySelector('[data-f-desc]').textContent=`${c.role} · ${c.unique}`;
+    field.querySelector('[data-f-skill]').textContent=c.skill;
+  }
+  renderField();
+  field.querySelector('[data-f-close]').onclick=()=>field.classList.remove('open');
+  field.querySelectorAll('[data-f-act]').forEach(b=>b.onclick=()=>{
+    const s=getState(), c=companion(), act=b.dataset.fAct;
+    s.fieldCardUses=Number(s.fieldCardUses||0)+1;
+    if(act==='observe'){
+      s.fieldObserveBuff=1;
+      window.dispatchEvent(new CustomEvent('hy:toast',{detail:{text:'관찰 강화 · 다음 단서 판정 +1'}}));
+    } else if(act==='protect'){
+      s.fieldProtection=1;
+    } else {
+      s.cardShards=Number(s.cardShards||0)+1;
+      s.lastFieldSkill=c.skill;
+    }
+    saveState(s);
+    b.animate([{transform:'translateY(0)'},{transform:'translateY(-5px)'},{transform:'translateY(0)'}],{duration:360});
+  });
+
+  const map=q('.screen[data-screen="map"]');
+  if(map&&!q('#hy-card-unlock-chip')){
+    const chip=document.createElement('button');chip.id='hy-card-unlock-chip';chip.textContent='현장 카드';
+    chip.onclick=()=>{
+      const s=ensureUnlock();
+      if(!s.cardSystemUnlocked){
+        chip.textContent='소록도에서 카드 해금';
+        setTimeout(()=>chip.textContent='현장 카드',1400);
+        return;
+      }
+      renderField();field.classList.toggle('open');
+    };
+    map.appendChild(chip);
+  }
+
+  // Add one-companion manifestation to named hidden encounters.
+  const enc=q('#hy-encounter-panel');
+  if(enc){
+    new MutationObserver(()=>{
+      if(!enc.classList.contains('active'))return;
+      const actions=enc.querySelector('.hy-enc-actions');
+      if(!actions||actions.querySelector('[data-e-companion]'))return;
+      const btn=document.createElement('button');btn.dataset.eCompanion='1';btn.textContent='동행 카드 개입';
+      btn.onclick=()=>{
+        const s=ensureUnlock();
+        if(!s.cardSystemUnlocked){btn.textContent='소록도에서 해금 필요';return}
+        const c=companion();
+        btn.textContent=`${c.name} · ${c.skill}`;
+        s.namedClueBonus=Number(s.namedClueBonus||0)+1;
+        s.cardShards=Number(s.cardShards||0)+2;
+        saveState(s);
+        btn.disabled=true;
+      };
+      actions.insertBefore(btn,actions.firstChild);
+    }).observe(enc,{attributes:true,attributeFilter:['class'],subtree:false});
+  }
+
+  // RAID UI
+  const raid=document.createElement('section');
+  raid.id='hy-raid-combat';
+  raid.innerHTML=`
+    <div class="raid-bg"></div><div class="raid-grade"></div><div class="raid-flash"></div>
+    <div class="raid-top">
+      <div class="raid-boss-name"><small>禁忌 RAID</small><h1 data-r-boss>물등 사공</h1><p data-r-sub>잊힌 이름을 건너게 하는 자</p></div>
+      <div class="raid-hpbox"><div class="raid-hpline"><b data-r-hp-label>BOSS 68,000 / 68,000</b><span data-r-phase>굿판 1단계</span></div><div class="raid-hptrack"><i data-r-hpbar></i></div><div class="raid-breakline"><span>BREAK</span><b data-r-break-label>0 / 100</b></div><div class="raid-breaktrack"><i data-r-breakbar></i></div></div>
+      <div class="raid-player"><small>PLAYER</small><b>아인</b><span>고유 특성 · 금기 강화</span></div>
+    </div>
+    <div class="raid-rule"><small>현재 금기</small><b data-r-taboo>대답하지 말 것</b><p>금기를 지키며 올바른 카드와 의례를 선택하십시오.</p><div class="raid-knots" data-r-knots></div></div>
+    <div class="raid-skillname" data-r-skillname></div><div class="raid-damage" data-r-damage></div>
+    <div class="raid-boss-action" data-r-boss-action>사공이 물 위를 훑어본다.</div>
+    <div class="raid-boss-approach"><img src="./assets/raid_boss_approach.png" alt=""></div>
+    <div class="raid-manifest"><img data-r-manifest></div>
+    <div class="raid-party" data-r-party></div>
+    <div class="raid-hand" data-r-hand></div>
+    <div class="raid-ritual-ready" data-r-ritual-ready>봉면 가능 · 마지막 의례를 준비하십시오</div>
+    <div class="raid-hit-player" data-r-player-hit></div>
+    <div class="raid-bottom-right"><div class="raid-energy"><b>신력</b><span data-r-energy-label>5 / 5</span></div><div class="raid-orbs" data-r-orbs></div>
+      <div class="raid-trait"><b>아인 고유 특성 · 금기 강화</b><span>금기를 정확히 대응한 첫 스킬은 피해 +25% 및 매듭 보호. 전투 내 1회.</span></div>
+      <button class="raid-turn" data-r-end>턴 종료</button></div>
+    <div class="raid-taboo-prompt"><article><small>禁忌 RESPONSE</small><h2>사공이 묻는다.</h2><p>“너는 누구냐.”</p><div class="raid-taboo-actions"><button class="correct" data-taboo-silent>대답하지 않는다</button><button class="wrong" data-taboo-answer>“…아인입니다.”</button></div></article></div>
+<div class="raid-cutscene"><video playsinline muted preload="metadata"></video><div class="raid-cut-loading">장면을 불러오는 중…</div><button data-cut-skip>건너뛰기</button></div>
+<div class="raid-result"><article><small data-res-kicker>RAID COMPLETE</small><h2 data-res-title></h2><p data-res-copy></p><button data-res-close>기록하고 돌아가기</button></article></div>`;
+  document.body.appendChild(raid);
+
+  const ui = {
+    hp:raid.querySelector('[data-r-hp-label]'), hpbar:raid.querySelector('[data-r-hpbar]'), phase:raid.querySelector('[data-r-phase]'),
+    boss:raid.querySelector('[data-r-boss]'), taboo:raid.querySelector('[data-r-taboo]'), knots:raid.querySelector('[data-r-knots]'), breakLabel:raid.querySelector('[data-r-break-label]'), breakBar:raid.querySelector('[data-r-breakbar]'),
+    party:raid.querySelector('[data-r-party]'), hand:raid.querySelector('[data-r-hand]'), energy:raid.querySelector('[data-r-energy-label]'),
+    orbs:raid.querySelector('[data-r-orbs]'), manifest:raid.querySelector('.raid-manifest'), manifestImg:raid.querySelector('[data-r-manifest]'),
+    damage:raid.querySelector('[data-r-damage]'), skillName:raid.querySelector('[data-r-skillname]'), flash:raid.querySelector('.raid-flash'),
+    bossAction:raid.querySelector('[data-r-boss-action]'), ritualReady:raid.querySelector('[data-r-ritual-ready]'), playerHit:raid.querySelector('[data-r-player-hit]'),
+    result:raid.querySelector('.raid-result')
+  };
+
+  let B=null;
+  function raidState(region){
+    const cfg=RITUALS[region]||RITUALS.nokdong;
+    const s=ensureUnlock();
+    const party=(Array.isArray(s.party)&&s.party.length?s.party:['c075','c071','c045','c121','c018']).slice(0,5);
+    while(party.length<5)party.push(['c075','c071','c045','c121','c018'][party.length]);
+    return {
+      region,cfg,party,hp:cfg.hp,maxHp:cfg.hp,energy:5,knots:7,turn:1,
+      ainTrait:true,guard:false,ritualBoost:1,marks:0,breakGauge:0,broken:false,breakEver:false,ritualMarks:0,partyHp:[100,100,100,100,100],used:{},resolved:false
+    };
+  }
+  function renderRaid(){
+    ui.boss.textContent=B.cfg.boss;ui.taboo.textContent=B.cfg.taboo;
+    ui.hp.textContent=`BOSS ${Math.max(0,Math.round(B.hp)).toLocaleString()} / ${B.maxHp.toLocaleString()}`;
+    ui.hpbar.style.width=`${Math.max(0,(B.hp/B.maxHp)*100)}%`;ui.breakLabel.textContent=`${Math.round(B.breakGauge)} / 100`;ui.breakBar.style.width=`${Math.min(100,B.breakGauge)}%`;raid.dataset.knotDanger=B.knots<=1?'2':B.knots<=3?'1':'0';
+    ui.phase.textContent=`굿판 ${Math.min(4,Math.ceil(B.turn/2))}단계`;
+    ui.energy.textContent=`${B.energy} / 5`;
+    ui.orbs.innerHTML=Array.from({length:5},(_,i)=>`<i class="raid-orb ${i<B.energy?'':'off'}"></i>`).join('');
+    ui.knots.innerHTML=Array.from({length:7},(_,i)=>`<i class="raid-knot ${i<B.knots?'':'broken'}"></i>`).join('');
+    raid.dataset.knots=String(B.knots);
+    ui.party.innerHTML=B.party.map((id,i)=>{
+      const c=CARD_DB[id]||CARD_DB.c075, hp=Math.max(0,B.partyHp[i]);
+      return `<div class="raid-avatar ${i===0?'active':''} ${hp<=0?'down':''}" data-party="${id}"><img src="${c.img}" alt="${c.name}"><span class="hp"><i style="width:${hp}%"></i></span><span class="role">${c.name}</span></div>`;
+    }).join('');
+    const pool=[
+      {id:'observe',name:'관찰',cost:1,img:(CARD_DB[B.party[0]]||CARD_DB.c075).img,desc:'금기 약점 확인 · 2,400',damage:2400,type:'ain'},
+      {id:'guard',name:'수호',cost:2,img:CARD_DB.c018.img,desc:'금기 실수 1회 무효 · 1,800',damage:1800,type:'guard'},
+      ...B.party.slice(0,3).map(id=>({id,...CARD_DB[id],desc:(CARD_DB[id]||CARD_DB.c075).unique,type:'card'}))
+    ].slice(0,5);
+    const sealReady=(B.hp<=B.maxHp*.20 && B.ritualMarks>=3 && B.breakEver);
+    if(sealReady)pool.unshift({id:'seal',name:'봉면',cost:0,img:'assets/c075_final.webp',desc:'금기와 의례를 완성한다',type:'seal'});
+    ui.ritualReady.classList.toggle('show',sealReady);
+    ui.hand.innerHTML=pool.slice(0,5).map(sk=>`<button class="raid-card ${sk.type==='card'?'unique':''} ${sk.type==='seal'?'raid-seal-card':''}" data-skill="${sk.id}" ${sk.cost>B.energy?'disabled':''}>
+      <img src="${sk.img}"><span class="cost">${sk.cost}</span><span class="text"><b>${sk.name||sk.skill}</b><span>${sk.desc}</span></span></button>`).join('');
+    ui.hand.querySelectorAll('[data-skill]').forEach(b=>b.onclick=()=>useSkill(b.dataset.skill));
+  }
+
+
+  const cutscene=raid.querySelector('.raid-cutscene'),cutVideo=cutscene.querySelector('video'),cutSkip=cutscene.querySelector('[data-cut-skip]');
+  let cutDone=null,cutWatchdog=null;
+  cutVideo.preload='metadata';cutVideo.playsInline=true;cutVideo.setAttribute('playsinline','');cutVideo.setAttribute('webkit-playsinline','');
+
+  function finishCutscene(){
+    clearTimeout(cutWatchdog);cutWatchdog=null;
+    try{cutVideo.pause()}catch{}
+    cutscene.classList.remove('open');
+    const done=cutDone;cutDone=null;done&&done();
+  }
+
+  function playCutscene(src,maxWait=4200){
+    return new Promise(resolve=>{
+      // Any previous cutscene is released before the next one.
+      if(cutDone)finishCutscene();
+      cutDone=resolve;
+      cutscene.classList.add('open');
+      cutVideo.src=src;cutVideo.currentTime=0;cutVideo.muted=true;
+      // Android installed-PWA occasionally fails to emit `ended` after a stalled decode.
+      // Never allow a cinematic to block gameplay indefinitely.
+      cutWatchdog=setTimeout(finishCutscene,maxWait);
+      try{
+        const p=cutVideo.play();
+        if(p&&typeof p.catch==='function')p.catch(finishCutscene);
+      }catch{finishCutscene()}
+    });
+  }
+
+  cutVideo.onended=finishCutscene;
+  cutVideo.onerror=finishCutscene;
+  cutVideo.onabort=finishCutscene;
+  cutSkip.onclick=finishCutscene;
+  document.addEventListener('visibilitychange',()=>{
+    if(document.visibilityState==='visible'&&cutscene.classList.contains('open')&&cutVideo.paused)finishCutscene();
+  });
+  const tabooPrompt=raid.querySelector('.raid-taboo-prompt');let tabooResolve=null;function askTaboo(){return new Promise(resolve=>{tabooResolve=resolve;tabooPrompt.classList.add('open')})}function answerTaboo(correct){tabooPrompt.classList.remove('open');const r=tabooResolve;tabooResolve=null;r&&r(correct)}
+  tabooPrompt.querySelector('[data-taboo-silent]').onclick=()=>answerTaboo(true);tabooPrompt.querySelector('[data-taboo-answer]').onclick=()=>answerTaboo(false);
+
+  function animateHit(skill,damage,img){
+    ui.skillName.textContent=skill;ui.damage.textContent=Math.round(damage).toLocaleString();ui.damage.dataset.break=B.broken?'BREAK':'';
+    ui.skillName.classList.remove('show');ui.damage.classList.remove('show');ui.flash.classList.remove('show');
+    void ui.damage.offsetWidth;
+    ui.manifestImg.src=img;ui.manifest.classList.add('show');
+    ui.skillName.classList.add('show');ui.damage.classList.add('show');ui.flash.classList.add('show');
+    setTimeout(()=>ui.manifest.classList.remove('show'),1050);
+  }
+
+  async function useSkill(id){
+    let sk;
+    if(id==='observe') sk={name:'관찰',cost:1,damage:2400,img:(CARD_DB[B.party[0]]||CARD_DB.c075).img};
+    else if(id==='guard') sk={name:'수호',cost:2,damage:1800,img:CARD_DB.c018.img};
+    else sk={...(CARD_DB[id]||CARD_DB.c075),name:(CARD_DB[id]||CARD_DB.c075).skill,img:(CARD_DB[id]||CARD_DB.c075).img};
+    if(id==='seal'){
+      await playCutscene('./assets/raid_final_manifest.mp4',4200);
+      completeRaid(true);return;
+    }
+    if(B.energy<sk.cost)return;B.energy-=sk.cost;if(id==='c075')await playCutscene('./assets/raid_skill_yongshingut.mp4',3200);let damage=sk.damage||0;
+
+    if(id==='observe'){
+      if(!B.used.observe){B.ritualMarks++;B.used.observe=true}
+      damage*=1.0;
+    }
+    if(id==='guard') B.guard=true;
+
+    // Ain unique trait: first correct taboo response / ritual card hit.
+    const correct=id===B.cfg.weak||id==='observe';if(correct)B.breakGauge=Math.min(100,B.breakGauge+(id===B.cfg.weak?38:14));if(correct&&B.ainTrait){damage*=1.25;B.ainTrait=false;B.guard=true;B.breakGauge=Math.min(100,B.breakGauge+12)}B.broken=false;if(B.breakGauge>=100){B.broken=true;B.breakEver=true;B.breakGauge=0;damage*=1.38;}
+
+    if(id==='c075'){
+      if(B.knots<7) B.knots++;
+      if(!B.used.c075){B.ritualMarks++;B.used.c075=true}
+      B.partyHp=B.partyHp.map(h=>Math.min(100,h+6));
+      B.ritualBoost=1.15;
+    }
+    if(id==='c071') B.ritualBoost=1.35;
+    if(id==='c045'){B.marks++;damage*=1+(B.marks*.08)}
+    if(id==='c121' && B.used.observe) damage*=1.22;
+    if(id==='c034') B.energy=Math.min(5,B.energy+1);
+    if(id==='c038') B.guard=true;
+    damage*=B.ritualBoost; B.ritualBoost=1;
+
+    B.hp=Math.max(1,B.hp-damage);
+    animateHit(sk.name,damage,sk.img);
+    if(B.hp<=1 && !(B.ritualMarks>=3 && B.breakEver)){
+      ui.bossAction.textContent='끝낼 수 없다. 금기와 의례가 아직 완성되지 않았다.';
+    }
+    renderRaid();
+  }
+
+  async function tabooCheck(){if(B.region!=='nokdong')return true;const correct=await askTaboo();if(correct){if(B.guard)B.guard=false;B.breakGauge=Math.min(100,B.breakGauge+8);if(!B.used.taboo){B.ritualMarks++;B.used.taboo=true}return true}if(B.guard){B.guard=false;return true}await playCutscene('./assets/raid_knot_break.mp4',2400);B.knots=Math.max(0,B.knots-1);if(B.knots<=0){completeRaid(false);return false}return true;}
+
+  raid.querySelector('[data-r-end]').onclick=async()=>{
+    if(B.resolved)return;
+    ui.bossAction.textContent='호명 · 금기 판정';
+    const ok=await tabooCheck();if(!ok||B.resolved)return;
+    B.turn++;B.energy=Math.min(5,B.energy+3);
+    const alive=B.partyHp.map((h,i)=>h>0?i:-1).filter(i=>i>=0);
+    if(alive.length){
+      const target=alive[Math.floor(Math.random()*alive.length)];
+      let hit=B.guard?6:14;if(B.guard)B.guard=false;
+      B.partyHp[target]=Math.max(0,B.partyHp[target]-hit);
+      ui.playerHit.textContent='-'+hit+'%';ui.playerHit.classList.remove('show');void ui.playerHit.offsetWidth;ui.playerHit.classList.add('show');
+      ui.bossAction.textContent='수귀 · 물살이 파티를 훑는다';
+    }
+    if(B.partyHp.every(h=>h<=0)){completeRaid(false);return}
+    renderRaid();
+  };
+
+  async function completeRaid(win){
+    B.resolved=true;
+    const s=getState();
+    if(win){await playCutscene('./assets/raid_victory_nokdong.mp4',3800);
+      s.bossResolved={...(s.bossResolved||{}),[B.region]:true};
+      s.cardShards=Number(s.cardShards||0)+20;
+      s.coins=Number(s.coins||0)+2400;
+      s.raidClears=Number(s.raidClears||0)+1;
+      raid.querySelector('[data-res-kicker]').textContent='RAID COMPLETE';
+      raid.querySelector('[data-res-title]').textContent=`${B.cfg.boss} · 굿판 해결`;
+      raid.querySelector('[data-res-copy]').textContent='편성한 카드 전원이 현신해 금기를 지키며 굿판을 완성했습니다. 카드 조각 20개와 2,400동전을 획득했습니다.';
+    }else{
+      s.bossDeaths={...(s.bossDeaths||{}),[B.region]:Number(s.bossDeaths?.[B.region]||0)+1};
+      s.namedClues={...(s.namedClues||{})};
+      s.namedClues[B.cfg.boss]=Number(s.namedClues[B.cfg.boss]||0)+1;
+      raid.querySelector('[data-res-kicker]').textContent='RITUAL FAILED · RECORD ADDED';
+      raid.querySelector('[data-res-title]').textContent='마지막 매듭이 끊어졌다';
+      raid.querySelector('[data-res-copy]').textContent='전멸했지만 금기 위반 기록과 네임드 단서가 추가되었습니다. 실패가 다음 굿판의 조사 정보가 됩니다.';
+    }
+    saveState(s);ui.result.classList.add('open');
+  }
+
+  raid.querySelector('[data-res-close]').onclick=()=>{
+    ui.result.classList.remove('open');raid.classList.remove('active');
+    document.body.removeAttribute('data-hy-update-lock');
+    window.HYGame?.route?.('map',{direct:true});
+  };
+
+  function startRaid(region,opts={}){
+    const s=ensureUnlock();
+    if(!s.cardSystemUnlocked){
+      // Safety fallback: make raid unavailable before the Sorok card tutorial.
+      window.HYGame?.route?.('map',{direct:true});
+      return false;
+    }
+    B=raidState(region);raid.classList.add('active');document.body.dataset.hyUpdateLock='raid-card-battle';
+    renderRaid();
+    if(region==='nokdong')setTimeout(()=>playCutscene('./assets/raid_intro_nokdong.mp4',3600),60);
+    return true;
+  }
+
+  window.HYCardBattle={
+    isUnlocked:()=>!!ensureUnlock().cardSystemUnlocked,
+    openField:()=>{renderField();field.classList.add('open')},
+    startRaid,
+    cardDB:CARD_DB,
+    getRaidState:()=>B
+  };
+})();
+</script>
+
+
+<style id="hy-dungeonflow-launch-v401">
+#hy-dungeonflow-launch{position:absolute;z-index:2147480200;right:3.2%;top:22%;min-height:42px;padding:0 15px;border-radius:999px;
+ border:1px solid rgba(255,224,160,.24);background:linear-gradient(180deg,rgba(21,18,12,.88),rgba(7,9,10,.9));color:#f0d49b;
+ box-shadow:0 12px 40px rgba(0,0,0,.34);font-size:9px;font-weight:900;letter-spacing:.06em;backdrop-filter:blur(12px)}
+#hy-dungeonflow-launch:active{transform:translateY(1px)}
+</style>
+<script id="hy-dungeonflow-launch-v401-js">
+(()=>{
+ const map=document.querySelector('.screen[data-screen="map"]');
+ if(!map||document.querySelector('#hy-dungeonflow-launch'))return;
+ const b=document.createElement('button');b.id='hy-dungeonflow-launch';b.textContent='던전 플로우 검수';
+ b.onclick=()=>{location.href='./admin/dungeon-flow.html'};
+ map.appendChild(b);
+})();
+</script>
+
 </body></html>

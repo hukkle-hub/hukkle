@@ -1,0 +1,13 @@
+{
+  "version": "40.1.0",
+  "result": "PASS",
+  "checks": {
+    "version": true,
+    "js_syntax": true,
+    "no_external_photo_urls": true,
+    "15_local_art": true,
+    "no_boss": true,
+    "no_labor_office": true,
+    "card_ui": true
+  }
+}

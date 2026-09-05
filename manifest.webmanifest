@@ -10,13 +10,16 @@
   "background_color": "#090c0e",
   "theme_color": "#090c0e",
   "lang": "ko-KR",
-  "categories": ["games", "entertainment"],
-  "icons": [
-    {"src":"./icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
+  "categories": [
+    "games",
+    "entertainment"
   ],
-  "shortcuts": [
-    {"name":"지도","short_name":"지도","url":"./#map","icons":[{"src":"./icon.svg","sizes":"any","type":"image/svg+xml"}]},
-    {"name":"카드","short_name":"카드","url":"./#cards","icons":[{"src":"./icon.svg","sizes":"any","type":"image/svg+xml"}]},
-    {"name":"도감","short_name":"도감","url":"./#codex","icons":[{"src":"./icon.svg","sizes":"any","type":"image/svg+xml"}]}
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
   ]
 }

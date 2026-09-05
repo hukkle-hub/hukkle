@@ -1,5 +1,5 @@
 /* 흥양기 서비스워커 — 배포 시 __DEPLOY_SHA__가 실제 커밋 SHA로 치환됩니다. */
-const APP_VERSION = '38.0.0';
+const APP_VERSION = '40.1.0';
 const BUILD_ID = '__DEPLOY_SHA__';
 const CACHE_PREFIX = 'hy-';
 const STATIC_CACHE = `${CACHE_PREFIX}static-${APP_VERSION}-${BUILD_ID}`;

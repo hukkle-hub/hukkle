@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#07090b">
+<title>흥양기 · 던전 플로우 검수 v40.1</title>
+<style>
+:root{
+  --bg:#07090b;--panel:rgba(7,10,12,.88);--panel2:rgba(11,15,18,.74);
+  --gold:#d7ad63;--gold2:#f1d9a1;--line:rgba(235,203,142,.18);
+  --text:#eee7db;--muted:#a89f91;--teal:#89bbb2;--red:#b85b53;
+}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;background:var(--bg);color:var(--text);overflow:hidden;
+  font-family:Pretendard,"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif}
+button{font:inherit;color:inherit}
+#game{position:fixed;inset:0;background:#050709}
+.scene-img{position:absolute;inset:-2%;width:104%;height:104%;object-fit:cover;filter:brightness(.72) saturate(.76) contrast(1.06);transition:filter 1.2s ease,transform 6s ease,object-position 1s ease;transform:scale(1.02)}
+#game[data-phase="travel"] .scene-img{transform:scale(1.12) translateX(-1.6%)}
+#game[data-phase="explore"] .scene-img{transform:scale(1.045)}
+#game[data-phase="dungeon"] .scene-img{filter:brightness(.46) saturate(.58) contrast(1.18) hue-rotate(-7deg);transform:scale(1.075)}
+.scene-grade{position:absolute;inset:0;pointer-events:none;background:
+ linear-gradient(180deg,rgba(2,5,8,.12),rgba(3,6,8,.04) 48%,rgba(2,4,6,.48)),
+ radial-gradient(circle at 52% 42%,transparent 25%,rgba(0,0,0,.30) 70%,rgba(0,0,0,.56) 100%)}
+#game[data-phase="dungeon"] .scene-grade{background:
+ linear-gradient(180deg,rgba(2,8,12,.24),rgba(2,7,9,.08) 42%,rgba(2,4,6,.54)),
+ radial-gradient(circle at 50% 42%,rgba(42,112,117,.10),transparent 30%,rgba(0,0,0,.56) 78%)}
+.rain,.fog,.memory{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity 1s}
+.rain{background-image:repeating-linear-gradient(100deg,transparent 0 15px,rgba(210,230,236,.11) 16px 17px,transparent 18px 32px);
+  background-size:42px 42px;animation:rain 1.1s linear infinite}
+@keyframes rain{to{background-position:-42px 42px}}
+.fog{background:
+ radial-gradient(ellipse at 15% 72%,rgba(157,204,204,.13),transparent 30%),
+ radial-gradient(ellipse at 74% 62%,rgba(145,197,200,.11),transparent 35%),
+ linear-gradient(180deg,transparent 40%,rgba(116,163,166,.10) 72%,transparent);
+ filter:blur(16px);animation:fog 8s ease-in-out infinite alternate}
+@keyframes fog{to{transform:translateX(2.5%) scale(1.02)}}
+.memory{background:
+ repeating-linear-gradient(0deg,transparent 0 8px,rgba(196,230,230,.025) 9px 10px);
+ mix-blend-mode:screen}
+#game[data-phase="travel"] .rain{opacity:.24}
+#game[data-phase="dungeon"] .fog{opacity:1}
+#game[data-phase="dungeon"] .memory{opacity:1}
+
+.topbar{position:absolute;z-index:12;left:max(16px,env(safe-area-inset-left));right:max(16px,env(safe-area-inset-right));top:max(12px,env(safe-area-inset-top));
+ display:flex;justify-content:space-between;align-items:flex-start;gap:14px}
+.location{padding:10px 13px;border-radius:14px;border:1px solid var(--line);background:linear-gradient(145deg,rgba(7,10,13,.9),rgba(5,7,9,.72));backdrop-filter:blur(14px);min-width:210px}
+.location small{display:block;color:var(--gold);font-size:8px;letter-spacing:.16em;font-weight:900}
+.location b{display:block;margin-top:3px;font-family:"Noto Serif KR",serif;font-size:18px}
+.phasebox{text-align:right;padding:9px 12px;border-radius:13px;background:rgba(5,8,10,.72);border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(12px)}
+.phasebox small{display:block;color:#8d887f;font-size:8px;letter-spacing:.12em}
+.phasebox b{display:block;margin-top:3px;color:#e6d7ba;font-size:11px}
+.provenance{display:inline-flex;margin-top:5px;gap:5px;font-size:7px;color:#a9a398}
+.provenance i{font-style:normal;padding:2px 5px;border-radius:999px;border:1px solid rgba(255,255,255,.10)}
+.provenance .real{color:#b9e5d5;border-color:rgba(137,187,178,.25)}
+.provenance .creative{color:#edd29d;border-color:rgba(215,173,99,.26)}
+
+.center-panel{position:absolute;z-index:11;left:50%;top:50%;translate:-50% -50%;width:min(900px,88vw);display:none}
+.center-panel.open{display:block}
+.region-hub{width:min(1000px,92vw);padding:18px;border:1px solid var(--line);border-radius:25px;background:linear-gradient(150deg,rgba(8,12,15,.95),rgba(3,6,8,.96));box-shadow:0 36px 120px rgba(0,0,0,.56);backdrop-filter:blur(18px)}
+.region-hub header{display:flex;align-items:end;justify-content:space-between;gap:20px;padding:4px 6px 15px}
+.region-hub h1{margin:0;font:800 clamp(24px,3.4vw,42px) "Noto Serif KR",serif}
+.region-hub p{margin:4px 0 0;color:var(--muted);font-size:10px}
+.region-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}
+.region-card{position:relative;min-height:245px;border:1px solid rgba(255,224,160,.12);border-radius:17px;padding:13px;background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.012));text-align:left;overflow:hidden}
+.region-card:hover,.region-card:focus-visible{border-color:rgba(241,217,161,.48);transform:translateY(-3px)}
+.region-card small{color:var(--gold);font-size:7px;letter-spacing:.12em}
+.region-card h2{font:800 17px "Noto Serif KR",serif;margin:5px 0 7px}
+.region-card p{font-size:8px;line-height:1.55;color:#aaa297;margin:0}
+.stage-strip{position:absolute;left:12px;right:12px;bottom:12px;display:flex;gap:4px}
+.stage-strip span{flex:1;height:4px;border-radius:99px;background:rgba(255,255,255,.09)}
+.stage-strip span.on{background:var(--gold)}
+.region-card .done{position:absolute;right:10px;top:10px;font-size:8px;color:#9ed5c4}
+
+.travel-card{position:absolute;z-index:11;left:max(22px,env(safe-area-inset-left));bottom:84px;width:min(560px,calc(100vw - 44px));padding:16px 17px;border-radius:19px;border:1px solid var(--line);
+ background:linear-gradient(145deg,rgba(7,10,13,.90),rgba(3,6,8,.92));backdrop-filter:blur(16px);box-shadow:0 24px 70px rgba(0,0,0,.4)}
+.travel-card small{color:var(--gold);font-size:8px;letter-spacing:.13em}
+.travel-card h2{margin:5px 0 6px;font:800 22px "Noto Serif KR",serif}
+.travel-card p{margin:0;color:#bbb2a5;font-size:9px;line-height:1.65}
+.travel-progress{margin-top:12px;height:3px;border-radius:99px;background:rgba(255,255,255,.09);overflow:hidden}
+.travel-progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--gold2));transition:width .1s linear}
+.travel-actions{display:flex;gap:7px;margin-top:11px}
+.soft-btn,.gold-btn{min-height:38px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.05);font-size:9px;font-weight:850}
+.gold-btn{border:0;background:linear-gradient(#efd391,#ae7b38);color:#151006}
+
+.explore-panel{position:absolute;z-index:11;left:max(22px,env(safe-area-inset-left));bottom:88px;width:min(530px,calc(100vw - 44px));padding:16px 17px;border-radius:19px;border:1px solid var(--line);
+ background:linear-gradient(145deg,rgba(7,10,13,.89),rgba(3,6,8,.92));backdrop-filter:blur(16px)}
+.explore-panel small{font-size:8px;color:var(--gold);letter-spacing:.13em}.explore-panel h2{margin:5px 0;font:800 21px "Noto Serif KR",serif}
+.explore-panel p{margin:0;color:#afa79a;font-size:9px;line-height:1.6}
+.clue-list{display:flex;gap:6px;margin-top:10px}.clue-chip{flex:1;padding:8px;border-radius:11px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.035);font-size:8px;color:#938d84}
+.clue-chip.on{border-color:rgba(137,187,178,.32);color:#c6e8df;background:rgba(95,154,145,.09)}
+.hotspot{position:absolute;z-index:10;width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,217,143,.56);background:rgba(7,9,11,.42);box-shadow:0 0 0 8px rgba(218,174,98,.07),0 0 25px rgba(218,174,98,.18);display:grid;place-items:center;animation:pulse 2s ease-in-out infinite}
+.hotspot:before{content:"";width:7px;height:7px;border-radius:50%;background:#f0cf87;box-shadow:0 0 12px #e9bd69}
+.hotspot.done{border-color:rgba(137,187,178,.45);box-shadow:0 0 0 8px rgba(137,187,178,.06)}.hotspot.done:before{background:#9ed5c4}
+@keyframes pulse{50%{transform:scale(1.08)}}
+
+.clue-pop{position:absolute;z-index:20;right:max(22px,env(safe-area-inset-right));top:24%;width:min(330px,32vw);padding:14px;border-radius:17px;border:1px solid rgba(255,224,160,.14);background:rgba(5,8,10,.88);backdrop-filter:blur(17px);display:none}
+.clue-pop.open{display:block}.clue-pop small{color:var(--gold);font-size:7px}.clue-pop h3{font:800 16px "Noto Serif KR",serif;margin:5px 0}.clue-pop p{font-size:8px;color:#aaa296;line-height:1.6;margin:0}
+.clue-pop button{margin-top:9px}
+
+.dungeon-layout{position:absolute;z-index:11;left:max(22px,env(safe-area-inset-left));right:max(22px,env(safe-area-inset-right));bottom:86px;display:grid;grid-template-columns:minmax(310px,1.05fr) 1fr;gap:10px}
+.dungeon-card,.zone-card{border:1px solid var(--line);border-radius:18px;background:linear-gradient(145deg,rgba(6,10,12,.91),rgba(3,6,8,.94));backdrop-filter:blur(15px)}
+.dungeon-card{padding:15px 17px}.dungeon-card small{color:var(--teal);font-size:8px;letter-spacing:.12em}.dungeon-card h2{font:800 21px "Noto Serif KR",serif;margin:5px 0 6px}.dungeon-card p{margin:0;color:#aaa397;font-size:9px;line-height:1.65}
+.zones{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.zone-card{padding:10px;text-align:left;min-height:92px}
+.zone-card b{display:block;font:800 11px "Noto Serif KR",serif}.zone-card span{display:block;margin-top:5px;font-size:7px;line-height:1.45;color:#918b82}.zone-card.active{border-color:rgba(137,187,178,.34);box-shadow:inset 0 0 24px rgba(94,152,145,.06)}
+.dungeon-actions{display:flex;gap:7px;margin-top:11px}
+
+.nav{position:absolute;z-index:30;left:50%;bottom:max(10px,env(safe-area-inset-bottom));translate:-50% 0;width:min(850px,92vw);height:62px;padding:6px 8px;border-radius:18px;border:1px solid rgba(239,209,148,.16);
+ background:linear-gradient(180deg,rgba(8,11,14,.89),rgba(3,6,8,.94));backdrop-filter:blur(18px);display:grid;grid-template-columns:repeat(6,1fr);gap:4px;box-shadow:0 18px 55px rgba(0,0,0,.35)}
+.nav button{border:0;border-radius:12px;background:transparent;color:#aaa399;font-size:8px;font-weight:800}.nav button b{display:block;margin-bottom:3px;color:#d7c6a4;font-size:15px;font-weight:500}
+.nav button.active{background:linear-gradient(180deg,rgba(215,173,99,.12),rgba(215,173,99,.04));color:#f0dab1}.nav button.active b{color:#f1cf86}
+
+.modal{position:absolute;z-index:50;inset:0;display:none;place-items:center;background:rgba(1,3,5,.56);backdrop-filter:blur(8px)}.modal.open{display:grid}
+.modal article{width:min(480px,calc(100vw - 30px));padding:18px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(145deg,#11171a,#06090b);box-shadow:0 35px 120px #000}
+.modal h2{font:800 22px "Noto Serif KR",serif;margin:4px 0 7px}.modal p{font-size:9px;color:#a9a195;line-height:1.65}.modal footer{display:flex;justify-content:flex-end;margin-top:12px}
+.source-note{position:absolute;z-index:8;right:max(16px,env(safe-area-inset-right));bottom:80px;max-width:410px;text-align:right;color:rgba(220,215,205,.55);font-size:6px;line-height:1.5}
+.orientation{display:none;position:fixed;inset:0;z-index:9999;background:#050709;place-items:center;text-align:center;padding:30px}.orientation b{font:800 22px "Noto Serif KR",serif}.orientation p{color:#aaa;line-height:1.6}
+@media(max-width:900px){
+ .region-grid{grid-template-columns:repeat(5,minmax(135px,1fr));overflow-x:auto;padding-bottom:4px}.region-hub{width:95vw}.region-card{min-height:205px}
+ .clue-pop{width:40vw}.dungeon-layout{grid-template-columns:1fr 1.35fr}.nav{height:58px}.source-note{display:none}
+}
+@media(orientation:portrait) and (max-width:800px){.orientation{display:grid}}
+</style>
+</head>
+<body>
+<div id="game" data-phase="hub">
+  <img class="scene-img" id="sceneImg" alt="">
+  <div class="scene-grade"></div><div class="rain"></div><div class="fog"></div><div class="memory"></div>
+
+  <div class="topbar" id="topbar" style="display:none">
+    <div class="location"><small id="regionKicker">REGION</small><b id="regionTitle"></b><div class="provenance"><i class="real">實 현실 장소</i><i class="creative" id="creativeBadge" style="display:none">創 이면 해석</i></div></div>
+    <div class="phasebox"><small>진행 단계</small><b id="phaseTitle"></b><div class="provenance"><i id="clueCount">기록 0 / 3</i></div></div>
+  </div>
+
+  <section class="center-panel open" id="hubPanel">
+    <div class="region-hub">
+      <header><div><h1>던전 플로우 검수 <span style="font-size:10px;color:#d7ad63">v40.1 · 화풍 통일</span></h1><p>이동씬 → 현실 탐색 → 같은 장소의 이면 던전 배경. 전 구간을 흥양기 시네마틱 반실사 일러스트 화풍으로 통일했습니다. 보스·전투는 아직 넣지 않았습니다.</p></div><button class="soft-btn" id="resetBtn">진행 초기화</button></header>
+      <div class="region-grid" id="regionGrid"></div>
+    </div>
+  </section>
+
+  <section class="travel-card" id="travelPanel" style="display:none">
+    <small>MOVEMENT CINEMATIC</small><h2 id="travelTitle"></h2><p id="travelCopy"></p>
+    <div class="travel-progress"><i id="travelBar"></i></div>
+    <div class="travel-actions"><button class="gold-btn" id="skipTravel">도착하기</button><button class="soft-btn" id="backHub1">지역 목록</button></div>
+  </section>
+
+  <section class="explore-panel" id="explorePanel" style="display:none">
+    <small>EXPLORATION · 카드게임 탐색</small><h2 id="exploreTitle"></h2><p id="exploreCopy"></p>
+    <div class="clue-list" id="clueList"></div>
+    <div class="travel-actions"><button class="gold-btn" id="enterDungeon" disabled>이면 진입</button><button class="soft-btn" id="backHub2">지역 목록</button></div>
+  </section>
+
+  <div id="hotspots"></div>
+  <aside class="clue-pop" id="cluePop"><small>기록 발견</small><h3 id="cluePopTitle"></h3><p id="cluePopCopy"></p><button class="soft-btn" id="closeClue">기록하기</button></aside>
+
+  <section class="dungeon-layout" id="dungeonPanel" style="display:none">
+    <div class="dungeon-card"><small>OTHER SIDE · 背景 LAYOUT</small><h2 id="dungeonTitle"></h2><p id="dungeonCopy"></p>
+      <div class="dungeon-actions"><button class="gold-btn" id="completeRegion">이 던전 레이아웃 완료</button><button class="soft-btn" id="backExplore">현실로 돌아가기</button></div>
+    </div>
+    <div class="zones" id="zoneList"></div>
+  </section>
+
+  <div class="source-note" id="sourceNote"></div>
+
+  <nav class="nav" id="nav">
+    <button class="active" data-tab="map"><b>⌘</b>지도</button>
+    <button data-tab="cards"><b>▣</b>카드</button>
+    <button data-tab="codex"><b>▤</b>도감</button>
+    <button data-tab="party"><b>♙</b>파티</button>
+    <button data-tab="inventory"><b>▰</b>인벤토리</button>
+    <button data-tab="missions"><b>◇</b>임무</button>
+  </nav>
+
+  <div class="modal" id="modal"><article><small style="color:var(--gold);letter-spacing:.14em">CARD GAME UI</small><h2 id="modalTitle"></h2><p id="modalCopy"></p><footer><button class="soft-btn" id="modalClose">닫기</button></footer></article></div>
+</div>
+<div class="orientation"><div><b>가로 화면 권장</b><p>흥양기 던전 플로우는 모바일 가로 화면 기준으로 제작했습니다.</p></div></div>
+
+<script>
+(()=>{
+const STORE='hy-dungeon-flow-v401';
+const ART={yeoja:{travel:'../assets/dungeon_flow/yeoja_travel.jpg',explore:'../assets/dungeon_flow/yeoja_explore.jpg',dungeon:'../assets/dungeon_flow/yeoja_dungeon.jpg'},nokdong:{travel:'../assets/dungeon_flow/nokdong_travel.jpg',explore:'../assets/dungeon_flow/nokdong_explore.jpg',dungeon:'../assets/dungeon_flow/nokdong_dungeon.jpg'},palyoung:{travel:'../assets/dungeon_flow/palyoung_travel.jpg',explore:'../assets/dungeon_flow/palyoung_explore.jpg',dungeon:'../assets/dungeon_flow/palyoung_dungeon.jpg'},geogeum:{travel:'../assets/dungeon_flow/geogeum_travel.jpg',explore:'../assets/dungeon_flow/geogeum_explore.jpg',dungeon:'../assets/dungeon_flow/geogeum_dungeon.jpg'},naro:{travel:'../assets/dungeon_flow/naro_travel.jpg',explore:'../assets/dungeon_flow/naro_explore.jpg',dungeon:'../assets/dungeon_flow/naro_dungeon.jpg'}};
+const refs={
+ nokdong:{
+  name:'녹동항',tag:'도양읍 · 항구',source:'실제 참고: 녹동항은 여객선터미널·전통시장·바다정원 등이 모인 고흥의 주요 항구.',
+  position:'center 52%',travel:'고흥읍에서 도양읍 녹동항으로',travelCopy:'농어촌 교통과 도로를 따라 항구에 접근한다. 도착 전까지 초자연 현상은 보여주지 않는다.',
+  explore:'녹동항 · 첫 탐색',exploreCopy:'여객 기능, 수산 상권, 어선과 선착장처럼 현실의 장소부터 확인한다.',
+  clues:[
+   ['선착장 물때','계류시설 주변에 오래 젖어 있던 흔적. 현실적인 항구 기록으로 저장한다.',26,47],
+   ['수산 상권의 불빛','시장과 회센터 쪽의 따뜻한 조명이 수면에 길게 반사된다.',70,41],
+   ['바다 쪽 작은 등불','정상적인 항로등과 다른 낮은 빛이 수면 가까이에 머문다. 이 지점부터 創 해석이 시작된다.',57,66]
+  ],
+  dungeon:'이면의 녹동항',dungeonCopy:'새로운 성이나 신전을 만들지 않는다. 같은 항구의 사람 소리와 생활 흔적이 사라지고, 실제 조명은 남은 채 수면·안개·거리감만 비정상적으로 변한다.',
+  zones:[
+   ['항만 진입','현실 항구의 폭과 구조 유지. 사람만 사라진다.','46% 50%'],
+   ['선착장','계류선과 수면 간격이 미세하게 어긋난다.','30% 55%'],
+   ['바다정원 방향','육지와 바다의 경계가 반복되는 심층 구역.','68% 48%']
+  ]
+ },
+ yeoja:{
+  name:'여자만',tag:'갯벌 · 첫 이야기',source:'실제 참고: 고흥 여자만 갯벌은 동강~영남 일대 59.43㎢ 습지보호지역이며 넓은 갯벌·조간대 수로가 핵심 경관.',
+  position:'center 60%',travel:'여자만 갯벌 가장자리로',travelCopy:'차량으로 해안 가까이 이동한 뒤 마지막 구간은 천천히 걸어 들어간다. 첫 이야기는 평범한 풍경에서 시작한다.',
+  explore:'여자만 · 첫 탐색',exploreCopy:'갯벌 표면, 조간대 수로, 갈대와 어장 흔적을 관찰한다.',
+  clues:[
+   ['조간대 수로','물이 빠진 갯벌을 가르는 자연 수로의 방향을 기록한다.',24,62],
+   ['갯벌 생물 흔적','구멍과 작은 발자국이 이어진다. 공격 대상이 아니라 관찰 기록이다.',65,58],
+   ['사라지는 반사광','한 수로에서만 하늘의 반사가 늦게 움직인다. 현실과 이면의 첫 경계.',78,39]
+  ],
+  dungeon:'물때가 멈춘 여자만',dungeonCopy:'같은 갯벌을 유지한다. 물이 차오르지 않는데 수로만 깊어지고, 멀리 보이던 지형의 거리감이 반복된다.',
+  zones:[
+   ['갯벌 가장자리','현실 지형을 가장 많이 보존하는 시작 구역.','40% 62%'],
+   ['조간대 수로','수로가 지나치게 길어져 방향 감각을 흐린다.','66% 58%'],
+   ['정지된 물때','물과 진흙의 경계가 움직이지 않는 심층 구역.','52% 44%']
+  ]
+ },
+ palyoung:{
+  name:'팔영산',tag:'영남면 · 산악',source:'실제 참고: 팔영산은 능가사에서 1봉~8봉으로 이어지는 대표 등산 코스가 있으며 최고 적취봉은 608m.',
+  position:'center 55%',travel:'팔영산 산행 기점으로',travelCopy:'도로로 산 아래까지 이동하고, 이후 능가사와 등산로 쪽은 도보로 접근한다.',
+  explore:'팔영산 · 숲길 탐색',exploreCopy:'사찰 주변 길, 숲, 암릉으로 이어지는 현실 산행 동선을 먼저 읽는다.',
+  clues:[
+   ['등산로 표식','정상적인 이정표와 고도 변화부터 기록한다.',24,56],
+   ['숲의 바람','나무 사이 바람이 갑자기 한 방향으로만 흐른다.',58,39],
+   ['겹쳐 보이는 능선','실제 봉우리 뒤에 같은 실루엣이 한 번 더 겹쳐 보인다.',78,27]
+  ],
+  dungeon:'접힌 팔영산',dungeonCopy:'별개의 판타지 산을 만들지 않는다. 실제 숲과 암릉을 유지한 채 길의 연결 순서만 비정상적으로 접힌다.',
+  zones:[
+   ['능가사 뒤편','현실에서 이면으로 넘어가는 완충 구역.','34% 62%'],
+   ['숲·암릉 길','올랐던 길이 다른 봉우리 아래로 되돌아온다.','55% 44%'],
+   ['겹친 능선','여덟 봉우리의 순서가 틀어지는 심층 구역.','72% 31%']
+  ]
+ },
+ geogeum:{
+  name:'거금도',tag:'금산면 · 섬',source:'실제 참고: 거금도는 소록도와 거금대교로 연결되며 해안도로와 다도해 경관이 대표적인 이동 경험.',
+  position:'center 48%',travel:'소록도·거금대교를 지나 거금도로',travelCopy:'차량 이동 자체가 콘텐츠다. 다리를 건너고 해안도로를 따라 섬의 깊숙한 곳으로 들어간다.',
+  explore:'거금도 · 해안 탐색',exploreCopy:'산과 해안이 가까이 맞닿은 섬의 지형, 어촌 길, 바다 쪽 표식을 기록한다.',
+  clues:[
+   ['해안 절벽','산이 바로 바다로 떨어지는 지형의 높낮이를 기록한다.',26,44],
+   ['섬 길의 표식','평범한 도로·둘레길 표식 사이에 출처가 없는 숫자가 섞여 있다.',60,58],
+   ['반복되는 섬 그림자','다른 방향을 봐도 같은 작은 섬이 수평선에 되풀이된다.',79,36]
+  ],
+  dungeon:'반복되는 거금 해안',dungeonCopy:'현실의 해안도로·산·바다를 유지한다. 수평선과 표식의 반복만으로 이면을 만든다.',
+  zones:[
+   ['해안도로','현실 도로와 난간을 그대로 유지한다.','33% 58%'],
+   ['산비탈 길','같은 표식이 일정 간격으로 되풀이된다.','52% 43%'],
+   ['반복 수평선','섬의 위치가 고정되지 않는 심층 구역.','74% 36%']
+  ]
+ },
+ naro:{
+  name:'나로도',tag:'외나로도 · 항구',source:'실제 참고: 외나로도에는 나로항·연안여객선터미널이 있고 나로우주센터는 차량으로 접근 가능한 섬의 주요 시설.',
+  position:'center 52%',travel:'나로도 도로와 다리를 따라 외나로도로',travelCopy:'섬을 연결하는 도로를 지나 항구 쪽으로 접근한다. 우주 이미지보다 먼저 실제 어항과 섬 생활을 보여준다.',
+  explore:'나로도 · 항구 탐색',exploreCopy:'어선, 부두, 여객 기능과 낮은 섬 능선을 현실 기준으로 확인한다.',
+  clues:[
+   ['계류 어선','배의 방향과 부두 구조를 기록한다.',27,56],
+   ['연안 이동 흔적','여객·어선이 오가는 생활 항구의 흔적이 남아 있다.',57,44],
+   ['해무 속 고정광','안개 속 빛 하나가 배의 움직임과 무관하게 같은 위치에 남는다.',78,34]
+  ],
+  dungeon:'해무가 잠근 나로항',dungeonCopy:'실제 항구를 없애지 않는다. 해무와 빛의 거리만 비정상적으로 변해 같은 부두가 더 깊게 이어지는 것처럼 보인다.',
+  zones:[
+   ['항구 입구','현실 나로항의 기능과 구조를 유지한다.','35% 56%'],
+   ['계류 구역','배 사이 간격이 길어져 되돌아가기 어려워진다.','58% 47%'],
+   ['해무 수면','빛의 원근이 사라지는 심층 구역.','74% 34%']
+  ]
+ }
+};
+const order=['yeoja','nokdong','palyoung','geogeum','naro'];
+let state=load(), current=null, phase='hub', travelTimer=null;
+
+const $=s=>document.querySelector(s);
+const game=$('#game'), img=$('#sceneImg'), topbar=$('#topbar'), hub=$('#hubPanel'), travel=$('#travelPanel'), explore=$('#explorePanel'), dungeon=$('#dungeonPanel'),
+ hotspots=$('#hotspots'), pop=$('#cluePop'), grid=$('#regionGrid'), bar=$('#travelBar'), modal=$('#modal');
+
+function load(){try{return JSON.parse(localStorage.getItem(STORE)||'{}')}catch{return {}}}
+function save(){localStorage.setItem(STORE,JSON.stringify(state))}
+function regionState(id){state[id]??={stage:0,clues:[]};return state[id]}
+function safeImg(url){img.src=url;img.onerror=()=>{img.removeAttribute('src');img.style.background='linear-gradient(135deg,#0b1115,#152229 52%,#071014)'}}
+
+function setPhase(p){
+ phase=p;game.dataset.phase=p;
+ hub.classList.toggle('open',p==='hub');
+ travel.style.display=p==='travel'?'block':'none';
+ explore.style.display=p==='explore'?'block':'none';
+ dungeon.style.display=p==='dungeon'?'grid':'none';
+ topbar.style.display=p==='hub'?'none':'flex';
+ $('#creativeBadge').style.display=p==='dungeon'?'inline-flex':'none';
+ $('#phaseTitle').textContent=p==='travel'?'이동씬':p==='explore'?'탐색':'던전 배경 레이아웃';
+ if(current)renderTop();
+}
+
+function renderHub(){
+ setPhase('hub');current=null;img.removeAttribute('src');game.style.background='radial-gradient(circle at 50% 35%,#172229,#07090b 62%)';
+ grid.innerHTML=order.map((id,i)=>{
+  const r=refs[id],s=regionState(id),done=s.stage>=3;
+  return `<button class="region-card" data-region="${id}"><small>${String(i+1).padStart(2,'0')} · ${r.tag}</small><h2>${r.name}</h2><p>${r.travel}<br>${r.explore}<br>${r.dungeon}</p>${done?'<span class="done">레이아웃 완료</span>':''}<div class="stage-strip"><span class="${s.stage>=1?'on':''}"></span><span class="${s.stage>=2?'on':''}"></span><span class="${s.stage>=3?'on':''}"></span></div></button>`
+ }).join('');
+ grid.querySelectorAll('[data-region]').forEach(b=>b.onclick=()=>startRegion(b.dataset.region));
+}
+function renderTop(){
+ const r=refs[current],s=regionState(current);
+ $('#regionKicker').textContent=r.tag;$('#regionTitle').textContent=r.name;$('#clueCount').textContent=`기록 ${s.clues.length} / 3`;
+ $('#sourceNote').textContent=r.source;
+}
+function startRegion(id){
+ clearInterval(travelTimer);current=id;const r=refs[id],s=regionState(id);
+ img.style.objectPosition=r.position;game.style.background='#050709';
+ if(s.stage>=2) startExplore(); else startTravel();
+}
+function startTravel(){
+ const r=refs[current];safeImg(ART[current].travel);setPhase('travel');$('#travelTitle').textContent=r.travel;$('#travelCopy').textContent=r.travelCopy;bar.style.width='0%';
+ const start=Date.now(),dur=6500;
+ clearInterval(travelTimer);travelTimer=setInterval(()=>{
+  const x=Math.min(1,(Date.now()-start)/dur);bar.style.width=(x*100)+'%';
+  if(x>=1){clearInterval(travelTimer);finishTravel()}
+ },90)
+}
+function finishTravel(){
+ clearInterval(travelTimer);const s=regionState(current);s.stage=Math.max(1,s.stage);save();startExplore();
+}
+function startExplore(){
+ const r=refs[current],s=regionState(current);safeImg(ART[current].explore);setPhase('explore');$('#exploreTitle').textContent=r.explore;$('#exploreCopy').textContent=r.exploreCopy;
+ $('#clueList').innerHTML=r.clues.map((c,i)=>`<div class="clue-chip ${s.clues.includes(i)?'on':''}">${i+1}. ${s.clues.includes(i)?c[0]:'미기록'}</div>`).join('');
+ hotspots.innerHTML=r.clues.map((c,i)=>`<button class="hotspot ${s.clues.includes(i)?'done':''}" data-clue="${i}" style="left:${c[2]}%;top:${c[3]}%" aria-label="${c[0]}"></button>`).join('');
+ hotspots.querySelectorAll('[data-clue]').forEach(b=>b.onclick=()=>showClue(+b.dataset.clue));
+ $('#enterDungeon').disabled=s.clues.length<3;renderTop();
+}
+function showClue(i){
+ const r=refs[current];pop.classList.add('open');pop.dataset.i=i;$('#cluePopTitle').textContent=r.clues[i][0];$('#cluePopCopy').textContent=r.clues[i][1];
+}
+function recordClue(){
+ const i=+pop.dataset.i,s=regionState(current);if(!s.clues.includes(i))s.clues.push(i);s.stage=Math.max(2,s.stage);save();pop.classList.remove('open');startExplore();
+}
+function startDungeon(){
+ const r=refs[current];safeImg(ART[current].dungeon);setPhase('dungeon');hotspots.innerHTML='';pop.classList.remove('open');$('#dungeonTitle').textContent=r.dungeon;$('#dungeonCopy').textContent=r.dungeonCopy;
+ $('#zoneList').innerHTML=r.zones.map((z,i)=>`<button class="zone-card ${i===0?'active':''}" data-zone="${i}"><b>${i+1}. ${z[0]}</b><span>${z[1]}</span></button>`).join('');
+ $('#zoneList').querySelectorAll('[data-zone]').forEach(b=>b.onclick=()=>focusZone(+b.dataset.zone));focusZone(0);renderTop();
+}
+function focusZone(i){
+ const r=refs[current];$('#zoneList').querySelectorAll('.zone-card').forEach((b,j)=>b.classList.toggle('active',j===i));img.style.objectPosition=r.zones[i][2];
+}
+function completeRegion(){
+ const s=regionState(current);s.stage=3;save();renderHub();
+}
+function navModal(tab){
+ const titles={cards:'카드',codex:'도감',party:'파티',inventory:'인벤토리',missions:'임무',map:'지도'};
+ $('#modalTitle').textContent=titles[tab];
+ $('#modalCopy').textContent=tab==='map'?'던전 플로우 진행은 유지됩니다. 지역 목록으로 돌아가 다른 던전을 검수할 수 있습니다.':'이번 빌드는 이동씬·탐색·던전 배경 레이아웃 검수용입니다. 카드/도감/파티 데이터는 메인 게임과 분리해 두었습니다.';
+ modal.classList.add('open');
+}
+$('#skipTravel').onclick=finishTravel;$('#backHub1').onclick=renderHub;$('#backHub2').onclick=renderHub;$('#closeClue').onclick=recordClue;
+$('#enterDungeon').onclick=startDungeon;$('#backExplore').onclick=startExplore;$('#completeRegion').onclick=completeRegion;
+$('#resetBtn').onclick=()=>{localStorage.removeItem(STORE);state={};renderHub()};
+$('#modalClose').onclick=()=>modal.classList.remove('open');
+$('#nav').querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{if(b.dataset.tab==='map')renderHub();else navModal(b.dataset.tab)});
+renderHub();
+})();
+</script>
+</body>
+</html>
