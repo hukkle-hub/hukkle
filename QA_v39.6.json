@@ -1,0 +1,18 @@
+{
+  "version": "39.6.0",
+  "result": "PASS",
+  "checks": {
+    "version": true,
+    "boss_hook": true,
+    "raid_ui": true,
+    "cinematic_bg": true,
+    "field_card": true,
+    "sorok_unlock": true,
+    "party_manifest": true,
+    "ain_trait": true,
+    "damage_readability": true,
+    "seven_knots": true,
+    "unique_cards": true,
+    "js_syntax": true
+  }
+}
