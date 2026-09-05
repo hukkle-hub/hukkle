@@ -1,0 +1,188 @@
+{
+  "project": "흥양기",
+  "release": "v37.0.0",
+  "title": "얼굴 없는 밤굿",
+  "generated_at": "2026-09-03",
+  "qa": {
+    "passed": 23,
+    "total": 23,
+    "installer_rollback": "passed"
+  },
+  "files": [
+    {
+      "path": "IMPLEMENTATION_REPORT.md",
+      "bytes": 6662,
+      "sha256": "a72773ad5857e0d66adaf12347bf0e1e22b62da3ef6b5d807439bcccf71cba82"
+    },
+    {
+      "path": "QA_REPORT.md",
+      "bytes": 4091,
+      "sha256": "565a0c0330e69dac260ba1c9b6ba9e5e1dbd66d69a54ecced19d86c03f87c75f"
+    },
+    {
+      "path": "README_실행방법.md",
+      "bytes": 4689,
+      "sha256": "f04f526cda16086b7a75b7516cf2ed43c220f67b37d590b90c93a38f40b84881"
+    },
+    {
+      "path": "RELEASE_NOTES.md",
+      "bytes": 1586,
+      "sha256": "937b1174d154830c4c951d769eb771bfe15f18925cba97f6aba5dba552a2daee"
+    },
+    {
+      "path": "START_HERE.txt",
+      "bytes": 516,
+      "sha256": "02960c52c1a02f8167cac79f7a4a6cd6dc900deeed693a7d3c99b9da1c06912b"
+    },
+    {
+      "path": "UNREAL_HANDOFF.md",
+      "bytes": 8358,
+      "sha256": "816f06109127e505519f38756c976d4a6443f80e172976d497ecd800d8d63763"
+    },
+    {
+      "path": "apply_v37_patch.bat",
+      "bytes": 508,
+      "sha256": "cb35688a048412b4aadf97f634feeec8f145f47319f251823e6cc2d4ff9112da"
+    },
+    {
+      "path": "apply_v37_patch.py",
+      "bytes": 7490,
+      "sha256": "a2ed2eb9b4fd0bce0c9e5d0d65a69afb2b74c888019fb72a0c19b0c760a17d99"
+    },
+    {
+      "path": "payload/assets/c075_base.webp",
+      "bytes": 40092,
+      "sha256": "4a1b65c5a95755e9ddc9f851ec57e67069f8416f1beff2f31308debcbe28943a"
+    },
+    {
+      "path": "payload/assets/c075_final.webp",
+      "bytes": 97124,
+      "sha256": "a7f837eca88db6d083c67ea16b669247e8687f8a4f1cff74661e0f1e7b6ef904"
+    },
+    {
+      "path": "payload/docs/hy_v37/IMPLEMENTATION_REPORT.md",
+      "bytes": 6662,
+      "sha256": "a72773ad5857e0d66adaf12347bf0e1e22b62da3ef6b5d807439bcccf71cba82"
+    },
+    {
+      "path": "payload/docs/hy_v37/QA_REPORT.md",
+      "bytes": 4091,
+      "sha256": "565a0c0330e69dac260ba1c9b6ba9e5e1dbd66d69a54ecced19d86c03f87c75f"
+    },
+    {
+      "path": "payload/docs/hy_v37/README_실행방법.md",
+      "bytes": 4689,
+      "sha256": "f04f526cda16086b7a75b7516cf2ed43c220f67b37d590b90c93a38f40b84881"
+    },
+    {
+      "path": "payload/docs/hy_v37/UNREAL_HANDOFF.md",
+      "bytes": 8358,
+      "sha256": "816f06109127e505519f38756c976d4a6443f80e172976d497ecd800d8d63763"
+    },
+    {
+      "path": "payload/docs/hy_v37/흥양기_기획정본_v3_전면개편.md",
+      "bytes": 38182,
+      "sha256": "052d4225b9eeffa3b89c77a7a057404261542cc68527d0001445576004295736"
+    },
+    {
+      "path": "payload/heungyanggi_v37_standalone.html",
+      "bytes": 646993,
+      "sha256": "109bacfd64746aca3e4a7c9ab4461fcd0bb607452001f053c399e6c86c5957bb"
+    },
+    {
+      "path": "payload/icon.svg",
+      "bytes": 853,
+      "sha256": "a114089fa3281d708436976dc4ce7639e9cbe8c815036a686275cc090844a147"
+    },
+    {
+      "path": "payload/index.html",
+      "bytes": 98179,
+      "sha256": "5fbcaa5021f2531a128f89fef977695c915b690cb4021e4d782207c6204f05f9"
+    },
+    {
+      "path": "payload/manifest.webmanifest",
+      "bytes": 480,
+      "sha256": "a7e24391000812f6a982af0f0e0b81ac3bdd883e3f6e4f0aa3c9c68fcfacdfad"
+    },
+    {
+      "path": "payload/sw.js",
+      "bytes": 818,
+      "sha256": "aa73c453cff079e7e170f5132c0d7254b6b4bd8d76ada952a3adacbd64e8af5d"
+    },
+    {
+      "path": "review/qa_overview_v37.jpg",
+      "bytes": 319230,
+      "sha256": "5a225c28afbae0fcda9163da4c9eca454eff3fa43b2418ef4dfe7315a849b504"
+    },
+    {
+      "path": "review/qa_results.json",
+      "bytes": 2537,
+      "sha256": "fd4985a2d4a415fe201fe6cf0c23294de6656bb362902f68cab7b0361d314610"
+    },
+    {
+      "path": "review/qa_test.py",
+      "bytes": 7838,
+      "sha256": "d4364fd81bf5c82fb190a0196cd298099e1357ae80c5daa4d9af01260eb87478"
+    },
+    {
+      "path": "review/screenshots/qa_desktop_ritual_final.png",
+      "bytes": 718655,
+      "sha256": "52d047dc7ebb3f72c1283e99c809c2b784676f2797f5d346fd2f5551ddcb70e6"
+    },
+    {
+      "path": "review/screenshots/qa_desktop_victory_final.png",
+      "bytes": 610012,
+      "sha256": "baea655b3ca8717083413d9b56d9f2e5b6dea3583047204389d0d26aa51abc9b"
+    },
+    {
+      "path": "review/screenshots/qa_mobile_archive_final.png",
+      "bytes": 345742,
+      "sha256": "5f3208b5dcf4fd929627fba3f393c3b78dc553b15531ea5697a81deb3b424e88"
+    },
+    {
+      "path": "review/screenshots/qa_mobile_bus_final.png",
+      "bytes": 274243,
+      "sha256": "64e62390677133538059078c7fa30982a52eb976bf96e3b2789dda923c85f46e"
+    },
+    {
+      "path": "review/screenshots/qa_mobile_codex_final.png",
+      "bytes": 239134,
+      "sha256": "9b5e2bf6768e3f0920c9cac3b3d69edb6891ac17d4ac2885117c31cbb4ea9b46"
+    },
+    {
+      "path": "review/screenshots/qa_mobile_emergence_final.png",
+      "bytes": 467504,
+      "sha256": "691169f76ef4256222075f7e261c35111b9266343530ebb042791ffcc5f9e59a"
+    },
+    {
+      "path": "review/screenshots/qa_mobile_field_final.png",
+      "bytes": 294596,
+      "sha256": "1838d7d3b5fc5ebc4186a0299f8a97f2d2710fe048fb03a8ea54fdb0773cd3fd"
+    },
+    {
+      "path": "review/screenshots/qa_mobile_ritual_final.png",
+      "bytes": 295366,
+      "sha256": "cac0ac3d23a7eca6c6c5f84be3f7279bdd3a81c00e5a6728bf5de814d5c86d31"
+    },
+    {
+      "path": "rollback_v37.bat",
+      "bytes": 506,
+      "sha256": "436541b4baf932276e65a044f6f1245d0d4dc4980b1476eef5b3b297405f5e37"
+    },
+    {
+      "path": "run_local_server.bat",
+      "bytes": 291,
+      "sha256": "bcfdd31d10cb40120a8755abf97d26ae8a366bddf4f770ccc73fb3ad5f4ad7c7"
+    },
+    {
+      "path": "바로실행_단일파일.bat",
+      "bytes": 79,
+      "sha256": "bb307c6f132fcfa51438d616be4f4eda28d047dfc44919740e3e7993d07d2381"
+    },
+    {
+      "path": "흥양기_기획정본_v3_전면개편.md",
+      "bytes": 38182,
+      "sha256": "052d4225b9eeffa3b89c77a7a057404261542cc68527d0001445576004295736"
+    }
+  ]
+}

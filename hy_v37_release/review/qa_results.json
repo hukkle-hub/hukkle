@@ -1,0 +1,127 @@
+{
+  "mobile": [
+    {
+      "name": "M01 title start button",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "M02 bus scene transition",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "M03 all bus anomalies",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "M04 field investigation transition",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "M05 three clues recorded",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "M06 ritual path unlocked",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "M07 ritual battle entered",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "M08 six ritual actions rendered",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "M09 mirror locked before first death",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "M10 card action changes ritual score",
+      "passed": true,
+      "detail": "0/118 -> 17/118"
+    },
+    {
+      "name": "M11 death opens bestiary",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "M12 death unlocks mirror clue",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "M13 mirror usable on retry",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "M14 correct sealing order",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "M15 final emergence completion control",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "M16 victory and route screen",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "M17 1-star through 6-star share base art",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "M18 final evolution uses different art",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "M19 no mobile page or console errors",
+      "passed": true,
+      "detail": ""
+    }
+  ],
+  "desktop": [
+    {
+      "name": "D01 desktop ritual scene",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "D02 no horizontal document overflow",
+      "passed": true,
+      "detail": "{'sw': 1440, 'cw': 1440, 'sh': 900, 'ch': 900}"
+    },
+    {
+      "name": "D03 six Goheung route concepts",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "D04 no desktop page or console errors",
+      "passed": true,
+      "detail": ""
+    }
+  ],
+  "errors": [],
+  "summary": {
+    "passed": 23,
+    "total": 23,
+    "all_passed": true
+  }
+}

@@ -1,0 +1,116 @@
+name: Deploy Heungyanggi Client
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'assets/**'
+      - 'redraw/**'
+      - 'admin/**'
+      - 'version.json'
+      - 'build-info.json'
+      - 'manifest.webmanifest'
+      - 'icon.svg'
+      - 'update-client.js'
+      - 'server-api.js'
+      - 'sw.js'
+      - 'heungyanggi_card_catalog.json'
+      - '.github/workflows/deploy-pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate release files
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f index.html
+          test -f version.json
+          test -f update-client.js
+          test -f server-api.js
+          test -f sw.js
+          test -f manifest.webmanifest
+          python -m json.tool version.json >/dev/null
+          python -m json.tool manifest.webmanifest >/dev/null
+          node --check update-client.js
+          node --check server-api.js
+          node --check sw.js
+          grep -q 'name="hy-version"' index.html
+          grep -q 'update-client.js' index.html
+          grep -q 'server-api.js' index.html
+
+      - name: Build deployment directory
+        shell: bash
+        env:
+          DEPLOY_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          rm -rf _site
+          mkdir -p _site/admin
+          cp index.html version.json manifest.webmanifest icon.svg update-client.js server-api.js sw.js .nojekyll _site/
+          cp -R assets _site/assets
+          cp admin/update-status.html _site/admin/update-status.html
+          [ -d redraw ] && cp -R redraw _site/redraw || true
+          [ -f heungyanggi_card_catalog.json ] && cp heungyanggi_card_catalog.json _site/ || true
+
+          python - <<'PY'
+          import json, os
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          root = Path('_site')
+          sha = os.environ['DEPLOY_SHA']
+          version = json.loads((root / 'version.json').read_text('utf-8'))
+          version_number = version['version']
+          now = datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z')
+
+          build = {
+              'version': version_number,
+              'build': sha[:12],
+              'commit': sha,
+              'deployed_at': now,
+              'environment': 'github-pages',
+              'repository': os.environ.get('GITHUB_REPOSITORY', ''),
+              'run_id': os.environ.get('GITHUB_RUN_ID', ''),
+          }
+          (root / 'build-info.json').write_text(json.dumps(build, ensure_ascii=False, indent=2) + '\n', 'utf-8')
+
+          for name in ('index.html', 'sw.js'):
+              p = root / name
+              text = p.read_text('utf-8').replace('__DEPLOY_SHA__', sha)
+              p.write_text(text, 'utf-8')
+          PY
+
+          cp _site/index.html _site/404.html
+          ! grep -R '__DEPLOY_SHA__' _site/index.html _site/sw.js
+          find _site -type f -print0 | sort -z | xargs -0 sha256sum > _site/release-sha256.txt
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,21 @@
+{
+  "result": "PASS",
+  "checks": {
+    "json_valid": true,
+    "github_actions_yaml_valid": true,
+    "javascript_syntax": true,
+    "update_client": true,
+    "save_backup": true,
+    "safe_lock": true,
+    "server_api": true,
+    "client_header": true,
+    "html_integration": true,
+    "service_worker_policy": true,
+    "api_patch_idempotent": true,
+    "api_patch_typescript_syntax": true,
+    "installer_and_rollback": true,
+    "version_bump": true,
+    "asset_files": 20,
+    "browser_navigation_qa": "blocked_by_environment_policy_ERR_BLOCKED_BY_ADMINISTRATOR; static and mocked JS QA used instead"
+  }
+}

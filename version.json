@@ -1,0 +1,27 @@
+{
+  "product": "흥양기",
+  "channel": "stable",
+  "version": "38.0.0",
+  "release_name": "서버 주도 업데이트 기반",
+  "content_version": "2026.09.05.1",
+  "api_version": "1.1.0",
+  "min_supported_version": "37.0.0",
+  "force_update": false,
+  "maintenance": false,
+  "maintenance_message": "",
+  "published_at": "2026-09-05T00:00:00+09:00",
+  "check_interval_seconds": 60,
+  "entry": "./index.html",
+  "release_notes": [
+    "main 브랜치 푸시 시 GitHub Pages 자동 배포",
+    "실행 중인 게임에서 새 빌드 자동 감지",
+    "적용 전 로컬 진행 기록 자동 백업",
+    "강제 업데이트·점검 모드·최소 지원 버전 제어",
+    "배포 상태와 Supabase API 상태를 확인하는 운영 화면 추가"
+  ],
+  "api_health_endpoint": "https://ybflkszmymalhafzzdbs.supabase.co/functions/v1/hy/master",
+  "api_status_endpoint": "https://ybflkszmymalhafzzdbs.supabase.co/functions/v1/hy/system/status",
+  "auto_apply": "safe",
+  "auto_apply_delay_seconds": 5,
+  "public_url": "https://hukkle-hub.github.io/hukkle/"
+}

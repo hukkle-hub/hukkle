@@ -1,0 +1,22 @@
+{
+  "id": "./",
+  "name": "흥양기 — 고흥 설화 탐험 RPG",
+  "short_name": "흥양기",
+  "description": "현대 고흥을 탐험하며 오래된 전승과 존재의 사연을 기록하는 지역 설화 탐험 RPG",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "landscape",
+  "background_color": "#090c0e",
+  "theme_color": "#090c0e",
+  "lang": "ko-KR",
+  "categories": ["games", "entertainment"],
+  "icons": [
+    {"src":"./icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
+  ],
+  "shortcuts": [
+    {"name":"지도","short_name":"지도","url":"./#map","icons":[{"src":"./icon.svg","sizes":"any","type":"image/svg+xml"}]},
+    {"name":"카드","short_name":"카드","url":"./#cards","icons":[{"src":"./icon.svg","sizes":"any","type":"image/svg+xml"}]},
+    {"name":"도감","short_name":"도감","url":"./#codex","icons":[{"src":"./icon.svg","sizes":"any","type":"image/svg+xml"}]}
+  ]
+}

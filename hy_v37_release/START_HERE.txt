@@ -1,0 +1,17 @@
+흥양기 v37 — 얼굴 없는 밤굿
+
+1) 바로 플레이
+   payload\heungyanggi_v37_standalone.html
+   또는 `바로실행_단일파일.bat`
+
+2) PWA/로컬 서버 플레이
+   `run_local_server.bat`
+   브라우저가 http://127.0.0.1:8777 을 엽니다.
+
+3) 기존 hukkle 저장소 적용
+   hukkle 폴더를 `apply_v37_patch.bat` 위로 끌어다 놓습니다.
+
+4) 원상 복구
+   같은 폴더를 `rollback_v37.bat` 위로 끌어다 놓습니다.
+
+상세 내용은 README_실행방법.md를 확인하세요.

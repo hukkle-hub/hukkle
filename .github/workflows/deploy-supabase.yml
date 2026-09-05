@@ -1,0 +1,111 @@
+name: Deploy Heungyanggi API
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'api/**'
+      - 'version.json'
+      - '.github/workflows/deploy-supabase.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: supabase-hy-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      PROJECT_REF: ${{ vars.SUPABASE_PROJECT_REF }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check deployment configuration
+        id: config
+        shell: bash
+        run: |
+          if [ -n "${SUPABASE_ACCESS_TOKEN:-}" ] && [ -n "${PROJECT_REF:-}" ]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "Supabase 자동 배포는 아직 비활성입니다. Repository secret SUPABASE_ACCESS_TOKEN과 variable SUPABASE_PROJECT_REF를 설정하세요."
+          fi
+
+      - name: Validate API source
+        if: steps.config.outputs.enabled == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          for f in index.ts engine.ts rules.ts routes2.ts sinpyo.ts deno.json; do test -f "api/$f"; done
+          grep -q 'HY_UPDATE_ROUTES_BEGIN' api/index.ts
+          grep -q 'x-client-version' api/index.ts
+
+      - name: Sync live update policy
+        if: steps.config.outputs.enabled == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          eval "$(python - <<'PY'
+          import json, shlex
+          v = json.load(open('version.json', encoding='utf-8'))
+          values = {
+              'CLIENT_LATEST': v.get('version', '0.0.0'),
+              'CLIENT_MIN': v.get('min_supported_version', '0.0.0'),
+              'CONTENT_VERSION': v.get('content_version', ''),
+              'FORCE_UPDATE': str(bool(v.get('force_update', False))).lower(),
+              'MAINTENANCE': str(bool(v.get('maintenance', False))).lower(),
+              'MAINTENANCE_MESSAGE': v.get('maintenance_message', ''),
+              'UPDATE_URL': v.get('public_url', ''),
+              'RELEASE_NOTES': '|'.join(v.get('release_notes', [])),
+          }
+          for k, value in values.items():
+              print(f'{k}={shlex.quote(str(value))}')
+          PY
+          )"
+          npx --yes supabase@latest secrets set             "HY_CLIENT_LATEST=$CLIENT_LATEST"             "HY_CLIENT_MIN=$CLIENT_MIN"             "HY_CONTENT_VERSION=$CONTENT_VERSION"             "HY_FORCE_UPDATE=$FORCE_UPDATE"             "HY_MAINTENANCE=$MAINTENANCE"             "HY_MAINTENANCE_MESSAGE=$MAINTENANCE_MESSAGE"             "HY_UPDATE_URL=$UPDATE_URL"             "HY_RELEASE_NOTES=$RELEASE_NOTES"             --project-ref "$PROJECT_REF"
+
+      - name: Stage Edge Function
+        if: steps.config.outputs.enabled == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p supabase/functions/hy
+          cp api/index.ts api/engine.ts api/rules.ts api/routes2.ts api/sinpyo.ts api/deno.json supabase/functions/hy/
+          cat > supabase/config.toml <<'TOML'
+          project_id = "heungyanggi"
+
+          [functions.hy]
+          enabled = true
+          verify_jwt = false
+          import_map = "./functions/hy/deno.json"
+          entrypoint = "./functions/hy/index.ts"
+          TOML
+
+      - name: Deploy Edge Function
+        if: steps.config.outputs.enabled == 'true'
+        shell: bash
+        run: |
+          npx --yes supabase@latest functions deploy hy \
+            --project-ref "$PROJECT_REF" \
+            --no-verify-jwt
+
+      - name: Verify system status
+        if: steps.config.outputs.enabled == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          URL="https://${PROJECT_REF}.supabase.co/functions/v1/hy/system/status"
+          for attempt in 1 2 3; do
+            if curl --fail --silent --show-error "$URL" | tee /tmp/hy-status.json; then
+              python -m json.tool /tmp/hy-status.json >/dev/null
+              exit 0
+            fi
+            sleep 5
+          done
+          exit 1

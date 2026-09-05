@@ -1,0 +1,7 @@
+{
+  "version": "38.0.0",
+  "build": "local-preview",
+  "commit": "local-preview",
+  "deployed_at": "2026-09-05T00:00:00+09:00",
+  "environment": "local"
+}
