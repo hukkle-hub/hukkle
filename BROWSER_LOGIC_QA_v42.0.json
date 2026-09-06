@@ -1,0 +1,45 @@
+{
+  "ok": true,
+  "results": {
+    "yeoja": {
+      "unlocked": true,
+      "button": "보스 등장씬",
+      "phase": "boss",
+      "boss": "갯마리",
+      "visible": true,
+      "errors": []
+    },
+    "nokdong": {
+      "unlocked": true,
+      "button": "보스 등장씬",
+      "phase": "boss",
+      "boss": "물등 사공",
+      "visible": true,
+      "errors": []
+    },
+    "palyoung": {
+      "unlocked": true,
+      "button": "보스 등장씬",
+      "phase": "boss",
+      "boss": "등짐객",
+      "visible": true,
+      "errors": []
+    },
+    "geogeum": {
+      "unlocked": true,
+      "button": "보스 등장씬",
+      "phase": "boss",
+      "boss": "해안 표식꾼",
+      "visible": true,
+      "errors": []
+    },
+    "naro": {
+      "unlocked": true,
+      "button": "보스 등장씬",
+      "phase": "boss",
+      "boss": "해무등",
+      "visible": true,
+      "errors": []
+    }
+  }
+}

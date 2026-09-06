@@ -1,0 +1,32 @@
+{
+  "version": "42.0.0",
+  "result": "PASS",
+  "checks": {
+    "main_js_syntax": true,
+    "flow_js_syntax": true,
+    "five_travel_videos": true,
+    "five_boss_videos": true,
+    "boss_defs": true,
+    "boss_state_parent": true,
+    "investigation_flow": true,
+    "boss_after_zones": true,
+    "all_videos_valid": true,
+    "browser_logic_all_five_regions": true,
+    "video_variable_bound": true,
+    "resume_to_boss_after_zones": true,
+    "grounded_nokdong_100": true,
+    "grounded_naro_500": true
+  },
+  "video_durations": {
+    "geogeum_boss_intro.mp4": 5.4,
+    "geogeum_travel.mp4": 7.2,
+    "naro_boss_intro.mp4": 5.4,
+    "naro_travel.mp4": 7.2,
+    "nokdong_boss_intro.mp4": 5.4,
+    "nokdong_travel.mp4": 7.2,
+    "palyoung_boss_intro.mp4": 5.4,
+    "palyoung_travel.mp4": 7.2,
+    "yeoja_boss_intro.mp4": 5.4,
+    "yeoja_travel.mp4": 7.2
+  }
+}
