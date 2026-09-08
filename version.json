@@ -1,21 +1,21 @@
 {
   "product": "흥양기",
   "channel": "stable",
-  "version": "65.0.0",
-  "release_name": "대형 카드 원화 · 기록 분류 개편",
-  "content_version": "2026.09.09.03",
+  "version": "66.0.0",
+  "release_name": "여자만 탐험 완주 · 고화질 장면 개편",
+  "content_version": "2026.09.09.04",
   "api_version": "1.1.0",
   "min_supported_version": "37.0.0",
   "force_update": false,
   "maintenance": false,
   "maintenance_message": "",
-  "published_at": "2026-09-08T20:23:52.083883Z",
+  "published_at": "2026-09-08T20:58:13.789708Z",
   "check_interval_seconds": 60,
   "entry": "./index.html",
   "release_notes": [
-    "카드 탭의 중앙 원화와 카드 목록 이미지를 대형 갤러리 크기로 확대",
-    "도감 명칭을 콘텐츠 성격에 맞게 기록으로 통일",
-    "모바일 QA에 카드 원화 크기와 기록 분류 회귀 검사를 추가"
+    "여자만 탐험을 현실 이동·단서 3개 조사·이면 3구역·갯마리 등장 기록으로 재구성",
+    "여자만 이동·탐색·이면·보스 장면을 1672×941 고화질 한국 해안 원화로 교체",
+    "단일 조사 계속 버튼, 번호 단서, 도구 부족 우회와 전체 완주 자동 검수 추가"
   ],
   "api_health_endpoint": "https://ybflkszmymalhafzzdbs.supabase.co/functions/v1/hy/master",
   "api_status_endpoint": "",

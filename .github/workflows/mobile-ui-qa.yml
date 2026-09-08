@@ -9,6 +9,7 @@ on:
       - "admin/**"
       - "update-client.js"
       - "tools/qa_mobile_ui.mjs"
+      - "tools/qa_yeojaman_flow.mjs"
       - "package.json"
       - ".github/workflows/mobile-ui-qa.yml"
   push:
@@ -31,11 +32,20 @@ jobs:
       - run: npm install
       - run: npx playwright install --with-deps chromium
       - run: npm run qa:mobile
+      - run: npm run qa:yeojaman
       - name: Upload nine-screen QA artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: mobile-ui-qa-screenshots
           path: qa-screenshots/
+          if-no-files-found: error
+          retention-days: 30
+      - name: Upload Yeojaman full-flow QA artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: yeojaman-full-flow-qa
+          path: qa-yeojaman/
           if-no-files-found: error
           retention-days: 30
