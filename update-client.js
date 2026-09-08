@@ -65,9 +65,9 @@
     root.innerHTML = `
       <style>
         #hy-update-root{position:fixed;inset:0;z-index:2147483000;pointer-events:none;font-family:Pretendard,"Noto Sans KR","Apple SD Gothic Neo",system-ui,sans-serif;color:#f5efe2}
-        #hy-update-chip{position:absolute;right:max(12px,env(safe-area-inset-right));top:max(12px,env(safe-area-inset-top));min-height:38px;padding:0 12px;border:1px solid rgba(255,226,160,.22);border-radius:999px;background:rgba(5,8,9,.72);backdrop-filter:blur(16px);box-shadow:0 10px 30px rgba(0,0,0,.28);display:flex;align-items:center;gap:8px;color:#dcd3c1;font-size:11px;font-weight:750;pointer-events:auto;cursor:pointer;opacity:.82;transition:.2s}
+        #hy-update-chip{position:absolute;right:max(8px,env(safe-area-inset-right));top:max(8px,env(safe-area-inset-top));width:9px;height:9px;min-height:0;padding:0;border:0;border-radius:50%;background:#6bb8a1;box-shadow:0 0 10px currentColor;display:block;color:#6bb8a1;pointer-events:auto;cursor:pointer;opacity:.45;transition:.2s;overflow:hidden}
         #hy-update-chip:hover{opacity:1;transform:translateY(-1px)}
-        #hy-update-chip i{display:block;width:7px;height:7px;border-radius:50%;background:#6bb8a1;box-shadow:0 0 10px currentColor}
+        #hy-update-chip i,#hy-update-chip span{display:none}
         #hy-update-chip.offline i{background:#a59d8d}#hy-update-chip.update i{background:#ffe2a0;animation:hy-update-pulse 1s infinite alternate}#hy-update-chip.error i{background:#d54a45}
         #hy-update-panel{position:absolute;right:max(12px,env(safe-area-inset-right));top:max(58px,calc(env(safe-area-inset-top) + 58px));width:min(390px,calc(100vw - 24px));max-height:min(620px,calc(100vh - 80px));overflow:auto;border:1px solid rgba(255,226,160,.2);border-radius:22px;background:linear-gradient(155deg,rgba(19,23,24,.97),rgba(5,8,9,.98));box-shadow:0 28px 80px rgba(0,0,0,.58);padding:18px;pointer-events:auto;opacity:0;visibility:hidden;transform:translateY(-8px) scale(.98);transition:.22s}
         #hy-update-panel.open{opacity:1;visibility:visible;transform:none}
