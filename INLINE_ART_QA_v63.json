@@ -1,0 +1,13 @@
+{
+  "extracted_references": 2,
+  "unique_assets": 1,
+  "html_bytes": 693893,
+  "assets": [
+    {
+      "file": "assets/ui-v63/scene-01-cb65677ed700.png",
+      "bytes": 2400826,
+      "selector": "/* shared */\n.scene-bg",
+      "sha256": "cb65677ed7001da57ed4918c167ebd58a88a04b53d00816e710615936654190b"
+    }
+  ]
+}
