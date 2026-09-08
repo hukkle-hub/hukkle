@@ -1,9 +1,9 @@
 {
   "product": "흥양기",
   "channel": "stable",
-  "version": "57.0.0",
-  "release_name": "모바일 UI 안정화 · 카드 125종 통합 · 시스템 전환 영상 제거",
-  "content_version": "2026.09.08.01",
+  "version": "58.0.0",
+  "release_name": "런타임 안정화 · 전체 화면 좌표 및 카드-던전 연결 수정",
+  "content_version": "2026.09.08.02",
   "api_version": "1.1.0",
   "min_supported_version": "37.0.0",
   "force_update": false,
@@ -13,11 +13,11 @@
   "check_interval_seconds": 60,
   "entry": "./index.html",
   "release_notes": [
-    "카드 125종과 1~6성 스킬 성장 규칙 통합",
-    "인벤토리·카드·도감·파티 시스템 메뉴 영상 제거",
-    "20:9 Android 화면비와 safe area 대응",
-    "타이틀 준비 완료 게이지가 게임 시작 버튼을 가리지 않도록 수정",
-    "업데이트 상태 UI를 작은 상태점으로 축소"
+    "전체 화면을 절반만큼 밀어내던 이전 중앙 정렬 transform 제거",
+    "메뉴·뒤로가기·팝업 버튼의 실제 클릭 영역 복구",
+    "카드 데이터와 던전 동행 정보의 스크립트 간 연결 수정",
+    "타이틀 보조 메뉴와 50회 화면 전환 자동 회귀 검사 추가",
+    "던전 iframe 연결 및 누락 정적 자산 검사를 강화"
   ],
   "api_health_endpoint": "https://ybflkszmymalhafzzdbs.supabase.co/functions/v1/hy/master",
   "api_status_endpoint": "https://ybflkszmymalhafzzdbs.supabase.co/functions/v1/hy/system/status",
