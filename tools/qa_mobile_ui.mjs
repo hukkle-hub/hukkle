@@ -20,6 +20,13 @@ await new Promise(resolve => server.listen(4173, '127.0.0.1', resolve));
 
 const browser = await chromium.launch({ headless: true });
 const page = await browser.newPage({ viewport: { width: 2340, height: 1080 } });
+await page.route('https://ybflkszmymalhafzzdbs.supabase.co/functions/v1/hy/system/status**', route =>
+  route.fulfill({
+    status: 200,
+    contentType: 'application/json',
+    body: JSON.stringify({ ok: true, maintenance: false, force_update: false }),
+  })
+);
 const errors = [];
 page.on('pageerror', error => errors.push(String(error)));
 page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
