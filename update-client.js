@@ -64,7 +64,7 @@
     root.innerHTML = `
       <style>
         #hy-update-root{position:fixed;inset:0;z-index:2147483000;pointer-events:none;font-family:Pretendard,"Noto Sans KR","Apple SD Gothic Neo",system-ui,sans-serif;color:#f5efe2}
-        #hy-update-chip{position:absolute;right:max(8px,env(safe-area-inset-right));top:max(8px,env(safe-area-inset-top));width:9px;height:9px;min-height:0;padding:0;border:0;border-radius:50%;background:#6bb8a1;box-shadow:0 0 10px currentColor;display:block;color:#6bb8a1;pointer-events:auto;cursor:pointer;opacity:.45;transition:.2s;overflow:hidden}
+        #hy-update-chip{display:none!important}
         #hy-update-chip:hover{opacity:1;transform:translateY(-1px)}
         #hy-update-chip i,#hy-update-chip span{display:none}
         #hy-update-chip.offline i{background:#a59d8d}#hy-update-chip.update i{background:#ffe2a0;animation:hy-update-pulse 1s infinite alternate}#hy-update-chip.error i{background:#d54a45}
