@@ -154,6 +154,26 @@ for (let i = 0; i < screens.length; i++) {
   }));
   await page.screenshot({ path: join(root, 'qa-screenshots', `${String(i + 2).padStart(2, '0')}-${screens[i]}.png`) });
 }
+await page.evaluate(() => window.hyRoute('cards', { direct: true }));
+const cardPresentationChecks = await page.evaluate(() => {
+  const hero = document.querySelector('.screen.active .card-world').getBoundingClientRect();
+  const nameplate = document.querySelector('.screen.active .card-nameplate').getBoundingClientRect();
+  const evolution = document.querySelector('.screen.active .evolution-strip-v4').getBoundingClientRect();
+  const units = [...document.querySelectorAll('.screen.active .card-unit-v4')].slice(0, 2).map(el => el.getBoundingClientRect());
+  return {
+    heroWidth: Math.round(hero.width),
+    heroHeight: Math.round(hero.height),
+    galleryScale: hero.width >= 225 && hero.height >= 340,
+    singleColumnCatalog: units.length < 2 || Math.abs(units[0].left - units[1].left) < 2,
+    controlsClear: nameplate.bottom + 4 <= evolution.top,
+  };
+});
+await page.evaluate(() => window.hyRoute('codex', { direct: true }));
+const recordTaxonomyChecks = await page.evaluate(() => ({
+  screenTitle: document.querySelector('.screen.active .screen-title h1')?.textContent.trim() === '기록',
+  navLabel: document.querySelector('.screen.active .nav button[data-route="codex"]')?.textContent.trim() === '기록',
+  homeLabel: document.querySelector('.home-hit[data-screen="codex"]')?.getAttribute('aria-label') === '기록',
+}));
 await page.evaluate(() => window.hyRoute('shop', { direct: true }));
 const readabilityChecks = await page.evaluate(() => {
   const px = selector => parseFloat(getComputedStyle(document.querySelector(selector)).fontSize);
@@ -228,6 +248,8 @@ const report = {
   homeHitGeometry,
   readabilityChecks,
   internalHeadersPassed: internalHeaderChecks.every(Boolean),
+  cardPresentationChecks,
+  recordTaxonomyChecks,
   utilityChecksPassed: utilityChecks.every(Boolean),
   routeFailures,
   journeyLinked,
@@ -252,6 +274,10 @@ if (
   !homeHitGeometry.separated ||
   !Object.values(readabilityChecks).every(Boolean) ||
   !internalHeaderChecks.every(Boolean) ||
+  !cardPresentationChecks.galleryScale ||
+  !cardPresentationChecks.singleColumnCatalog ||
+  !cardPresentationChecks.controlsClear ||
+  !Object.values(recordTaxonomyChecks).every(Boolean) ||
   !utilityChecks.every(Boolean) ||
   routeFailures.length !== 0 ||
   journeyActive !== 'journey' ||
