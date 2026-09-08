@@ -14,7 +14,7 @@ import android.webkit.WebViewClient;
 
 public final class MainActivity extends Activity {
     private static final String ORIGIN = "https://hukkle-hub.github.io/hukkle/";
-    private static final String GAME_URL = ORIGIN + "?app=58.0.0";
+    private static final String GAME_URL = ORIGIN + "?app=59.0.0";
     private WebView webView;
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -33,7 +33,7 @@ public final class MainActivity extends Activity {
         webView.getSettings().setAllowFileAccess(true);
         webView.getSettings().setAllowContentAccess(true);
         webView.getSettings().setUserAgentString(
-                webView.getSettings().getUserAgentString() + " HeungyanggiAndroid/58.0.0");
+                webView.getSettings().getUserAgentString() + " HeungyanggiAndroid/59.0.0");
         webView.setWebChromeClient(new WebChromeClient());
         webView.setWebViewClient(new WebViewClient() {
             @Override
@@ -61,8 +61,9 @@ public final class MainActivity extends Activity {
             }
         });
         setContentView(webView);
-        if (savedInstanceState == null) webView.loadUrl(GAME_URL);
-        else webView.restoreState(savedInstanceState);
+        boolean restored = savedInstanceState != null
+                && webView.restoreState(savedInstanceState) != null;
+        if (!restored) webView.loadUrl(GAME_URL);
     }
 
     private void enterImmersive() {
@@ -85,5 +86,11 @@ public final class MainActivity extends Activity {
     protected void onDestroy() {
         webView.destroy();
         super.onDestroy();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        webView.saveState(outState);
+        super.onSaveInstanceState(outState);
     }
 }
