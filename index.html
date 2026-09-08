@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#090c0e">
-<meta name="hy-version" content="58.0.0">
+<meta name="hy-version" content="59.0.0">
 <link rel="icon" href="./icon.svg" type="image/svg+xml">
-<title>흥양기 v58 · 런타임 안정화</title>
+<title>흥양기 v59 · 흰 화면 복구</title>
 
 <style>
 :root{--ink:#080b0d;--panel:rgba(9,12,14,.88);--panel2:rgba(16,20,23,.88);--line:rgba(239,218,176,.16);--gold:#ddb86f;--gold2:#ffe0a0;--text:#f5efe2;--muted:#aaa394;--red:#c65450;--blue:#6eb4d0;--jade:#66b29c;--ui:1;--safe-b:env(safe-area-inset-bottom,0px);--safe-t:env(safe-area-inset-top,0px)}
@@ -634,7 +634,7 @@ let activeJourneyRegion=null,journeyWatchdog=null;
 function journeyCompanionName(){const c=(window.hyCards||[]).find(x=>x.id===state.companionCard);return c?.name||'동행 카드'}
 function sendJourneyContext(target=$('#journeyFrame')?.contentWindow){if(!target)return;const origin=location.origin==='null'?'*':location.origin;target.postMessage({type:'hy-journey-context',itemQty:{...(state.itemQty||{})},companionCard:state.companionCard||null,companionName:journeyCompanionName(),motion:state.motion!==false},origin)}
 function setJourneyLoading(show,text='이동 경로와 조사 기록을 불러옵니다.'){const l=$('#journeyLoader');if(!l)return;l.classList.toggle('hidden',!show);$('#journeyLoaderText').textContent=text;$('#journeyRetry').classList.add('hidden');clearTimeout(journeyWatchdog);if(show)journeyWatchdog=setTimeout(()=>{$('#journeyLoaderText').textContent='탐험 화면 연결이 지연되고 있습니다.';$('#journeyRetry').classList.remove('hidden')},6500)}
-function startJourney(region){const id=regionToFlow[region]||regionToFlow.yeojaman;activeJourneyRegion=id;state.selectedRegion=flowToRegion[id]||region;state.journeyVisits=state.journeyVisits||{};state.journeyVisits[id]=Number(state.journeyVisits[id]||0)+1;save();setJourneyLoading(true);const f=$('#journeyFrame');f.src=`./admin/dungeon-flow.html?embedded=1&region=${encodeURIComponent(id)}&v=58.0&t=${Date.now()}`;window.hyRoute('journey',{direct:true})}
+function startJourney(region){const id=regionToFlow[region]||regionToFlow.yeojaman;activeJourneyRegion=id;state.selectedRegion=flowToRegion[id]||region;state.journeyVisits=state.journeyVisits||{};state.journeyVisits[id]=Number(state.journeyVisits[id]||0)+1;save();setJourneyLoading(true);const f=$('#journeyFrame');f.src=`./admin/dungeon-flow.html?embedded=1&region=${encodeURIComponent(id)}&v=59.0&t=${Date.now()}`;window.hyRoute('journey',{direct:true})}
 $('#journeyRetry').onclick=()=>activeJourneyRegion&&startJourney(flowToRegion[activeJourneyRegion]||activeJourneyRegion);
 $('#journeyBack').onclick=()=>{clearTimeout(journeyWatchdog);try{$('#journeyFrame').src='about:blank'}catch{}setJourneyLoading(false);window.hyRoute('map',{direct:true})};
 window.addEventListener('message',e=>{const frame=$('#journeyFrame');if(!frame||e.source!==frame.contentWindow)return;const d=e.data||{};

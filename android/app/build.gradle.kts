@@ -10,8 +10,8 @@ android {
         applicationId = "com.hukkle.heungyanggi"
         minSdk = 24
         targetSdk = 35
-        versionCode = 3
-        versionName = "58.0.0"
+        versionCode = 4
+        versionName = "59.0.0"
     }
 
     buildTypes {

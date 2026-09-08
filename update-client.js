@@ -52,7 +52,6 @@
     target.searchParams.set('_hy', String(Date.now()));
     const response = await fetch(target, {
       cache: 'no-store',
-      headers: { 'Cache-Control': 'no-cache' },
     });
     if (!response.ok) throw new Error(`${target.pathname}: HTTP ${response.status}`);
     return response.json();
