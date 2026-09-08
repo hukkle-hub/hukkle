@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#090c0e">
-<meta name="hy-version" content="59.0.0">
+<meta name="hy-version" content="60.0.0">
 <link rel="icon" href="./icon.svg" type="image/svg+xml">
-<title>흥양기 v59 · 흰 화면 복구</title>
+<title>흥양기 v60 · 모바일 화면 정렬</title>
 
 <style>
 :root{--ink:#080b0d;--panel:rgba(9,12,14,.88);--panel2:rgba(16,20,23,.88);--line:rgba(239,218,176,.16);--gold:#ddb86f;--gold2:#ffe0a0;--text:#f5efe2;--muted:#aaa394;--red:#c65450;--blue:#6eb4d0;--jade:#66b29c;--ui:1;--safe-b:env(safe-area-inset-bottom,0px);--safe-t:env(safe-area-inset-top,0px)}
@@ -130,7 +130,11 @@ body:before{content:"";position:fixed;inset:0;background:radial-gradient(circle 
 
 
 /* v58 runtime stabilization */
-html,body{width:100%;height:100%;overflow:hidden;background:#050607}#game{position:fixed!important;inset:0!important;left:0!important;top:0!important;translate:none!important;transform:none!important;box-sizing:border-box;width:100vw!important;height:100dvh!important;max-width:none!important;max-height:none!important;aspect-ratio:auto!important;margin:0!important;padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right)}.screen{transition:opacity .18s ease,transform .18s ease}.screen:not(.active){opacity:0;pointer-events:none;transform:translateY(5px)}.screen.active{opacity:1;transform:none}.title-start{z-index:30}.title-load{z-index:25;bottom:0;height:8.5%;padding:10px 18px 5px;pointer-events:none;transition:opacity .25s ease}.title-load.ready{opacity:0}.title-retry{pointer-events:auto}.cards-layout-v4{grid-template-columns:minmax(220px,28%) minmax(360px,44%) minmax(240px,28%)}.card-collection-grid{grid-template-columns:repeat(3,minmax(62px,1fr))}.panel,.card-detail-v4{min-width:0}.nav button,button{min-height:44px}@media(max-width:900px){.cards-layout-v4{grid-template-columns:26% 43% 31%;gap:7px}.card-browser-v4{padding:8px}.card-collection-grid{grid-template-columns:repeat(3,minmax(48px,1fr));gap:5px}.card-unit-v4 .meta small{display:none}.card-detail-v4{font-size:9px}.title-load{height:8%;padding:7px 11px 4px}}
+html,body{width:100%;height:100%;overflow:hidden;background:#050607}#game{position:fixed!important;inset:auto!important;left:50%!important;top:50%!important;translate:-50% -50%!important;transform:none!important;box-sizing:border-box;width:min(100vw,177.7778dvh)!important;height:min(100dvh,56.25vw)!important;max-width:none!important;max-height:none!important;aspect-ratio:16/9!important;margin:0!important;padding:0!important}.screen{transition:opacity .18s ease,transform .18s ease}.screen:not(.active){opacity:0;pointer-events:none;transform:translateY(5px)}.screen.active{opacity:1;transform:none}.title-start{z-index:30}.title-load{z-index:25;bottom:0;height:8.5%;padding:10px 18px 5px;pointer-events:none;transition:opacity .25s ease}.title-load.ready{opacity:0}.title-retry{pointer-events:auto}.cards-layout-v4{grid-template-columns:minmax(220px,28%) minmax(360px,44%) minmax(240px,28%)}.card-collection-grid{grid-template-columns:repeat(3,minmax(62px,1fr))}.panel,.card-detail-v4{min-width:0}.nav button,button{min-height:44px}.title-art,.card-hero img,.card-unit-v4 img,.party-slot-v6 img,.roster-card-v6 img,.party-card-summary img{object-fit:contain!important;background:#080b0d}@media(max-width:900px){.cards-layout-v4{grid-template-columns:26% 43% 31%;gap:7px}.card-browser-v4{padding:8px}.card-collection-grid{grid-template-columns:repeat(3,minmax(48px,1fr));gap:5px}.card-unit-v4 .meta small{display:none}.card-detail-v4{font-size:9px}.title-load{height:8%;padding:7px 11px 4px}}
+/* v60: keep the authored 1280x720 coordinate system and scale it as one surface. */
+:root{--game-scale:1}
+#game{width:1280px!important;height:720px!important;left:50%!important;top:50%!important;translate:none!important;transform:translate(-50%,-50%) scale(var(--game-scale))!important;transform-origin:center center!important;overflow:clip!important}
+.screen{overflow:clip!important}
 </style>
 <script defer src="./update-client.js"></script>
 <script defer src="./server-api.js"></script>
@@ -634,7 +638,7 @@ let activeJourneyRegion=null,journeyWatchdog=null;
 function journeyCompanionName(){const c=(window.hyCards||[]).find(x=>x.id===state.companionCard);return c?.name||'동행 카드'}
 function sendJourneyContext(target=$('#journeyFrame')?.contentWindow){if(!target)return;const origin=location.origin==='null'?'*':location.origin;target.postMessage({type:'hy-journey-context',itemQty:{...(state.itemQty||{})},companionCard:state.companionCard||null,companionName:journeyCompanionName(),motion:state.motion!==false},origin)}
 function setJourneyLoading(show,text='이동 경로와 조사 기록을 불러옵니다.'){const l=$('#journeyLoader');if(!l)return;l.classList.toggle('hidden',!show);$('#journeyLoaderText').textContent=text;$('#journeyRetry').classList.add('hidden');clearTimeout(journeyWatchdog);if(show)journeyWatchdog=setTimeout(()=>{$('#journeyLoaderText').textContent='탐험 화면 연결이 지연되고 있습니다.';$('#journeyRetry').classList.remove('hidden')},6500)}
-function startJourney(region){const id=regionToFlow[region]||regionToFlow.yeojaman;activeJourneyRegion=id;state.selectedRegion=flowToRegion[id]||region;state.journeyVisits=state.journeyVisits||{};state.journeyVisits[id]=Number(state.journeyVisits[id]||0)+1;save();setJourneyLoading(true);const f=$('#journeyFrame');f.src=`./admin/dungeon-flow.html?embedded=1&region=${encodeURIComponent(id)}&v=59.0&t=${Date.now()}`;window.hyRoute('journey',{direct:true})}
+function startJourney(region){const id=regionToFlow[region]||regionToFlow.yeojaman;activeJourneyRegion=id;state.selectedRegion=flowToRegion[id]||region;state.journeyVisits=state.journeyVisits||{};state.journeyVisits[id]=Number(state.journeyVisits[id]||0)+1;save();setJourneyLoading(true);const f=$('#journeyFrame');f.src=`./admin/dungeon-flow.html?embedded=1&region=${encodeURIComponent(id)}&v=60.0&t=${Date.now()}`;window.hyRoute('journey',{direct:true})}
 $('#journeyRetry').onclick=()=>activeJourneyRegion&&startJourney(flowToRegion[activeJourneyRegion]||activeJourneyRegion);
 $('#journeyBack').onclick=()=>{clearTimeout(journeyWatchdog);try{$('#journeyFrame').src='about:blank'}catch{}setJourneyLoading(false);window.hyRoute('map',{direct:true})};
 window.addEventListener('message',e=>{const frame=$('#journeyFrame');if(!frame||e.source!==frame.contentWindow)return;const d=e.data||{};
@@ -667,6 +671,15 @@ if(oldRenderMissions){
 }
 // Codex/card interaction counters
 const cardStoryObserver=new MutationObserver(()=>{const b=$('#cardStory');if(b&&!b.dataset.v41){b.dataset.v41='1';const old=b.onclick;b.onclick=()=>{state.missionProgress=state.missionProgress||{};state.missionProgress.m6=1;save();old&&old()}}});cardStoryObserver.observe(document.body,{subtree:true,childList:true});
+
+// Keep every visual and hit target on the same 1280x720 authored coordinate system.
+function fitGameViewport(){
+  const scale=Math.min(window.innerWidth/1280,window.innerHeight/720);
+  document.documentElement.style.setProperty('--game-scale',String(scale));
+}
+fitGameViewport();
+addEventListener('resize',fitGameViewport,{passive:true});
+addEventListener('orientationchange',fitGameViewport,{passive:true});
 
 // initialize scale/settings and title.
 document.documentElement.style.setProperty('--ui',(Number(state.uiScale||100))/100);document.documentElement.dataset.battery=state.batterySaver?'1':'0';
