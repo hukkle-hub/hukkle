@@ -1,15 +1,15 @@
 {
   "product": "흥양기",
   "channel": "stable",
-  "version": "63.0.0",
+  "version": "63.0.1",
   "release_name": "한국 설화 카드 원화 · 진화 · 밸런스 전면개편",
-  "content_version": "2026.09.08.05",
+  "content_version": "2026.09.09.01",
   "api_version": "1.1.0",
   "min_supported_version": "37.0.0",
   "force_update": false,
   "maintenance": false,
   "maintenance_message": "",
-  "published_at": "2026-09-08T14:23:46.359555Z",
+  "published_at": "2026-09-08T19:50:46.358525Z",
   "check_interval_seconds": 60,
   "entry": "./index.html",
   "release_notes": [
@@ -17,10 +17,11 @@
     "중국 황실풍 배제 및 얼굴·실루엣 중복 검수",
     "카드 목록 30장 단위 지연 로딩으로 WebView 메모리 절감",
     "진화 화면은 현재 단계와 다음 단계만 표시",
-    "125종 역할별 스킬 위력·BREAK·기력·성장 비용 적용"
+    "125종 역할별 스킬 위력·BREAK·기력·성장 비용 적용",
+    "초기 HTML을 7.1MB에서 0.7MB로 경량화해 모바일 흰 화면 방지"
   ],
   "api_health_endpoint": "https://ybflkszmymalhafzzdbs.supabase.co/functions/v1/hy/master",
-  "api_status_endpoint": "https://ybflkszmymalhafzzdbs.supabase.co/functions/v1/hy/system/status",
+  "api_status_endpoint": "",
   "auto_apply": "safe",
   "auto_apply_delay_seconds": 5,
   "public_url": "https://hukkle-hub.github.io/hukkle/"

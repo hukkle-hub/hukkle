@@ -1,5 +1,5 @@
 {
-  "version": "63.0.0",
+  "version": "63.0.1",
   "passed": true,
   "cards": 125,
   "uniqueBaseArt": 125,
@@ -43,7 +43,8 @@
   "catalog": {
     "pageSize": 30,
     "lazyImages": true,
-    "visibleEvolutionStages": 2
+    "visibleEvolutionStages": 2,
+    "htmlBytes": 693893
   },
   "failures": []
 }

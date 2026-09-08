@@ -52,9 +52,11 @@ assert(Math.max(...factionHps) / Math.min(...factionHps) < 1.08, '세력별 평�
 assert(html.includes('const pageSize=30'), '30장 단위 페이지 설정 누락');
 assert(html.includes('loading="lazy"'), '카드 원화 지연 로딩 누락');
 assert(!html.includes("[1,2,3,4,5,6,'final']"), '1~6성/최종진화를 한꺼번에 표시함');
+assert(Buffer.byteLength(html, 'utf8') < 1_000_000, '초기 HTML이 1MB 이상');
+assert(!html.includes(';base64,'), '대용량 base64 원화가 HTML에 남아 있음');
 
 const report = {
-  version: '63.0.0',
+  version: '63.0.1',
   passed: failures.length === 0,
   cards: cards.length,
   uniqueBaseArt: new Set(cards.map((c) => c.img)).size,
@@ -63,7 +65,7 @@ const report = {
   finalSpecials: cards.reduce((sum, c) => sum + c.specials.length, 0),
   roles,
   factions,
-  catalog: { pageSize: 30, lazyImages: true, visibleEvolutionStages: 2 },
+  catalog: { pageSize: 30, lazyImages: true, visibleEvolutionStages: 2, htmlBytes: Buffer.byteLength(html, 'utf8') },
   failures
 };
 fs.writeFileSync(path.join(root, 'CARD_BALANCE_QA_v63.json'), JSON.stringify(report, null, 2) + '\n');

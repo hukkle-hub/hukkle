@@ -166,7 +166,7 @@ def main() -> None:
             if d < 38:
                 nearest.append({"left": left, "right": right, "dhash_distance": d})
     report = {
-        "version": "63.0.0",
+        "version": "63.0.1",
         "generated_base": len(generated),
         "generated_final": len(generated),
         "unique_exact_hashes": exact,
