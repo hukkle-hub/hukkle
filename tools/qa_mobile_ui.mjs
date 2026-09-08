@@ -91,6 +91,27 @@ await page.locator('#titleStart').click();
 await page.waitForSelector('.screen[data-screen="home"].active');
 await page.evaluate(() => { window.hyState.motion = false; window.hySave(); });
 
+const homeHitGeometry = await page.evaluate(() => {
+  const game = document.querySelector('#game').getBoundingClientRect();
+  const expected = {
+    map:[.179,.267], inventory:[.27,.358], cards:[.361,.449],
+    codex:[.452,.54], party:[.543,.631], shop:[.634,.722], missions:[.725,.815],
+  };
+  const actual = {};
+  let aligned = true;
+  let separated = true;
+  let previousRight = -Infinity;
+  for (const [name, target] of Object.entries(expected)) {
+    const r = document.querySelector(`.home-hit[data-screen="${name}"]`).getBoundingClientRect();
+    const span = [(r.left-game.left)/game.width,(r.right-game.left)/game.width];
+    actual[name] = span.map(value => Number(value.toFixed(4)));
+    aligned &&= Math.abs(span[0]-target[0]) < .004 && Math.abs(span[1]-target[1]) < .004;
+    separated &&= span[0] >= previousRight;
+    previousRight = span[1];
+  }
+  return { aligned, separated, actual };
+});
+
 const manifest = JSON.parse(await readFile(join(root, 'card_manifest_v47.json'), 'utf8'));
 const cards = Array.isArray(manifest) ? manifest : (manifest.cards || []);
 const ids = cards.map(card => card.id);
@@ -103,6 +124,7 @@ const result = { cards: cards.length, duplicateIds: ids.length - new Set(ids).si
 const screens = ['home','map','inventory','cards','codex','party','shop','missions'];
 let cinematicCount = 0;
 const routeFailures = [];
+const internalHeaderChecks = [];
 for (let i = 0; i < 50; i++) {
   const screen = screens[i % screens.length];
   console.log(`QA route ${i + 1}/50: ${screen}`);
@@ -124,8 +146,26 @@ for (let i = 0; i < 50; i++) {
 for (let i = 0; i < screens.length; i++) {
   await page.evaluate(name => window.hyRoute(name, { direct: true }), screens[i]);
   await page.waitForTimeout(120);
+  if (!['home'].includes(screens[i])) internalHeaderChecks.push(await page.evaluate(() => {
+    const game = document.querySelector('#game').getBoundingClientRect();
+    const title = document.querySelector('.screen.active .screen-title').getBoundingClientRect();
+    const currency = document.querySelector('.screen.active .currency').getBoundingClientRect();
+    return currency.left >= game.left + game.width * .72 && title.right + 8 <= currency.left;
+  }));
   await page.screenshot({ path: join(root, 'qa-screenshots', `${String(i + 2).padStart(2, '0')}-${screens[i]}.png`) });
 }
+await page.evaluate(() => window.hyRoute('shop', { direct: true }));
+const readabilityChecks = await page.evaluate(() => {
+  const px = selector => parseFloat(getComputedStyle(document.querySelector(selector)).fontSize);
+  const height = selector => parseFloat(getComputedStyle(document.querySelector(selector)).height);
+  return {
+    navText: px('.screen.active .nav button') >= 12,
+    sectionLabel: px('.screen.active .section-label') >= 11,
+    shopTitle: px('.screen.active .good b') >= 12,
+    shopPrice: px('.screen.active .price') >= 10,
+    shopArt: height('.screen.active .good .art') >= 95,
+  };
+});
 await page.evaluate(() => window.hyRoute('inventory', { direct: true }));
 await page.locator('#itemGrid [data-id="water"]').click();
 const waterBefore = await page.evaluate(() => Number(window.hyState.itemQty.water || 0));
@@ -185,6 +225,9 @@ const startupRecovery = await page.locator('.screen.active').getAttribute('data-
 const report = {
   ...result,
   layoutChecks,
+  homeHitGeometry,
+  readabilityChecks,
+  internalHeadersPassed: internalHeaderChecks.every(Boolean),
   utilityChecksPassed: utilityChecks.every(Boolean),
   routeFailures,
   journeyLinked,
@@ -205,6 +248,10 @@ if (
   result.duplicateIds !== 0 ||
   !result.skillRule ||
   !Object.values(layoutChecks).every(Boolean) ||
+  !homeHitGeometry.aligned ||
+  !homeHitGeometry.separated ||
+  !Object.values(readabilityChecks).every(Boolean) ||
+  !internalHeaderChecks.every(Boolean) ||
   !utilityChecks.every(Boolean) ||
   routeFailures.length !== 0 ||
   journeyActive !== 'journey' ||
