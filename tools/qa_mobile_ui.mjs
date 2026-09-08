@@ -28,11 +28,15 @@ await page.waitForTimeout(3000);
 await mkdir(join(root, 'qa-screenshots'), { recursive: true });
 await page.screenshot({ path: join(root, 'qa-screenshots', '01-title.png') });
 
-const result = await page.evaluate(() => {
-  const ids = cards.map(card => card.id);
-  const skillRule = cards.every(card => card.skills.length === 6 && card.skills.every((skill, index) => skill.star === index + 1));
-  return { cards: cards.length, duplicateIds: ids.length - new Set(ids).size, skillRule };
-});
+const manifest = JSON.parse(await readFile(join(root, 'card_manifest_v47.json'), 'utf8'));
+const cards = Array.isArray(manifest) ? manifest : (manifest.cards || []);
+const ids = cards.map(card => card.id);
+const skillRule = cards.every(card =>
+  Array.isArray(card.skills) &&
+  card.skills.length === 6 &&
+  card.skills.every((skill, index) => skill.star === index + 1)
+);
+const result = { cards: cards.length, duplicateIds: ids.length - new Set(ids).size, skillRule };
 const screens = ['home','map','inventory','cards','codex','party','shop','missions'];
 let cinematicCount = 0;
 for (let i = 0; i < 50; i++) {
