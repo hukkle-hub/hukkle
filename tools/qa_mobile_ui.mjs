@@ -22,7 +22,8 @@ const browser = await chromium.launch({
   headless: true,
   executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE || undefined,
 });
-const page = await browser.newPage({ viewport: { width: 2340, height: 1080 } });
+// Matches the real Android landscape capture used for regression review.
+const page = await browser.newPage({ viewport: { width: 1279, height: 599 } });
 page.setDefaultTimeout(5000);
 await page.route('https://ybflkszmymalhafzzdbs.supabase.co/functions/v1/hy/system/status**', route =>
   route.fulfill({
@@ -47,7 +48,39 @@ await page.waitForTimeout(3000);
 await mkdir(join(root, 'qa-screenshots'), { recursive: true });
 await page.screenshot({ path: join(root, 'qa-screenshots', '01-title.png') });
 
+const layoutChecks = await page.evaluate(() => {
+  const game = document.querySelector('#game').getBoundingClientRect();
+  const inside = el => {
+    const r = el.getBoundingClientRect();
+    return r.left >= game.left - 1 && r.top >= game.top - 1 &&
+      r.right <= game.right + 1 && r.bottom <= game.bottom + 1;
+  };
+  const lowerTitleControls = ['titlePrologue', 'titleStart', 'titleNotice']
+    .map(id => document.getElementById(id));
+  return {
+    sixteenNine: Math.abs(game.width / game.height - 16 / 9) < 0.01,
+    centered: Math.abs((game.left + game.right) / 2 - innerWidth / 2) < 1,
+    gameInsideViewport: game.left >= -1 && game.top >= -1 &&
+      game.right <= innerWidth + 1 && game.bottom <= innerHeight + 1,
+    titleControlsInside: lowerTitleControls.every(inside),
+    titleControlsOnArtwork: lowerTitleControls.every(el => {
+      const r = el.getBoundingClientRect();
+      return r.top >= game.top + game.height * .74 && r.bottom <= game.bottom;
+    }),
+  };
+});
+
 const utilityChecks = [];
+await page.locator('#titlePrologue').click();
+utilityChecks.push(await page.evaluate(() => {
+  const layer = document.querySelector('#utilityLayer');
+  const card = document.querySelector('.prologue-card')?.getBoundingClientRect();
+  const actions = document.querySelector('.prologue-actions')?.getBoundingClientRect();
+  const game = document.querySelector('#game').getBoundingClientRect();
+  return !layer.classList.contains('hidden') && card && actions &&
+    card.bottom <= actions.top && actions.bottom <= game.bottom + 1;
+}));
+await page.locator('#utilityClose').click();
 for (const id of ['titleNotice', 'titleSettings', 'titleAccount', 'titleSupport']) {
   console.log(`QA utility: ${id}`);
   await page.locator(`#${id}`).click();
@@ -115,6 +148,22 @@ const functionalChecks = {
   renderedCards: renderedCards > 0,
   partySize: partySize === 5,
 };
+const screenGeometry = await page.evaluate(() => {
+  const box = selector => {
+    const el = document.querySelector(selector);
+    if (!el) return null;
+    const r = el.getBoundingClientRect();
+    return { x:r.x, y:r.y, width:r.width, height:r.height, scrollTop:el.scrollTop };
+  };
+  return {
+    viewport:[innerWidth, innerHeight],
+    game:box('#game'),
+    active:box('.screen.active'),
+    topbar:box('.screen.active .topbar'),
+    content:box('.screen.active .content'),
+    nav:box('.screen.active .nav'),
+  };
+});
 await page.evaluate(() => {
   window.hyState.firstDestination = 'yeojaman';
   window.hySave();
@@ -126,11 +175,13 @@ const journeyLinked = await page.locator('#journeyFrame').getAttribute('src');
 const journeyActive = await page.locator('.screen.active').getAttribute('data-screen');
 const report = {
   ...result,
+  layoutChecks,
   utilityChecksPassed: utilityChecks.every(Boolean),
   routeFailures,
   journeyLinked,
   journeyActive,
   functionalChecks,
+  screenGeometry,
   cinematicCount,
   consoleErrorCount: errors.length,
   errors,
@@ -143,6 +194,7 @@ if (
   result.cards !== 125 ||
   result.duplicateIds !== 0 ||
   !result.skillRule ||
+  !Object.values(layoutChecks).every(Boolean) ||
   !utilityChecks.every(Boolean) ||
   routeFailures.length !== 0 ||
   journeyActive !== 'journey' ||

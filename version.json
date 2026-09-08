@@ -1,9 +1,9 @@
 {
   "product": "흥양기",
   "channel": "stable",
-  "version": "59.0.0",
-  "release_name": "Android 흰 화면 복구 · WebView 상태 복원 안전화",
-  "content_version": "2026.09.08.03",
+  "version": "61.0.0",
+  "release_name": "모바일 화면 정렬 · 이미지 전체 표시",
+  "content_version": "2026.09.08.04",
   "api_version": "1.1.0",
   "min_supported_version": "37.0.0",
   "force_update": false,
@@ -13,11 +13,15 @@
   "check_interval_seconds": 60,
   "entry": "./index.html",
   "release_notes": [
-    "복원할 WebView 상태가 없으면 게임 URL을 다시 여는 안전 경로 추가",
-    "Android 앱 시작 배경을 어두운 흥양기 배경으로 고정",
-    "WebView 상태 저장과 프로세스 재생성 복구 강화",
-    "상태 서버 요청의 불필요한 CORS 사전 요청 제거",
-    "v59 캐시 키와 Android 빌드 버전 갱신"
+    "첫 이야기 자동 영상 및 의도치 않은 영상 소리 제거",
+    "탐사 이동을 구간 선택형 진행으로 개편하고 4단계 조사 안내 추가",
+    "탐사 상단·우측 패널 겹침 제거",
+    "한국 남해안 세계관의 신규 고유 캐릭터 이미지와 카드별 고유 문양 추가",
+    "휴대폰 가로 화면에서도 16:9 게임 캔버스를 유지하도록 수정",
+    "프롤로그·게임 시작·공지사항 버튼 좌표를 원본 화면과 다시 정렬",
+    "카드·파티 인물 이미지를 자르지 않고 전체 표시",
+    "실제 사용자 화면 비율 1279×599 회귀 검수 추가",
+    "v60 웹 캐시 키 갱신"
   ],
   "api_health_endpoint": "https://ybflkszmymalhafzzdbs.supabase.co/functions/v1/hy/master",
   "api_status_endpoint": "https://ybflkszmymalhafzzdbs.supabase.co/functions/v1/hy/system/status",
