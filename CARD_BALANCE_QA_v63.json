@@ -1,0 +1,49 @@
+{
+  "version": "63.0.0",
+  "passed": true,
+  "cards": 125,
+  "uniqueBaseArt": 125,
+  "uniqueFinalArt": 125,
+  "skills": 750,
+  "finalSpecials": 625,
+  "roles": {
+    "탱커": {
+      "count": 27,
+      "avgPower": 122.56,
+      "avgHp": 982.04
+    },
+    "밸런스": {
+      "count": 67,
+      "avgPower": 111.64,
+      "avgHp": 746.57
+    },
+    "암살자": {
+      "count": 31,
+      "avgPower": 127.42,
+      "avgHp": 646.94
+    }
+  },
+  "factions": {
+    "당": {
+      "count": 40,
+      "avgPower": 114.75,
+      "avgHp": 797.25
+    },
+    "물": {
+      "count": 40,
+      "avgPower": 118.35,
+      "avgHp": 774.5
+    },
+    "저승": {
+      "count": 45,
+      "avgPower": 120.33,
+      "avgHp": 749.33
+    }
+  },
+  "catalog": {
+    "pageSize": 30,
+    "lazyImages": true,
+    "visibleEvolutionStages": 2
+  },
+  "failures": []
+}

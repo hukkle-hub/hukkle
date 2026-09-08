@@ -1,0 +1,1010 @@
+{
+  "version": "63.0.0",
+  "generated_base": 125,
+  "generated_final": 125,
+  "unique_exact_hashes": 125,
+  "possible_visual_duplicates_threshold_lt_38": [],
+  "total_bytes": 12561640,
+  "cards": [
+    {
+      "id": "C001",
+      "base": "assets/cards-v63/C001.webp",
+      "final": "assets/cards-v63/C001-final.webp",
+      "base_bytes": 54304,
+      "final_bytes": 78596,
+      "sha256": "14e36b968df60402cda10275033ab83c7462fb345db337146ef76e33b5ee1b9b"
+    },
+    {
+      "id": "C002",
+      "base": "assets/cards-v63/C002.webp",
+      "final": "assets/cards-v63/C002-final.webp",
+      "base_bytes": 44802,
+      "final_bytes": 64012,
+      "sha256": "e451d87436fca9287f35176018ff57d333be2c63701267ff3e1b6358f417058e"
+    },
+    {
+      "id": "C003",
+      "base": "assets/cards-v63/C003.webp",
+      "final": "assets/cards-v63/C003-final.webp",
+      "base_bytes": 40574,
+      "final_bytes": 57952,
+      "sha256": "4d9b785ed490b0a902ee339c2d018e8361c1c8c95c94c90861d7dd333bb9cfba"
+    },
+    {
+      "id": "C004",
+      "base": "assets/cards-v63/C004.webp",
+      "final": "assets/cards-v63/C004-final.webp",
+      "base_bytes": 47226,
+      "final_bytes": 70186,
+      "sha256": "ebe8ddb22e20a8ac91123b3afecc7e2048891bf4bd87bdf45bceb27b640cdd97"
+    },
+    {
+      "id": "C005",
+      "base": "assets/cards-v63/C005.webp",
+      "final": "assets/cards-v63/C005-final.webp",
+      "base_bytes": 32796,
+      "final_bytes": 48538,
+      "sha256": "e827d9a6d6b8d85c257043544d5a22e722b7174570a00b7e8ca58c23e5909f3b"
+    },
+    {
+      "id": "C006",
+      "base": "assets/cards-v63/C006.webp",
+      "final": "assets/cards-v63/C006-final.webp",
+      "base_bytes": 34026,
+      "final_bytes": 52122,
+      "sha256": "71bdc02e1536aa595d1caf1122ede0a079a1b32d2f11c5eb06dc3db3b306ec1a"
+    },
+    {
+      "id": "C007",
+      "base": "assets/cards-v63/C007.webp",
+      "final": "assets/cards-v63/C007-final.webp",
+      "base_bytes": 41654,
+      "final_bytes": 61272,
+      "sha256": "cd829e0ec76ac555ff1974ee897df126e50fdbae72fe248b9bd1e75d116675db"
+    },
+    {
+      "id": "C008",
+      "base": "assets/cards-v63/C008.webp",
+      "final": "assets/cards-v63/C008-final.webp",
+      "base_bytes": 34632,
+      "final_bytes": 51658,
+      "sha256": "3ca8cb118f34a9086fc8bb08ce272c3c4d04466fbafa44b6ef863c6d3e072bca"
+    },
+    {
+      "id": "C009",
+      "base": "assets/cards-v63/C009.webp",
+      "final": "assets/cards-v63/C009-final.webp",
+      "base_bytes": 35564,
+      "final_bytes": 51968,
+      "sha256": "a5bd32920eb11f58760936d521e4c8461b6ad95f300375872bf93ca895657079"
+    },
+    {
+      "id": "C010",
+      "base": "assets/cards-v63/C010.webp",
+      "final": "assets/cards-v63/C010-final.webp",
+      "base_bytes": 36820,
+      "final_bytes": 55910,
+      "sha256": "8e64eb53548c9b403451690b4b2219159d3dc0d086dce937a146f4caee879660"
+    },
+    {
+      "id": "C011",
+      "base": "assets/cards-v63/C011.webp",
+      "final": "assets/cards-v63/C011-final.webp",
+      "base_bytes": 22554,
+      "final_bytes": 34674,
+      "sha256": "d9d7bbf731db1b3b169a3567d57afb12d8c48237133de747aea017f1037ccd89"
+    },
+    {
+      "id": "C012",
+      "base": "assets/cards-v63/C012.webp",
+      "final": "assets/cards-v63/C012-final.webp",
+      "base_bytes": 34724,
+      "final_bytes": 51544,
+      "sha256": "808e18d8bcb41887ca26179b5fb518b1b63e6345fadf149a651e1e9078e90b18"
+    },
+    {
+      "id": "C013",
+      "base": "assets/cards-v63/C013.webp",
+      "final": "assets/cards-v63/C013-final.webp",
+      "base_bytes": 23070,
+      "final_bytes": 37060,
+      "sha256": "3b3d08b9ae46d6589d6b9065067cd5570c38bbd18d22b6d3cb67a6e9a8cf9388"
+    },
+    {
+      "id": "C014",
+      "base": "assets/cards-v63/C014.webp",
+      "final": "assets/cards-v63/C014-final.webp",
+      "base_bytes": 19984,
+      "final_bytes": 32608,
+      "sha256": "ef130d27654785097c6f6ad0557fa90752d9137b0597719e384ae6373afd0c1b"
+    },
+    {
+      "id": "C015",
+      "base": "assets/cards-v63/C015.webp",
+      "final": "assets/cards-v63/C015-final.webp",
+      "base_bytes": 28896,
+      "final_bytes": 42886,
+      "sha256": "6fe05b93dd9b7a77261df20401c1143a21fd0c69f0abcc5e0a3a3df5370a87f9"
+    },
+    {
+      "id": "C016",
+      "base": "assets/cards-v63/C016.webp",
+      "final": "assets/cards-v63/C016-final.webp",
+      "base_bytes": 30012,
+      "final_bytes": 45614,
+      "sha256": "943eddf655da72afb42f20c68754470d0f6a63b42402745391ddf8c196bb4ef3"
+    },
+    {
+      "id": "C017",
+      "base": "assets/cards-v63/C017.webp",
+      "final": "assets/cards-v63/C017-final.webp",
+      "base_bytes": 34034,
+      "final_bytes": 50104,
+      "sha256": "7b6b7a28ff03e737c5f34d3ce28d4e4d0ff00f435e4d4fb241efad544f470488"
+    },
+    {
+      "id": "C018",
+      "base": "assets/cards-v63/C018.webp",
+      "final": "assets/cards-v63/C018-final.webp",
+      "base_bytes": 31352,
+      "final_bytes": 46834,
+      "sha256": "a88c04e3052e7b4c1e131df76322754d03e001ac07a20cf8746ae43444b55724"
+    },
+    {
+      "id": "C019",
+      "base": "assets/cards-v63/C019.webp",
+      "final": "assets/cards-v63/C019-final.webp",
+      "base_bytes": 23590,
+      "final_bytes": 37468,
+      "sha256": "6a543b4191f1c6aa6931ec8e339b08a8fecc124437e93141cc6d200575af43b4"
+    },
+    {
+      "id": "C020",
+      "base": "assets/cards-v63/C020.webp",
+      "final": "assets/cards-v63/C020-final.webp",
+      "base_bytes": 20082,
+      "final_bytes": 33162,
+      "sha256": "ba951f2e658fda7787b29f10be2916798b7d6daa54c52d454cede60d2e505d1e"
+    },
+    {
+      "id": "C021",
+      "base": "assets/cards-v63/C021.webp",
+      "final": "assets/cards-v63/C021-final.webp",
+      "base_bytes": 48386,
+      "final_bytes": 69548,
+      "sha256": "d9c8c49afac81f380b2e2162250d02308addb041f9d9bc97238e580556d6ebb5"
+    },
+    {
+      "id": "C022",
+      "base": "assets/cards-v63/C022.webp",
+      "final": "assets/cards-v63/C022-final.webp",
+      "base_bytes": 57036,
+      "final_bytes": 81340,
+      "sha256": "90a2bf601ecf0f741f510e3321dc541c811aab6d6a10a8aab86eca3dc023e970"
+    },
+    {
+      "id": "C023",
+      "base": "assets/cards-v63/C023.webp",
+      "final": "assets/cards-v63/C023-final.webp",
+      "base_bytes": 34004,
+      "final_bytes": 50176,
+      "sha256": "8feddda996a06e65a69925e55befa09a1f2179c2719b64248f97c7fb3c7244f2"
+    },
+    {
+      "id": "C024",
+      "base": "assets/cards-v63/C024.webp",
+      "final": "assets/cards-v63/C024-final.webp",
+      "base_bytes": 37726,
+      "final_bytes": 56640,
+      "sha256": "4e12e3df35c06ba229495183d2552c39a97339f1da82f7dd5c663a315baf8015"
+    },
+    {
+      "id": "C025",
+      "base": "assets/cards-v63/C025.webp",
+      "final": "assets/cards-v63/C025-final.webp",
+      "base_bytes": 45876,
+      "final_bytes": 65498,
+      "sha256": "0b37cece7c918f200a9ea5ddf6acafb29cc8d5297f36355db7b360f2c8f78570"
+    },
+    {
+      "id": "C026",
+      "base": "assets/cards-v63/C026.webp",
+      "final": "assets/cards-v63/C026-final.webp",
+      "base_bytes": 61092,
+      "final_bytes": 85878,
+      "sha256": "d95b2224efb0ba02e333ae12460caaf34da7246d07ade3a3b0fa0d6a08cba2da"
+    },
+    {
+      "id": "C027",
+      "base": "assets/cards-v63/C027.webp",
+      "final": "assets/cards-v63/C027-final.webp",
+      "base_bytes": 52490,
+      "final_bytes": 75878,
+      "sha256": "65efa4b94dd0e139d01054ff23f8e1fc714aa55cb8d838e27eacde028254d92d"
+    },
+    {
+      "id": "C028",
+      "base": "assets/cards-v63/C028.webp",
+      "final": "assets/cards-v63/C028-final.webp",
+      "base_bytes": 44862,
+      "final_bytes": 65042,
+      "sha256": "ddf0543c33f549c5bba15a38936e3267d0bb4f8add61f0c62537f637c849d67b"
+    },
+    {
+      "id": "C029",
+      "base": "assets/cards-v63/C029.webp",
+      "final": "assets/cards-v63/C029-final.webp",
+      "base_bytes": 35946,
+      "final_bytes": 54872,
+      "sha256": "a178ddef8faba774904db60acb5dd94b22857b402f9fd2143c4d37c5048174e1"
+    },
+    {
+      "id": "C030",
+      "base": "assets/cards-v63/C030.webp",
+      "final": "assets/cards-v63/C030-final.webp",
+      "base_bytes": 31796,
+      "final_bytes": 48506,
+      "sha256": "2786599e2833ada0aa76ef1bf2d1f9f1e14b06fa9d8bb708aae01d52f2e3f0e1"
+    },
+    {
+      "id": "C031",
+      "base": "assets/cards-v63/C031.webp",
+      "final": "assets/cards-v63/C031-final.webp",
+      "base_bytes": 46454,
+      "final_bytes": 68134,
+      "sha256": "43b9f0d2f7132feb14be5c940cba9206b3cd1e266a2a2ee9eaa9c228b3beda0c"
+    },
+    {
+      "id": "C032",
+      "base": "assets/cards-v63/C032.webp",
+      "final": "assets/cards-v63/C032-final.webp",
+      "base_bytes": 48262,
+      "final_bytes": 71084,
+      "sha256": "a2ef093a9946273ac0652bc6c2889a38c0d19ca5920b4f2db35a056a53bbede6"
+    },
+    {
+      "id": "C033",
+      "base": "assets/cards-v63/C033.webp",
+      "final": "assets/cards-v63/C033-final.webp",
+      "base_bytes": 28520,
+      "final_bytes": 44010,
+      "sha256": "fa18449e06b3069f74e0cb81a138806e5d16cd60ae1d6c0e8d26e2583b77796f"
+    },
+    {
+      "id": "C034",
+      "base": "assets/cards-v63/C034.webp",
+      "final": "assets/cards-v63/C034-final.webp",
+      "base_bytes": 33612,
+      "final_bytes": 54366,
+      "sha256": "a58fb51b0aa7751d29f7cecb7c82e56e494b01539dbf91b6265ef7aeb12d330e"
+    },
+    {
+      "id": "C035",
+      "base": "assets/cards-v63/C035.webp",
+      "final": "assets/cards-v63/C035-final.webp",
+      "base_bytes": 47200,
+      "final_bytes": 70436,
+      "sha256": "7e17fd074c0621ef58ccae9345449f3796fd973a6cee2edc79afb34724686dea"
+    },
+    {
+      "id": "C036",
+      "base": "assets/cards-v63/C036.webp",
+      "final": "assets/cards-v63/C036-final.webp",
+      "base_bytes": 43106,
+      "final_bytes": 63414,
+      "sha256": "0fcde2d57e78ca477a6c759e84d96643eee8d267c557587584cb86b2c986f921"
+    },
+    {
+      "id": "C037",
+      "base": "assets/cards-v63/C037.webp",
+      "final": "assets/cards-v63/C037-final.webp",
+      "base_bytes": 47494,
+      "final_bytes": 71274,
+      "sha256": "96014a37bbe0a6659032039cbf47c23177fc10e3445c36440e9adeff1846da69"
+    },
+    {
+      "id": "C038",
+      "base": "assets/cards-v63/C038.webp",
+      "final": "assets/cards-v63/C038-final.webp",
+      "base_bytes": 49278,
+      "final_bytes": 71924,
+      "sha256": "3f3de026b3265039086505560ff3c0bc65ccf04ad1f98f7c77e293a081ac0730"
+    },
+    {
+      "id": "C039",
+      "base": "assets/cards-v63/C039.webp",
+      "final": "assets/cards-v63/C039-final.webp",
+      "base_bytes": 47580,
+      "final_bytes": 68570,
+      "sha256": "f86aadd5ebc82d4d385eed1a346e0b1b4ef7d12a37a23357493f31299c59e579"
+    },
+    {
+      "id": "C040",
+      "base": "assets/cards-v63/C040.webp",
+      "final": "assets/cards-v63/C040-final.webp",
+      "base_bytes": 57196,
+      "final_bytes": 81056,
+      "sha256": "30a2095df53aca2d30ba8f9de6db54f0c5f1367a186cc335b0eaa37bb965fdaa"
+    },
+    {
+      "id": "C041",
+      "base": "assets/cards-v63/C041.webp",
+      "final": "assets/cards-v63/C041-final.webp",
+      "base_bytes": 58524,
+      "final_bytes": 83526,
+      "sha256": "2cb8f225009296bad773b1d8a0e6c410d3725a70bdf3f68ac1ed8eeb200a942f"
+    },
+    {
+      "id": "C042",
+      "base": "assets/cards-v63/C042.webp",
+      "final": "assets/cards-v63/C042-final.webp",
+      "base_bytes": 63354,
+      "final_bytes": 87152,
+      "sha256": "5a379aa0598afed2389cedc47005c7c40c0e7962f2dbcd7c3f667a897c7a0fc7"
+    },
+    {
+      "id": "C043",
+      "base": "assets/cards-v63/C043.webp",
+      "final": "assets/cards-v63/C043-final.webp",
+      "base_bytes": 45880,
+      "final_bytes": 66362,
+      "sha256": "86474d9e54ec9a7a7b451f38f3686157f78650cd35eec9432779a2bb540e63cb"
+    },
+    {
+      "id": "C044",
+      "base": "assets/cards-v63/C044.webp",
+      "final": "assets/cards-v63/C044-final.webp",
+      "base_bytes": 49102,
+      "final_bytes": 70482,
+      "sha256": "e1f77fc45e8140d50631b3a6cef85c1a60cee61f5a9f3d1b049f009a90a01e31"
+    },
+    {
+      "id": "C045",
+      "base": "assets/cards-v63/C045.webp",
+      "final": "assets/cards-v63/C045-final.webp",
+      "base_bytes": 60184,
+      "final_bytes": 83618,
+      "sha256": "70fd11426ea47997d61881901509be9a13872e9c7657b8f1ac378600beb1be15"
+    },
+    {
+      "id": "C046",
+      "base": "assets/cards-v63/C046.webp",
+      "final": "assets/cards-v63/C046-final.webp",
+      "base_bytes": 55212,
+      "final_bytes": 78532,
+      "sha256": "4f444aab70fa26bde547f537bad9005c10a6c3df9e41cc2c27389dee5c1fea11"
+    },
+    {
+      "id": "C047",
+      "base": "assets/cards-v63/C047.webp",
+      "final": "assets/cards-v63/C047-final.webp",
+      "base_bytes": 55110,
+      "final_bytes": 78692,
+      "sha256": "bee63fdc1043776d11c822a96daf53aafd6eb1cd95d1eab7cb645c19f2dd547d"
+    },
+    {
+      "id": "C048",
+      "base": "assets/cards-v63/C048.webp",
+      "final": "assets/cards-v63/C048-final.webp",
+      "base_bytes": 42208,
+      "final_bytes": 61056,
+      "sha256": "33781ec73fdfedb29bd5e00ec1f8471e4f9d82eaa9b7985600b712166fcf74b4"
+    },
+    {
+      "id": "C049",
+      "base": "assets/cards-v63/C049.webp",
+      "final": "assets/cards-v63/C049-final.webp",
+      "base_bytes": 47776,
+      "final_bytes": 68004,
+      "sha256": "976ce5b9bc71bf9df4fd2e0e3d13769e6bba859bfaa51fbda9a56767bd60766f"
+    },
+    {
+      "id": "C050",
+      "base": "assets/cards-v63/C050.webp",
+      "final": "assets/cards-v63/C050-final.webp",
+      "base_bytes": 29884,
+      "final_bytes": 43958,
+      "sha256": "976f9671b9535e2d3e2070612f10bb887d2e6f2d84bcf9bd5f589c318e659486"
+    },
+    {
+      "id": "C051",
+      "base": "assets/cards-v63/C051.webp",
+      "final": "assets/cards-v63/C051-final.webp",
+      "base_bytes": 49614,
+      "final_bytes": 70042,
+      "sha256": "720b6cc6821193e564e0c962267dbae931d9a5486a475e8b42ef4be5ecac7248"
+    },
+    {
+      "id": "C052",
+      "base": "assets/cards-v63/C052.webp",
+      "final": "assets/cards-v63/C052-final.webp",
+      "base_bytes": 37000,
+      "final_bytes": 54042,
+      "sha256": "fb4492efad71701036b3a58fc62efafabdf80def8ff024081eb77381f61ffa89"
+    },
+    {
+      "id": "C053",
+      "base": "assets/cards-v63/C053.webp",
+      "final": "assets/cards-v63/C053-final.webp",
+      "base_bytes": 38172,
+      "final_bytes": 56956,
+      "sha256": "0bed3e0e5a093d633f0340633418ea78723529254cb363a4507c97e29c57eee3"
+    },
+    {
+      "id": "C054",
+      "base": "assets/cards-v63/C054.webp",
+      "final": "assets/cards-v63/C054-final.webp",
+      "base_bytes": 41258,
+      "final_bytes": 58610,
+      "sha256": "889f4ba62f81d431298c75064d731bf1371169c1dce74fc98dd73b1d59f15d4d"
+    },
+    {
+      "id": "C055",
+      "base": "assets/cards-v63/C055.webp",
+      "final": "assets/cards-v63/C055-final.webp",
+      "base_bytes": 43252,
+      "final_bytes": 61912,
+      "sha256": "a97f839b6ea232cf4418e58012b07b716789dca1601adf15eeef3dee9ac19f93"
+    },
+    {
+      "id": "C056",
+      "base": "assets/cards-v63/C056.webp",
+      "final": "assets/cards-v63/C056-final.webp",
+      "base_bytes": 39724,
+      "final_bytes": 56482,
+      "sha256": "69e589753203fbea9113e5a42776fcecff54f2d26533f8e3bff572b88d2ef601"
+    },
+    {
+      "id": "C057",
+      "base": "assets/cards-v63/C057.webp",
+      "final": "assets/cards-v63/C057-final.webp",
+      "base_bytes": 48492,
+      "final_bytes": 69578,
+      "sha256": "8ba4400efd22b01e4e270848817495a94fceb0d74e7d61adc1aadb712b68878b"
+    },
+    {
+      "id": "C058",
+      "base": "assets/cards-v63/C058.webp",
+      "final": "assets/cards-v63/C058-final.webp",
+      "base_bytes": 39356,
+      "final_bytes": 57826,
+      "sha256": "8cbca44a65df39cd172a8f5a629b1be812b4e4a475b58985b40800c87e0e9c66"
+    },
+    {
+      "id": "C059",
+      "base": "assets/cards-v63/C059.webp",
+      "final": "assets/cards-v63/C059-final.webp",
+      "base_bytes": 33952,
+      "final_bytes": 49776,
+      "sha256": "5553c97820e22f5db3d751893752850e3af39d30c8a22f79d0c27ed7c951f73e"
+    },
+    {
+      "id": "C060",
+      "base": "assets/cards-v63/C060.webp",
+      "final": "assets/cards-v63/C060-final.webp",
+      "base_bytes": 43118,
+      "final_bytes": 62560,
+      "sha256": "f1b55b4946e93b0f1f44f835f91a1e4d4d65dfe274fcfd35b5238033c97fec5e"
+    },
+    {
+      "id": "C061",
+      "base": "assets/cards-v63/C061.webp",
+      "final": "assets/cards-v63/C061-final.webp",
+      "base_bytes": 43448,
+      "final_bytes": 62714,
+      "sha256": "ffcba9823c37cbce6e1bf204ce804109254bc11a39aed5abbe6786c9a0b6f702"
+    },
+    {
+      "id": "C062",
+      "base": "assets/cards-v63/C062.webp",
+      "final": "assets/cards-v63/C062-final.webp",
+      "base_bytes": 44274,
+      "final_bytes": 63620,
+      "sha256": "76e4f63eb175decb2683667ba5c42ed6cef94ee5bbaccfd3f68c3cae8f8c363d"
+    },
+    {
+      "id": "C063",
+      "base": "assets/cards-v63/C063.webp",
+      "final": "assets/cards-v63/C063-final.webp",
+      "base_bytes": 45062,
+      "final_bytes": 64600,
+      "sha256": "af7739c41eb5820b6a023ca1e4ae5a858595ac79b52a95d13cf10c3b9b25df80"
+    },
+    {
+      "id": "C064",
+      "base": "assets/cards-v63/C064.webp",
+      "final": "assets/cards-v63/C064-final.webp",
+      "base_bytes": 46586,
+      "final_bytes": 68088,
+      "sha256": "b37ccacc575e28ede1a3471835b347a8c8656037b0e4e59937185bc1b45d9fdf"
+    },
+    {
+      "id": "C065",
+      "base": "assets/cards-v63/C065.webp",
+      "final": "assets/cards-v63/C065-final.webp",
+      "base_bytes": 45108,
+      "final_bytes": 65436,
+      "sha256": "3fe8f18c97da2993ecabbdb283ff670a28f475d1a9c9636ba863d1ee2338197f"
+    },
+    {
+      "id": "C066",
+      "base": "assets/cards-v63/C066.webp",
+      "final": "assets/cards-v63/C066-final.webp",
+      "base_bytes": 44764,
+      "final_bytes": 63646,
+      "sha256": "321283195f7ac3bd5d8556c32428f2148b19d8f8add4ec0ff8226d2803aa876e"
+    },
+    {
+      "id": "C067",
+      "base": "assets/cards-v63/C067.webp",
+      "final": "assets/cards-v63/C067-final.webp",
+      "base_bytes": 54078,
+      "final_bytes": 75764,
+      "sha256": "a76586f4f7f9a73f6b42f3186ed7f6d77d0ed8f33e383f4ac0a41c6f94ed25e9"
+    },
+    {
+      "id": "C068",
+      "base": "assets/cards-v63/C068.webp",
+      "final": "assets/cards-v63/C068-final.webp",
+      "base_bytes": 34934,
+      "final_bytes": 52570,
+      "sha256": "b840c29f8e76c58f6cd83288ef099465757dbdf2c38e64d7e5391890ca4c7073"
+    },
+    {
+      "id": "C069",
+      "base": "assets/cards-v63/C069.webp",
+      "final": "assets/cards-v63/C069-final.webp",
+      "base_bytes": 42548,
+      "final_bytes": 62500,
+      "sha256": "ef40b6c1490c35d8cdca5aa1e24768cb58290d0febe135d692228650f977f4d0"
+    },
+    {
+      "id": "C070",
+      "base": "assets/cards-v63/C070.webp",
+      "final": "assets/cards-v63/C070-final.webp",
+      "base_bytes": 31704,
+      "final_bytes": 46540,
+      "sha256": "a215f971130074c2e839f7dbcacce69d19d80e3dad1dbc2902df6bd595bfe0d0"
+    },
+    {
+      "id": "C071",
+      "base": "assets/cards-v63/C071.webp",
+      "final": "assets/cards-v63/C071-final.webp",
+      "base_bytes": 56316,
+      "final_bytes": 79048,
+      "sha256": "4e80f5f0c2e72573e9a50880ff6298d217cac75c95f0f2eadf558d18e2a4e8a2"
+    },
+    {
+      "id": "C072",
+      "base": "assets/cards-v63/C072.webp",
+      "final": "assets/cards-v63/C072-final.webp",
+      "base_bytes": 31632,
+      "final_bytes": 48390,
+      "sha256": "5f77177e35f38b3831b85c4d5547fa58253f5a9559fc0fef3713269a7a698f5d"
+    },
+    {
+      "id": "C073",
+      "base": "assets/cards-v63/C073.webp",
+      "final": "assets/cards-v63/C073-final.webp",
+      "base_bytes": 36744,
+      "final_bytes": 54330,
+      "sha256": "b1e074bb45465989f6e7f94e4b42be534726aeec6ec07d2e148b159c8b55f161"
+    },
+    {
+      "id": "C074",
+      "base": "assets/cards-v63/C074.webp",
+      "final": "assets/cards-v63/C074-final.webp",
+      "base_bytes": 49560,
+      "final_bytes": 72728,
+      "sha256": "4521cd79a452fa86602dc6603eca04638b150bad8d7b3d83a69c539f93b117dd"
+    },
+    {
+      "id": "C075",
+      "base": "assets/cards-v63/C075.webp",
+      "final": "assets/cards-v63/C075-final.webp",
+      "base_bytes": 57138,
+      "final_bytes": 81138,
+      "sha256": "4e73d1c0778a183341371d532491064f49216e998599e1a3d1eb18f562defe0c"
+    },
+    {
+      "id": "C076",
+      "base": "assets/cards-v63/C076.webp",
+      "final": "assets/cards-v63/C076-final.webp",
+      "base_bytes": 61486,
+      "final_bytes": 84690,
+      "sha256": "c8dc0605694a75cb1437e4ea4773e22c01906f1a27b42e5d5cf96c6c38a2a4d6"
+    },
+    {
+      "id": "C077",
+      "base": "assets/cards-v63/C077.webp",
+      "final": "assets/cards-v63/C077-final.webp",
+      "base_bytes": 57910,
+      "final_bytes": 81750,
+      "sha256": "9815f07ac81317a0d342040b1a73e7e2e696290cb130f251686d252d8d815b87"
+    },
+    {
+      "id": "C078",
+      "base": "assets/cards-v63/C078.webp",
+      "final": "assets/cards-v63/C078-final.webp",
+      "base_bytes": 64482,
+      "final_bytes": 89702,
+      "sha256": "b876ae27c6d7e0d41015fc76db7721b80a44ab4fc5498c8df1c84c0ccc0d72e2"
+    },
+    {
+      "id": "C079",
+      "base": "assets/cards-v63/C079.webp",
+      "final": "assets/cards-v63/C079-final.webp",
+      "base_bytes": 52744,
+      "final_bytes": 76306,
+      "sha256": "07a8d9576fdcc7f9379ecaff6d8fc9584fe1c858eddf29f161b69e0da3eded8e"
+    },
+    {
+      "id": "C080",
+      "base": "assets/cards-v63/C080.webp",
+      "final": "assets/cards-v63/C080-final.webp",
+      "base_bytes": 59688,
+      "final_bytes": 83206,
+      "sha256": "a965940b61815a6d861891b8b054e331e44ca44aa95dd93ec2e4c4837cc1ef92"
+    },
+    {
+      "id": "C081",
+      "base": "assets/cards-v63/C081.webp",
+      "final": "assets/cards-v63/C081-final.webp",
+      "base_bytes": 38104,
+      "final_bytes": 55118,
+      "sha256": "ac0c297c3d61cd120b775445b486f4582643c352bf6237a3ca04647c10075340"
+    },
+    {
+      "id": "C082",
+      "base": "assets/cards-v63/C082.webp",
+      "final": "assets/cards-v63/C082-final.webp",
+      "base_bytes": 45160,
+      "final_bytes": 64012,
+      "sha256": "cb90c43a490991178f9c678678e9e2aa1647421433a68edb842bd401e43b3e80"
+    },
+    {
+      "id": "C083",
+      "base": "assets/cards-v63/C083.webp",
+      "final": "assets/cards-v63/C083-final.webp",
+      "base_bytes": 31844,
+      "final_bytes": 47608,
+      "sha256": "8c62f33e6f7a0b680b6b3735aef6193321cb193cc3b4149a245735a73cc3e55d"
+    },
+    {
+      "id": "C084",
+      "base": "assets/cards-v63/C084.webp",
+      "final": "assets/cards-v63/C084-final.webp",
+      "base_bytes": 26838,
+      "final_bytes": 38786,
+      "sha256": "d117b84b4b1b117ccf8ce1e72d6938209e2567d803e5587540589c8a5dd85a2a"
+    },
+    {
+      "id": "C085",
+      "base": "assets/cards-v63/C085.webp",
+      "final": "assets/cards-v63/C085-final.webp",
+      "base_bytes": 43850,
+      "final_bytes": 62572,
+      "sha256": "09ac7b46c362ca7ea5fd0f7da15a52ac02f4bf171e370d0a2666b1352321482c"
+    },
+    {
+      "id": "C086",
+      "base": "assets/cards-v63/C086.webp",
+      "final": "assets/cards-v63/C086-final.webp",
+      "base_bytes": 48634,
+      "final_bytes": 69920,
+      "sha256": "7b4ca704c17955bc0a8fdcb5d0be9ab232b07b289597b1428b3355a37643ee11"
+    },
+    {
+      "id": "C087",
+      "base": "assets/cards-v63/C087.webp",
+      "final": "assets/cards-v63/C087-final.webp",
+      "base_bytes": 31390,
+      "final_bytes": 46442,
+      "sha256": "1645689d658ebde3d85cc5ab59e2c368506501420a146945ca71aa6fa78d04aa"
+    },
+    {
+      "id": "C088",
+      "base": "assets/cards-v63/C088.webp",
+      "final": "assets/cards-v63/C088-final.webp",
+      "base_bytes": 30972,
+      "final_bytes": 46584,
+      "sha256": "3140c0cc607000747b3a49727b218816fbbe8751a02f67fbda6ef9ead951852e"
+    },
+    {
+      "id": "C089",
+      "base": "assets/cards-v63/C089.webp",
+      "final": "assets/cards-v63/C089-final.webp",
+      "base_bytes": 32300,
+      "final_bytes": 46774,
+      "sha256": "fcdc5433cc04a22295eb23e47fad9254237a65e037bacf8c126943b299b79d53"
+    },
+    {
+      "id": "C090",
+      "base": "assets/cards-v63/C090.webp",
+      "final": "assets/cards-v63/C090-final.webp",
+      "base_bytes": 48376,
+      "final_bytes": 70186,
+      "sha256": "5f112810911cd56e015332a7e52eb5b30bb2915eae308e839eba61bdcae91b41"
+    },
+    {
+      "id": "C091",
+      "base": "assets/cards-v63/C091.webp",
+      "final": "assets/cards-v63/C091-final.webp",
+      "base_bytes": 35250,
+      "final_bytes": 52058,
+      "sha256": "cd908f529fdac051216507b4af7c1b40d278c32536a21ce9cc7273767258a7d0"
+    },
+    {
+      "id": "C092",
+      "base": "assets/cards-v63/C092.webp",
+      "final": "assets/cards-v63/C092-final.webp",
+      "base_bytes": 23600,
+      "final_bytes": 34188,
+      "sha256": "7d996d8e2b55114535084b783f7a071b6e5e27f02e52198f96b62068139388d1"
+    },
+    {
+      "id": "C093",
+      "base": "assets/cards-v63/C093.webp",
+      "final": "assets/cards-v63/C093-final.webp",
+      "base_bytes": 30286,
+      "final_bytes": 45116,
+      "sha256": "a9218acdb17703731fb22f11cfa1b3b85276b69372acf90da8b21755874967b3"
+    },
+    {
+      "id": "C094",
+      "base": "assets/cards-v63/C094.webp",
+      "final": "assets/cards-v63/C094-final.webp",
+      "base_bytes": 32994,
+      "final_bytes": 49638,
+      "sha256": "a6e9a6be9e5353a0947f52f5c711a6e221f6d74e03bcbaccec76e928c6c0dd05"
+    },
+    {
+      "id": "C095",
+      "base": "assets/cards-v63/C095.webp",
+      "final": "assets/cards-v63/C095-final.webp",
+      "base_bytes": 26312,
+      "final_bytes": 38588,
+      "sha256": "57feb065fd581d892b2c9e60d0e8bd0eca1371b4a9d894c1340d0a3296e8458e"
+    },
+    {
+      "id": "C096",
+      "base": "assets/cards-v63/C096.webp",
+      "final": "assets/cards-v63/C096-final.webp",
+      "base_bytes": 37066,
+      "final_bytes": 55146,
+      "sha256": "c93ef597454b4786b2a20c7477eb882a2ce896e210d8f9205823026fd2ae5ed2"
+    },
+    {
+      "id": "C097",
+      "base": "assets/cards-v63/C097.webp",
+      "final": "assets/cards-v63/C097-final.webp",
+      "base_bytes": 38648,
+      "final_bytes": 57294,
+      "sha256": "5d19ed63758c869ecf2b3673897dec1c1493392d6598c7dbbca1b6189c652ed6"
+    },
+    {
+      "id": "C098",
+      "base": "assets/cards-v63/C098.webp",
+      "final": "assets/cards-v63/C098-final.webp",
+      "base_bytes": 55644,
+      "final_bytes": 79396,
+      "sha256": "74dbf617a0731873366496a7789c490caaf0fb737c74a80938ce8d01f928b6f4"
+    },
+    {
+      "id": "C099",
+      "base": "assets/cards-v63/C099.webp",
+      "final": "assets/cards-v63/C099-final.webp",
+      "base_bytes": 32762,
+      "final_bytes": 49594,
+      "sha256": "8a69e36e6775b622c797e19a0e2bdd43fe9d0a3d77152eb75cddffd6143bf39f"
+    },
+    {
+      "id": "C100",
+      "base": "assets/cards-v63/C100.webp",
+      "final": "assets/cards-v63/C100-final.webp",
+      "base_bytes": 42794,
+      "final_bytes": 61104,
+      "sha256": "2bf7a0f21dc851bfd533dfa80d86c65768c9bb2c2fe25ebe846828fa562f7b11"
+    },
+    {
+      "id": "C101",
+      "base": "assets/cards-v63/C101.webp",
+      "final": "assets/cards-v63/C101-final.webp",
+      "base_bytes": 28920,
+      "final_bytes": 44150,
+      "sha256": "2ce623b2d0778d87bb37a618fee33ee3909de865e0340708287eb2f5abd390ed"
+    },
+    {
+      "id": "C102",
+      "base": "assets/cards-v63/C102.webp",
+      "final": "assets/cards-v63/C102-final.webp",
+      "base_bytes": 45788,
+      "final_bytes": 67020,
+      "sha256": "7beec71f02b2389a80505e2fe5bc1af4ff7a05ea2f574188c44d5769fa02c422"
+    },
+    {
+      "id": "C103",
+      "base": "assets/cards-v63/C103.webp",
+      "final": "assets/cards-v63/C103-final.webp",
+      "base_bytes": 26858,
+      "final_bytes": 40224,
+      "sha256": "4a20e66bdd311401b606ca4e2bc9f05d6bcce9fbf839f7d9204b641387ecacef"
+    },
+    {
+      "id": "C104",
+      "base": "assets/cards-v63/C104.webp",
+      "final": "assets/cards-v63/C104-final.webp",
+      "base_bytes": 39676,
+      "final_bytes": 57778,
+      "sha256": "7415977be87e8d93dd422cfe0eca98c8778e0b777bd83dc7d8abf96049daa7b6"
+    },
+    {
+      "id": "C105",
+      "base": "assets/cards-v63/C105.webp",
+      "final": "assets/cards-v63/C105-final.webp",
+      "base_bytes": 27728,
+      "final_bytes": 41942,
+      "sha256": "905357d6d2a2e9b211b111ce8247dacca0e24d0775912b41d13483c7b168a386"
+    },
+    {
+      "id": "C106",
+      "base": "assets/cards-v63/C106.webp",
+      "final": "assets/cards-v63/C106-final.webp",
+      "base_bytes": 47080,
+      "final_bytes": 69304,
+      "sha256": "0422198aab57e88e32da5661872b85f942f396493e507e202dec4990d0c839ac"
+    },
+    {
+      "id": "C107",
+      "base": "assets/cards-v63/C107.webp",
+      "final": "assets/cards-v63/C107-final.webp",
+      "base_bytes": 39110,
+      "final_bytes": 55998,
+      "sha256": "c4f10f66922dabf17c37c32a9579fa75c582034231df78a3175354aae4ee1279"
+    },
+    {
+      "id": "C108",
+      "base": "assets/cards-v63/C108.webp",
+      "final": "assets/cards-v63/C108-final.webp",
+      "base_bytes": 50378,
+      "final_bytes": 70692,
+      "sha256": "8e4dbe9a428b2a16ef8f0d4a2d011d822dedf06d02eb296cdb97d88885ebd352"
+    },
+    {
+      "id": "C109",
+      "base": "assets/cards-v63/C109.webp",
+      "final": "assets/cards-v63/C109-final.webp",
+      "base_bytes": 30434,
+      "final_bytes": 45650,
+      "sha256": "ba3b9afd2c522611f163b3e8b859e513782b2175bcf4c2c15ee75df5313d5a52"
+    },
+    {
+      "id": "C110",
+      "base": "assets/cards-v63/C110.webp",
+      "final": "assets/cards-v63/C110-final.webp",
+      "base_bytes": 36336,
+      "final_bytes": 54780,
+      "sha256": "f9ac9f876ccb6e51a05d65418f62494f0297467b52500956ebf6f379cccc79f8"
+    },
+    {
+      "id": "C111",
+      "base": "assets/cards-v63/C111.webp",
+      "final": "assets/cards-v63/C111-final.webp",
+      "base_bytes": 38676,
+      "final_bytes": 55030,
+      "sha256": "6a3d065fa9a5cd1613140f53eb4839347bdf192e7aeb9c187ed1eb63c3d973aa"
+    },
+    {
+      "id": "C112",
+      "base": "assets/cards-v63/C112.webp",
+      "final": "assets/cards-v63/C112-final.webp",
+      "base_bytes": 39370,
+      "final_bytes": 58182,
+      "sha256": "5e71259f509ad1e8d36ef17f94c2218c955564133a1e5f836e543928cb74cce8"
+    },
+    {
+      "id": "C113",
+      "base": "assets/cards-v63/C113.webp",
+      "final": "assets/cards-v63/C113-final.webp",
+      "base_bytes": 33134,
+      "final_bytes": 50950,
+      "sha256": "dffee05316c2c581180f1d2a908a833d73c0a1aae211210bd08a933b413470eb"
+    },
+    {
+      "id": "C114",
+      "base": "assets/cards-v63/C114.webp",
+      "final": "assets/cards-v63/C114-final.webp",
+      "base_bytes": 42878,
+      "final_bytes": 61882,
+      "sha256": "62766a5d01d81f322c326b15b070184dcad62a87c851555c80be770e51cde999"
+    },
+    {
+      "id": "C115",
+      "base": "assets/cards-v63/C115.webp",
+      "final": "assets/cards-v63/C115-final.webp",
+      "base_bytes": 47616,
+      "final_bytes": 69056,
+      "sha256": "826cc155693a7a3e3605153bf45f68a5400ca1023a76fd07e7cb245ad1522a48"
+    },
+    {
+      "id": "C116",
+      "base": "assets/cards-v63/C116.webp",
+      "final": "assets/cards-v63/C116-final.webp",
+      "base_bytes": 48486,
+      "final_bytes": 70258,
+      "sha256": "befec5a26d012a8865414209931ac1d2f141126b5914be0f9c9f69f6585adbe7"
+    },
+    {
+      "id": "C117",
+      "base": "assets/cards-v63/C117.webp",
+      "final": "assets/cards-v63/C117-final.webp",
+      "base_bytes": 28598,
+      "final_bytes": 44102,
+      "sha256": "55f14860fa24412545184ac4545c506c0b2b95f26bcd57d6528721403329021b"
+    },
+    {
+      "id": "C118",
+      "base": "assets/cards-v63/C118.webp",
+      "final": "assets/cards-v63/C118-final.webp",
+      "base_bytes": 29662,
+      "final_bytes": 44594,
+      "sha256": "d30eb222c817fef0be58af9a8f49a41a7b296548f7620ddc436254095d90f43c"
+    },
+    {
+      "id": "C119",
+      "base": "assets/cards-v63/C119.webp",
+      "final": "assets/cards-v63/C119-final.webp",
+      "base_bytes": 42708,
+      "final_bytes": 61664,
+      "sha256": "ef61264283aa4d6747baa644706c286da47d9476a2c94536d43bc932d18d4c7c"
+    },
+    {
+      "id": "C120",
+      "base": "assets/cards-v63/C120.webp",
+      "final": "assets/cards-v63/C120-final.webp",
+      "base_bytes": 38100,
+      "final_bytes": 56006,
+      "sha256": "3f5afa881550413e024b4b6e093bf05e0ea234695ff5db23a5d6c3ac12477a92"
+    },
+    {
+      "id": "C121",
+      "base": "assets/cards-v63/C121.webp",
+      "final": "assets/cards-v63/C121-final.webp",
+      "base_bytes": 35398,
+      "final_bytes": 52780,
+      "sha256": "a70affa16c3669f89e76eef4fc49e6907c36f890a3b781a2cea4202cf4268ad8"
+    },
+    {
+      "id": "C122",
+      "base": "assets/cards-v63/C122.webp",
+      "final": "assets/cards-v63/C122-final.webp",
+      "base_bytes": 29504,
+      "final_bytes": 44144,
+      "sha256": "495a193ea1ee88619cc50450689c2ecf8a64ba96429b4fe3c5cd6db955013999"
+    },
+    {
+      "id": "C123",
+      "base": "assets/cards-v63/C123.webp",
+      "final": "assets/cards-v63/C123-final.webp",
+      "base_bytes": 32214,
+      "final_bytes": 49950,
+      "sha256": "1f4238d756cf23abfc8702d2938ce6ffbbc8b01373d14cad00fb30abf4771e77"
+    },
+    {
+      "id": "C124",
+      "base": "assets/cards-v63/C124.webp",
+      "final": "assets/cards-v63/C124-final.webp",
+      "base_bytes": 31812,
+      "final_bytes": 47668,
+      "sha256": "761c38ce21368683ea04f0247c5dcd355590b3ba30973b868f9044b42c58e1f0"
+    },
+    {
+      "id": "C125",
+      "base": "assets/cards-v63/C125.webp",
+      "final": "assets/cards-v63/C125-final.webp",
+      "base_bytes": 35034,
+      "final_bytes": 51654,
+      "sha256": "0e1d1083c4f2cc255a2031cebae7a23c9ca4bf0c8f478e6fb5625edb71431efd"
+    }
+  ]
+}
