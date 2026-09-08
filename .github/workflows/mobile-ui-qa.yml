@@ -1,0 +1,41 @@
+name: Mobile UI QA
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "index.html"
+      - "assets/**"
+      - "admin/**"
+      - "update-client.js"
+      - "tools/qa_mobile_ui.mjs"
+      - "package.json"
+      - ".github/workflows/mobile-ui-qa.yml"
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mobile-ui-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm install
+      - run: npx playwright install --with-deps chromium
+      - run: npm run qa:mobile
+      - name: Upload nine-screen QA artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mobile-ui-qa-screenshots
+          path: qa-screenshots/
+          if-no-files-found: error
+          retention-days: 30
