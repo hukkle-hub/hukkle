@@ -173,6 +173,15 @@ await page.locator('.home-action').click();
 await page.waitForTimeout(800);
 const journeyLinked = await page.locator('#journeyFrame').getAttribute('src');
 const journeyActive = await page.locator('.screen.active').getAttribute('data-screen');
+await page.evaluate(() => {
+  window.hyState.screen = 'journey';
+  window.hySave();
+  sessionStorage.setItem('hy-title-passed', '1');
+  document.querySelector('#journeyFrame').src = 'about:blank';
+});
+await page.reload({ waitUntil: 'domcontentloaded' });
+await page.waitForSelector('.screen[data-screen="home"].active');
+const startupRecovery = await page.locator('.screen.active').getAttribute('data-screen');
 const report = {
   ...result,
   layoutChecks,
@@ -180,6 +189,7 @@ const report = {
   routeFailures,
   journeyLinked,
   journeyActive,
+  startupRecovery,
   functionalChecks,
   screenGeometry,
   cinematicCount,
@@ -199,6 +209,7 @@ if (
   routeFailures.length !== 0 ||
   journeyActive !== 'journey' ||
   !journeyLinked?.includes('admin/dungeon-flow.html') ||
+  startupRecovery !== 'home' ||
   !Object.values(functionalChecks).every(Boolean) ||
   cinematicCount !== 0 ||
   errors.length !== 0

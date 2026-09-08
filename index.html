@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#090c0e">
-<meta name="hy-version" content="61.0.0">
+<meta name="hy-version" content="62.0.0">
 <link rel="icon" href="./icon.svg" type="image/svg+xml">
-<title>흥양기 v61 · 탐사와 카드 보완</title>
+<title>흥양기 v62 · 시작 화면 복구</title>
 
 <style>
 :root{--ink:#080b0d;--panel:rgba(9,12,14,.88);--panel2:rgba(16,20,23,.88);--line:rgba(239,218,176,.16);--gold:#ddb86f;--gold2:#ffe0a0;--text:#f5efe2;--muted:#aaa394;--red:#c65450;--blue:#6eb4d0;--jade:#66b29c;--ui:1;--safe-b:env(safe-area-inset-bottom,0px);--safe-t:env(safe-area-inset-top,0px)}
@@ -149,7 +149,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#050607}#game{positi
   <section class="screen active" data-screen="title" id="titleScreen">
     <img class="title-art" src="assets/title_screen_v41.png" alt="흥양기 타이틀 화면">
     <button class="title-hit title-prologue" id="titlePrologue" aria-label="프롤로그 보기"></button>
-    <button class="title-hit title-start" id="titleStart" aria-label="게임 시작" disabled></button>
+    <button class="title-hit title-start" id="titleStart" aria-label="게임 시작"></button>
     <button class="title-hit title-notice" id="titleNotice" aria-label="공지사항"></button>
     <button class="title-hit title-settings" id="titleSettings" aria-label="설정"></button>
     <button class="title-hit title-account" id="titleAccount" aria-label="계정"></button>
@@ -378,7 +378,7 @@ cardCineVideo.addEventListener('timeupdate',()=>{const d=cardCineVideo.duration|
 // codex action cinematic
 const codexCineLayer=document.getElementById('codexCinematic'),codexCineVideo=document.getElementById('codexCineVideo'),codexCinePhase=document.getElementById('codexCinePhase'),codexCineProgress=document.getElementById('codexCineProgress'),codexCineSkip=document.getElementById('codexCineSkip');let codexCineBusy=false,codexCineDone=null,codexCineMode='open';const codexCinePhases={open:[['아인이 가방에서 기록책을 꺼낸다.',0],['낡은 표지를 손끝으로 쓸어본다.',.28],['양손으로 기록책을 펼친다.',.57],['지금까지 모은 기록이 페이지 위에 나타난다.',.81]],close:[['마지막 문장을 기록한다.',0],['페이지를 조심스럽게 덮는다.',.32],['기록책을 가방 안쪽에 넣는다.',.62],['유자 키링이 흔들리고 아인이 다시 풍경을 본다.',.84]]};function finishCodexCine(){if(!codexCineBusy)return;codexCineBusy=false;codexCineVideo.pause();codexCineLayer.classList.remove('active');codexCineLayer.setAttribute('aria-hidden','true');codexCineProgress.style.width='0';const cb=codexCineDone;codexCineDone=null;if(cb)cb()}function playCodexCine(mode,onDone){if(codexCineBusy)return;codexCineBusy=true;codexCineMode=mode;codexCineDone=onDone;codexCineVideo.src=mode==='open'?'assets/codex_open_sequence.mp4':'assets/codex_close_sequence.mp4';codexCineVideo.muted=!state.sound;codexCineVideo.volume=.68;codexCineLayer.classList.add('active');codexCineLayer.setAttribute('aria-hidden','false');codexCinePhase.textContent=codexCinePhases[mode][0][0];codexCineVideo.currentTime=0;const p=codexCineVideo.play();if(p)p.catch(()=>{codexCineVideo.muted=true;codexCineVideo.play().catch(finishCodexCine)})}codexCineVideo.addEventListener('timeupdate',()=>{const d=codexCineVideo.duration||1,p=codexCineVideo.currentTime/d;codexCineProgress.style.width=(p*100)+'%';for(const [txt,at] of codexCinePhases[codexCineMode]||[])if(p>=at)codexCinePhase.textContent=txt});codexCineVideo.addEventListener('ended',finishCodexCine);codexCineVideo.addEventListener('error',finishCodexCine);codexCineSkip.onclick=finishCodexCine;
 
-function route(name,opts={}){if(!document.querySelector(`[data-screen="${name}"]`))return;screens.forEach(s=>s.classList.toggle('active',s.dataset.screen===name));state.screen=name;save();document.querySelectorAll('.nav').forEach(nav=>nav.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b.dataset.route===name)));if(name==='map')setTimeout(()=>map&&map.invalidateSize(),80)};
+function route(name,opts={}){const journeyFrame=document.getElementById('journeyFrame');if(name==='journey'&&(!journeyFrame||!journeyFrame.getAttribute('src')||journeyFrame.getAttribute('src')==='about:blank'))name='home';if(!document.querySelector(`[data-screen="${name}"]`))name='home';screens.forEach(s=>s.classList.toggle('active',s.dataset.screen===name));state.screen=name;save();document.querySelectorAll('.nav').forEach(nav=>nav.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b.dataset.route===name)));if(name==='map')setTimeout(()=>map&&map.invalidateSize(),80)};
 window.hyRoute=route;window.hyState=state;window.hySave=save;window.hyToast=toast;window.hySyncMoney=syncMoney;window.hyPlayMapCine=playCinematic;function renderNav(){document.querySelectorAll('.nav').forEach(nav=>{nav.innerHTML=navItems.map(([id,label,ico])=>`<button data-route="${id}"><span class="ico">${ico}</span>${label}</button>`).join('');nav.querySelectorAll('button').forEach(b=>b.onclick=()=>route(b.dataset.route))})}
 document.querySelectorAll('[data-route]').forEach(b=>b.onclick=()=>route(b.dataset.route));document.querySelectorAll('.home-hit').forEach(b=>b.onclick=()=>route(b.dataset.screen));renderNav();
 function syncMoney(){document.querySelectorAll('[data-gold]').forEach(x=>x.textContent=state.gold.toLocaleString());document.querySelectorAll('[data-gem]').forEach(x=>x.textContent=state.gem.toLocaleString())}
@@ -490,7 +490,7 @@ document.getElementById('codexSearch').addEventListener('input',e=>{codexSearch=
 
 // party v6 — combat formation, exploration companion, pet specialization and vessel preview
 const partyModes=[['formation','전투 신진','다섯 카드의 역할과 위치'],['explore','탐험 동행','지역 조사 특화 한 장'],['bond','반려·매개체','탐험 보조와 현신 통로']];
-const featuredCardArt={c075:'assets/generated-v61/haesin-danggol.png',c071:'assets/generated-v61/yeojaman-yongnyeo.png',c121:'assets/generated-v61/ogwan-daewang.png'};
+const featuredCardArt={c075:'assets/generated-v61/haesin-danggol.webp',c071:'assets/generated-v61/yeojaman-yongnyeo.webp',c121:'assets/generated-v61/ogwan-daewang.webp'};
 function uniqueCardSeal(c){const hue=({당:42,저승:208,물:190,수호:154,파훼:10,의례:278}[c.faction]??32)+(Number(c.id.slice(1))%17);const mark=[...c.name].slice(0,2).join('');const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 900"><defs><radialGradient id="g"><stop stop-color="hsl(${hue} 38% 28%)"/><stop offset="1" stop-color="#070a0c"/></radialGradient><pattern id="p" width="72" height="72" patternUnits="userSpaceOnUse" patternTransform="rotate(${Number(c.id.slice(1))%60})"><path d="M0 36h72M36 0v72" stroke="hsla(${hue} 65% 72%/.10)"/></pattern></defs><rect width="600" height="900" fill="url(#g)"/><rect width="600" height="900" fill="url(#p)"/><circle cx="300" cy="390" r="184" fill="none" stroke="hsl(${hue} 52% 67%)" stroke-width="4"/><circle cx="300" cy="390" r="145" fill="#090d10" stroke="hsla(${hue} 52% 70%/.55)"/><text x="300" y="420" text-anchor="middle" fill="hsl(${hue} 54% 76%)" font-size="104" font-family="serif">${mark}</text><path d="M170 650Q300 570 430 650Q300 760 170 650Z" fill="none" stroke="hsla(${hue} 55% 75%/.55)" stroke-width="5"/></svg>`;return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`}
 cards.forEach(c=>{if(featuredCardArt[c.id])c.img=featuredCardArt[c.id];else if(c.img==='assets/c075.jpg'||c.img==='assets/c075_base.webp')c.img=uniqueCardSeal(c)});
 const partyPresets={story:['c075','c071','c045','c121','c034'],explore:['c038','c071','c045','c018','c034'],ritual:['c075','c034','c121','c018','c071']};
@@ -531,7 +531,7 @@ renderMissions();
 window.hyCards=cards;
 window.hyRenderInv=renderInv;window.hyRenderCards=renderCards;window.hyRenderCodex=renderCodex;window.hyRenderParty=renderParty;window.hyRenderShop=renderShop;window.hyRenderMissions=renderMissions;
 
-route(state.screen||'home');
+route(['journey','title'].includes(state.screen)?'home':(state.screen||'home'));
 window.addEventListener('hashchange',()=>{const h=location.hash.slice(1);if(h)route(h)});
 })();
 </script>
@@ -621,10 +621,10 @@ function renderMail(){state.mailClaimed=state.mailClaimed||[];const mails=[['wel
 $('#titlePrologue').onclick=()=>openUtil('prologue');$('#titleNotice').onclick=()=>openUtil('notice');$('#titleSettings').onclick=()=>openUtil('settings');$('#titleAccount').onclick=()=>openUtil('account');$('#titleSupport').onclick=()=>openUtil('support');
 
 // ---------- honest loading: preload core local assets ----------
-const coreAssets=['assets/title_screen_v41.png','assets/hub_poster.png','assets/c075_base.webp','assets/c071.jpg','assets/c045.jpg','assets/c018.jpg','assets/map_open_sequence.mp4','assets/inventory_open_sequence.mp4'];
+const coreAssets=['assets/title_screen_v41.png','assets/hub_poster.png','assets/c075_base.webp','assets/c071.jpg','assets/c045.jpg','assets/c018.jpg'];
 let loadToken=0;
 async function preloadCore(){
- const token=++loadToken,bar=$('#titleLoadBar'),pct=$('#titleLoadPct'),txt=$('#titleLoadText'),start=$('#titleStart'),retry=$('#titleRetry');start.disabled=true;retry.classList.add('hidden');let done=0;
+ const token=++loadToken,bar=$('#titleLoadBar'),pct=$('#titleLoadPct'),txt=$('#titleLoadText'),start=$('#titleStart'),retry=$('#titleRetry');start.disabled=false;retry.classList.add('hidden');let done=0;
  const update=()=>{const p=Math.round(done/coreAssets.length*100);bar.style.width=p+'%';pct.textContent=p+'%';txt.textContent=p<28?'초기화 중...':p<72?'에셋 불러오는 중...':p<100?'UI 준비 중...':'준비 완료'};
  update();
  const watchdog=setTimeout(()=>{if(token!==loadToken||done>=coreAssets.length)return;retry.classList.remove('hidden');txt.textContent='로딩이 지연되고 있습니다.'},7000);
@@ -642,7 +642,7 @@ let activeJourneyRegion=null,journeyWatchdog=null;
 function journeyCompanionName(){const c=(window.hyCards||[]).find(x=>x.id===state.companionCard);return c?.name||'동행 카드'}
 function sendJourneyContext(target=$('#journeyFrame')?.contentWindow){if(!target)return;const origin=location.origin==='null'?'*':location.origin;target.postMessage({type:'hy-journey-context',itemQty:{...(state.itemQty||{})},companionCard:state.companionCard||null,companionName:journeyCompanionName(),motion:state.motion!==false},origin)}
 function setJourneyLoading(show,text='이동 경로와 조사 기록을 불러옵니다.'){const l=$('#journeyLoader');if(!l)return;l.classList.toggle('hidden',!show);$('#journeyLoaderText').textContent=text;$('#journeyRetry').classList.add('hidden');clearTimeout(journeyWatchdog);if(show)journeyWatchdog=setTimeout(()=>{$('#journeyLoaderText').textContent='탐험 화면 연결이 지연되고 있습니다.';$('#journeyRetry').classList.remove('hidden')},6500)}
-function startJourney(region){const id=regionToFlow[region]||regionToFlow.yeojaman;activeJourneyRegion=id;state.selectedRegion=flowToRegion[id]||region;state.journeyVisits=state.journeyVisits||{};state.journeyVisits[id]=Number(state.journeyVisits[id]||0)+1;save();setJourneyLoading(true);const f=$('#journeyFrame');f.src=`./admin/dungeon-flow.html?embedded=1&region=${encodeURIComponent(id)}&v=61.0&t=${Date.now()}`;window.hyRoute('journey',{direct:true})}
+function startJourney(region){const id=regionToFlow[region]||regionToFlow.yeojaman;activeJourneyRegion=id;state.selectedRegion=flowToRegion[id]||region;state.journeyVisits=state.journeyVisits||{};state.journeyVisits[id]=Number(state.journeyVisits[id]||0)+1;save();setJourneyLoading(true);const f=$('#journeyFrame');f.src=`./admin/dungeon-flow.html?embedded=1&region=${encodeURIComponent(id)}&v=62.0&t=${Date.now()}`;window.hyRoute('journey',{direct:true})}
 $('#journeyRetry').onclick=()=>activeJourneyRegion&&startJourney(flowToRegion[activeJourneyRegion]||activeJourneyRegion);
 $('#journeyBack').onclick=()=>{clearTimeout(journeyWatchdog);try{$('#journeyFrame').src='about:blank'}catch{}setJourneyLoading(false);window.hyRoute('map',{direct:true})};
 window.addEventListener('message',e=>{const frame=$('#journeyFrame');if(!frame||e.source!==frame.contentWindow)return;const d=e.data||{};
@@ -687,7 +687,7 @@ addEventListener('orientationchange',fitGameViewport,{passive:true});
 
 // initialize scale/settings and title.
 document.documentElement.style.setProperty('--ui',(Number(state.uiScale||100))/100);document.documentElement.dataset.battery=state.batterySaver?'1':'0';
-if(sessionStorage.getItem('hy-title-passed'))window.hyRoute(state.screen==='title'?'home':(state.screen||'home'),{direct:true});else{state.screen='title';save();window.hyRoute('title',{direct:true});preloadCore()}
+if(sessionStorage.getItem('hy-title-passed'))window.hyRoute(['title','journey'].includes(state.screen)?'home':(state.screen||'home'),{direct:true});else{state.screen='title';save();window.hyRoute('title',{direct:true});preloadCore()}
 })();
 </script>
 
