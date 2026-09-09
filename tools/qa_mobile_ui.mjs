@@ -210,6 +210,54 @@ const recordTaxonomyChecks = await page.evaluate(() => ({
   navLabel: document.querySelector('.screen.active .nav button[data-route="codex"]')?.textContent.trim() === '기록',
   homeLabel: document.querySelector('.home-hit[data-screen="codex"]')?.getAttribute('aria-label') === '기록',
 }));
+const gradeCodexChecks = await page.evaluate(() => {
+  const expected = { 잡귀:32, 하위신:26, 신령:24, 상위신:23, 대신:20 };
+  const counts = Object.fromEntries(Object.keys(expected).map(grade => [grade, window.hyCards.filter(card => card.grade === grade).length]));
+  const scheduleIds = Object.values(window.hyDaesinRaidSchedule).flatMap(slot => slot.ids);
+  const craftIds = ['c088','c077','c066','c011','c098'];
+  const timeSamples = {
+    yeoja: window.hyDaesinRaidStatus('yeoja', new Date('2030-01-02T22:15:00Z')).open,
+    nokdong: window.hyDaesinRaidStatus('nokdong', new Date('2030-01-03T03:15:00Z')).open,
+    palyoung: window.hyDaesinRaidStatus('palyoung', new Date('2030-01-03T09:15:00Z')).open,
+    geogeum: window.hyDaesinRaidStatus('geogeum', new Date('2030-01-03T12:15:00Z')).open,
+    naro: window.hyDaesinRaidStatus('naro', new Date('2030-01-03T14:15:00Z')).open,
+  };
+  document.querySelector('#codexCats [data-cat="잡귀"]')?.click();
+  return {
+    counts,
+    exactDistribution: Object.keys(expected).every(grade => counts[grade] === expected[grade]),
+    allNamed: window.hyCards.length === 125 && window.hyCards.every(card => typeof card.name === 'string' && card.name.trim()),
+    uniqueNames: new Set(window.hyCards.map(card => card.name)).size === 125,
+    gradeTabs: Object.keys(expected).every(grade => !!document.querySelector(`#codexCats [data-cat="${grade}"]`)),
+    scheduledDaesin: scheduleIds.length === 15 && new Set(scheduleIds).size === 15 && scheduleIds.every(id => window.hyCards.find(card => card.id === id)?.grade === '대신'),
+    craftDaesin: craftIds.every(id => window.hyCards.find(card => card.id === id)?.grade === '대신') && craftIds.every(id => !scheduleIds.includes(id)),
+    normalPoolsExcludeDaesin: ['yeoja','nokdong','palyoung','geogeum','naro'].every(region => window.hyJourneyCardPool(region).every(card => card.grade !== '대신')),
+    scheduledTimesOpen: Object.values(timeSamples).every(Boolean),
+  };
+});
+await page.waitForTimeout(220);
+const firstLockedCard = page.locator('#entryList .entry.card-record.locked').first();
+await firstLockedCard.click();
+await page.waitForTimeout(650);
+const silhouetteCodexChecks = await page.evaluate(() => {
+  const selected = document.querySelector('#entryList .entry.card-record.locked.active');
+  const img = document.querySelector('.codex-locked-preview img');
+  const page = document.querySelector('#codexPage');
+  const card = window.hyCards.find(item => `card-${item.id}` === selected?.dataset.id);
+  const pageText = page?.innerText || '';
+  const imageBox = img?.getBoundingClientRect();
+  const pageBox = page?.getBoundingClientRect();
+  return {
+    lockedEntriesVisible: document.querySelectorAll('#entryList .entry.card-record.locked').length > 0,
+    silhouetteOnly: !!img && getComputedStyle(img).filter.includes('brightness(0)'),
+    imageLoaded: !!img?.complete && img.naturalWidth > 0,
+    imageVisible: !!imageBox && !!pageBox && imageBox.width >= 100 && imageBox.height >= 130 && imageBox.left >= pageBox.left && imageBox.right <= pageBox.right && imageBox.top >= pageBox.top && imageBox.bottom <= pageBox.bottom,
+    hiddenName: !!card && !pageText.includes(card.name),
+    hiddenSkill: !!card && !pageText.includes(card.skill),
+    mysteryLabel: pageText.includes('미확인 잡귀'),
+  };
+});
+await page.screenshot({ path: join(root, 'qa-screenshots', '10b-codex-silhouette.png') });
 await page.evaluate(() => window.hyRoute('shop', { direct: true }));
 const readabilityChecks = await page.evaluate(() => {
   const px = selector => parseFloat(getComputedStyle(document.querySelector(selector)).fontSize);
@@ -291,7 +339,8 @@ await page.locator('.home-action').click();
 await page.waitForTimeout(800);
 const journeyLinked = await page.locator('#journeyFrame').getAttribute('src');
 const journeyActive = await page.locator('.screen.active').getAttribute('data-screen');
-await page.waitForFunction(() => document.querySelector('#journeyFrame')?.contentDocument?.documentElement?.dataset.partyCount === '5');
+try { await page.waitForFunction(() => document.querySelector('#journeyFrame')?.contentDocument?.documentElement?.dataset.partyCount === '5'); }
+catch (error) { console.log('Journey context diagnostic:', await page.evaluate(() => { const f=document.querySelector('#journeyFrame'); return {src:f?.src,screen:document.querySelector('.screen.active')?.dataset.screen,frameReady:f?.contentDocument?.readyState,frameData:{...(f?.contentDocument?.documentElement?.dataset||{})},frameText:f?.contentDocument?.body?.innerText?.slice(0,300)}; }), errors); throw error; }
 const journeyContextChecks = await page.evaluate(() => { const data=document.querySelector('#journeyFrame')?.contentDocument?.documentElement?.dataset||{}; return { partyCount:data.partyCount, companionManifested:data.companionManifested }; });
 await page.evaluate(() => {
   window.hyState.screen = 'journey';
@@ -313,6 +362,8 @@ const report = {
   minimumFontChecks,
   cardPresentationChecks,
   recordTaxonomyChecks,
+  gradeCodexChecks,
+  silhouetteCodexChecks,
   utilityChecksPassed: utilityChecks.every(Boolean),
   utilityFontChecksPassed: utilityFontChecks.every(Boolean),
   routeFailures,
@@ -346,6 +397,8 @@ if (
   !cardPresentationChecks.singleColumnCatalog ||
   !cardPresentationChecks.controlsClear ||
   !Object.values(recordTaxonomyChecks).every(Boolean) ||
+  !Object.entries(gradeCodexChecks).filter(([key]) => key !== 'counts').every(([,value]) => value === true) ||
+  !Object.values(silhouetteCodexChecks).every(Boolean) ||
   !utilityChecks.every(Boolean) ||
   !utilityFontChecks.every(Boolean) ||
   routeFailures.length !== 0 ||
