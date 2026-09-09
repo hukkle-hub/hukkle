@@ -196,14 +196,34 @@ const cardPresentationChecks = await page.evaluate(() => {
   const nameplate = document.querySelector('.screen.active .card-nameplate').getBoundingClientRect();
   const evolution = document.querySelector('.screen.active .evolution-strip-v4').getBoundingClientRect();
   const units = [...document.querySelectorAll('.screen.active .card-unit-v4')].slice(0, 2).map(el => el.getBoundingClientRect());
+  const filterSheet = document.querySelector('.screen.active #cardFilters');
+  const filterToggle = document.querySelector('.screen.active #cardFilterToggle');
   return {
     heroWidth: Math.round(hero.width),
     heroHeight: Math.round(hero.height),
-    galleryScale: hero.width >= 225 && hero.height >= 340,
-    singleColumnCatalog: units.length < 2 || Math.abs(units[0].left - units[1].left) < 2,
+    galleryScale: hero.width >= 285 && hero.height >= 370,
+    twoColumnCatalog: units.length < 2 || (Math.abs(units[0].top - units[1].top) < 2 && units[1].left > units[0].left),
+    filterCollapsed: !filterSheet.classList.contains('open') && filterToggle.getAttribute('aria-expanded') === 'false',
     controlsClear: nameplate.bottom + 4 <= evolution.top,
   };
 });
+const catalogTopBeforeFilter = await page.locator('#cardGrid').evaluate(el => Math.round(el.getBoundingClientRect().top));
+await page.locator('#cardFilterToggle').click();
+const cardFilterOpenChecks = await page.evaluate((topBefore) => ({
+  opened: document.querySelector('#cardFilters')?.classList.contains('open') === true,
+  expanded: document.querySelector('#cardFilterToggle')?.getAttribute('aria-expanded') === 'true',
+  catalogTopBefore: topBefore,
+  catalogTopAfter: Math.round(document.querySelector('#cardGrid').getBoundingClientRect().top),
+  catalogDidNotMove: Math.abs(document.querySelector('#cardGrid').getBoundingClientRect().top - topBefore) < 6,
+}), catalogTopBeforeFilter);
+await page.locator('#cardFilters [data-grade="잡귀"]').click();
+const gradeFilterApplied = await page.evaluate(() => window.hyState.cardGradeFilter === '잡귀' && document.querySelector('#cardFilterSummary')?.textContent.includes('잡귀'));
+await page.locator('#cardFilters [data-grade="전체"]').click();
+await page.locator('#cardFilters [data-trait="물"]').click();
+const traitFilterApplied = await page.evaluate(() => window.hyState.cardTraitFilter === '물' && document.querySelector('#cardFilterSummary')?.textContent.includes('물'));
+await page.locator('#cardFilters [data-trait="전체"]').click();
+await page.locator('#cardFilterClose').click();
+const cardFilterChecks = {...cardFilterOpenChecks, gradeFilterApplied, traitFilterApplied, closed:await page.locator('#cardFilters').evaluate(el => !el.classList.contains('open'))};
 await page.evaluate(() => window.hyRoute('codex', { direct: true }));
 const recordTaxonomyChecks = await page.evaluate(() => ({
   screenTitle: document.querySelector('.screen.active .screen-title h1')?.textContent.trim() === '기록',
@@ -364,6 +384,7 @@ const report = {
   minimumFontsPassed: minimumFontChecks.every(x => x.offenders.length === 0),
   minimumFontChecks,
   cardPresentationChecks,
+  cardFilterChecks,
   recordTaxonomyChecks,
   gradeCodexChecks,
   silhouetteCodexChecks,
@@ -397,7 +418,9 @@ if (
   !internalHeaderChecks.every(Boolean) ||
   !minimumFontChecks.every(x => x.offenders.length === 0) ||
   !cardPresentationChecks.galleryScale ||
-  !cardPresentationChecks.singleColumnCatalog ||
+  !cardPresentationChecks.twoColumnCatalog ||
+  !cardPresentationChecks.filterCollapsed ||
+  !Object.values(cardFilterChecks).every(Boolean) ||
   !cardPresentationChecks.controlsClear ||
   !Object.values(recordTaxonomyChecks).every(Boolean) ||
   !Object.entries(gradeCodexChecks).filter(([key]) => key !== 'counts').every(([,value]) => value === true) ||

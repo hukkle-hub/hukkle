@@ -29,7 +29,7 @@ for (const region of regions) {
   const errors = [];
   page.on('pageerror', error => errors.push(String(error)));
   page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
-  await page.goto(`http://127.0.0.1:4175/admin/dungeon-flow.html?region=${region}&v=76.0.0`, { waitUntil:'networkidle' });
+  await page.goto(`http://127.0.0.1:4175/admin/dungeon-flow.html?region=${region}&v=77.0.0`, { waitUntil:'networkidle' });
   await page.evaluate((id) => {
     localStorage.setItem('hy-dungeon-flow-v660', JSON.stringify({
       [id]: {
@@ -60,7 +60,7 @@ for (const region of regions) {
   await page.locator('#confirmBoss').click();
   await page.waitForSelector('#battleShell.active');
   await page.screenshot({ path:join(out, `${region}-battle-start.png`) });
-  const sceneStart=await page.evaluate(()=>{const rail=document.querySelector('#raidRail'),units=[...document.querySelectorAll('#raidRail .raid-unit')],first=units[0]?.getBoundingClientRect(),last=units.at(-1)?.getBoundingClientRect();return {deployedCards:document.querySelectorAll('#skillGrid .deployed-card').length,raidUnits:units.length,raidVertical:!!first&&!!last&&last.top>first.bottom,knots:document.querySelectorAll('#knotGauge i').length,manifestActor:document.querySelector('#manifestActor')?.classList.contains('active'),ainVisible:document.querySelector('.ain-actor img')?.getBoundingClientRect().height>200,railVisible:rail?.getBoundingClientRect().height>150}});
+  const sceneStart=await page.evaluate(()=>{const rail=document.querySelector('#raidRail'),units=[...document.querySelectorAll('#raidRail .raid-unit')],first=units[0]?.getBoundingClientRect(),last=units.at(-1)?.getBoundingClientRect(),ain=document.querySelector('.ain-actor img');return {deployedCards:document.querySelectorAll('#skillGrid .deployed-card').length,raidUnits:units.length,raidVertical:!!first&&!!last&&last.top>first.bottom,knots:document.querySelectorAll('#knotGauge i').length,manifestActor:document.querySelector('#manifestActor')?.classList.contains('active'),ainVisible:ain?.getBoundingClientRect().height>200,ainLoaded:ain?.complete&&ain.naturalWidth>=1024&&ain.naturalHeight>=1536,ainSource:ain?.getAttribute('src'),ainRole:document.querySelector('.ain-label')?.textContent.trim(),railVisible:rail?.getBoundingClientRect().height>150}});
   let actions = 0;
   let skillBannerSeen=false,criticalSeen=false,seventhMotionSeen=false;
   while (!(await page.locator('#battleResult').evaluate(el => el.classList.contains('show'))) && actions < 18) {
@@ -99,7 +99,7 @@ for (const region of regions) {
   await page.close();
 }
 
-const report = { version:'76.0.0', regions:results, allPassed:results.every(r => r.victory && r.completed && r.playerHp > 0 && r.actions <= 18 && r.companion.includes('검수 동행') && r.deployedCards===5 && r.raidUnits===5 && r.raidVertical && r.knots===7 && r.railVisible && r.rewards===4 && r.manifestActor && r.ainVisible && r.skillBannerSeen && r.criticalSeen && r.seventhMotionSeen && r.criticalGold && r.errors.length === 0) };
+const report = { version:'77.0.0', regions:results, allPassed:results.every(r => r.victory && r.completed && r.playerHp > 0 && r.actions <= 18 && r.companion.includes('검수 동행') && r.deployedCards===5 && r.raidUnits===5 && r.raidVertical && r.knots===7 && r.railVisible && r.rewards===4 && r.manifestActor && r.ainVisible && r.ainLoaded && r.ainSource?.includes('battle-v77/ain-recorder-combat.png') && r.ainRole==='아인 · 여행 기록자' && r.skillBannerSeen && r.criticalSeen && r.seventhMotionSeen && r.criticalGold && r.errors.length === 0) };
 await writeFile(join(out, 'report.json'), JSON.stringify(report, null, 2));
 console.log(JSON.stringify(report));
 await browser.close();
