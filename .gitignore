@@ -1,5 +1,6 @@
 node_modules/
 qa-screenshots/
 qa-yeojaman/
+qa-combat/
 android/.gradle/
 android/**/build/
