@@ -1,5 +1,5 @@
 /* 흥양기 서비스워커 — 배포 시 __DEPLOY_SHA__가 실제 커밋 SHA로 치환됩니다. */
-const APP_VERSION = '74.0.0';
+const APP_VERSION = '75.0.0';
 const BUILD_ID = '__DEPLOY_SHA__';
 const CACHE_PREFIX = 'hy-';
 const STATIC_CACHE = `${CACHE_PREFIX}static-${APP_VERSION}-${BUILD_ID}`;
@@ -12,9 +12,17 @@ const CORE = [
   './update-client.js',
   './server-api.js',
   './version.json',
+  './heungyanggi_card_catalog.json',
   './build-info.json',
   './admin/dungeon-flow.html',
-  './assets/hub_poster.png'
+  './assets/hub_poster.png',
+  './assets/dungeon-v75/stage-01-threshold.webp',
+  './assets/dungeon-v75/stage-02-village.webp',
+  './assets/dungeon-v75/stage-03-tidal-maze.webp',
+  './assets/dungeon-v75/stage-04-ridge.webp',
+  './assets/dungeon-v75/stage-05-ritual-rest.webp',
+  './assets/dungeon-v75/stage-06-sea-cave.webp',
+  './assets/dungeon-v75/stage-07-taboo-gate.webp'
 ];
 
 self.addEventListener('install', (event) => {

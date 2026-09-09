@@ -232,6 +232,9 @@ const gradeCodexChecks = await page.evaluate(() => {
     scheduledDaesin: scheduleIds.length === 15 && new Set(scheduleIds).size === 15 && scheduleIds.every(id => window.hyCards.find(card => card.id === id)?.grade === '대신'),
     craftDaesin: craftIds.every(id => window.hyCards.find(card => card.id === id)?.grade === '대신') && craftIds.every(id => !scheduleIds.includes(id)),
     normalPoolsExcludeDaesin: ['yeoja','nokdong','palyoung','geogeum','naro'].every(region => window.hyJourneyCardPool(region).every(card => card.grade !== '대신')),
+    sevenDungeonPools: ['yeoja','nokdong','palyoung','geogeum','naro'].every(region => window.hyJourneyDungeonEncounters(region).length === 7 && window.hyJourneyDungeonEncounters(region).every(pool => pool.length > 0)),
+    repeatableDaesin: Object.values(timeSamples).every(Boolean) && window.hyDaesinRaidStatus('yeoja', new Date('2030-01-02T22:15:00Z')).repeatable === true && !('claimed' in window.hyDaesinRaidStatus('yeoja', new Date('2030-01-02T22:15:00Z'))),
+    finalSkillRolls: window.hyRollFinalSkills(window.hyCards[0], () => .9).length === 2 && window.hyRollFinalSkills(window.hyCards[0], (() => { let first=true; return () => first ? (first=false,0) : .2; })()).length === 3,
     scheduledTimesOpen: Object.values(timeSamples).every(Boolean),
   };
 });
@@ -286,7 +289,7 @@ const renderedCards = await page.locator('#cardGrid [data-id]').count();
 await page.locator('#cardModeTabs [data-tab="craft"]').click();
 const craftOnlyCount = await page.locator('#cardGrid [data-id]').count();
 const craftLabels = await page.locator('#cardGrid .craft-only-mark').allTextContents();
-await page.evaluate(() => { window.hyState.gold=200000; window.hyState.itemQty.mirror=2; window.hyState.itemQty.paper=40; window.hyRenderCards(); });
+await page.evaluate(() => { window.hyState.gold=200000; window.hyState.itemQty.mirror=2; window.hyState.itemQty.paper=40; window.hyState.bossWeeklyMarks={yeoja:['w1','w2','w3','w4'],nokdong:['w1','w2','w3','w4'],palyoung:['w1','w2','w3','w4'],geogeum:['w1','w2','w3','w4'],naro:['w1','w2','w3','w4']}; window.hyRenderCards(); });
 const craftBefore = await page.evaluate(() => ({gold:window.hyState.gold,mirror:window.hyState.itemQty.mirror,paper:window.hyState.itemQty.paper}));
 await page.locator('#cardEvolve').click();
 const craftAfter = await page.evaluate(() => ({gold:window.hyState.gold,mirror:window.hyState.itemQty.mirror,paper:window.hyState.itemQty.paper,made:window.hyState.craftedCards.includes('c088')}));
