@@ -387,6 +387,38 @@ const journeyActive = await page.locator('.screen.active').getAttribute('data-sc
 try { await page.waitForFunction(() => document.querySelector('#journeyFrame')?.contentDocument?.documentElement?.dataset.partyCount === '5'); }
 catch (error) { console.log('Journey context diagnostic:', await page.evaluate(() => { const f=document.querySelector('#journeyFrame'); return {src:f?.src,screen:document.querySelector('.screen.active')?.dataset.screen,frameReady:f?.contentDocument?.readyState,frameData:{...(f?.contentDocument?.documentElement?.dataset||{})},frameText:f?.contentDocument?.body?.innerText?.slice(0,300)}; }), errors); throw error; }
 const journeyContextChecks = await page.evaluate(() => { const data=document.querySelector('#journeyFrame')?.contentDocument?.documentElement?.dataset||{}; return { partyCount:data.partyCount, companionManifested:data.companionManifested }; });
+const travelHomeLayout = await page.locator('#journeyFrame').contentFrame().locator('#home1').evaluate(el => {
+  const r=el.getBoundingClientRect();
+  return {inside:r.left>=0&&r.top>=0&&r.right<=innerWidth&&r.bottom<=innerHeight,touch:r.width>=80&&r.height>=38,label:el.textContent.trim()};
+});
+await page.locator('#journeyFrame').contentFrame().locator('#home1').click();
+await page.waitForSelector('.screen[data-screen="home"].active');
+const travelDirectHome = await page.evaluate(() => ({
+  screen:document.querySelector('.screen.active')?.dataset.screen,
+  frame:document.querySelector('#journeyFrame')?.getAttribute('src'),
+}));
+await page.evaluate(() => {
+  const key='hy-dungeon-flow-v660',saved=JSON.parse(localStorage.getItem(key)||'{}');
+  saved.naro={routeDone:true,routeVersion:73,investigationComplete:true,zones:[],clueStates:Array.from({length:3},()=>({observed:true,verified:true,recorded:true,method:'qa',confidence:3}))};
+  localStorage.setItem(key,JSON.stringify(saved));
+  window.hyState.firstDestination='naro';
+  window.hyState.selectedRegion='naro';
+  window.hySave();
+  document.querySelector('.home-action').click();
+});
+await page.waitForFunction(() => document.querySelector('#journeyFrame')?.contentDocument?.querySelector('#game')?.dataset.phase === 'dungeon');
+const dungeonHomeLayout = await page.locator('#journeyFrame').contentFrame().locator('#home3').evaluate(el => {
+  const r=el.getBoundingClientRect(),siblings=[...el.parentElement.querySelectorAll('button')].filter(x=>x!==el&&x.getClientRects().length);
+  const overlap=(a,b)=>a.left<b.right&&a.right>b.left&&a.top<b.bottom&&a.bottom>b.top;
+  return {inside:r.left>=0&&r.top>=0&&r.right<=innerWidth&&r.bottom<=innerHeight,touch:r.width>=120&&r.height>=38,label:el.textContent.trim(),overlap:siblings.some(x=>overlap(r,x.getBoundingClientRect()))};
+});
+await page.screenshot({ path: join(root, 'qa-screenshots', '10-dungeon-direct-home.png') });
+await page.locator('#journeyFrame').contentFrame().locator('#home3').click();
+await page.waitForSelector('.screen[data-screen="home"].active');
+const dungeonDirectHome = await page.evaluate(() => ({
+  screen:document.querySelector('.screen.active')?.dataset.screen,
+  frame:document.querySelector('#journeyFrame')?.getAttribute('src'),
+}));
 await page.evaluate(() => {
   window.hyState.screen = 'journey';
   window.hySave();
@@ -417,6 +449,10 @@ const report = {
   journeyLinked,
   journeyActive,
   journeyContextChecks,
+  travelHomeLayout,
+  travelDirectHome,
+  dungeonHomeLayout,
+  dungeonDirectHome,
   startupRecovery,
   functionalChecks,
   partyRosterChecks,
@@ -456,6 +492,10 @@ if (
   !journeyLinked?.includes('admin/dungeon-flow.html') ||
   journeyContextChecks.partyCount !== '5' ||
   journeyContextChecks.companionManifested !== 'true' ||
+  !travelHomeLayout.inside || !travelHomeLayout.touch || travelHomeLayout.label !== '메인으로' ||
+  travelDirectHome.screen !== 'home' || travelDirectHome.frame !== 'about:blank' ||
+  !dungeonHomeLayout.inside || !dungeonHomeLayout.touch || dungeonHomeLayout.overlap || dungeonHomeLayout.label !== '메인으로 나가기' ||
+  dungeonDirectHome.screen !== 'home' || dungeonDirectHome.frame !== 'about:blank' ||
   startupRecovery !== 'home' ||
   !Object.values(functionalChecks).every(Boolean) ||
   cinematicCount !== 0 ||

@@ -28,7 +28,7 @@ page.on('pageerror', error => errors.push(String(error)));
 page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
 page.on('response', response => { if (response.status() >= 400) errors.push(`HTTP ${response.status()} ${response.url()}`); });
 await mkdir(out, { recursive: true });
-await page.goto('http://127.0.0.1:4174/admin/dungeon-flow.html?region=yeoja&v=79.0.0', { waitUntil: 'networkidle', timeout:15000 });
+await page.goto('http://127.0.0.1:4174/admin/dungeon-flow.html?region=yeoja&v=80.0.0', { waitUntil: 'networkidle', timeout:15000 });
 
 const snapshot = async (name) => {
   await page.screenshot({ path: join(out, `${name}.png`) });
@@ -139,7 +139,7 @@ const completed = await page.evaluate(() => {
 });
 const promoPage=await browser.newPage({viewport:{width:1279,height:599}});
 promoPage.on('pageerror',error=>errors.push(String(error)));
-await promoPage.goto('http://127.0.0.1:4174/admin/dungeon-flow.html?region=nokdong&v=79.0.0',{waitUntil:'networkidle',timeout:15000});
+await promoPage.goto('http://127.0.0.1:4174/admin/dungeon-flow.html?region=nokdong&v=80.0.0',{waitUntil:'networkidle',timeout:15000});
 await promoPage.locator('#nextTravel').click();
 await promoPage.waitForFunction(()=>document.querySelector('#sceneImg')?.complete&&document.querySelector('#sceneImg')?.naturalWidth>0);
 await promoPage.screenshot({path:join(out,'00-nokdong-travel-promo.png')});
@@ -150,7 +150,7 @@ const regionalExploreAssets=[];
 for(const region of ['yeoja','nokdong','palyoung','geogeum','naro']){
   const regionPage=await browser.newPage({viewport:{width:1279,height:599}});
   regionPage.on('pageerror',error=>errors.push(String(error)));
-  await regionPage.goto(`http://127.0.0.1:4174/admin/dungeon-flow.html?region=${region}&v=79.0.0`,{waitUntil:'networkidle',timeout:15000});
+  await regionPage.goto(`http://127.0.0.1:4174/admin/dungeon-flow.html?region=${region}&v=80.0.0`,{waitUntil:'networkidle',timeout:15000});
   await regionPage.waitForFunction(()=>document.querySelector('#sceneImg')?.complete&&document.querySelector('#sceneImg')?.naturalWidth>0);
   regionalTravelAssets.push(await regionPage.evaluate(region=>{const img=document.querySelector('#sceneImg');return {region,src:img?.getAttribute('src'),width:img?.naturalWidth,height:img?.naturalHeight};},region));
   await regionPage.locator('#skipTravel').click();
