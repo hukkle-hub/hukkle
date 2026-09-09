@@ -70,7 +70,37 @@ const layoutChecks = await page.evaluate(() => {
   };
 });
 
+const titleStabilityChecks = await page.evaluate(() => {
+  const game = document.querySelector('#game').getBoundingClientRect();
+  const loader = document.querySelector('#titleLoad');
+  const expected = {
+    titlePrologue:[.044,.826,.174,.088],
+    titleStart:[.392,.823,.218,.09],
+    titleNotice:[.786,.826,.162,.088],
+  };
+  const targets = {};
+  let aligned = true;
+  let centerHit = true;
+  for (const [id, e] of Object.entries(expected)) {
+    const el = document.getElementById(id), r = el.getBoundingClientRect();
+    const actual = [(r.left-game.left)/game.width,(r.top-game.top)/game.height,r.width/game.width,r.height/game.height];
+    targets[id] = actual.map(x => Number(x.toFixed(4)));
+    aligned &&= actual.every((x, i) => Math.abs(x-e[i]) < .005);
+    centerHit &&= document.elementFromPoint(r.left+r.width/2,r.top+r.height/2) === el;
+  }
+  return {
+    artwork: document.querySelector('.title-art')?.getAttribute('src') === 'assets/title_screen_v67.png',
+    loaderReady: loader.classList.contains('ready'),
+    loaderHidden: getComputedStyle(loader).visibility === 'hidden' && Number(getComputedStyle(loader).opacity) === 0,
+    loaderAriaHidden: loader.getAttribute('aria-hidden') === 'true',
+    aligned,
+    centerHit,
+    targets,
+  };
+});
+
 const utilityChecks = [];
+const utilityFontChecks = [];
 await page.locator('#titlePrologue').click();
 utilityChecks.push(await page.evaluate(() => {
   const layer = document.querySelector('#utilityLayer');
@@ -80,11 +110,15 @@ utilityChecks.push(await page.evaluate(() => {
   return !layer.classList.contains('hidden') && card && actions &&
     card.bottom <= actions.top && actions.bottom <= game.bottom + 1;
 }));
+utilityFontChecks.push(await page.evaluate(() => [...document.querySelectorAll('#utilityWindow button,#utilityWindow p,#utilityWindow small,#utilityWindow span,#utilityWindow b')].filter(el => el.textContent.trim() && el.getClientRects().length).every(el => parseFloat(getComputedStyle(el).fontSize) >= 12)));
+await page.screenshot({ path: join(root, 'qa-screenshots', '01b-prologue.png') });
 await page.locator('#utilityClose').click();
 for (const id of ['titleNotice', 'titleSettings', 'titleAccount', 'titleSupport']) {
   console.log(`QA utility: ${id}`);
   await page.locator(`#${id}`).click();
   utilityChecks.push(await page.locator('#utilityLayer').evaluate(el => !el.classList.contains('hidden')));
+  utilityFontChecks.push(await page.evaluate(() => [...document.querySelectorAll('#utilityWindow button,#utilityWindow p,#utilityWindow small,#utilityWindow span,#utilityWindow b')].filter(el => el.textContent.trim() && el.getClientRects().length).every(el => parseFloat(getComputedStyle(el).fontSize) >= 12)));
+  if (id === 'titleNotice') await page.screenshot({ path: join(root, 'qa-screenshots', '01c-notice.png') });
   await page.locator('#utilityClose').click();
 }
 await page.locator('#titleStart').click();
@@ -125,6 +159,7 @@ const screens = ['home','map','inventory','cards','codex','party','shop','missio
 let cinematicCount = 0;
 const routeFailures = [];
 const internalHeaderChecks = [];
+const minimumFontChecks = [];
 for (let i = 0; i < 50; i++) {
   const screen = screens[i % screens.length];
   console.log(`QA route ${i + 1}/50: ${screen}`);
@@ -141,6 +176,7 @@ for (let i = 0; i < 50; i++) {
   await page.waitForTimeout(40);
   const active = await page.locator('.screen.active').getAttribute('data-screen');
   if (active !== screen) routeFailures.push({ expected: screen, active });
+  if (!['home','title','journey'].includes(screen)) minimumFontChecks.push(await page.evaluate(screenName => ({ screen:screenName, offenders:[...document.querySelectorAll('.screen.active button,.screen.active p,.screen.active small,.screen.active b,.screen.active span:not(.ico):not(.fit-dot)')].filter(el => el.textContent.trim() && el.getClientRects().length && parseFloat(getComputedStyle(el).fontSize) < 12).slice(0,8).map(el => ({ tag:el.tagName, cls:el.className, text:el.textContent.trim().slice(0,28), px:getComputedStyle(el).fontSize })) }), screen));
   cinematicCount += await page.locator('.cinematic.active,.inventory-cinematic.active,.card-cinematic.active,.codex-cinematic.active').count();
 }
 for (let i = 0; i < screens.length; i++) {
@@ -245,12 +281,16 @@ const startupRecovery = await page.locator('.screen.active').getAttribute('data-
 const report = {
   ...result,
   layoutChecks,
+  titleStabilityChecks,
   homeHitGeometry,
   readabilityChecks,
   internalHeadersPassed: internalHeaderChecks.every(Boolean),
+  minimumFontsPassed: minimumFontChecks.every(x => x.offenders.length === 0),
+  minimumFontChecks,
   cardPresentationChecks,
   recordTaxonomyChecks,
   utilityChecksPassed: utilityChecks.every(Boolean),
+  utilityFontChecksPassed: utilityFontChecks.every(Boolean),
   routeFailures,
   journeyLinked,
   journeyActive,
@@ -270,15 +310,18 @@ if (
   result.duplicateIds !== 0 ||
   !result.skillRule ||
   !Object.values(layoutChecks).every(Boolean) ||
+  !Object.entries(titleStabilityChecks).filter(([key]) => key !== 'targets').every(([,value]) => value === true) ||
   !homeHitGeometry.aligned ||
   !homeHitGeometry.separated ||
   !Object.values(readabilityChecks).every(Boolean) ||
   !internalHeaderChecks.every(Boolean) ||
+  !minimumFontChecks.every(x => x.offenders.length === 0) ||
   !cardPresentationChecks.galleryScale ||
   !cardPresentationChecks.singleColumnCatalog ||
   !cardPresentationChecks.controlsClear ||
   !Object.values(recordTaxonomyChecks).every(Boolean) ||
   !utilityChecks.every(Boolean) ||
+  !utilityFontChecks.every(Boolean) ||
   routeFailures.length !== 0 ||
   journeyActive !== 'journey' ||
   !journeyLinked?.includes('admin/dungeon-flow.html') ||
