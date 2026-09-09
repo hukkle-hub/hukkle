@@ -1,5 +1,5 @@
 /* 흥양기 서비스워커 — 배포 시 __DEPLOY_SHA__가 실제 커밋 SHA로 치환됩니다. */
-const APP_VERSION = '78.0.0';
+const APP_VERSION = '79.0.0';
 const BUILD_ID = '__DEPLOY_SHA__';
 const CACHE_PREFIX = 'hy-';
 const STATIC_CACHE = `${CACHE_PREFIX}static-${APP_VERSION}-${BUILD_ID}`;
@@ -28,7 +28,17 @@ const CORE = [
   './assets/travel-v78/nokdong-night-harbor.webp',
   './assets/travel-v78/palyoung-eight-peaks.webp',
   './assets/travel-v78/geogeum-bridge-coast.webp',
-  './assets/travel-v78/naro-space-harbor.webp'
+  './assets/travel-v78/naro-space-harbor.webp',
+  './assets/explore-v79/yeoja-clue-02-living-traces.webp',
+  './assets/explore-v79/yeoja-clue-03-delayed-reflection.webp',
+  './assets/explore-v79/nokdong-clue-02-market-reflections.webp',
+  './assets/explore-v79/nokdong-clue-03-low-lantern.webp',
+  './assets/explore-v79/palyoung-clue-02-one-way-wind.webp',
+  './assets/explore-v79/palyoung-clue-03-overlapping-ridge.webp',
+  './assets/explore-v79/geogeum-clue-02-repeating-markers.webp',
+  './assets/explore-v79/geogeum-clue-03-repeated-islands.webp',
+  './assets/explore-v79/naro-clue-02-harbor-traces.webp',
+  './assets/explore-v79/naro-clue-03-fixed-fog-light.webp'
 ];
 
 self.addEventListener('install', (event) => {
