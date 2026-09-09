@@ -28,7 +28,7 @@ page.on('pageerror', error => errors.push(String(error)));
 page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
 page.on('response', response => { if (response.status() >= 400) errors.push(`HTTP ${response.status()} ${response.url()}`); });
 await mkdir(out, { recursive: true });
-await page.goto('http://127.0.0.1:4174/admin/dungeon-flow.html?region=yeoja&v=69.0.0', { waitUntil: 'networkidle' });
+await page.goto('http://127.0.0.1:4174/admin/dungeon-flow.html?region=yeoja&v=70.0.0', { waitUntil: 'networkidle', timeout:15000 });
 
 const snapshot = async (name) => {
   await page.screenshot({ path: join(out, `${name}.png`) });
@@ -102,8 +102,9 @@ await page.waitForSelector('#battleShell.active');
 phases.battle = await snapshot('05-battle');
 const fxChecks = {};
 for (const skill of ['break','guard','strike','break']) {
-  await page.locator(`[data-skill="${skill}"]`).click();
-  await page.waitForTimeout(70);
+  const beforeSeq=await page.locator('#damageFloat').getAttribute('data-seq')||'0';
+  await page.locator(`[data-skill="${skill}"]`).first().click();
+  await page.waitForFunction(seq => (document.querySelector('#damageFloat')?.dataset.seq||'0')!==seq, beforeSeq, { timeout:5000 });
   fxChecks[skill] = await page.locator('#skillFx').evaluate((el,kind) => el.classList.contains('play') && el.classList.contains(kind), skill);
   await page.waitForTimeout(650);
 }
@@ -116,6 +117,7 @@ const battleLayout = await page.evaluate(() => {
     shellInside: shell.left >= 0 && shell.top >= 0 && shell.right <= innerWidth + 1 && shell.bottom <= innerHeight + 1,
     touchTargets: buttons.every(el => { const r=el.getBoundingClientRect(); return r.width >= 80 && r.height >= 48; }),
     minFont: [...document.querySelectorAll('#battleShell *')].filter(el => el.offsetParent && el.textContent.trim()).every(el => parseFloat(getComputedStyle(el).fontSize) >= 12),
+    fontOffenders:[...document.querySelectorAll('#battleShell *')].filter(el => el.offsetParent && el.textContent.trim() && parseFloat(getComputedStyle(el).fontSize)<12).map(el=>({tag:el.tagName,id:el.id,cls:el.className,size:getComputedStyle(el).fontSize,text:el.textContent.trim().slice(0,30)})),
   };
 });
 await page.locator('#manifestSkill').click();
