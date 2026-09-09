@@ -28,7 +28,7 @@ page.on('pageerror', error => errors.push(String(error)));
 page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
 page.on('response', response => { if (response.status() >= 400) errors.push(`HTTP ${response.status()} ${response.url()}`); });
 await mkdir(out, { recursive: true });
-await page.goto('http://127.0.0.1:4174/admin/dungeon-flow.html?region=yeoja&v=70.0.0', { waitUntil: 'networkidle', timeout:15000 });
+await page.goto('http://127.0.0.1:4174/admin/dungeon-flow.html?region=yeoja&v=71.0.0', { waitUntil: 'networkidle', timeout:15000 });
 
 const snapshot = async (name) => {
   await page.screenshot({ path: join(out, `${name}.png`) });

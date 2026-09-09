@@ -1,9 +1,9 @@
 {
   "product": "흥양기",
   "channel": "stable",
-  "version": "70.0.0",
-  "release_name": "시네마틱 카드 전투·7성 현현 동료",
-  "content_version": "2026.09.09.08",
+  "version": "71.0.0",
+  "release_name": "녹동항 레이드 전장·7매듭",
+  "content_version": "2026.09.09.09",
   "api_version": "1.1.0",
   "min_supported_version": "37.0.0",
   "force_update": false,
@@ -13,10 +13,10 @@
   "check_interval_seconds": 60,
   "entry": "./index.html",
   "release_notes": [
-    "보스를 전장 전면에 크게 배치하고 보스 상태·금기 예고를 화면 위에 직접 표시",
-    "편성한 다섯 카드를 하단 전열에 배치하고 카드별 역할과 활성 스킬로 전투",
-    "최종현현을 마친 7성 동료가 아인 옆에 상시 등장하고 스킬마다 전용 모션 발동",
-    "스킬 사용 시 중앙 기술명·속성 이펙트·치명타 골드 피해 수치를 함께 표시"
+    "녹동항 물등 사공을 중심으로 한 한국형 야간 항구 레이드 전장 추가",
+    "다섯 동행 카드 세로 편성표와 하단 스킬 덱, 7매듭 현현 공명 HUD 구현",
+    "공격 카메라 이동, 경계 균열 BREAK 콜아웃, 7성 현현 스킬 모션 강화",
+    "보스 봉합 후 카드 조각·단서 기록·엽전·기억 조각 보상 화면 제공"
   ],
   "api_health_endpoint": "https://ybflkszmymalhafzzdbs.supabase.co/functions/v1/hy/master",
   "api_status_endpoint": "",
