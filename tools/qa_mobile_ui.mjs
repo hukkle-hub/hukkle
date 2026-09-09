@@ -291,6 +291,8 @@ await page.locator('.home-action').click();
 await page.waitForTimeout(800);
 const journeyLinked = await page.locator('#journeyFrame').getAttribute('src');
 const journeyActive = await page.locator('.screen.active').getAttribute('data-screen');
+await page.waitForFunction(() => document.querySelector('#journeyFrame')?.contentDocument?.documentElement?.dataset.partyCount === '5');
+const journeyContextChecks = await page.evaluate(() => { const data=document.querySelector('#journeyFrame')?.contentDocument?.documentElement?.dataset||{}; return { partyCount:data.partyCount, companionManifested:data.companionManifested }; });
 await page.evaluate(() => {
   window.hyState.screen = 'journey';
   window.hySave();
@@ -316,6 +318,7 @@ const report = {
   routeFailures,
   journeyLinked,
   journeyActive,
+  journeyContextChecks,
   startupRecovery,
   functionalChecks,
   partyRosterChecks,
@@ -348,6 +351,8 @@ if (
   routeFailures.length !== 0 ||
   journeyActive !== 'journey' ||
   !journeyLinked?.includes('admin/dungeon-flow.html') ||
+  journeyContextChecks.partyCount !== '5' ||
+  journeyContextChecks.companionManifested !== 'true' ||
   startupRecovery !== 'home' ||
   !Object.values(functionalChecks).every(Boolean) ||
   cinematicCount !== 0 ||

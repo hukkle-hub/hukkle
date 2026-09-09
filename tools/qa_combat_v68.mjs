@@ -29,7 +29,7 @@ for (const region of regions) {
   const errors = [];
   page.on('pageerror', error => errors.push(String(error)));
   page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
-  await page.goto(`http://127.0.0.1:4175/admin/dungeon-flow.html?region=${region}&v=69.0.0`, { waitUntil:'networkidle' });
+  await page.goto(`http://127.0.0.1:4175/admin/dungeon-flow.html?region=${region}&v=70.0.0`, { waitUntil:'networkidle' });
   await page.evaluate((id) => {
     localStorage.setItem('hy-dungeon-flow-v660', JSON.stringify({
       [id]: {
@@ -45,14 +45,24 @@ for (const region of regions) {
   await page.reload({ waitUntil:'networkidle' });
   await page.waitForSelector('#bossIntro:not(.hidden)');
   await page.evaluate(() => window.postMessage({
-    type:'hy-journey-context', companionCard:'qa-card', companionName:'검수 동행', companionRole:'수호 · 파훼', companionStage:1,
+    type:'hy-journey-context', companionCard:'qa-card', companionName:'검수 동행', companionRole:'수호 · 파훼', companionStage:6, companionManifested:true,
     companionImg:new URL('../assets/cards-v63/C075.webp', location.href).href,
-    companionFinalImg:new URL('../assets/cards-v63/C075-final.webp', location.href).href,
+    companionFinalImg:new URL('../assets/battle-v70/C075-manifest-cutout.png', location.href).href,
     companionSkill:'검수 베기', companionManifest:'검수 동행 · 일곱 별 현현',
+    party:[
+      ['c075','해신 당골','C075.webp','C075-manifest-cutout.png',true,'밸런스','물길 진혼'],
+      ['c071','진도씻김굿 무녀','C071.webp','C071-final.webp',false,'파훼','씻김 장단'],
+      ['c045','제석할멈','C045.webp','C045-final.webp',false,'탱커','제석 수호'],
+      ['c121','강림도령','C121.webp','C121-final.webp',true,'심판','저승 판결'],
+      ['c034','바리공주','C034.webp','C034-final.webp',false,'지원','생명수 회복'],
+    ].map(([id,name,img,finalImg,manifested,role,skill],slot)=>({id,name,img:new URL('../assets/cards-v63/'+img,location.href).href,finalImg:new URL((finalImg.endsWith('.png')?'../assets/battle-v70/':'../assets/cards-v63/')+finalImg,location.href).href,manifested,role,skill,stage:6,cost:slot===4?2:1,slot})),
   }, location.origin));
   await page.locator('#confirmBoss').click();
   await page.waitForSelector('#battleShell.active');
+  await page.screenshot({ path:join(out, `${region}-battle-start.png`) });
+  const sceneStart=await page.evaluate(()=>({deployedCards:document.querySelectorAll('#skillGrid .deployed-card').length,manifestActor:document.querySelector('#manifestActor')?.classList.contains('active'),ainVisible:document.querySelector('.ain-actor img')?.getBoundingClientRect().height>200}));
   let actions = 0;
+  let skillBannerSeen=false,criticalSeen=false,seventhMotionSeen=false;
   while (!(await page.locator('#battleResult').evaluate(el => el.classList.contains('show'))) && actions < 18) {
     let selector;
     if (await page.locator('#manifestSkill').isEnabled()) selector = '#manifestSkill';
@@ -60,8 +70,15 @@ for (const region of regions) {
       const hint = await page.locator('#bossIntentHint').textContent();
       selector = hint.includes('파훼') ? '[data-skill="break"]' : hint.includes('수호') ? '[data-skill="guard"]' : '[data-skill="strike"]';
     }
-    await page.locator(selector).click();
+    const beforeSeq=await page.locator('#damageFloat').getAttribute('data-seq')||'0';
+    await page.locator(selector).first().click();
     actions += 1;
+    await page.waitForTimeout(120);
+    seventhMotionSeen ||= await page.locator('#seventhSkillMotion').evaluate(el=>el.classList.contains('play'));
+    await page.waitForFunction(seq => (document.querySelector('#damageFloat')?.dataset.seq||'0')!==seq, beforeSeq, { timeout:5000 });
+    const fx=await page.evaluate(()=>({banner:document.querySelector('#skillBanner')?.classList.contains('play'),critical:document.querySelector('#damageFloat')?.dataset.critical==='true'}));
+    if(fx.critical&&!criticalSeen)await page.screenshot({ path:join(out, `${region}-critical.png`) });
+    skillBannerSeen ||= fx.banner; criticalSeen ||= fx.critical;
     await page.waitForFunction(() => document.querySelector('#battleResult')?.classList.contains('show') || [...document.querySelectorAll('#skillGrid button')].some(b => !b.disabled), null, { timeout:5000 });
   }
   const result = await page.evaluate((id) => {
@@ -73,14 +90,15 @@ for (const region of regions) {
       turn:Number((document.querySelector('#battleTurn')?.textContent||'0').replace(/\D/g,'')),
       companion:document.querySelector('#battleCompanionName')?.textContent,
       manifestName:document.querySelector('#manifestTitle')?.textContent,
+      criticalGold:/^[\d,]+$/.test(document.querySelector('#damageFloat')?.textContent||''),
     };
   }, region);
   await page.screenshot({ path:join(out, `${region}-victory.png`) });
-  results.push({ region, actions, ...result, errors });
+  results.push({ region, actions, ...sceneStart, skillBannerSeen, criticalSeen, seventhMotionSeen, ...result, errors });
   await page.close();
 }
 
-const report = { version:'69.0.0', regions:results, allPassed:results.every(r => r.victory && r.completed && r.playerHp > 0 && r.actions <= 18 && r.companion === '검수 동행' && r.errors.length === 0) };
+const report = { version:'70.0.0', regions:results, allPassed:results.every(r => r.victory && r.completed && r.playerHp > 0 && r.actions <= 18 && r.companion.includes('검수 동행') && r.deployedCards===5 && r.manifestActor && r.ainVisible && r.skillBannerSeen && r.criticalSeen && r.seventhMotionSeen && r.criticalGold && r.errors.length === 0) };
 await writeFile(join(out, 'report.json'), JSON.stringify(report, null, 2));
 console.log(JSON.stringify(report));
 await browser.close();
