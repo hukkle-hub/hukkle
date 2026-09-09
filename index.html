@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#090c0e">
-<meta name="hy-version" content="66.0.0">
+<meta name="hy-version" content="67.0.0">
 <link rel="icon" href="./icon.svg" type="image/svg+xml">
-<title>흥양기 v66 · 여자만 탐험 개편</title>
+<title>흥양기 v67 · 시작 화면 안정화</title>
 
 <style>
 :root{--ink:#080b0d;--panel:rgba(9,12,14,.88);--panel2:rgba(16,20,23,.88);--line:rgba(239,218,176,.16);--gold:#ddb86f;--gold2:#ffe0a0;--text:#f5efe2;--muted:#aaa394;--red:#c65450;--blue:#6eb4d0;--jade:#66b29c;--ui:1;--safe-b:env(safe-area-inset-bottom,0px);--safe-t:env(safe-area-inset-top,0px)}
@@ -149,6 +149,20 @@ html,body{width:100%;height:100%;overflow:hidden;background:#050607}#game{positi
 /* v65: gallery-scale card art and record-first taxonomy. */
 .cards-layout-v4{grid-template-columns:210px minmax(0,1fr) 240px;gap:9px}.card-collection-grid{grid-template-columns:1fr;gap:10px}.card-unit-v4{aspect-ratio:.72}.card-unit-v4 b{font-size:12px}.card-unit-v4 small,.card-unit-v4 .owned-stage{font-size:9px}.card-stage-v4{top:50px;bottom:70px}.card-world{height:100%;max-height:440px;width:auto;aspect-ratio:.68}.living-card{overflow:hidden}.living-card img{object-fit:cover;object-position:center 30%!important;transform:scale(1.18)}.living-card .card-nameplate{left:10px;right:10px;bottom:10px}.card-nameplate b{font-size:16px}.card-nameplate small{font-size:10px}.evolution-strip-v4{bottom:49px}.card-stage-note{bottom:17px}.card-stage-actions{bottom:8px}.card-stage-actions button{min-height:40px}.screen[data-screen="codex"] .book-kicker strong:before{content:"흥양기 · ";color:var(--gold)}
 .screen[data-screen="cards"] .living-card .card-nameplate{bottom:58px}
+
+/* v67: exact title hit targets, completed-loader mask, and readable minimum type. */
+.title-prologue{left:4.4%;top:82.6%;width:17.4%;height:8.8%}
+.title-start{left:39.2%;top:82.3%;width:21.8%;height:9%}
+.title-notice{left:78.6%;top:82.6%;width:16.2%;height:8.8%}
+.title-settings{right:1.4%;top:2.5%;width:5.2%;height:8.8%}
+.title-account{right:1.4%;top:12.8%;width:5.2%;height:9%}
+.title-support{right:1.2%;top:23.3%;width:6.4%;height:9.8%}
+.title-load.ready{opacity:0!important;visibility:hidden;pointer-events:none}
+.utility-window :is(button,p,small,span,b,label,input,select),.screen:not([data-screen="title"]):not([data-screen="journey"]) :is(button,p,small,b,label,input,select){font-size:max(12px,1em)!important}
+.screen:not([data-screen="title"]):not([data-screen="journey"]) span:not(.ico):not(.fit-dot){font-size:max(12px,1em)!important}
+.screen:not([data-screen="title"]):not([data-screen="journey"]) button,.utility-window button{font-size:max(13px,1em)!important}
+.screen .mission-summary .muted{font-size:15px!important}
+.utility-window{max-height:86%}.utility-body{max-height:calc(86vh - 72px)}.notice-item span,.faq-item span,.mail-item span,.u-row small{line-height:1.6}.prologue-card p{font-size:14px!important}.prologue-actions{position:sticky;bottom:0;padding:10px 0 2px;background:linear-gradient(transparent,rgba(5,8,10,.98) 28%)}
 </style>
 <style>.journey-back{display:none!important}</style>
 <script defer src="./update-client.js"></script>
@@ -161,7 +175,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#050607}#game{positi
 
   <!-- TITLE / ENTRY -->
   <section class="screen active" data-screen="title" id="titleScreen">
-    <img class="title-art" src="assets/title_screen_v41.png" alt="흥양기 타이틀 화면">
+    <img class="title-art" src="assets/title_screen_v67.png" alt="흥양기 타이틀 화면">
     <button class="title-hit title-prologue" id="titlePrologue" aria-label="프롤로그 보기"></button>
     <button class="title-hit title-start" id="titleStart" aria-label="게임 시작"></button>
     <button class="title-hit title-notice" id="titleNotice" aria-label="공지사항"></button>
@@ -342,7 +356,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#050607}#game{positi
   <section class="screen" data-screen="shop"><div class="scene-bg"></div><div class="screen-shade"></div><header class="topbar"><button class="back" data-route="home">‹</button><div class="screen-title"><small>MARKET & RITUAL EXCHANGE</small><h1>상점</h1></div><div class="currency"><div class="pill"><span class="coin">●</span><span data-gold>127,430</span></div><div class="pill"><span class="gem">◆</span><span data-gem>3,860</span></div></div></header><div class="content shop-layout"><aside class="panel side-tabs" id="shopCats"></aside><main class="panel shop-grid"><div class="section-label">오늘 들어온 물건</div><div class="goods-grid" id="goodsGrid"></div></main><aside class="panel detail" id="goodDetail"></aside></div><nav class="nav"></nav></section>
 
   <!-- MISSIONS -->
-  <section class="screen" data-screen="missions"><div class="scene-bg"></div><div class="screen-shade"></div><header class="topbar"><button class="back" data-route="home">‹</button><div class="screen-title"><small>JOURNEY LOG</small><h1>임무</h1></div><div class="currency"><div class="pill"><span class="coin">●</span><span data-gold>127,430</span></div><div class="pill"><span class="gem">◆</span><span data-gem>3,860</span></div></div></header><div class="content mission-layout"><aside class="panel side-tabs" id="missionCats"></aside><main class="panel mission-list" id="missionList"></main><aside class="panel mission-summary"><div class="section-label">오늘의 기록</div><div class="ring"><b id="dailyPercent">68%</b></div><div class="muted" style="text-align:center;font-size:11px">지역을 살피고, 이야기를 기록하세요.</div><div class="reward-box"><b>일일 완주 보상</b><p class="muted">신력 100 · 동전 5,000 · 기록지 1</p><button class="secondary" style="width:100%" id="dailyRewardBtn">진행 중</button></div></aside></div><nav class="nav"></nav></section>
+  <section class="screen" data-screen="missions"><div class="scene-bg"></div><div class="screen-shade"></div><header class="topbar"><button class="back" data-route="home">‹</button><div class="screen-title"><small>JOURNEY LOG</small><h1>임무</h1></div><div class="currency"><div class="pill"><span class="coin">●</span><span data-gold>127,430</span></div><div class="pill"><span class="gem">◆</span><span data-gem>3,860</span></div></div></header><div class="content mission-layout"><aside class="panel side-tabs" id="missionCats"></aside><main class="panel mission-list" id="missionList"></main><aside class="panel mission-summary"><div class="section-label">오늘의 기록</div><div class="ring"><b id="dailyPercent">68%</b></div><div class="muted" style="text-align:center;font-size:16px!important">지역을 살피고, 이야기를 기록하세요.</div><div class="reward-box"><b>일일 완주 보상</b><p class="muted" style="font-size:16px!important">신력 100 · 동전 5,000 · 기록지 1</p><button class="secondary" style="width:100%" id="dailyRewardBtn">진행 중</button></div></aside></div><nav class="nav"></nav></section>
 
 
   <div class="utility-layer hidden" id="utilityLayer" aria-hidden="true">
@@ -637,15 +651,15 @@ function renderMail(){state.mailClaimed=state.mailClaimed||[];const mails=[['wel
 $('#titlePrologue').onclick=()=>openUtil('prologue');$('#titleNotice').onclick=()=>openUtil('notice');$('#titleSettings').onclick=()=>openUtil('settings');$('#titleAccount').onclick=()=>openUtil('account');$('#titleSupport').onclick=()=>openUtil('support');
 
 // ---------- honest loading: preload core local assets ----------
-const coreAssets=['assets/title_screen_v41.png','assets/hub_poster.png','assets/c075_base.webp','assets/c071.jpg','assets/c045.jpg','assets/c018.jpg'];
+const coreAssets=['assets/title_screen_v67.png','assets/hub_poster.png','assets/c075_base.webp','assets/c071.jpg','assets/c045.jpg','assets/c018.jpg'];
 let loadToken=0;
 async function preloadCore(){
- const token=++loadToken,bar=$('#titleLoadBar'),pct=$('#titleLoadPct'),txt=$('#titleLoadText'),start=$('#titleStart'),retry=$('#titleRetry');start.disabled=false;retry.classList.add('hidden');let done=0;
+ const token=++loadToken,loader=$('#titleLoad'),bar=$('#titleLoadBar'),pct=$('#titleLoadPct'),txt=$('#titleLoadText'),start=$('#titleStart'),retry=$('#titleRetry');loader.classList.remove('ready');loader.setAttribute('aria-hidden','false');start.disabled=false;retry.classList.add('hidden');let done=0;
  const update=()=>{const p=Math.round(done/coreAssets.length*100);bar.style.width=p+'%';pct.textContent=p+'%';txt.textContent=p<28?'초기화 중...':p<72?'에셋 불러오는 중...':p<100?'UI 준비 중...':'준비 완료'};
  update();
  const watchdog=setTimeout(()=>{if(token!==loadToken||done>=coreAssets.length)return;retry.classList.remove('hidden');txt.textContent='로딩이 지연되고 있습니다.'},7000);
  await Promise.all(coreAssets.map(src=>new Promise(res=>{let settled=false;const finish=()=>{if(settled)return;settled=true;done++;update();res()};if(/\.mp4$/i.test(src)){const v=document.createElement('video');v.preload='metadata';v.onloadedmetadata=finish;v.onerror=finish;v.src=src;setTimeout(finish,3200)}else{const im=new Image();im.onload=finish;im.onerror=finish;im.src=src;setTimeout(finish,3200)}})));
- clearTimeout(watchdog);if(token!==loadToken)return;start.disabled=false;retry.classList.add('hidden');update();setTimeout(()=>$('#titleLoad').classList.add('ready'),350);
+ clearTimeout(watchdog);if(token!==loadToken)return;start.disabled=false;retry.classList.add('hidden');update();setTimeout(()=>{loader.classList.add('ready');loader.setAttribute('aria-hidden','true')},250);
 }
 $('#titleRetry').onclick=preloadCore;
 function enterGame(){sessionStorage.setItem('hy-title-passed','1');state.screen='home';save();window.hyRoute('home',{direct:true})}
@@ -658,7 +672,7 @@ let activeJourneyRegion=null,journeyWatchdog=null;
 function journeyCompanionName(){const c=(window.hyCards||[]).find(x=>x.id===state.companionCard);return c?.name||'동행 카드'}
 function sendJourneyContext(target=$('#journeyFrame')?.contentWindow){if(!target)return;const origin=location.origin==='null'?'*':location.origin;target.postMessage({type:'hy-journey-context',itemQty:{...(state.itemQty||{})},companionCard:state.companionCard||null,companionName:journeyCompanionName(),motion:state.motion!==false},origin)}
 function setJourneyLoading(show,text='이동 경로와 조사 기록을 불러옵니다.'){const l=$('#journeyLoader');if(!l)return;l.classList.toggle('hidden',!show);$('#journeyLoaderText').textContent=text;$('#journeyRetry').classList.add('hidden');clearTimeout(journeyWatchdog);if(show)journeyWatchdog=setTimeout(()=>{$('#journeyLoaderText').textContent='탐험 화면 연결이 지연되고 있습니다.';$('#journeyRetry').classList.remove('hidden')},6500)}
-function startJourney(region){const id=regionToFlow[region]||regionToFlow.yeojaman;activeJourneyRegion=id;state.selectedRegion=flowToRegion[id]||region;state.journeyVisits=state.journeyVisits||{};state.journeyVisits[id]=Number(state.journeyVisits[id]||0)+1;save();setJourneyLoading(true);const f=$('#journeyFrame');f.src=`./admin/dungeon-flow.html?embedded=1&region=${encodeURIComponent(id)}&v=66.0.0&t=${Date.now()}`;window.hyRoute('journey',{direct:true})}
+function startJourney(region){const id=regionToFlow[region]||regionToFlow.yeojaman;activeJourneyRegion=id;state.selectedRegion=flowToRegion[id]||region;state.journeyVisits=state.journeyVisits||{};state.journeyVisits[id]=Number(state.journeyVisits[id]||0)+1;save();setJourneyLoading(true);const f=$('#journeyFrame');f.src=`./admin/dungeon-flow.html?embedded=1&region=${encodeURIComponent(id)}&v=67.0.0&t=${Date.now()}`;window.hyRoute('journey',{direct:true})}
 $('#journeyRetry').onclick=()=>activeJourneyRegion&&startJourney(flowToRegion[activeJourneyRegion]||activeJourneyRegion);
 $('#journeyBack').onclick=()=>{clearTimeout(journeyWatchdog);try{$('#journeyFrame').src='about:blank'}catch{}setJourneyLoading(false);window.hyRoute('map',{direct:true})};
 window.addEventListener('message',e=>{const frame=$('#journeyFrame');if(!frame||e.source!==frame.contentWindow)return;const d=e.data||{};
