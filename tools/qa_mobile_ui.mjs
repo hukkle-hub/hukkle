@@ -282,6 +282,7 @@ const silhouetteCodexChecks = await page.evaluate(() => {
 });
 await page.screenshot({ path: join(root, 'qa-screenshots', '10b-codex-silhouette.png') });
 await page.evaluate(() => window.hyRoute('shop', { direct: true }));
+await page.locator('#shopCats [data-cat="꾸미기"]').click();
 const readabilityChecks = await page.evaluate(() => {
   const px = selector => parseFloat(getComputedStyle(document.querySelector(selector)).fontSize);
   const height = selector => parseFloat(getComputedStyle(document.querySelector(selector)).height);
@@ -293,6 +294,27 @@ const readabilityChecks = await page.evaluate(() => {
     shopArt: height('.screen.active .good .art') >= 95,
   };
 });
+const shopLayoutChecks = await page.evaluate(() => {
+  const card = document.querySelector('#goodsGrid .good');
+  const subtitle = card?.querySelector('small');
+  const price = card?.querySelector('.price');
+  const selectedName = card?.querySelector('b')?.textContent.trim();
+  const detailName = document.querySelector('#goodDetail h2')?.textContent.trim();
+  const intersects = (a, b) => {
+    if (!a || !b) return true;
+    const x = a.getBoundingClientRect(), y = b.getBoundingClientRect();
+    return x.left < y.right && x.right > y.left && x.top < y.bottom && x.bottom > y.top;
+  };
+  return {
+    cardAndDetailMatch: !!selectedName && selectedName === detailName,
+    descriptionPriceClear: !intersects(subtitle, price),
+    listPriceWon: /원$/.test(price?.textContent.trim() || ''),
+    detailPriceWon: /원$/.test(document.querySelector('#goodDetail .fact .coin')?.textContent.trim() || ''),
+    walletWon: [...document.querySelectorAll('.screen.active [data-gold]')].every(el => /원$/.test(el.textContent.trim())),
+    cardInsideGrid: !!card && card.getBoundingClientRect().bottom <= document.querySelector('#goodsGrid').getBoundingClientRect().bottom + 1,
+  };
+});
+await page.screenshot({ path: join(root, 'qa-screenshots', '10c-shop-won-layout.png') });
 await page.evaluate(() => window.hyRoute('inventory', { direct: true }));
 await page.locator('#itemGrid [data-id="water"]').click();
 const waterBefore = await page.evaluate(() => Number(window.hyState.itemQty.water || 0));
@@ -380,6 +402,7 @@ const report = {
   titleStabilityChecks,
   homeHitGeometry,
   readabilityChecks,
+  shopLayoutChecks,
   internalHeadersPassed: internalHeaderChecks.every(Boolean),
   minimumFontsPassed: minimumFontChecks.every(x => x.offenders.length === 0),
   minimumFontChecks,
@@ -415,6 +438,7 @@ if (
   !homeHitGeometry.aligned ||
   !homeHitGeometry.separated ||
   !Object.values(readabilityChecks).every(Boolean) ||
+  !Object.values(shopLayoutChecks).every(Boolean) ||
   !internalHeaderChecks.every(Boolean) ||
   !minimumFontChecks.every(x => x.offenders.length === 0) ||
   !cardPresentationChecks.galleryScale ||

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#07090b">
-<title>흥양기 · 고흥 여행·기록자 아인 전투 v77.0</title>
+<title>흥양기 · 고흥 여행·기록자 아인 전투 v78.0</title>
 <style>
 :root{--bg:#07090b;--panel:rgba(7,10,12,.90);--panel2:rgba(11,15,18,.77);--gold:#d7ad63;--gold2:#f1d9a1;--line:rgba(235,203,142,.18);--text:#eee7db;--muted:#a89f91;--teal:#8fc6bd;--red:#c56a5e;--blue:#9fcbe0}
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050709;color:var(--text);font-family:Pretendard,"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif}button{font:inherit;color:inherit}
@@ -186,7 +186,7 @@
       <div class="combat-log" id="combatLog" aria-live="polite"></div>
       <div class="skill-grid" id="skillGrid" aria-label="배치 카드와 스킬"></div>
       <div class="knot-hud"><b>7매듭</b><div class="knot-gauge" id="knotGauge" aria-label="현현 공명 7매듭"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
-      <div class="battle-result" id="battleResult"><h3 id="battleResultTitle"></h3><p id="battleResultCopy"></p><div class="reward-grid" id="rewardGrid"><div class="reward-item"><i>▣</i><b>동행 카드 조각</b><small>× 3</small></div><div class="reward-item"><i>▤</i><b>단서 기록</b><small>× 1</small></div><div class="reward-item"><i>●</i><b>엽전</b><small>× 2,400</small></div><div class="reward-item"><i>✦</i><b>기억 조각</b><small>× 1</small></div></div><div class="actions"><button class="gold" id="battleResultPrimary"></button><button class="soft" id="battleResultSecondary">전투 다시 보기</button></div></div>
+      <div class="battle-result" id="battleResult"><h3 id="battleResultTitle"></h3><p id="battleResultCopy"></p><div class="reward-grid" id="rewardGrid"><div class="reward-item"><i>▣</i><b>동행 카드 조각</b><small>× 3</small></div><div class="reward-item"><i>▤</i><b>단서 기록</b><small>× 1</small></div><div class="reward-item"><i>₩</i><b>원화</b><small>2,400원</small></div><div class="reward-item"><i>✦</i><b>기억 조각</b><small>× 1</small></div></div><div class="actions"><button class="gold" id="battleResultPrimary"></button><button class="soft" id="battleResultSecondary">전투 다시 보기</button></div></div>
      </section>
      <div class="skill-banner" id="skillBanner"><small id="skillBannerType">CARD SKILL</small><b id="skillBannerName"></b></div><div class="break-callout" id="breakCallout">BREAK</div><div class="seventh-skill-motion" id="seventhSkillMotion"><img class="manifest-card-lift" id="seventhSkillCard" alt="사용 카드"><div class="manifest-sigil" id="seventhSkillSigil">기록</div><div class="manifest-particles" id="manifestParticles"></div><img id="seventhSkillFigure" alt="7성 스킬 모션"><div class="manifest-technique"><small id="manifestRoute">기록 · 현현 전용기</small><b id="manifestTechnique">일곱 별 현현</b></div><i class="manifest-ground"></i><i class="manifest-impact"></i></div><div class="hit-flash" id="hitFlash"></div><div class="skill-fx" id="skillFx"><i></i><i></i><i></i></div><output class="damage-float" id="damageFloat"></output>
     </div>
@@ -199,13 +199,13 @@
 (()=>{
 'use strict';
 const STORE='hy-dungeon-flow-v660';
-const ART={yeoja:{travel:'../assets/dungeon_flow_v66/yeoja_travel.png',explore:'../assets/dungeon_flow_v66/yeoja_explore.png',dungeon:'../assets/dungeon_flow_v66/yeoja_dungeon.png',boss:'../assets/dungeon_flow_v66/yeoja_boss.png'},nokdong:{travel:'../assets/dungeon_flow/nokdong_travel.jpg',explore:'../assets/dungeon_flow/nokdong_explore.jpg',dungeon:'../assets/dungeon_flow/nokdong_dungeon.jpg',boss:'../assets/battle-v71/nokdong-boss-battle.png'},palyoung:{travel:'../assets/dungeon_flow/palyoung_travel.jpg',explore:'../assets/dungeon_flow/palyoung_explore.jpg',dungeon:'../assets/dungeon_flow/palyoung_dungeon.jpg'},geogeum:{travel:'../assets/dungeon_flow/geogeum_travel.jpg',explore:'../assets/dungeon_flow/geogeum_explore.jpg',dungeon:'../assets/dungeon_flow/geogeum_dungeon.jpg'},naro:{travel:'../assets/dungeon_flow/naro_travel.jpg',explore:'../assets/dungeon_flow/naro_explore.jpg',dungeon:'../assets/dungeon_flow/naro_dungeon.jpg'}};
+const ART={yeoja:{travel:'../assets/travel-v78/yeojaman-golden-road.webp',explore:'../assets/dungeon_flow_v66/yeoja_explore.png',dungeon:'../assets/dungeon_flow_v66/yeoja_dungeon.png',boss:'../assets/dungeon_flow_v66/yeoja_boss.png'},nokdong:{travel:'../assets/travel-v78/nokdong-night-harbor.webp',explore:'../assets/dungeon_flow/nokdong_explore.jpg',dungeon:'../assets/dungeon_flow/nokdong_dungeon.jpg',boss:'../assets/battle-v71/nokdong-boss-battle.png'},palyoung:{travel:'../assets/travel-v78/palyoung-eight-peaks.webp',explore:'../assets/dungeon_flow/palyoung_explore.jpg',dungeon:'../assets/dungeon_flow/palyoung_dungeon.jpg'},geogeum:{travel:'../assets/travel-v78/geogeum-bridge-coast.webp',explore:'../assets/dungeon_flow/geogeum_explore.jpg',dungeon:'../assets/dungeon_flow/geogeum_dungeon.jpg'},naro:{travel:'../assets/travel-v78/naro-space-harbor.webp',explore:'../assets/dungeon_flow/naro_explore.jpg',dungeon:'../assets/dungeon_flow/naro_dungeon.jpg'}};
 const TRAVEL_STILLS={
- yeoja:[ART.yeoja.travel,ART.yeoja.travel,ART.yeoja.explore,ART.yeoja.explore],
- nokdong:[ART.nokdong.travel,'../assets/travel-v72/nokdong-arrival.png',ART.nokdong.explore,'../assets/travel-v72/nokdong-arrival.png'],
- palyoung:[ART.palyoung.travel,ART.palyoung.travel,ART.palyoung.explore,ART.palyoung.explore],
- geogeum:[ART.geogeum.travel,ART.geogeum.travel,ART.geogeum.explore,ART.geogeum.explore],
- naro:[ART.naro.travel,ART.naro.travel,ART.naro.explore,ART.naro.explore]
+ yeoja:Array(4).fill(ART.yeoja.travel),
+ nokdong:Array(4).fill(ART.nokdong.travel),
+ palyoung:Array(4).fill(ART.palyoung.travel),
+ geogeum:Array(4).fill(ART.geogeum.travel),
+ naro:Array(4).fill(ART.naro.travel)
 };
 
 const VIDEO={

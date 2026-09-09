@@ -28,7 +28,7 @@ page.on('pageerror', error => errors.push(String(error)));
 page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
 page.on('response', response => { if (response.status() >= 400) errors.push(`HTTP ${response.status()} ${response.url()}`); });
 await mkdir(out, { recursive: true });
-await page.goto('http://127.0.0.1:4174/admin/dungeon-flow.html?region=yeoja&v=77.0.0', { waitUntil: 'networkidle', timeout:15000 });
+await page.goto('http://127.0.0.1:4174/admin/dungeon-flow.html?region=yeoja&v=78.0.0', { waitUntil: 'networkidle', timeout:15000 });
 
 const snapshot = async (name) => {
   await page.screenshot({ path: join(out, `${name}.png`) });
@@ -136,17 +136,26 @@ const completed = await page.evaluate(() => {
 });
 const promoPage=await browser.newPage({viewport:{width:1279,height:599}});
 promoPage.on('pageerror',error=>errors.push(String(error)));
-await promoPage.goto('http://127.0.0.1:4174/admin/dungeon-flow.html?region=nokdong&v=76.0.0',{waitUntil:'networkidle',timeout:15000});
+await promoPage.goto('http://127.0.0.1:4174/admin/dungeon-flow.html?region=nokdong&v=78.0.0',{waitUntil:'networkidle',timeout:15000});
 await promoPage.locator('#nextTravel').click();
 await promoPage.waitForFunction(()=>document.querySelector('#sceneImg')?.complete&&document.querySelector('#sceneImg')?.naturalWidth>0);
 await promoPage.screenshot({path:join(out,'00-nokdong-travel-promo.png')});
 const travelPromo=await promoPage.evaluate(()=>({area:document.querySelector('#travelArea')?.textContent,badges:[...document.querySelectorAll('#tourismBadges span')].map(x=>x.textContent),image:document.querySelector('#sceneImg')?.getAttribute('src'),imageWidth:document.querySelector('#sceneImg')?.naturalWidth,captionVisible:document.querySelector('.travel-caption')?.getBoundingClientRect().width>300,passportVisible:document.querySelector('.travel-passport')?.getBoundingClientRect().height>200}));
 await promoPage.close();
-const report = { phases, travelExperience, travelPromo, markerChecks, clueCount, dungeonEnabled, stageLayout, stageArts, zoneCount, bossEnabled, manifestReady, fxChecks, layout, battleLayout, completed, errors };
+const regionalTravelAssets=[];
+for(const region of ['yeoja','nokdong','palyoung','geogeum','naro']){
+  const regionPage=await browser.newPage({viewport:{width:1279,height:599}});
+  regionPage.on('pageerror',error=>errors.push(String(error)));
+  await regionPage.goto(`http://127.0.0.1:4174/admin/dungeon-flow.html?region=${region}&v=78.0.0`,{waitUntil:'networkidle',timeout:15000});
+  await regionPage.waitForFunction(()=>document.querySelector('#sceneImg')?.complete&&document.querySelector('#sceneImg')?.naturalWidth>0);
+  regionalTravelAssets.push(await regionPage.evaluate(region=>{const img=document.querySelector('#sceneImg');return {region,src:img?.getAttribute('src'),width:img?.naturalWidth,height:img?.naturalHeight};},region));
+  await regionPage.close();
+}
+const report = { phases, travelExperience, travelPromo, regionalTravelAssets, markerChecks, clueCount, dungeonEnabled, stageLayout, stageArts, zoneCount, bossEnabled, manifestReady, fxChecks, layout, battleLayout, completed, errors };
 await writeFile(join(out, 'report.json'), JSON.stringify(report, null, 2));
 await browser.close();
 server.close();
 console.log(JSON.stringify(report));
 
 const hdScenes = ['travel','explore','dungeon'].every(key => phases[key].image.width >= 1600 && phases[key].image.height >= 900 && phases[key].image.visible);
-if (!hdScenes || !travelExperience.passportInside || !travelExperience.verticalSteps || travelExperience.tourismBadges!==4 || travelPromo.area!=='도양읍 · 녹동항' || travelPromo.badges.length!==4 || !travelPromo.image?.includes('travel-v72/nokdong-arrival.png') || travelPromo.imageWidth<1600 || !travelPromo.captionVisible || !travelPromo.passportVisible || markerChecks.length !== 3 || !markerChecks.every(x => x.visible) || clueCount?.trim() !== '기록 3 / 3' || !dungeonEnabled || !stageLayout?.inside || stageLayout.choices !== 2 || stageArts.length!==7 || !stageArts.every((x,i)=>x.src?.includes(`dungeon-v75/stage-0${i+1}`)&&x.width>=1600&&x.height>=900) || zoneCount !== 7 || !bossEnabled || !manifestReady || !Object.values(fxChecks).every(Boolean) || !Object.values(layout).every(Boolean) || !Object.values(battleLayout).every(Boolean) || !completed || errors.length) process.exit(1);
+if (!hdScenes || !travelExperience.passportInside || !travelExperience.verticalSteps || travelExperience.tourismBadges!==4 || travelPromo.area!=='도양읍 · 녹동항' || travelPromo.badges.length!==4 || !travelPromo.image?.includes('travel-v78/nokdong-night-harbor.webp') || travelPromo.imageWidth<1900 || !travelPromo.captionVisible || !travelPromo.passportVisible || regionalTravelAssets.length!==5 || !regionalTravelAssets.every(x=>x.src?.includes('travel-v78/')&&x.width===1920&&x.height===1080) || markerChecks.length !== 3 || !markerChecks.every(x => x.visible) || clueCount?.trim() !== '기록 3 / 3' || !dungeonEnabled || !stageLayout?.inside || stageLayout.choices !== 2 || stageArts.length!==7 || !stageArts.every((x,i)=>x.src?.includes(`dungeon-v75/stage-0${i+1}`)&&x.width>=1600&&x.height>=900) || zoneCount !== 7 || !bossEnabled || !manifestReady || !Object.values(fxChecks).every(Boolean) || !Object.values(layout).every(Boolean) || !Object.values(battleLayout).every(Boolean) || !completed || errors.length) process.exit(1);
