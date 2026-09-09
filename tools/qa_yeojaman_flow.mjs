@@ -28,7 +28,7 @@ page.on('pageerror', error => errors.push(String(error)));
 page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
 page.on('response', response => { if (response.status() >= 400) errors.push(`HTTP ${response.status()} ${response.url()}`); });
 await mkdir(out, { recursive: true });
-await page.goto('http://127.0.0.1:4174/admin/dungeon-flow.html?region=yeoja&v=72.0.0', { waitUntil: 'networkidle', timeout:15000 });
+await page.goto('http://127.0.0.1:4174/admin/dungeon-flow.html?region=yeoja&v=74.0.0', { waitUntil: 'networkidle', timeout:15000 });
 
 const snapshot = async (name) => {
   await page.screenshot({ path: join(out, `${name}.png`) });
@@ -68,7 +68,7 @@ await page.waitForSelector('#game[data-phase="dungeon"]');
 phases.dungeon = await snapshot('03-dungeon');
 
 let stageLayout = null;
-for (let zone = 0; zone < 5; zone += 1) {
+for (let zone = 0; zone < 7; zone += 1) {
   await page.locator(`.zone[data-i="${zone}"]`).click();
   await page.waitForSelector('#stageSheet.open');
   if (zone === 0) {
@@ -133,7 +133,7 @@ const completed = await page.evaluate(() => {
 });
 const promoPage=await browser.newPage({viewport:{width:1279,height:599}});
 promoPage.on('pageerror',error=>errors.push(String(error)));
-await promoPage.goto('http://127.0.0.1:4174/admin/dungeon-flow.html?region=nokdong&v=72.0.0',{waitUntil:'networkidle',timeout:15000});
+await promoPage.goto('http://127.0.0.1:4174/admin/dungeon-flow.html?region=nokdong&v=74.0.0',{waitUntil:'networkidle',timeout:15000});
 await promoPage.locator('#nextTravel').click();
 await promoPage.waitForFunction(()=>document.querySelector('#sceneImg')?.complete&&document.querySelector('#sceneImg')?.naturalWidth>0);
 await promoPage.screenshot({path:join(out,'00-nokdong-travel-promo.png')});
@@ -146,4 +146,4 @@ server.close();
 console.log(JSON.stringify(report));
 
 const hdScenes = ['travel','explore','dungeon'].every(key => phases[key].image.width >= 1600 && phases[key].image.height >= 900 && phases[key].image.visible);
-if (!hdScenes || !travelExperience.passportInside || !travelExperience.verticalSteps || travelExperience.tourismBadges!==4 || travelPromo.area!=='도양읍 · 녹동항' || travelPromo.badges.length!==4 || !travelPromo.image?.includes('travel-v72/nokdong-arrival.png') || travelPromo.imageWidth<1600 || !travelPromo.captionVisible || !travelPromo.passportVisible || markerChecks.length !== 3 || !markerChecks.every(x => x.visible) || clueCount?.trim() !== '기록 3 / 3' || !dungeonEnabled || !stageLayout?.inside || stageLayout.choices !== 2 || zoneCount !== 5 || !bossEnabled || !manifestReady || !Object.values(fxChecks).every(Boolean) || !Object.values(layout).every(Boolean) || !Object.values(battleLayout).every(Boolean) || !completed || errors.length) process.exit(1);
+if (!hdScenes || !travelExperience.passportInside || !travelExperience.verticalSteps || travelExperience.tourismBadges!==4 || travelPromo.area!=='도양읍 · 녹동항' || travelPromo.badges.length!==4 || !travelPromo.image?.includes('travel-v72/nokdong-arrival.png') || travelPromo.imageWidth<1600 || !travelPromo.captionVisible || !travelPromo.passportVisible || markerChecks.length !== 3 || !markerChecks.every(x => x.visible) || clueCount?.trim() !== '기록 3 / 3' || !dungeonEnabled || !stageLayout?.inside || stageLayout.choices !== 2 || zoneCount !== 7 || !bossEnabled || !manifestReady || !Object.values(fxChecks).every(Boolean) || !Object.values(layout).every(Boolean) || !Object.values(battleLayout).every(Boolean) || !completed || errors.length) process.exit(1);

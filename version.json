@@ -1,9 +1,9 @@
 {
   "product": "흥양기",
   "channel": "stable",
-  "version": "72.0.0",
-  "release_name": "실제 고흥 여행형 탐사",
-  "content_version": "2026.09.09.10",
+  "version": "74.0.0",
+  "release_name": "카드 격 도감·대신 시간 현현",
+  "content_version": "2026.09.09.12",
   "api_version": "1.1.0",
   "min_supported_version": "37.0.0",
   "force_update": false,
@@ -13,10 +13,10 @@
   "check_interval_seconds": 60,
   "entry": "./index.html",
   "release_notes": [
-    "풍경이 화면을 채우고 여행 동선이 우측 기록장에 쌓이는 고흥 여행형 탐사 UI",
-    "여자만·녹동항·팔영산·거금도·나로도의 실제 관광 명소와 지역 소개 추가",
-    "이동 단계마다 배경·장소 설명·발견 수가 바뀌는 시네마틱 여행 장면 구현",
-    "녹동항 생활 어항과 여행자 아인을 담은 전용 고해상도 도착 장면 추가"
+    "125종을 잡귀·하위신·신령·상위신·대신의 원래 격 체계로 도감에 분류",
+    "미획득 카드의 얼굴·이름·스킬을 숨기고 검은 실루엣과 격만 표시",
+    "대신 15종을 5지역 시간대별 현현 레이드에 배치하고 계정당 하루 1회 보상 적용",
+    "최상위 제작 전용 대신 5종과 일반 던전 획득 풀을 분리"
   ],
   "api_health_endpoint": "https://ybflkszmymalhafzzdbs.supabase.co/functions/v1/hy/master",
   "api_status_endpoint": "",
