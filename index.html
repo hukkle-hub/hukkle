@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#090c0e">
-<meta name="hy-version" content="67.0.0">
+<meta name="hy-version" content="68.0.0">
 <link rel="icon" href="./icon.svg" type="image/svg+xml">
-<title>흥양기 v67 · 시작 화면 안정화</title>
+<title>흥양기 v68 · 금기 전투와 7성 현현</title>
 
 <style>
 :root{--ink:#080b0d;--panel:rgba(9,12,14,.88);--panel2:rgba(16,20,23,.88);--line:rgba(239,218,176,.16);--gold:#ddb86f;--gold2:#ffe0a0;--text:#f5efe2;--muted:#aaa394;--red:#c65450;--blue:#6eb4d0;--jade:#66b29c;--ui:1;--safe-b:env(safe-area-inset-bottom,0px);--safe-t:env(safe-area-inset-top,0px)}
@@ -669,10 +669,11 @@ $('#titleStart').onclick=enterGame;
 const regionToFlow={yeojaman:'yeoja',nokdong:'nokdong',palyoung:'palyoung',geogeum:'geogeum',naro:'naro'};
 const flowToRegion={yeoja:'yeojaman',nokdong:'nokdong',palyoung:'palyoung',geogeum:'geogeum',naro:'naro'};
 let activeJourneyRegion=null,journeyWatchdog=null;
-function journeyCompanionName(){const c=(window.hyCards||[]).find(x=>x.id===state.companionCard);return c?.name||'동행 카드'}
-function sendJourneyContext(target=$('#journeyFrame')?.contentWindow){if(!target)return;const origin=location.origin==='null'?'*':location.origin;target.postMessage({type:'hy-journey-context',itemQty:{...(state.itemQty||{})},companionCard:state.companionCard||null,companionName:journeyCompanionName(),motion:state.motion!==false},origin)}
+function journeyCompanion(){return (window.hyCards||[]).find(x=>x.id===state.companionCard)||(window.hyCards||[]).find(x=>x.id==='c075')||(window.hyCards||[])[0]}
+function journeyCompanionName(){return journeyCompanion()?.name||'동행 카드'}
+function sendJourneyContext(target=$('#journeyFrame')?.contentWindow){if(!target)return;const origin=location.origin==='null'?'*':location.origin,c=journeyCompanion(),stage=c?Math.max(1,Math.min(6,Number(state.cardStages?.[c.id]||c.stars||1))):1,active=c?.skills?.[Math.max(0,stage-1)],manifest=c?.specials?.[c.specials.length-1];target.postMessage({type:'hy-journey-context',itemQty:{...(state.itemQty||{})},companionCard:c?.id||null,companionName:c?.name||'동행 카드',companionRole:c?`${c.faction} · ${c.role}`:'동행',companionStage:stage,companionImg:c?new URL(c.img,location.href).href:null,companionFinalImg:c?new URL(c.finalImg||c.img,location.href).href:null,companionSkill:active?.name||c?.skill||'기록 베기',companionManifest:manifest?.name||c?.finalName||`${c?.name||'동행 카드'} · 7성 현현`,motion:state.motion!==false},origin)}
 function setJourneyLoading(show,text='이동 경로와 조사 기록을 불러옵니다.'){const l=$('#journeyLoader');if(!l)return;l.classList.toggle('hidden',!show);$('#journeyLoaderText').textContent=text;$('#journeyRetry').classList.add('hidden');clearTimeout(journeyWatchdog);if(show)journeyWatchdog=setTimeout(()=>{$('#journeyLoaderText').textContent='탐험 화면 연결이 지연되고 있습니다.';$('#journeyRetry').classList.remove('hidden')},6500)}
-function startJourney(region){const id=regionToFlow[region]||regionToFlow.yeojaman;activeJourneyRegion=id;state.selectedRegion=flowToRegion[id]||region;state.journeyVisits=state.journeyVisits||{};state.journeyVisits[id]=Number(state.journeyVisits[id]||0)+1;save();setJourneyLoading(true);const f=$('#journeyFrame');f.src=`./admin/dungeon-flow.html?embedded=1&region=${encodeURIComponent(id)}&v=67.0.0&t=${Date.now()}`;window.hyRoute('journey',{direct:true})}
+function startJourney(region){const id=regionToFlow[region]||regionToFlow.yeojaman;activeJourneyRegion=id;state.selectedRegion=flowToRegion[id]||region;state.journeyVisits=state.journeyVisits||{};state.journeyVisits[id]=Number(state.journeyVisits[id]||0)+1;save();setJourneyLoading(true);const f=$('#journeyFrame');f.src=`./admin/dungeon-flow.html?embedded=1&region=${encodeURIComponent(id)}&v=68.0.0&t=${Date.now()}`;window.hyRoute('journey',{direct:true})}
 $('#journeyRetry').onclick=()=>activeJourneyRegion&&startJourney(flowToRegion[activeJourneyRegion]||activeJourneyRegion);
 $('#journeyBack').onclick=()=>{clearTimeout(journeyWatchdog);try{$('#journeyFrame').src='about:blank'}catch{}setJourneyLoading(false);window.hyRoute('map',{direct:true})};
 window.addEventListener('message',e=>{const frame=$('#journeyFrame');if(!frame||e.source!==frame.contentWindow)return;const d=e.data||{};
@@ -686,7 +687,8 @@ window.addEventListener('message',e=>{const frame=$('#journeyFrame');if(!frame||
  if(d.type==='hy-journey-dungeon-open'){state.dungeonOpened=state.dungeonOpened||[];if(!state.dungeonOpened.includes(d.region))state.dungeonOpened.push(d.region);save();return}
  if(d.type==='hy-journey-zone'){state.dungeonZones=state.dungeonZones||{};state.dungeonZones[d.region]=state.dungeonZones[d.region]||[];if(!state.dungeonZones[d.region].includes(d.zone))state.dungeonZones[d.region].push(d.zone);state.missionProgress.m5=Math.min(1000,Number(state.missionProgress.m5||0)+Math.max(0,Number(d.walkSteps||0)));save();window.hyRenderMissions?.();return}
  if(d.type==='hy-journey-boss-seen'){state.regionBossSeen=state.regionBossSeen||{};state.regionBossSeen[d.region]={boss:d.boss,taboo:d.taboo,at:Date.now()};save();return}
- if(d.type==='hy-journey-complete'){state.completedJourneys=state.completedJourneys||[];if(!state.completedJourneys.includes(d.region))state.completedJourneys.push(d.region);if(d.region==='yeoja'){state.tutorialComplete=true;state.firstDestination='yeojaman';state.itemQty.bottle=Math.max(1,Number(state.itemQty.bottle||0))}save();toast(`${d.name||d.region} 이동·탐험·조사·보스 등장 기록을 완료했습니다.`);window.hyRenderInv?.();window.hyRenderMissions?.();return}
+ if(d.type==='hy-journey-battle-complete'){state.regionBattles=state.regionBattles||{};state.regionBattles[d.region]={boss:d.boss,turns:d.turns,companion:d.companion,at:Date.now()};save();toast(`${d.boss}의 금기를 봉합했습니다.`);return}
+ if(d.type==='hy-journey-complete'){state.completedJourneys=state.completedJourneys||[];if(!state.completedJourneys.includes(d.region))state.completedJourneys.push(d.region);if(d.region==='yeoja'){state.tutorialComplete=true;state.firstDestination='yeojaman';state.itemQty.bottle=Math.max(1,Number(state.itemQty.bottle||0))}save();toast(`${d.name||d.region} 이동·탐험·조사·보스 전투 기록을 완료했습니다.`);window.hyRenderInv?.();window.hyRenderMissions?.();return}
 });
 // map departure now actually starts the selected region flow.
 const depart=$('#mapDepart');if(depart)depart.onclick=()=>{const id=state.selectedRegion||'yeojaman';if(id==='goheung')return toast('현재 생활 거점입니다. 다른 지역을 선택해주세요.');if(!state.tutorialComplete&&id!=='yeojaman')return toast('첫 이야기의 조사 기록을 마치면 다른 지역 탐험이 열립니다.');state.firstDestination=id;state.missionProgress=state.missionProgress||{};if(id==='yeojaman')state.missionProgress.m1=1;save();startJourney(id)};

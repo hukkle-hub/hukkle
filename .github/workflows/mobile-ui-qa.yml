@@ -10,6 +10,7 @@ on:
       - "update-client.js"
       - "tools/qa_mobile_ui.mjs"
       - "tools/qa_yeojaman_flow.mjs"
+      - "tools/qa_combat_v68.mjs"
       - "package.json"
       - ".github/workflows/mobile-ui-qa.yml"
   push:
@@ -33,6 +34,7 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: npm run qa:mobile
       - run: npm run qa:yeojaman
+      - run: npm run qa:combat
       - name: Upload nine-screen QA artifact
         if: always()
         uses: actions/upload-artifact@v4
@@ -47,5 +49,13 @@ jobs:
         with:
           name: yeojaman-full-flow-qa
           path: qa-yeojaman/
+          if-no-files-found: error
+          retention-days: 30
+      - name: Upload five-region combat QA artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: five-region-combat-qa
+          path: qa-combat/
           if-no-files-found: error
           retention-days: 30
