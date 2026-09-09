@@ -28,7 +28,7 @@ page.on('pageerror', error => errors.push(String(error)));
 page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
 page.on('response', response => { if (response.status() >= 400) errors.push(`HTTP ${response.status()} ${response.url()}`); });
 await mkdir(out, { recursive: true });
-await page.goto('http://127.0.0.1:4174/admin/dungeon-flow.html?region=yeoja&v=68.0.0', { waitUntil: 'networkidle' });
+await page.goto('http://127.0.0.1:4174/admin/dungeon-flow.html?region=yeoja&v=69.0.0', { waitUntil: 'networkidle' });
 
 const snapshot = async (name) => {
   await page.screenshot({ path: join(out, `${name}.png`) });
@@ -66,7 +66,16 @@ await page.locator('#enterDungeon').click();
 await page.waitForSelector('#game[data-phase="dungeon"]');
 phases.dungeon = await snapshot('03-dungeon');
 
-for (let zone = 0; zone < 3; zone += 1) await page.locator(`.zone[data-i="${zone}"]`).click();
+let stageLayout = null;
+for (let zone = 0; zone < 5; zone += 1) {
+  await page.locator(`.zone[data-i="${zone}"]`).click();
+  await page.waitForSelector('#stageSheet.open');
+  if (zone === 0) {
+    stageLayout = await page.locator('#stageSheet').evaluate(el => { const r=el.getBoundingClientRect(); return {inside:r.left>=0&&r.top>=0&&r.right<=innerWidth&&r.bottom<=innerHeight,choices:el.querySelectorAll('#stageChoices button').length}; });
+    await page.screenshot({ path: join(out, '03b-dungeon-stage.png') });
+  }
+  await page.locator('#stageChoices [data-choice="safe"]').click();
+}
 const zoneCount = await page.locator('.zone.visited').count();
 const bossEnabled = await page.locator('#completeRegion').isEnabled();
 await page.locator('#completeRegion').click();
@@ -91,8 +100,11 @@ const layout = await page.evaluate(() => {
 await page.locator('#confirmBoss').click();
 await page.waitForSelector('#battleShell.active');
 phases.battle = await snapshot('05-battle');
+const fxChecks = {};
 for (const skill of ['break','guard','strike','break']) {
   await page.locator(`[data-skill="${skill}"]`).click();
+  await page.waitForTimeout(70);
+  fxChecks[skill] = await page.locator('#skillFx').evaluate((el,kind) => el.classList.contains('play') && el.classList.contains(kind), skill);
   await page.waitForTimeout(650);
 }
 const manifestReady = await page.locator('#manifestSkill').isEnabled();
@@ -116,11 +128,11 @@ const completed = await page.evaluate(() => {
   const s=JSON.parse(localStorage.getItem('hy-dungeon-flow-v660') || '{}')?.yeoja;
   return s?.complete === true && s?.battle?.completed === true;
 });
-const report = { phases, markerChecks, clueCount, dungeonEnabled, zoneCount, bossEnabled, manifestReady, layout, battleLayout, completed, errors };
+const report = { phases, markerChecks, clueCount, dungeonEnabled, stageLayout, zoneCount, bossEnabled, manifestReady, fxChecks, layout, battleLayout, completed, errors };
 await writeFile(join(out, 'report.json'), JSON.stringify(report, null, 2));
 await browser.close();
 server.close();
 console.log(JSON.stringify(report));
 
 const hdScenes = ['travel','explore','dungeon'].every(key => phases[key].image.width >= 1600 && phases[key].image.height >= 900 && phases[key].image.visible);
-if (!hdScenes || markerChecks.length !== 3 || !markerChecks.every(x => x.visible) || clueCount?.trim() !== '기록 3 / 3' || !dungeonEnabled || zoneCount !== 3 || !bossEnabled || !manifestReady || !Object.values(layout).every(Boolean) || !Object.values(battleLayout).every(Boolean) || !completed || errors.length) process.exit(1);
+if (!hdScenes || markerChecks.length !== 3 || !markerChecks.every(x => x.visible) || clueCount?.trim() !== '기록 3 / 3' || !dungeonEnabled || !stageLayout?.inside || stageLayout.choices !== 2 || zoneCount !== 5 || !bossEnabled || !manifestReady || !Object.values(fxChecks).every(Boolean) || !Object.values(layout).every(Boolean) || !Object.values(battleLayout).every(Boolean) || !completed || errors.length) process.exit(1);

@@ -1,9 +1,9 @@
 {
   "product": "흥양기",
   "channel": "stable",
-  "version": "68.0.0",
-  "release_name": "금기 보스전·카드 스킬·7성 현현",
-  "content_version": "2026.09.09.06",
+  "version": "69.0.0",
+  "release_name": "5단계 던전·제작 카드·스킬 모션",
+  "content_version": "2026.09.09.07",
   "api_version": "1.1.0",
   "min_supported_version": "37.0.0",
   "force_update": false,
@@ -13,10 +13,10 @@
   "check_interval_seconds": 60,
   "entry": "./index.html",
   "release_notes": [
-    "여자만을 포함한 5개 지역에 행동 예고·금기 대응·BREAK 기반 보스 전투 추가",
-    "동행 카드의 성급·활성 스킬·역할이 실제 탐험 전투에 반영",
-    "공명 100에서 카드별 최종 이미지와 기술명으로 7성 현현 컷인 발동",
-    "카드게임 15종·RPG 15종 벤치마크를 흥양기식 짧은 턴 전투로 재설계"
+    "5개 지역을 일반 조우·갈림길·정예·의례·네임드의 5단계 던전으로 확장",
+    "기본 전투력 최상위 5종인 달걀귀신·미르·별상·조왕각시·액을 고급 제작으로만 획득하도록 분리",
+    "파티 보유 카드 영역을 2열로 넓혀 카드명·적합도·선택 상세 겹침 제거",
+    "공격 참격·파훼 균열·수호 결계·피해 수치와 7성 현현 컷인을 개별 모션으로 구현"
   ],
   "api_health_endpoint": "https://ybflkszmymalhafzzdbs.supabase.co/functions/v1/hy/master",
   "api_status_endpoint": "",
