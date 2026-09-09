@@ -33,7 +33,7 @@ await page.route('https://ybflkszmymalhafzzdbs.supabase.co/functions/v1/hy/syste
   })
 );
 const errors = [];
-page.on('pageerror', error => errors.push(String(error)));
+page.on('pageerror', error => errors.push(error.stack || String(error)));
 page.on('console', message => {
   if (message.type() === 'error') {
     const location = message.location();
@@ -235,14 +235,36 @@ const goldAfter = await page.evaluate(() => Number(window.hyState.gold || 0));
 
 await page.locator('.screen.active .nav button[data-route="cards"]').click();
 const renderedCards = await page.locator('#cardGrid [data-id]').count();
+await page.locator('#cardModeTabs [data-tab="craft"]').click();
+const craftOnlyCount = await page.locator('#cardGrid [data-id]').count();
+const craftLabels = await page.locator('#cardGrid .craft-only-mark').allTextContents();
+await page.evaluate(() => { window.hyState.gold=200000; window.hyState.itemQty.mirror=2; window.hyState.itemQty.paper=40; window.hyRenderCards(); });
+const craftBefore = await page.evaluate(() => ({gold:window.hyState.gold,mirror:window.hyState.itemQty.mirror,paper:window.hyState.itemQty.paper}));
+await page.locator('#cardEvolve').click();
+const craftAfter = await page.evaluate(() => ({gold:window.hyState.gold,mirror:window.hyState.itemQty.mirror,paper:window.hyState.itemQty.paper,made:window.hyState.craftedCards.includes('c088')}));
 await page.locator('.screen.active .nav button[data-route="party"]').click();
 await page.locator('#autoParty').click();
 const partySize = await page.evaluate(() => window.hyState.party.length);
+const partyRosterChecks = await page.evaluate(() => {
+  const grid=document.querySelector('#rosterGrid'),head=document.querySelector('.party-side-head'),title=head?.querySelector('b'),fit=head?.querySelector('span');
+  const overlap=(a,b)=>{if(!a||!b)return true;const x=a.getBoundingClientRect(),y=b.getBoundingClientRect();return x.left<y.right&&x.right>y.left&&x.top<y.bottom&&x.bottom>y.top};
+  return {
+    twoColumns:getComputedStyle(grid).gridTemplateColumns.split(' ').length===2,
+    headerClear:!overlap(title,fit),
+    craftedVisible:!!grid.querySelector('[data-id="c088"]'),
+    craftLockedHidden:![...grid.querySelectorAll('[data-id]')].some(el=>['c077','c066','c011','c098'].includes(el.dataset.id)),
+    inside:grid.getBoundingClientRect().right<=document.querySelector('.party-side-v6').getBoundingClientRect().right+1,
+  };
+});
 const functionalChecks = {
   inventoryConsume: waterAfter === waterBefore - 1,
   shopPurchase: goldAfter < goldBefore,
   renderedCards: renderedCards > 0,
+  craftOnlyCount: craftOnlyCount === 5,
+  craftLabels: craftLabels.length === 5 && craftLabels.every(x => x.trim() === '제작'),
+  craftTransaction: craftAfter.made && craftAfter.gold === craftBefore.gold - 45000 && craftAfter.mirror === craftBefore.mirror - 1 && craftAfter.paper === craftBefore.paper - 20,
   partySize: partySize === 5,
+  partyRoster: Object.values(partyRosterChecks).every(Boolean),
 };
 const screenGeometry = await page.evaluate(() => {
   const box = selector => {
@@ -296,6 +318,7 @@ const report = {
   journeyActive,
   startupRecovery,
   functionalChecks,
+  partyRosterChecks,
   screenGeometry,
   cinematicCount,
   consoleErrorCount: errors.length,
