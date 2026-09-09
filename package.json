@@ -5,7 +5,8 @@
     "qa:mobile": "node tools/qa_mobile_ui.mjs",
     "qa:yeojaman": "node tools/qa_yeojaman_flow.mjs",
     "qa:combat": "node tools/qa_combat_v68.mjs",
-    "qa:gameplay": "node tools/qa_gameplay_v75.mjs"
+    "qa:gameplay": "node tools/qa_gameplay_v75.mjs",
+    "qa:manifest": "node tools/qa_manifest_v76.mjs"
   },
   "devDependencies": {
     "playwright": "1.55.0"

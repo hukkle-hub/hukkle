@@ -29,7 +29,7 @@ for (const region of regions) {
   const errors = [];
   page.on('pageerror', error => errors.push(String(error)));
   page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
-  await page.goto(`http://127.0.0.1:4175/admin/dungeon-flow.html?region=${region}&v=75.0.0`, { waitUntil:'networkidle' });
+  await page.goto(`http://127.0.0.1:4175/admin/dungeon-flow.html?region=${region}&v=76.0.0`, { waitUntil:'networkidle' });
   await page.evaluate((id) => {
     localStorage.setItem('hy-dungeon-flow-v660', JSON.stringify({
       [id]: {
@@ -99,7 +99,7 @@ for (const region of regions) {
   await page.close();
 }
 
-const report = { version:'75.0.0', regions:results, allPassed:results.every(r => r.victory && r.completed && r.playerHp > 0 && r.actions <= 18 && r.companion.includes('검수 동행') && r.deployedCards===5 && r.raidUnits===5 && r.raidVertical && r.knots===7 && r.railVisible && r.rewards===4 && r.manifestActor && r.ainVisible && r.skillBannerSeen && r.criticalSeen && r.seventhMotionSeen && r.criticalGold && r.errors.length === 0) };
+const report = { version:'76.0.0', regions:results, allPassed:results.every(r => r.victory && r.completed && r.playerHp > 0 && r.actions <= 18 && r.companion.includes('검수 동행') && r.deployedCards===5 && r.raidUnits===5 && r.raidVertical && r.knots===7 && r.railVisible && r.rewards===4 && r.manifestActor && r.ainVisible && r.skillBannerSeen && r.criticalSeen && r.seventhMotionSeen && r.criticalGold && r.errors.length === 0) };
 await writeFile(join(out, 'report.json'), JSON.stringify(report, null, 2));
 console.log(JSON.stringify(report));
 await browser.close();
