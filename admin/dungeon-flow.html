@@ -149,6 +149,96 @@
 @keyframes fxRise{0%{opacity:0;transform:translateY(32%) scale(.82)}30%,100%{opacity:1;transform:none}}@keyframes fxDash{0%{opacity:0;transform:translateX(38%) skewX(-6deg) scale(.9)}28%,100%{opacity:1;transform:none}}@keyframes fxDrop{0%{opacity:0;transform:translateY(-28%) scale(1.08)}30%,100%{opacity:1;transform:none}}@keyframes fxUnfold{0%{opacity:0;clip-path:inset(0 48%);transform:scale(1.08)}35%,100%{opacity:1;clip-path:inset(0);transform:none}}@keyframes fxEmerge{0%{opacity:0;filter:blur(18px) drop-shadow(0 0 32px var(--fx-primary));transform:scale(.72)}38%,100%{opacity:1;filter:blur(0) drop-shadow(0 0 32px var(--fx-primary));transform:none}}@keyframes fxTurn{0%{opacity:0;transform:perspective(900px) rotateY(72deg) scale(.86)}38%,100%{opacity:1;transform:none}}@keyframes fxCameraShake{20%{transform:translate(-5px,2px)}40%{transform:translate(6px,-3px)}60%{transform:translate(-3px,1px)}80%{transform:translate(2px,-1px)}}
 @media(max-width:900px){.seventh-skill-motion .manifest-card-lift{left:7%;width:17%;height:44%}.seventh-skill-motion .manifest-sigil{left:39%;width:27vh}.seventh-skill-motion #seventhSkillFigure{right:0;width:48%}.manifest-technique{left:25%;min-width:42%;bottom:9%;padding:6px 18px}.manifest-impact{left:51%}}
 @media(prefers-reduced-motion:reduce){.manifest-particles{display:none}.seventh-skill-motion .manifest-card-lift,.seventh-skill-motion .manifest-sigil,.seventh-skill-motion #seventhSkillFigure,.manifest-technique,.manifest-ground,.manifest-impact{animation-duration:.32s!important}.manifest-cine.profiled{animation-duration:.75s!important}}
+
+/* ══ 스킬 연출 — 루트마다 다르게, 등급마다 무게 다르게 ═══════
+   750개 스킬이 이미 motion_key(루트)·grade 를 갖고 있다. 화면이 그걸 쓴다. */
+
+/* 히트스톱 — 임팩트 순간 판을 세운다. 타격감의 핵심. */
+#game.hitstop *{animation-play-state:paused!important}
+
+/* 등급이 흔들림·번쩍임의 세기를 정한다 */
+#battleShell.shake{animation-duration:calc(.34s * var(--shake-k,1))}
+#hitFlash.play{opacity:calc(var(--flash-k,1) * .55)}
+
+/* ── 루트 여섯 — 스킬이 나가는 결이 다르다 ── */
+/* 수호: 앞으로 버티고 선다. 물러서지 않는다 */
+#game[data-route="수호"] .skill-fx.play{animation:rtGuard .62s cubic-bezier(.2,.9,.2,1)}
+@keyframes rtGuard{0%{transform:scale(.86);opacity:0}30%{transform:scale(1.02);opacity:1}100%{transform:scale(1);opacity:0}}
+/* 기록: 공중에 표식을 긋는다 — 사선으로 지나간다 */
+#game[data-route="기록"] .skill-fx.play{animation:rtRecord .7s ease-out}
+@keyframes rtRecord{0%{transform:translate(-24%,14%) rotate(-16deg) scaleX(.2);opacity:0}
+ 26%{opacity:1}100%{transform:translate(22%,-12%) rotate(-16deg) scaleX(1.15);opacity:0}}
+/* 의례: 문양이 원으로 펼쳐진다 */
+#game[data-route="의례"] .skill-fx.play{animation:rtRite .9s cubic-bezier(.2,.8,.2,1)}
+@keyframes rtRite{0%{transform:scale(.3) rotate(-40deg);opacity:0}35%{opacity:1}
+ 100%{transform:scale(1.5) rotate(50deg);opacity:0}}
+/* 해령: 물결이 옆으로 쓸고 간다 */
+#game[data-route="해령"] .skill-fx.play{animation:rtTide .8s ease-in-out}
+@keyframes rtTide{0%{transform:translateX(-42%) skewX(-10deg);opacity:0}
+ 30%{opacity:1}100%{transform:translateX(40%) skewX(8deg);opacity:0}}
+/* 심판: 위에서 아래로 내리꽂는다 */
+#game[data-route="심판"] .skill-fx.play{animation:rtJudge .55s cubic-bezier(.5,0,.75,0)}
+@keyframes rtJudge{0%{transform:translateY(-46%) scaleY(.5);opacity:0}
+ 22%{opacity:1}70%{transform:translateY(0) scaleY(1.1)}100%{transform:translateY(4%);opacity:0}}
+/* 넋: 아래에서 스며 올라온다 */
+#game[data-route="넋"] .skill-fx.play{animation:rtSoul 1s ease-out}
+@keyframes rtSoul{0%{transform:translateY(34%) scale(.8);opacity:0;filter:blur(6px)}
+ 40%{opacity:.95;filter:blur(1px)}100%{transform:translateY(-16%) scale(1.1);opacity:0;filter:blur(4px)}}
+
+/* ── 7성 현현 소환 — 카드가 아니라 동행자가 된다 ── */
+#summonStage{position:absolute;inset:0;z-index:70;display:none;pointer-events:none}
+#summonStage.on{display:block}
+#summonStage .veil{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 56%,transparent 16%,rgba(2,3,4,.94) 74%);opacity:0;animation:sVeil 2.6s ease forwards}
+@keyframes sVeil{0%{opacity:0}18%{opacity:1}82%{opacity:1}100%{opacity:0}}
+#summonStage .ring{position:absolute;left:50%;bottom:12%;width:26%;aspect-ratio:3/1;
+  translate:-50% 0;border:2px solid var(--sum-sec,#ddb86f);border-radius:50%;opacity:0;
+  box-shadow:0 0 30px var(--sum-pri,#ffe0a0);animation:sRing 2.6s cubic-bezier(.2,.8,.2,1) forwards}
+@keyframes sRing{0%{opacity:0;transform:scale(.4)}22%{opacity:1;transform:scale(1.35)}
+ 84%{opacity:.8;transform:scale(1.45)}100%{opacity:0}}
+/* 카드가 판 가운데로 솟아오른다 */
+#summonStage .card{position:absolute;left:50%;bottom:10%;width:8.5%;aspect-ratio:29/50;
+  translate:-50% 0;transform-origin:50% 100%;animation:sRise 2.6s cubic-bezier(.22,.9,.2,1) forwards}
+@keyframes sRise{0%{transform:translateY(30%) scale(.9);opacity:0}
+ 12%{opacity:1}46%{transform:translateY(-46%) scale(3.1)}100%{transform:translateY(-46%) scale(3.1);opacity:1}}
+#summonStage .card .base{position:absolute;inset:0;border:2px solid var(--sum-sec,#ddb86f);overflow:hidden;
+  animation:sBase 2.6s steps(1) forwards}
+@keyframes sBase{0%,45%{opacity:1}52%,100%{opacity:0}}
+#summonStage .card .base img{width:100%;height:100%;object-fit:cover;object-position:center 12%}
+/* 프레임이 벗겨지고 현현이 남는다 */
+#summonStage .card .fin{position:absolute;inset:-14% -30%;opacity:0;animation:sFin 2.6s ease forwards}
+@keyframes sFin{0%,46%{opacity:0}62%{opacity:1}100%{opacity:1}}
+#summonStage .card .fin img{width:100%;height:100%;object-fit:contain;object-position:center bottom;
+  filter:drop-shadow(0 0 26px var(--sum-pri,#ffe0a0))}
+/* 구운 아틀라스 — CSS 도형이 아니다 */
+#summonStage .brk{position:absolute;left:50%;bottom:10%;width:22%;height:52%;translate:-50% 0;z-index:3;
+  background-repeat:no-repeat;background-size:2000% 100%;opacity:0;
+  animation:sBrk .62s steps(20) 1.15s forwards,sBrkO .62s 1.15s forwards}
+@keyframes sBrk{from{background-position:0 0}to{background-position:100% 0}}
+@keyframes sBrkO{0%{opacity:1}100%{opacity:0}}
+#summonStage .bst{position:absolute;left:50%;top:44%;width:46%;aspect-ratio:1;translate:-50% -50%;z-index:4;
+  background-repeat:no-repeat;background-size:2200% 100%;mix-blend-mode:screen;opacity:0;
+  animation:sBst .9s steps(22) 1.35s forwards,sBstO .9s 1.35s forwards}
+@keyframes sBst{from{background-position:0 0}to{background-position:100% 0}}
+@keyframes sBstO{0%{opacity:1}100%{opacity:0}}
+#summonStage .ris{position:absolute;left:50%;bottom:0;width:26%;height:76%;translate:-50% 0;z-index:2;
+  background-repeat:no-repeat;background-size:2000% 50%;mix-blend-mode:screen;opacity:0;
+  animation:sRis 1.5s steps(20) .3s forwards,sRisO 1.5s .3s forwards}
+@keyframes sRis{from{background-position:0 0}to{background-position:100% 0}}
+@keyframes sRisO{0%{opacity:.9}100%{opacity:0}}
+#summonStage .flash{position:absolute;inset:0;background:#fff;opacity:0;z-index:6;
+  animation:sFlash .5s 1.42s forwards}
+@keyframes sFlash{0%{opacity:0}14%{opacity:.6}100%{opacity:0}}
+#summonStage .sig{position:absolute;left:50%;top:42%;translate:-50% -50%;z-index:7;opacity:0;
+  font:900 12vh 'Nanum Myeongjo',serif;color:var(--sum-pri,#ffe0a0);
+  text-shadow:0 0 44px var(--sum-pri,#ffe0a0);animation:sSig 1.1s 1.4s forwards}
+@keyframes sSig{0%{opacity:0;transform:scale(.6)}20%{opacity:.95;transform:scale(1.35)}
+ 70%{opacity:.9}100%{opacity:0;transform:scale(1.6)}}
+#summonStage .nm{position:absolute;left:0;right:0;top:13%;text-align:center;z-index:8;opacity:0;
+  animation:sNm 1.2s 1.75s forwards}
+@keyframes sNm{0%{opacity:0;letter-spacing:.7em;filter:blur(7px)}100%{opacity:1;letter-spacing:.16em;filter:none}}
+#summonStage .nm .k{font:400 1.4vh 'Nanum Myeongjo',serif;color:var(--sum-pri,#ffe0a0);letter-spacing:.5em}
+#summonStage .nm .n{font:900 4.6vh 'Nanum Myeongjo',serif;margin-top:.7vh;text-shadow:0 2px 22px #000}
+@media(prefers-reduced-motion:reduce){#summonStage *{animation-duration:.3s!important}}
 </style>
 </head>
 <body>
@@ -318,8 +408,48 @@ function complete(){const s=rstate();if(!s.zones.includes(6))return;startBossRev
 function startBossReveal(){const r=refs[current],s=rstate(),battleDone=!!s.battle?.completed;try{video.pause()}catch{}safeImg(ART[current].boss||ART[current].dungeon);img.style.objectPosition=current==='yeoja'?'center top':current==='nokdong'?'center center':r.position;setPhase('boss');$('#bossIntro').classList.remove('hidden');$('#battleShell').classList.remove('active');$('#bossName').textContent=r.boss.name;$('#bossDesc').textContent=battleDone?`${r.boss.desc} 보스는 반복 도전할 수 있으며 매 승리마다 지역 인장과 재료를 얻습니다. 지역보스 카드도 낮은 확률로 직접 드롭됩니다.`:r.boss.desc;$('#bossTaboo').textContent=r.boss.taboo;$('#confirmBoss').textContent=battleDone?'지역보스 다시 도전':'전투 시작';toast(`${r.boss.name}의 기척을 확인했습니다.`);emit('hy-journey-boss-open',{boss:r.boss.name,taboo:r.boss.taboo})}
 function confirmBoss(){startBossBattle()}
 function battleParty(){const supplied=Array.isArray(parentCtx.party)?parentCtx.party.filter(Boolean).slice(0,5):[];if(supplied.length)return supplied;return Array.from({length:5},(_,i)=>({id:i?`fallback-${i}`:(parentCtx.companionCard||'c075'),name:parentCtx.companionName||'동행 카드',img:parentCtx.companionImg||'../assets/cards-v63/C075.webp',finalImg:parentCtx.companionFinalImg,stage:Number(parentCtx.companionStage||1),manifested:!!parentCtx.companionManifested,role:i===1?'파훼':i===2?'탱커':'밸런스',faction:'물',route:i===1?'파훼':i===2?'수호':'기록',manifestFx:i?null:parentCtx.companionManifestFx,skill:i===0?(parentCtx.companionSkill||'기록 베기'):i===1?'이면 흔적 파훼':i===2?'금기 수호진':i===3?'기억의 파문':'진명 협공',cost:i===4?2:1,slot:i}))}
-function cardSkillKind(card,i){if(/탱커|수호|지원|회복/.test(card.role||''))return'guard';if(/파훼|영역|심판/.test(card.role||'')||i===1)return'break';return'strike'}
-function renderBattleDeck(){const deck=$('#skillGrid'),rail=$('#raidRail'),party=battleParty();deck.innerHTML=party.map((card,i)=>{const kind=cardSkillKind(card,i),stage=card.manifested?7:Math.max(1,Math.min(6,Number(card.stage||1))),fx=manifestProfile(card);return `<button class="battle-skill deployed-card${card.manifested?' manifested-card':''}" style="--card-fx:${fx.primary}" data-skill="${kind}" data-card="${card.id}" data-manifest-signature="${fx.signature}" aria-label="${card.name} ${card.skill}"><img class="skill-card-art" src="${card.img}" alt=""><span class="skill-cost">${card.cost||1}</span>${card.manifested?`<i class="manifest-mark">${fx.sigil}</i>`:''}<span class="skill-card-copy"><small>${stage}성 · ${kind==='guard'?'수호':kind==='break'?'파훼':'공격'}</small><b>${card.name}</b><span>${card.skill||'기록 베기'}</span></span></button>`}).join('')+`<button class="battle-skill manifest ${parentCtx.companionManifested?'':'locked-final'}" data-skill="manifest" id="manifestSkill" disabled><b id="manifestSkillName">✦ 7성 현현</b><span>${parentCtx.companionManifested?'공명 100':'최종현현 필요'}</span></button>`;rail.innerHTML=party.map((card,i)=>`<div class="raid-unit${i===0?' active':''}" data-card="${card.id}" title="${card.name}"><img src="${card.img}" alt=""><span>${card.name}</span></div>`).join('');deck.querySelectorAll('[data-skill]').forEach(button=>button.onclick=()=>{const card=party.find(x=>x.id===button.dataset.card)||null;rail.querySelectorAll('.raid-unit').forEach(unit=>unit.classList.toggle('active',!!card&&unit.dataset.card===card.id));useBattleSkill(button.dataset.skill,card)})}
+/* 스킬 연출을 카드 역할이 아니라 스킬 데이터로 고른다.
+   card_manifest_v47.json 의 750개 스킬은 전부 effect·motion_key·grade 를 갖고 있는데
+   여태 화면은 card.role 문자열만 보고 셋으로만 갈랐다. 그래서 750개가 세 모션을 나눠 썼다. */
+const SKILL_EFFECT_KIND={role_guard:'guard',guard:'guard',cleanse:'guard',
+  role_break:'break',judge:'break',true_name:'break',
+  role_chain:'strike',record:'strike',unique:'strike',extreme:'strike',soul:'strike',water:'strike'};
+/* motion_key 의 루트(MS_C001_수호_1 → 수호). 750개가 이 여섯으로 덮인다. */
+function skillRoute(sk,card){
+  const k=sk&&sk.motion_key;
+  if(k){const t=String(k).split('_');if(t.length>2&&t[2])return t[2];}
+  return card&&card.route||'기록';
+}
+/* 그 카드가 지금 쓰는 스킬 — 성급에 맞는 것을 고른다 */
+function activeSkill(card){
+  const list=card&&card.skills;
+  if(!Array.isArray(list)||!list.length)return null;
+  const star=card.manifested?7:Math.max(1,Math.min(6,Number(card.stage||1)));
+  let best=null;
+  for(const sk of list){const u=Number(sk.unlock_star||sk.star||1);if(u<=star&&(!best||u>=Number(best.unlock_star||best.star||1)))best=sk;}
+  return best||list[0];
+}
+function cardSkillKind(card,i){
+  const sk=activeSkill(card);
+  if(sk&&SKILL_EFFECT_KIND[sk.effect])return SKILL_EFFECT_KIND[sk.effect];
+  if(/탱커|수호|지원|회복/.test(card.role||''))return'guard';
+  if(/파훼|영역|심판/.test(card.role||'')||i===1)return'break';
+  return'strike';
+}
+/* 등급마다 연출 길이가 달라야 아끼는 맛이 난다.
+   평타가 화려하면 필살기가 안 세진다. */
+const SKILL_TIER={
+  일반:{ms:380,banner:false,shake:.45,flash:.35,stop:0},
+  희귀:{ms:600,banner:true, shake:.7, flash:.6, stop:0},
+  영웅:{ms:920,banner:true, shake:1,  flash:1,  stop:45},
+  전설:{ms:1400,banner:true,shake:1.4,flash:1.3,stop:90},
+  신화:{ms:1800,banner:true,shake:1.7,flash:1.5,stop:130},
+};
+function skillTier(card){
+  const sk=activeSkill(card);
+  return SKILL_TIER[sk&&sk.grade]||SKILL_TIER['영웅'];
+}
+function renderBattleDeck(){const deck=$('#skillGrid'),rail=$('#raidRail'),party=battleParty();deck.innerHTML=party.map((card,i)=>{const kind=cardSkillKind(card,i),stage=card.manifested?7:Math.max(1,Math.min(6,Number(card.stage||1))),fx=manifestProfile(card);return `<button class="battle-skill deployed-card${card.manifested?' manifested-card':''}" style="--card-fx:${fx.primary}" data-skill="${kind}" data-card="${card.id}" data-manifest-signature="${fx.signature}" aria-label="${card.name} ${card.skill}"><img class="skill-card-art" src="${card.img}" alt=""><span class="skill-cost">${card.cost||1}</span>${card.manifested?`<i class="manifest-mark">${fx.sigil}</i>`:''}<span class="skill-card-copy"><small>${stage}성 · ${skillRoute(activeSkill(card),card)}</small><b>${card.name}</b><span>${card.skill||'기록 베기'}</span></span></button>`}).join('')+`<button class="battle-skill manifest ${parentCtx.companionManifested?'':'locked-final'}" data-skill="manifest" id="manifestSkill" disabled><b id="manifestSkillName">✦ 7성 현현</b><span>${parentCtx.companionManifested?'공명 100':'최종현현 필요'}</span></button>`;rail.innerHTML=party.map((card,i)=>`<div class="raid-unit${i===0?' active':''}" data-card="${card.id}" title="${card.name}"><img src="${card.img}" alt=""><span>${card.name}</span></div>`).join('');deck.querySelectorAll('[data-skill]').forEach(button=>button.onclick=()=>{const card=party.find(x=>x.id===button.dataset.card)||null;rail.querySelectorAll('.raid-unit').forEach(unit=>unit.classList.toggle('active',!!card&&unit.dataset.card===card.id));useBattleSkill(button.dataset.skill,card)})}
 function startBossBattle(){const r=refs[current],rules=BOSS_RULES[current]||BOSS_RULES.yeoja,stage=Math.max(1,Math.min(6,Number(parentCtx.companionStage||1)));battle={bossHp:rules.hp,bossMax:rules.hp,bossBreak:0,playerHp:100,resolve:0,turn:1,busy:false,won:false,lost:false,stage,lastSkill:null,lastCard:null,critical:false};$('#bossIntro').classList.add('hidden');$('#battleShell').classList.add('active');$('#battleResult').classList.remove('show','victory');$('#skillGrid').style.display='grid';$('#raidRail').style.display='flex';$('.knot-hud').style.display='flex';$('#battleBossName').textContent=r.boss.name;$('#battleCompanionName').textContent=parentCtx.companionManifested?`${parentCtx.companionName||'동행 카드'} · 현현`:(parentCtx.companionName||'동행 카드');$('#battleCompanionMeta').textContent=`${parentCtx.companionRole||'동행'} · ${parentCtx.companionManifested?'7성':stage+'성'} · 약점 ${rules.weakness}`;$('#battleCompanionImg').src=(parentCtx.companionManifested?parentCtx.companionFinalImg:parentCtx.companionImg)||'../assets/cards-v63/C075.webp';$('#battleCompanionImg').onerror=()=>{$('#battleCompanionImg').src='../assets/cards-v63/C075.webp'};const actor=$('#manifestActor');actor.classList.toggle('active',!!parentCtx.companionManifested);$('#manifestActorImg').src=parentCtx.companionFinalImg||parentCtx.companionImg||'../assets/cards-v63/C075-final.webp';$('#manifestActorName').textContent=parentCtx.companionManifested?`${parentCtx.companionName||'동행 카드'} · 7성 현현`:'현현 대기';renderBattleDeck();$('#manifestSkillName').textContent='✦ 7성 현현';renderBattle(`<b>${r.boss.name}</b>의 행동이 예고됩니다. 하단 카드 스킬로 금기를 파훼하세요.`)}
 function battleIntent(){const p=(BOSS_RULES[current]||BOSS_RULES.yeoja).patterns;return p[(battle.turn-1)%p.length]}
 function renderBattle(log){if(!battle)return;const rules=BOSS_RULES[current]||BOSS_RULES.yeoja,intent=battleIntent(),hp=Math.max(0,Math.round(battle.bossHp)),br=Math.max(0,Math.min(100,Math.round(battle.bossBreak))),resolve=Math.max(0,Math.min(100,Math.round(battle.resolve))),player=Math.max(0,Math.round(battle.playerHp));$('#battleTurn').textContent=`TURN ${battle.turn}`;$('#battlePhase').textContent=battle.bossHp<=battle.bossMax*.5?'제2상 · 금기 격화':'제1상 · 관찰';$('#bossIntent').textContent=intent[0];$('#bossIntentHint').textContent=intent[3];$('#bossHpText').textContent=`${combatDisplay(hp)} / ${combatDisplay(battle.bossMax)}`;$('#bossHpBar').style.width=(hp/battle.bossMax*100)+'%';$('#bossBreakText').textContent=`${br} / 100`;$('#bossBreakBar').style.width=br+'%';$('#resolveText').textContent=`${resolve} / 100`;$('#resolveBar').style.width=resolve+'%';$('#playerHpText').textContent=`${player} / 100`;$('#playerHpBar').style.width=player+'%';const lit=Math.min(7,Math.floor(resolve/100*7));document.querySelectorAll('#knotGauge i').forEach((k,i)=>k.classList.toggle('lit',i<lit));if(log)$('#combatLog').innerHTML=log;const manifest=$('#manifestSkill'),ready=!!parentCtx.companionManifested&&resolve>=100&&!battle.busy;if(manifest){manifest.disabled=!ready;manifest.classList.toggle('ready',ready)}document.querySelectorAll('#skillGrid .battle-skill:not(.manifest)').forEach(b=>b.disabled=battle.busy)}
@@ -330,7 +460,55 @@ function manifestProfile(card){return card?.manifestFx||((card?.id===parentCtx.c
 function applyFxVars(el,profile){el.style.setProperty('--fx-primary',profile.primary);el.style.setProperty('--fx-secondary',profile.secondary);el.style.setProperty('--fx-accent',profile.accent);el.style.setProperty('--fx-duration',`${profile.duration}ms`);el.style.setProperty('--fx-tilt',`${profile.tilt}deg`);el.dataset.signature=profile.signature;el.dataset.motif=profile.motif;el.dataset.impact=profile.impact;el.dataset.entrance=profile.entrance;el.dataset.camera=profile.camera}
 function fillManifestParticles(profile){const root=$('#manifestParticles');root.innerHTML=Array.from({length:Math.max(8,Math.min(20,profile.particles||12))},(_,i)=>{const angle=(i*137.5+(profile.tilt||0))*Math.PI/180,radius=75+(i%5)*32,x=50+Math.cos(angle)*(10+(i%4)*7),y=48+Math.sin(angle)*(8+(i%3)*8),dx=Math.cos(angle)*radius,dy=Math.sin(angle)*radius;return `<i style="--x:${x.toFixed(1)}%;--y:${y.toFixed(1)}%;--dx:${dx.toFixed(0)}px;--dy:${dy.toFixed(0)}px;--delay:${(i%6)*24}ms;--r:${(i*29)%180}deg"></i>`}).join('')}
 function clearManifestCamera(){const game=$('#game');['push','pan','pulse','tilt','shake'].forEach(x=>game.classList.remove(`manifest-camera-${x}`))}
-function playSkillFx(kind,amount,critical=false,label='',card=null){const game=$('#game'),shell=$('#battleShell'),flash=$('#hitFlash'),fx=$('#skillFx'),number=$('#damageFloat'),style=kind==='manifest'?'strike':kind,shown=Math.round(amount*COMBAT_DISPLAY_SCALE),profile=manifestProfile(manifestationCard(card));clearTimeout(fx._timer);game.classList.remove('camera-strike','camera-break');clearManifestCamera();shell.classList.remove('shake');flash.classList.remove('play');fx.className='skill-fx';applyFxVars(fx,profile);fx.classList.add('profiled');number.className='damage-float';number.dataset.seq=String(Number(number.dataset.seq||0)+1);number.dataset.critical=critical?'true':'false';number.dataset.amount=String(shown);void shell.offsetWidth;showSkillBanner(label,kind,critical);game.classList.add(kind==='break'?'camera-break':'camera-strike',`manifest-camera-${profile.camera}`);fx.classList.add('play',style);number.textContent=kind==='guard'?'+700 결계':shown.toLocaleString();if(critical)number.classList.add('critical');number.classList.add('play');if(kind==='strike'||kind==='manifest'||critical){flash.classList.add('play');shell.classList.add('shake')}if(kind==='break')shell.animate([{filter:'none'},{filter:`contrast(1.35) drop-shadow(0 0 20px ${profile.primary})`},{filter:'none'}],{duration:650});if(kind==='guard')shell.animate([{filter:'brightness(1)'},{filter:`brightness(1.28) drop-shadow(0 0 24px ${profile.primary})`},{filter:'none'}],{duration:720});fx._timer=setTimeout(()=>{fx.className='skill-fx';number.className='damage-float';game.classList.remove('camera-strike','camera-break');clearManifestCamera()},900)}
+function playSkillFx(kind,amount,critical=false,label='',card=null){const game=$('#game'),shell=$('#battleShell'),flash=$('#hitFlash'),fx=$('#skillFx'),number=$('#damageFloat'),style=kind==='manifest'?'strike':kind,shown=Math.round(amount*COMBAT_DISPLAY_SCALE),profile=manifestProfile(manifestationCard(card));
+  /* 등급과 루트를 화면에 실어 보낸다. 750개 스킬이 서로 다르게 보이는 지점. */
+  const tier=kind==='manifest'?SKILL_TIER['신화']:skillTier(card||{}),
+        sk=activeSkill(card||{}), route=skillRoute(sk,card||{});
+  game.dataset.route=route; game.dataset.grade=(sk&&sk.grade)||'영웅';
+  shell.style.setProperty('--shake-k',tier.shake);
+  shell.style.setProperty('--flash-k',tier.flash);
+  if(tier.stop){ /* 히트스톱 — 닿았다는 감각은 멈춤에서 온다 */
+    game.classList.add('hitstop');
+    setTimeout(()=>game.classList.remove('hitstop'),tier.stop);
+  }clearTimeout(fx._timer);game.classList.remove('camera-strike','camera-break');clearManifestCamera();shell.classList.remove('shake');flash.classList.remove('play');fx.className='skill-fx';applyFxVars(fx,profile);fx.classList.add('profiled');number.className='damage-float';number.dataset.seq=String(Number(number.dataset.seq||0)+1);number.dataset.critical=critical?'true':'false';number.dataset.amount=String(shown);void shell.offsetWidth;if(tier.banner||critical)showSkillBanner(label,kind,critical);game.classList.add(kind==='break'?'camera-break':'camera-strike',`manifest-camera-${profile.camera}`);fx.classList.add('play',style);number.textContent=kind==='guard'?'+700 결계':shown.toLocaleString();if(critical)number.classList.add('critical');number.classList.add('play');if(kind==='strike'||kind==='manifest'||critical){flash.classList.add('play');shell.classList.add('shake')}if(kind==='break')shell.animate([{filter:'none'},{filter:`contrast(1.35) drop-shadow(0 0 20px ${profile.primary})`},{filter:'none'}],{duration:650});if(kind==='guard')shell.animate([{filter:'brightness(1)'},{filter:`brightness(1.28) drop-shadow(0 0 24px ${profile.primary})`},{filter:'none'}],{duration:720});fx._timer=setTimeout(()=>{fx.className='skill-fx';number.className='damage-float';game.classList.remove('camera-strike','camera-break');clearManifestCamera()},tier.ms)}
+/* ── 최종진화 현현 소환 ──────────────────────────────
+   카드가 손패에서 판 가운데로 솟아오르고, 프레임이 부서지고, 인물만 남는다.
+   final_evolution 이 frame:false / star_ui:false 로 "카드가 아님"을 선언하고 있다.
+   FX는 파이썬으로 구운 스프라이트 아틀라스다 (CSS 도형 금지 — 작업헌장 #34). */
+const SUMMON_FX={brk:'../assets/fx/framebreak.webp',
+                 bst:'../assets/fx/burst.webp',
+                 ris:'../assets/fx/rise.webp'};
+function playSummon(card,ms=2600){
+  return new Promise(resolve=>{
+    card=manifestationCard(card)||card||{};
+    const p=manifestProfile(card),
+          base=card.img||parentCtx.companionImg||'../assets/cards-v63/C075.webp',
+          fin=card.finalImg||parentCtx.companionFinalImg||base;
+    let st=document.getElementById('summonStage');
+    if(!st){st=document.createElement('div');st.id='summonStage';
+      (document.getElementById('game')||document.body).appendChild(st);}
+    st.style.setProperty('--sum-pri',p.primary||'#ffe0a0');
+    st.style.setProperty('--sum-sec',p.secondary||p.primary||'#ddb86f');
+    st.innerHTML=`<div class="veil"></div><div class="ring"></div>
+      <div class="ris" style="background-image:url(${SUMMON_FX.ris})"></div>
+      <div class="card"><div class="base"><img src="${base}" alt=""></div>
+        <div class="fin"><img src="${fin}" alt=""></div></div>
+      <div class="brk" style="background-image:url(${SUMMON_FX.brk})"></div>
+      <div class="bst" style="background-image:url(${SUMMON_FX.bst})"></div>
+      <div class="flash"></div>
+      <div class="sig">${p.sigil||'✦'}</div>
+      <div class="nm"><div class="k">최종진화 · 현현</div>
+        <div class="n">${card.name||parentCtx.companionName||'현현'}</div></div>`;
+    st.classList.remove('on'); void st.offsetWidth; st.classList.add('on');
+    clearTimeout(playSummon._t);
+    playSummon._t=setTimeout(()=>{st.classList.remove('on');resolve()},ms);
+  });
+}
+window.hyPlaySummon=playSummon;
+/* 검증·디버깅용 노출. 이 파일은 iframe 안에서 도므로 전역이 새지 않는다. */
+window.hySkill={kind:cardSkillKind,tier:skillTier,route:skillRoute,active:activeSkill,
+  EFFECT:SKILL_EFFECT_KIND,TIER:SKILL_TIER};
+
 function playSeventhSkillMotion(card,label='7성 현현 전용기'){return new Promise(resolve=>{card=manifestationCard(card);const profile=manifestProfile(card),motion=$('#seventhSkillMotion'),figure=$('#seventhSkillFigure'),cardArt=$('#seventhSkillCard'),duration=parentCtx.motion===false?330:profile.duration,impactName={ward:'결계',echo:'기억 파문',wave:'정화 물결',fracture:'경계 파쇄',resonance:'진명 공명',ritual:'의례 전개',verdict:'업의 판결'}[profile.impact]||'현현 타격';applyFxVars(motion,{...profile,duration});figure.src=card?.finalImg||parentCtx.companionFinalImg||parentCtx.companionImg||'../assets/cards-v63/C075-final.webp';figure.onerror=()=>{figure.src=card?.img||parentCtx.companionImg||'../assets/cards-v63/C075.webp'};cardArt.src=card?.img||parentCtx.companionImg||figure.src;$('#seventhSkillSigil').textContent=profile.sigil;$('#manifestRoute').textContent=`${profile.route||'기록'} · ${profile.role||card.role||'현현'} · ${impactName}`;$('#manifestTechnique').textContent=label;fillManifestParticles(profile);clearManifestCamera();$('#game').classList.add(`manifest-camera-${profile.camera}`);motion.classList.remove('play');void motion.offsetWidth;motion.classList.add('play');setTimeout(()=>{motion.classList.remove('play');clearManifestCamera();resolve()},duration)})}
 function playManifestCine(card=null){return new Promise(resolve=>{card=manifestationCard(card);const profile=manifestProfile(card),cine=$('#manifestCine'),figure=$('#manifestFigure'),duration=parentCtx.motion===false?760:2100;applyFxVars(cine,{...profile,duration});cine.classList.add('profiled');figure.src=card?.finalImg||parentCtx.companionFinalImg||parentCtx.companionImg||'../assets/cards-v63/C075-final.webp';figure.onerror=()=>{figure.src=card?.img||parentCtx.companionImg||'../assets/cards-v63/C075.webp'};$('#manifestCineSigil').textContent=profile.sigil;$('#manifestTitle').textContent=parentCtx.companionManifest||`${card?.name||parentCtx.companionName||'동행 카드'} · 7성 현현`;$('#manifestSubtitle').textContent=`${profile.callout} · ${profile.route||'기록'} 현현`;cine.classList.remove('play');void cine.offsetWidth;cine.classList.add('play');cine.setAttribute('aria-hidden','false');setTimeout(()=>{cine.classList.remove('play');cine.setAttribute('aria-hidden','true');resolve()},duration)})}
 async function useBattleSkill(kind,card=null){
@@ -343,7 +521,7 @@ async function useBattleSkill(kind,card=null){
  if(kind==='strike'){damage=30*power;breakGain=13;resolveGain=24;label=card?.skill||parentCtx.companionSkill||'기록 베기'}
  if(kind==='break'){damage=17*power;breakGain=38;resolveGain=28;label=card?.skill||'이면 흔적 파훼'}
  if(kind==='guard'){damage=9*power;breakGain=12;resolveGain=31;guard=.62;battle.playerHp=Math.min(100,battle.playerHp+7);label=card?.skill||'금기 수호진'}
- if(kind==='manifest'){card=manifestationCard(card);label=parentCtx.companionManifest||'7성 현현';await playManifestCine(card);damage=92*power;breakGain=100;resolveGain=-100}
+ if(kind==='manifest'){card=manifestationCard(card);label=parentCtx.companionManifest||'7성 현현';await playSummon(card);await playManifestCine(card);damage=92*power;breakGain=100;resolveGain=-100}
  if(wasBroken)damage*=1.45;
  const critical=kind==='manifest'||wasBroken||!!card?.manifested||(kind!=='guard'&&battle.turn%3===0);if(critical)damage*=1.65;
  if(card?.manifested&&kind!=='manifest')await playSeventhSkillMotion(card,label);
