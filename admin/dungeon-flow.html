@@ -4,7 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#07090b">
-<title>흥양기 · 상황별 탐험 장면과 기록자 아인 전투 v81.1</title>
+<title>흥양기 · 판 보스전 시네마틱 v82</title>
+<link rel="stylesheet" href="./battle-director-v82.css">
 <style>
 :root{--bg:#07090b;--panel:rgba(7,10,12,.90);--panel2:rgba(11,15,18,.77);--gold:#d7ad63;--gold2:#f1d9a1;--line:rgba(235,203,142,.18);--text:#eee7db;--muted:#a89f91;--teal:#8fc6bd;--red:#c56a5e;--blue:#9fcbe0}
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050709;color:var(--text);font-family:Pretendard,"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif}button{font:inherit;color:inherit}
@@ -285,6 +286,7 @@
 <div class="source" id="sourceNote"></div><div class="toast" id="toast"></div>
 </div>
 <div class="orientation"><div><b>가로 화면 권장</b><p>흥양기의 탐험 화면은 모바일 가로 화면을 기준으로 제작했습니다.</p></div></div>
+<script src="./battle-director-v82.js"></script>
 <script>
 (()=>{
 'use strict';
@@ -369,7 +371,7 @@ function safeImg(src){img.src=src;img.onerror=()=>{img.removeAttribute('src');im
 function safeVideo(src,onEnd){try{video.pause()}catch{}video.src=src;video.currentTime=0;video.muted=true;video.playsInline=true;video.onended=onEnd||null;video.onerror=()=>{if(onEnd)onEnd()};const p=video.play();if(p&&p.catch)p.catch(()=>{if(onEnd)onEnd()})}
 function setPhase(p){phase=p;game.dataset.phase=p;travel.style.display=p==='travel'?'block':'none';explore.style.display=p==='explore'?'block':'none';dungeon.style.display=p==='dungeon'?'grid':'none';bossPanel.style.display=p==='boss'?'grid':'none';$('#creativeBadge').style.display=(p==='dungeon'||p==='boss')?'inline-flex':'none';$('#phaseTitle').textContent=p==='travel'?'현실 이동':p==='explore'?'탐험 · 조사':p==='dungeon'?'자유 경로 던전':'금기 · 보스 전투';renderTop()}
 function renderTop(){const r=refs[current],s=rstate();$('#regionKicker').textContent=r.tag;$('#regionTitle').textContent=r.name;$('#sourceNote').textContent=r.source;$('#routeMemory').textContent=`루트 기억 ${s.routeDone?1:0}`;$('#clueCount').textContent=`기록 ${s.clueStates.filter(x=>x.recorded).length} / 3`}
-function start(){const r=refs[current],s=rstate();img.style.objectPosition=r.position;if(s.complete||s.bossSeen)startBossReveal();else if(s.investigationComplete)startDungeon();else if(s.routeDone)startExplore();else startTravel();if(embedded)emit('hy-journey-ready',{version:'81.1.0'})}
+function start(){const r=refs[current],s=rstate();img.style.objectPosition=r.position;if(s.complete||s.bossSeen)startBossReveal();else if(s.investigationComplete)startDungeon();else if(s.routeDone)startExplore();else startTravel();if(embedded)emit('hy-journey-ready',{version:'82.0.0'})}
 function startTravel(){const r=refs[current],s=rstate();try{video.pause()}catch{}video.muted=true;setPhase('travel');$('#travelTitle').textContent=r.travelTitle;$('#travelCopy').textContent=r.travelCopy;routeIndex=Math.max(0,Math.min(Number(s.routeIndex||0),r.route.length-1));renderTourism();renderRoute()}
 function changeTravelScene(index){const frames=TRAVEL_STILLS[current]||[ART[current].travel],src=frames[Math.min(index,frames.length-1)]||ART[current].travel;if(img.dataset.travelSrc===src)return;img.dataset.travelSrc=src;img.classList.remove('travel-cut');safeImg(src);void img.offsetWidth;img.classList.add('travel-cut');setTimeout(()=>img.classList.remove('travel-cut'),1100)}
 function changeExploreScene(index){const frames=EXPLORE_STILLS[current]||[ART[current].explore],src=frames[Math.max(0,Math.min(index,frames.length-1))]||ART[current].explore;if(img.dataset.exploreSrc===src&&img.getAttribute('src')===src)return;img.dataset.exploreSrc=src;img.classList.remove('travel-cut');safeImg(src);img.style.objectPosition=refs[current].position;void img.offsetWidth;img.classList.add('travel-cut');setTimeout(()=>img.classList.remove('travel-cut'),1100)}
@@ -556,7 +558,7 @@ document.querySelectorAll('#skillGrid [data-skill]').forEach(b=>b.onclick=()=>us
 (() => {
   'use strict';
 
-  const PAN_VERSION = '81.1.0';
+  const PAN_VERSION = '82.0.0';
   const KNOTS = 7;
   const HEAT_MAX = 4;
   const TEMPO = [1, .93, .85, .77, .68];
@@ -574,6 +576,8 @@ document.querySelectorAll('#skillGrid [data-skill]').forEach(b=>b.onclick=()=>us
   const clamp = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
 
   const panCatalog=new Map();
+  const director=window.HYBattleDirector?new window.HYBattleDirector(q('#battleShell')):null;
+  window.hyBattleDirector=director;
   const panCatalogReady=fetch('../card_manifest_v47.json',{signal:AbortSignal.timeout(6000)}).then(r=>{if(!r.ok)throw new Error('catalog');return r.json()}).then(data=>{
     for(const c of (Array.isArray(data)?data:data.cards||[]))panCatalog.set(String(c.id).toLowerCase(),c);
   }).catch(()=>{});
@@ -809,9 +813,11 @@ document.querySelectorAll('#skillGrid [data-skill]').forEach(b=>b.onclick=()=>us
     game.dataset.panBusy=String(!!battle.busy);
     game.dataset.panKnots=String(battle.knotsRemaining);
     game.dataset.panManifested=String(!!battle.manifestUsed);
+    director?.sync({heat:battle.heat,won:battle.won,lost:battle.lost});
   }
 
   async function panPlayClash(card, intent, won) {
+    if(director?.running){await director.play({card,skill:activeSkill(card||{})?.name||card?.skill,route:skillRoute(activeSkill(card),card||{}),won,duration:kindTier(card).ms*panTempoScale(),firstEncounter:battle.firstEncounter});return;}
     panEnsureUI();
     const root = q('#panClash');
     const tier = kindTier(card);
@@ -854,14 +860,15 @@ document.querySelectorAll('#skillGrid [data-skill]').forEach(b=>b.onclick=()=>us
     card = battleParty().find(c=>c.id===parentCtx.companionCard && c.manifested) || battleParty().find(c=>c.manifested) || manifestationCard(null);
     battle.manifestCardId = card.id;
     const label = parentCtx.companionManifest || `${card?.name || parentCtx.companionName || '동행자'} · 강신`;
-    await playSummon(card, parentCtx.motion===false?330:1800);
+    if(director?.running)await director.manifest(card,label);
+    else await playSummon(card, parentCtx.motion===false?330:1800);
     q('#manifestActorImg').src=card.finalImg||parentCtx.companionFinalImg||card.img;
     q('#skillGrid')?.querySelectorAll('[data-card]').forEach(button=>button.classList.toggle('descended',button.dataset.card===card.id));
     q('#manifestTitle').textContent=label;
     const actor = q('#manifestActor');
     if (actor) actor.classList.add('active');
     if (q('#manifestActorName')) q('#manifestActorName').textContent = `${card?.name || parentCtx.companionName || '동행자'} · 강신`;
-    playSkillFx('manifest', 92 * (1 + ((card?.stage || 7) - 1) * .07), true, label, card);
+    if(!director?.running)playSkillFx('manifest', 92 * (1 + ((card?.stage || 7) - 1) * .07), true, label, card);
     battle.busy = true;
     panRenderBattle(`<b>${label}</b> · 판이 최고조에 닿자 카드의 경계가 사라지고 동행자가 내려왔습니다.${auto ? ' 강신은 턴을 소모하지 않습니다.' : ''}`);
     return true;
@@ -906,8 +913,10 @@ document.querySelectorAll('#skillGrid [data-skill]').forEach(b=>b.onclick=()=>us
       panSetHeat(battle.heat + 1);
       battle.bossHp = Math.max(1, battle.bossHp - damage); // 호환용. 승리는 HP가 아니라 7매듭이다.
       if (nums.heal) battle.playerHp = Math.min(100, battle.playerHp + nums.heal);
-      if(card?.manifested && battle.manifestUsed) await playSeventhSkillMotion(card,label);
-      playSkillFx(kind, damage, critical, label, card);
+      if(!director?.running){
+        if(card?.manifested && battle.manifestUsed) await playSeventhSkillMotion(card,label);
+        playSkillFx(kind, damage, critical, label, card);
+      }
 
       const call = q('#breakCallout');
       if (call) {
@@ -972,6 +981,9 @@ document.querySelectorAll('#skillGrid [data-skill]').forEach(b=>b.onclick=()=>us
       b.onclick=()=>useBattleSkill(kind);fallback.appendChild(b);
     }
     q('.pan-field-actions')?.remove();deck.before(fallback);
+    battle.busy=true;panRenderBattle();
+    if(director)await director.start({region:current,party:battleParty(),companion:battleParty().find(c=>c.id===parentCtx.companionCard),heat:battle.heat});
+    battle.busy=false;
     panRenderBattle(firstEncounter
       ? `<b>${refs[current].boss.name}</b>과 처음 마주합니다. 이 대면에서 보스는 반격하지 않습니다. 기척을 읽고 맞는 수로 합을 이겨 매듭을 풀어보세요.`
       : `<b>${refs[current].boss.name}</b>과 판을 엽니다. 기척은 성격만 드러납니다. 맞는 수로 합을 이기면 매듭이 풀리고 판이 달아오릅니다.`);

@@ -1,0 +1,38 @@
+/* v82: environmental stage first, controls remain HTML touch targets. */
+#cinematicStage{position:absolute;inset:0;width:100%;height:100%;z-index:0;display:none;pointer-events:none}
+#game.pan-system-active.cinematic-v82 #cinematicStage{display:block}
+#game.pan-system-active.cinematic-v82 .battle-actors,#game.pan-system-active.cinematic-v82 .battle-actors *{visibility:hidden!important}
+#game.pan-system-active.cinematic-v82 #skillFx,#game.pan-system-active.cinematic-v82 #damageFloat,#game.pan-system-active.cinematic-v82 #panClash,#game.pan-system-active.cinematic-v82 #breakCallout,#game.pan-system-active.cinematic-v82 #manifestCine,#game.pan-system-active.cinematic-v82 #seventhSkillMotion,#game.pan-system-active.cinematic-v82 #summonStage{display:none!important}
+#game.pan-system-active.cinematic-v82 .battle-shell{background:none!important}
+#game.pan-system-active.cinematic-v82 .battle-presence{top:3%!important;right:4%!important;max-width:40%;background:none!important;border:none!important;padding:0!important}
+#game.pan-system-active.cinematic-v82 .battle-presence h2{font-size:clamp(22px,3.2vw,36px)!important}
+#game.pan-system-active.cinematic-v82 .battle-intent{top:14%!important;left:3%!important;width:25%!important;background:linear-gradient(90deg,rgba(5,12,17,.88),rgba(5,12,17,.15))!important;border-left:2px solid #b59d74;padding:12px!important;text-align:left!important}
+#game.pan-system-active.cinematic-v82 .battle-intent span{font-size:clamp(12px,1.5vw,17px)!important;line-height:1.6!important}
+#game.pan-system-active.cinematic-v82 .player-hud{top:15%!important;right:3%!important;width:20%!important;background:rgba(5,12,17,.76)!important;border:1px solid #ffffff18!important}
+#game.pan-system-active.cinematic-v82 .player-hud .meter-head{font-size:12px!important}
+#game.pan-system-active.cinematic-v82 .combat-log{right:3%!important;bottom:28%!important;width:23%!important;background:rgba(5,12,17,.7)!important;border:none!important;max-height:13%!important;overflow:auto}
+#game.pan-system-active.cinematic-v82 .skill-grid{left:20%!important;right:20%!important;bottom:1.5%!important;height:23%!important;gap:8px!important}
+#game.pan-system-active.cinematic-v82 .battle-skill{border-radius:9px!important;border:1px solid #ae927554!important;box-shadow:0 5px 16px #0008!important;transition:transform .18s,border-color .18s,filter .18s!important;overflow:hidden!important}
+#game.pan-system-active.cinematic-v82 .battle-skill:enabled:hover,#game.pan-system-active.cinematic-v82 .battle-skill:enabled:focus-visible{transform:translateY(-8px)!important;border-color:#e8c789!important;filter:brightness(1.14)}
+#game.pan-system-active.cinematic-v82 .skill-card-art{object-fit:cover!important;object-position:center 22%!important;opacity:.84!important}
+#game.pan-system-active.cinematic-v82 .skill-card-copy{background:linear-gradient(transparent,#061015 40%)!important;padding:16px 8px 8px!important}
+#game.pan-system-active.cinematic-v82 .skill-card-copy b{font-size:clamp(12px,1.45vw,16px)!important}
+#game.pan-system-active.cinematic-v82 .skill-card-copy>span{font-size:12px!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#game.pan-system-active.cinematic-v82 .skill-card-copy small{font-size:12px!important;color:#c4d5d1!important}
+#game.pan-system-active.cinematic-v82 .skill-cost{background:#09151e!important;border:1px solid #b59d74!important;color:#f1d8a8!important}
+#game.pan-system-active.cinematic-v82 .deployed-card.descended{border:none!important;background:transparent!important;box-shadow:none!important}
+#game.pan-system-active.cinematic-v82 .deployed-card.descended .skill-card-art{opacity:0!important}
+#game.pan-system-active.cinematic-v82 .director-controls{position:absolute;left:3%;bottom:3%;display:grid;gap:6px;z-index:42}
+.director-controls{display:none}
+#game.pan-system-active.cinematic-v82 .director-controls button{min-height:36px;font-size:12px;color:#c7d5d6;background:#0a1823b8;border:1px solid #a3b3bb40;border-radius:6px;padding:6px 12px}
+#game.pan-system-active.cinematic-v82 .pan-field-actions{bottom:16%!important;width:16%!important;left:3%!important}
+.director-caption{display:none;position:absolute;left:25%;bottom:27%;width:45%;text-align:center;pointer-events:none;z-index:40;color:#f2e7d0;text-shadow:0 2px 8px #000;opacity:0;transform:translateY(8px);transition:opacity .16s,transform .16s}
+#game.pan-system-active.cinematic-v82 .director-caption{display:block}
+.director-caption.show{opacity:1;transform:none}
+.director-caption span{display:block;font-size:12px;letter-spacing:.18em;margin-bottom:5px}
+.director-caption strong{display:block;font-family:'Nanum Myeongjo',serif;font-size:clamp(20px,2.5vw,32px)}
+#game.pan-system-active.cinematic-v82 .knot-hud{left:3%!important;top:3%!important;background:#08131aa8!important}
+#game.pan-system-active.cinematic-v82 #knotGauge i{width:14px;height:14px;box-shadow:none!important}
+#game.pan-system-active.cinematic-v82 #knotGauge i.bound{background:#b79964!important}
+#game.pan-system-active.cinematic-v82 #knotGauge i.released{background:transparent!important;opacity:.4}
+@media(prefers-reduced-motion:reduce){#game.pan-system-active.cinematic-v82 .battle-skill,.director-caption{transition:none!important}}

@@ -12,6 +12,7 @@ on:
       - "tools/qa_yeojaman_flow.mjs"
       - "tools/qa_combat_v68.mjs"
       - "tools/qa_pan.mjs"
+      - "tools/qa_cinematic_v82.mjs"
       - "package.json"
       - ".github/workflows/mobile-ui-qa.yml"
   push:
@@ -36,6 +37,15 @@ jobs:
       - run: npm run qa:mobile
       - run: npm run qa:yeojaman
       - run: npm run qa:combat
+      - run: npm run qa:cinematic
+      - name: Upload cinematic pose and viewport QA
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cinematic-v82-qa
+          path: qa-cinematic/
+          if-no-files-found: error
+          retention-days: 30
       - name: Upload nine-screen QA artifact
         if: always()
         uses: actions/upload-artifact@v4

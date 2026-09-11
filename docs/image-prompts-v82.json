@@ -1,0 +1,81 @@
+{
+  "tool": "built-in image_gen",
+  "version": "82.0.0",
+  "assets": [
+    {
+      "key": "ain",
+      "args": {
+        "referenced_image_paths": [
+          "C:/Users/MIN/.codex/.chatgpt-projects/g-p-6a98e188efe8819185202fb978d7a24e/worktree-apk/assets/battle-v77/ain-recorder-combat.png"
+        ],
+        "prompt": "Use case: identity-preserve. Production game animation sprite atlas for Korean occult card RPG 흥양기. Input is character identity/outfit reference only. Create ONE 3-column by 2-row animation pose atlas, evenly spaced equal cells, 2048x2048, genuinely TRANSPARENT alpha background, no backdrop, no grid lines, no text. Same young Korean female traveller Ain in every cell, full body including boots entirely inside each cell, consistent scale and lighting, back-three-quarter view facing upper right toward enemy. Cream rolled-sleeve Korean linen shirt, dark trousers, rugged shoes, leather traveller backpack with little yellow yuja charm, black ponytail. She is a RECORD KEEPER with paper ritual cards, NOT sword fighter, NOT archer. High-end hand-painted cinematic Korean dark fantasy realism, clean silhouette. Row1 col1 idle with cards near chest, col2 anticipation bending knees drawing a card back, col3 purposeful forward arm release with one paper card, torso and legs clearly changed. Row2 col1 firm protective stance arms outward, col2 recoiling bracing body one foot behind, col3 solemn invocation raising open hand and ritual card above shoulder. Natural anatomy, understated effects, no trails/no glowing circles/no lightning, no Chinese imperial ornaments. Fully transparent around all six separated silhouettes. No character overlaps."
+      }
+    },
+    {
+      "key": "companion",
+      "args": {
+        "referenced_image_paths": [
+          "C:/Users/MIN/.codex/.chatgpt-projects/g-p-6a98e188efe8819185202fb978d7a24e/worktree-apk/assets/battle-v70/C075-manifest-cutout.png"
+        ],
+        "prompt": "Use case: identity-preserve. Production animation atlas for Korean spirit companion Haesin Danggol. Input is identity, clothing and mature face reference. ONE precisely aligned 3 columns x 2 rows pose sheet, 2048x2048, real transparent alpha background, no scene/no captions/no borders. Six separated full-body poses each fully inside its equal cell, identical scale feet baseline, premium cinematic painted realistic game character rendering. Same weathered middle-aged Korean female ritual practitioner, ivory and indigo traditional Korean robes, worn cloth ribbons, brass ritual bells, loose dark hair. Face and outfit unchanged across all poses. Faces toward upper right. Top row: calm ready stance; hands gathering ritual cloth close to chest; throwing a white ritual ribbon forward with flowing sleeve and rotated torso. Bottom row: strong protective open-hand stance; braced recoil; powerful invocation both arms open holding bells. No sword use, no Chinese empress crown, no young idol face, no beam effects, no big aura. Transparent silhouette including every ribbon."
+      }
+    },
+    {
+      "key": "nokdong",
+      "args": {
+        "prompt": "Use case: stylized-concept. Production game background plate for 흥양기 Korean occult RPG. Wide 16:9 2560x1440 cinematic highly detailed realistic painted environment: Nokdong fishing port Goheung South Korea at deep blue night, from a low wet stone quay, modern small Korean fishing boats docked in the distance, authentic compact coastal town and hills, sodium amber lights reflecting on dark still water, light maritime mist and restrained moonlight, foreground damp stone and water puddles. Central foreground empty for player and upper-middle right empty water for a large ghost boss sprite. Crisp photographic material texture, believable maritime scale, depth and subtle atmosphere. NOT old Chinese port, no pagoda, no lantern festival, no fantasy temples. No people, NO boss, no characters, no words, no interface, no decorative border. Spacious playable environment, no dramatic lightning or painted explosion."
+      }
+    }
+  ],
+  "productionSprites": [
+    {
+      "key": "ain-key",
+      "args": {
+        "referenced_image_paths": [
+          "C:/Users/MIN/.codex/generated_images/01a06a62-5b80-7eb1-af72-d754aa2cdfe0/exec-f3dc7662-d531-47f8-b8aa-304dce3e54c5.png"
+        ],
+        "prompt": "Change ONLY the gray-white checkerboard background to uniform solid chroma key MAGENTA #FF00FF. Preserve all six characters exactly in the same 3 by 2 grid positions, identical faces clothing poses scale and margins. No checkerboard, no shadows on background, no gradient. Technical sprite sheet for game rendering, flat pure magenta background including all gaps between limbs and hair, no magenta on the characters. Keep every full body inside its equal cell."
+      }
+    },
+    {
+      "key": "companion-key",
+      "args": {
+        "referenced_image_paths": [
+          "C:/Users/MIN/.codex/generated_images/01a06a62-5b80-7eb1-af72-d754aa2cdfe0/exec-b7367e38-bb4e-4212-a5eb-f0b54db6d852.png"
+        ],
+        "prompt": "Change ONLY the gray-white checkerboard background to uniform solid chroma key MAGENTA #FF00FF. Preserve all six characters exactly in the same 3 by 2 grid positions, identical faces clothing poses scale and margins. No checkerboard, no shadows on background, no gradient. Technical sprite sheet for game rendering, flat pure magenta background including all gaps between limbs and hair, no magenta on the characters. Keep every full body inside its equal cell."
+      }
+    },
+    {
+      "key": "boss-nokdong",
+      "args": {
+        "prompt": "Use case: stylized-concept. Production high-end Korean occult RPG boss animation atlas. ONE horizontal 3-column equal-cell sprite sheet, 1536x1024. Background uniform pure chroma MAGENTA #FF00FF, no gradient, no ground plane or cast shadow, no checkerboard. Subject 물등 사공: a gigantic Korean drowned ferryman ghost, face COMPLETELY hidden by wet dark reeds of traditional Korean satgat straw hat, tattered black straw rain cloak, one wooden oar and old warm brass maritime lantern. No eyes, no visible face. No boat, full body heavy ragged black hem. Same exact character in three full-body poses, same scale and foot baseline, each entirely inside its third of the image. Cell1 solemn idle facing slightly left toward player. Cell2 threatening ritual preparation raising prop with cloth moving. Cell3 staggered torso twisted back, arms reacting as seal interrupts magic. Boss remains planted on same feet, no running or lunge, NO exposed face even while staggered. Premium cinematic realistic painted materials, Korean folkloric horror, fine weathered fabric and texture, readable silhouette, restrained cold moon edge light. No beams, no lightning, no written text, no interface, no border. No cells or body parts overlapping."
+      }
+    },
+    {
+      "key": "boss-yeoja",
+      "args": {
+        "prompt": "Use case: stylized-concept. Production high-end Korean occult RPG boss animation atlas. ONE horizontal 3-column equal-cell sprite sheet, 1536x1024. Background uniform pure chroma MAGENTA #FF00FF, no gradient, no ground plane or cast shadow, no checkerboard. Subject 갯마리: huge Korean tidal-flat ghost fisher, face COMPLETELY wrapped under old fishing net and wet charcoal cloth hood, heavy earth-brown patched fishing coat wrapped in rope, barnacles and mud, arms carry coils of fishing rope. No visible face. No horns, no fantasy crown. Same exact character in three full-body poses, same scale and foot baseline, each entirely inside its third of the image. Cell1 solemn idle facing slightly left toward player. Cell2 threatening ritual preparation raising prop with cloth moving. Cell3 staggered torso twisted back, arms reacting as seal interrupts magic. Boss remains planted on same feet, no running or lunge, NO exposed face even while staggered. Premium cinematic realistic painted materials, Korean folkloric horror, fine weathered fabric and texture, readable silhouette, restrained cold moon edge light. No beams, no lightning, no written text, no interface, no border. No cells or body parts overlapping."
+      }
+    },
+    {
+      "key": "boss-palyoung",
+      "args": {
+        "prompt": "Use case: stylized-concept. Production high-end Korean occult RPG boss animation atlas. ONE horizontal 3-column equal-cell sprite sheet, 1536x1024. Background uniform pure chroma MAGENTA #FF00FF, no gradient, no ground plane or cast shadow, no checkerboard. Subject 산그늘: enormous Korean mountain guardian of the eight peaks, face COMPLETELY concealed by shadow under knotted pine roots and stone shoulder mantle, weathered slate rock and crooked Korean pine branches forming a standing humanoid silhouette, grounded terrifying solemn presence. No visible eyes or face, no Chinese deity dress. Same exact character in three full-body poses, same scale and foot baseline, each entirely inside its third of the image. Cell1 solemn idle facing slightly left toward player. Cell2 threatening ritual preparation raising prop with cloth moving. Cell3 staggered torso twisted back, arms reacting as seal interrupts magic. Boss remains planted on same feet, no running or lunge, NO exposed face even while staggered. Premium cinematic realistic painted materials, Korean folkloric horror, fine weathered fabric and texture, readable silhouette, restrained cold moon edge light. No beams, no lightning, no written text, no interface, no border. No cells or body parts overlapping."
+      }
+    },
+    {
+      "key": "boss-geogeum",
+      "args": {
+        "prompt": "Use case: stylized-concept. Production high-end Korean occult RPG boss animation atlas. ONE horizontal 3-column equal-cell sprite sheet, 1536x1024. Background uniform pure chroma MAGENTA #FF00FF, no gradient, no ground plane or cast shadow, no checkerboard. Subject 해안 표식꾼: tall weathered Korean coastal road boundary keeper ghost in dark grey patched traveller cloak, face COMPLETELY covered by old straw hood, carries a tall weathered wooden survey marker and knotted cords, salt-crusted stone talismans hanging from belt. No visible face, no Chinese crown. Same exact character in three full-body poses, same scale and foot baseline, each entirely inside its third of the image. Cell1 solemn idle facing slightly left toward player. Cell2 threatening ritual preparation raising prop with cloth moving. Cell3 staggered torso twisted back, arms reacting as seal interrupts magic. Boss remains planted on same feet, no running or lunge, NO exposed face even while staggered. Premium cinematic realistic painted materials, Korean folkloric horror, fine weathered fabric and texture, readable silhouette, restrained cold moon edge light. No beams, no lightning, no written text, no interface, no border. No cells or body parts overlapping."
+      }
+    },
+    {
+      "key": "boss-naro",
+      "args": {
+        "prompt": "Use case: stylized-concept. Production high-end Korean occult RPG boss animation atlas. ONE horizontal 3-column equal-cell sprite sheet, 1536x1024. Background uniform pure chroma MAGENTA #FF00FF, no gradient, no ground plane or cast shadow, no checkerboard. Subject 파시 객주: tall ominous Korean fish-market merchant ghost, face COMPLETELY hidden by low black traditional gat hat and deep shadow veil, dark indigo worn Korean durumagi, old brass balance scale and folded accounts booklet, hanging tags with no legible writing. No visible face, no armor. Same exact character in three full-body poses, same scale and foot baseline, each entirely inside its third of the image. Cell1 solemn idle facing slightly left toward player. Cell2 threatening ritual preparation raising prop with cloth moving. Cell3 staggered torso twisted back, arms reacting as seal interrupts magic. Boss remains planted on same feet, no running or lunge, NO exposed face even while staggered. Premium cinematic realistic painted materials, Korean folkloric horror, fine weathered fabric and texture, readable silhouette, restrained cold moon edge light. No beams, no lightning, no written text, no interface, no border. No cells or body parts overlapping."
+      }
+    }
+  ],
+  "note": "Chroma key mattes decoded in Canvas at runtime. No third-party game assets."
+}
