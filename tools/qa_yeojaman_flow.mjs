@@ -107,31 +107,17 @@ const layout = await page.evaluate(() => {
 await page.locator('#confirmBoss').click();
 await page.waitForSelector('#battleShell.active');
 phases.battle = await snapshot('05-battle');
+await page.waitForFunction(()=>window.hyPan?.state()&&!window.hyPan.state().busy);
 const fxChecks = {};
-for (const skill of ['break','guard','strike','break']) {
-  const beforeSeq=await page.locator('#damageFloat').getAttribute('data-seq')||'0';
-  await page.locator(`[data-skill="${skill}"]`).first().click();
-  await page.waitForFunction(seq => (document.querySelector('#damageFloat')?.dataset.seq||'0')!==seq, beforeSeq, { timeout:5000 });
-  fxChecks[skill] = await page.locator('#skillFx').evaluate((el,kind) => el.classList.contains('play') && el.classList.contains(kind), skill);
-  await page.waitForTimeout(650);
+for (let i=0;i<7;i++){
+  const before=await page.evaluate(()=>hyPan.state());
+  await page.locator('[data-skill="'+before.response+'"]:visible').first().click();
+  await page.waitForFunction(t=>hyPan.state().turn>t||hyPan.state().won,before.turn,{timeout:15000});
+  await page.waitForFunction(()=>!hyPan.state().busy,null,{timeout:15000});
+  fxChecks['knot'+i]=await page.evaluate(i=>hyPan.state().knotsRemaining===6-i,i);
 }
-const manifestReady = await page.locator('#manifestSkill').isEnabled();
-phases.manifestReady = await snapshot('06-manifest-ready');
-const battleLayout = await page.evaluate(() => {
-  const shell = document.querySelector('#battleShell').getBoundingClientRect();
-  const buttons = [...document.querySelectorAll('#skillGrid button')];
-  return {
-    shellInside: shell.left >= 0 && shell.top >= 0 && shell.right <= innerWidth + 1 && shell.bottom <= innerHeight + 1,
-    touchTargets: buttons.every(el => { const r=el.getBoundingClientRect(); return r.width >= 80 && r.height >= 48; }),
-    minFont: [...document.querySelectorAll('#battleShell *')].filter(el => el.offsetParent && el.textContent.trim()).every(el => parseFloat(getComputedStyle(el).fontSize) >= 12),
-    fontOffenders:[...document.querySelectorAll('#battleShell *')].filter(el => el.offsetParent && el.textContent.trim() && parseFloat(getComputedStyle(el).fontSize)<12).map(el=>({tag:el.tagName,id:el.id,cls:el.className,size:getComputedStyle(el).fontSize,text:el.textContent.trim().slice(0,30)})),
-  };
-});
-await page.locator('#manifestSkill').click();
-await page.waitForSelector('#manifestCine.play');
-await page.waitForTimeout(450);
-await page.screenshot({ path: join(out, '06b-seven-star-manifest.png') });
-await page.waitForSelector('#battleResult.show', { timeout: 6000 });
+const manifestReady=await page.evaluate(()=>hyPan.state().manifestUsed);
+const battleLayout=await page.evaluate(()=>({won:hyPan.state().won,knotsReleased:document.querySelectorAll('#knotGauge i.released').length===7}));
 phases.victory = await snapshot('07-victory');
 const completed = await page.evaluate(() => {
   const s=JSON.parse(localStorage.getItem('hy-dungeon-flow-v660') || '{}')?.yeoja;

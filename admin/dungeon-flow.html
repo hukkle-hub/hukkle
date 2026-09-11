@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#07090b">
-<title>흥양기 · 상황별 탐험 장면과 기록자 아인 전투 v80.0</title>
+<title>흥양기 · 상황별 탐험 장면과 기록자 아인 전투 v81.1</title>
 <style>
 :root{--bg:#07090b;--panel:rgba(7,10,12,.90);--panel2:rgba(11,15,18,.77);--gold:#d7ad63;--gold2:#f1d9a1;--line:rgba(235,203,142,.18);--text:#eee7db;--muted:#a89f91;--teal:#8fc6bd;--red:#c56a5e;--blue:#9fcbe0}
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050709;color:var(--text);font-family:Pretendard,"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif}button{font:inherit;color:inherit}
@@ -369,7 +369,7 @@ function safeImg(src){img.src=src;img.onerror=()=>{img.removeAttribute('src');im
 function safeVideo(src,onEnd){try{video.pause()}catch{}video.src=src;video.currentTime=0;video.muted=true;video.playsInline=true;video.onended=onEnd||null;video.onerror=()=>{if(onEnd)onEnd()};const p=video.play();if(p&&p.catch)p.catch(()=>{if(onEnd)onEnd()})}
 function setPhase(p){phase=p;game.dataset.phase=p;travel.style.display=p==='travel'?'block':'none';explore.style.display=p==='explore'?'block':'none';dungeon.style.display=p==='dungeon'?'grid':'none';bossPanel.style.display=p==='boss'?'grid':'none';$('#creativeBadge').style.display=(p==='dungeon'||p==='boss')?'inline-flex':'none';$('#phaseTitle').textContent=p==='travel'?'현실 이동':p==='explore'?'탐험 · 조사':p==='dungeon'?'자유 경로 던전':'금기 · 보스 전투';renderTop()}
 function renderTop(){const r=refs[current],s=rstate();$('#regionKicker').textContent=r.tag;$('#regionTitle').textContent=r.name;$('#sourceNote').textContent=r.source;$('#routeMemory').textContent=`루트 기억 ${s.routeDone?1:0}`;$('#clueCount').textContent=`기록 ${s.clueStates.filter(x=>x.recorded).length} / 3`}
-function start(){const r=refs[current],s=rstate();img.style.objectPosition=r.position;if(s.complete||s.bossSeen)startBossReveal();else if(s.investigationComplete)startDungeon();else if(s.routeDone)startExplore();else startTravel();if(embedded)emit('hy-journey-ready',{version:'80.0'})}
+function start(){const r=refs[current],s=rstate();img.style.objectPosition=r.position;if(s.complete||s.bossSeen)startBossReveal();else if(s.investigationComplete)startDungeon();else if(s.routeDone)startExplore();else startTravel();if(embedded)emit('hy-journey-ready',{version:'81.1.0'})}
 function startTravel(){const r=refs[current],s=rstate();try{video.pause()}catch{}video.muted=true;setPhase('travel');$('#travelTitle').textContent=r.travelTitle;$('#travelCopy').textContent=r.travelCopy;routeIndex=Math.max(0,Math.min(Number(s.routeIndex||0),r.route.length-1));renderTourism();renderRoute()}
 function changeTravelScene(index){const frames=TRAVEL_STILLS[current]||[ART[current].travel],src=frames[Math.min(index,frames.length-1)]||ART[current].travel;if(img.dataset.travelSrc===src)return;img.dataset.travelSrc=src;img.classList.remove('travel-cut');safeImg(src);void img.offsetWidth;img.classList.add('travel-cut');setTimeout(()=>img.classList.remove('travel-cut'),1100)}
 function changeExploreScene(index){const frames=EXPLORE_STILLS[current]||[ART[current].explore],src=frames[Math.max(0,Math.min(index,frames.length-1))]||ART[current].explore;if(img.dataset.exploreSrc===src&&img.getAttribute('src')===src)return;img.dataset.exploreSrc=src;img.classList.remove('travel-cut');safeImg(src);img.style.objectPosition=refs[current].position;void img.offsetWidth;img.classList.add('travel-cut');setTimeout(()=>img.classList.remove('travel-cut'),1100)}
@@ -431,7 +431,15 @@ function activeSkill(card){
 }
 function cardSkillKind(card,i){
   const sk=activeSkill(card);
-  if(sk&&SKILL_EFFECT_KIND[sk.effect])return SKILL_EFFECT_KIND[sk.effect];
+  if(sk){
+    if(['role_guard','guard','cleanse'].includes(sk.effect))return 'guard';
+    if(['role_break','judge'].includes(sk.effect))return 'break';
+    if(['strike','guard','break'].includes(sk.counter))return sk.counter;
+    if(['unique','extreme','true_name'].includes(sk.effect)){
+      const route=skillRoute(sk,card);return ['수호','의례'].includes(route)?'guard':['심판','해령'].includes(route)?'break':'strike';
+    }
+    if(SKILL_EFFECT_KIND[sk.effect])return SKILL_EFFECT_KIND[sk.effect];
+  }
   if(/탱커|수호|지원|회복/.test(card.role||''))return'guard';
   if(/파훼|영역|심판/.test(card.role||'')||i===1)return'break';
   return'strike';
@@ -537,10 +545,492 @@ async function useBattleSkill(kind,card=null){
 }
 function finishBattle(won,log){const r=refs[current],s=rstate(),first=!s.battle?.completed;battle.busy=false;battle.won=won;battle.lost=!won;renderBattle(log);document.querySelectorAll('#skillGrid button').forEach(b=>b.disabled=true);$('#skillGrid').style.display='none';$('#raidRail').style.display='none';$('.knot-hud').style.display='none';$('#battleResult').classList.add('show');$('#battleResult').classList.toggle('victory',won);$('#battleResultTitle').textContent=won?`${r.boss.name} · 금기 봉합`:'결계가 무너졌습니다';$('#battleResultCopy').textContent=won?'지역보스 인장과 진화 재료를 회수했습니다. 보스 카드는 낮은 확률로 직접 드롭됩니다.':'행동 예고와 대응 문구를 읽으면 피해를 크게 줄일 수 있습니다. 전투는 즉시 다시 시작할 수 있습니다.';$('#battleResultPrimary').textContent=won?'기록 완료 · 지도':'다시 도전';$('#battleResultPrimary').onclick=won?exit:startBossBattle;$('#battleResultSecondary').textContent=won?'보스 반복 도전':'기척으로 돌아가기';$('#battleResultSecondary').onclick=won?startBossBattle:startBossReveal;if(won){s.bossSeen=true;s.complete=true;s.battle={completed:true,clears:Number(s.battle?.clears||0)+1,turns:battle.turn,companion:parentCtx.companionCard,manifested:battle.lastSkill==='manifest'||battle.resolve===0,rewards:['지역보스 인장','고급 지전','정화수','보스 카드 추첨']};save();if(first)emit('hy-journey-boss-seen',{boss:r.boss.name,taboo:r.boss.taboo});emit('hy-journey-reward',{source:'region-boss',materials:{paper:5,water:2},fragmentCardId:stageEncounter(6)?.id,fragments:5,bossCardDrop:Math.random()<.08});emit('hy-journey-battle-complete',{boss:r.boss.name,turns:battle.turn,companion:parentCtx.companionCard,rewards:4,repeat:!first});if(first)emit('hy-journey-complete',{zones:s.zones.length,records:s.clueStates.filter(x=>x.recorded).length,boss:r.boss.name,battle:true});toast(`${r.name} 지역보스 보상을 회수했습니다. 반복 도전할 수 있습니다.`)}}
 function replayBoss(){img.animate([{transform:'scale(1.015)'},{transform:'scale(1.06)'},{transform:'scale(1.015)'}],{duration:1200,easing:'ease-in-out'});toast('이면의 기척을 다시 확인했습니다.')}
-function exit(target='map'){if(embedded)emit('hy-journey-exit',{target});else if(target==='home')location.replace('../index.html');else history.back()}
+function exit(target='map'){target=target==='home'?'home':'map';if(embedded)emit('hy-journey-exit',{target});else if(target==='home')location.replace('../index.html');else history.back()}
 window.addEventListener('message',e=>{const d=e.data||{};if(d.type==='hy-journey-context'){parentCtx={...parentCtx,...d,itemQty:{...parentCtx.itemQty,...(d.itemQty||{})}};document.documentElement.dataset.partyCount=String(parentCtx.party?.length||0);document.documentElement.dataset.companionManifested=parentCtx.companionManifested?'true':'false';if(phase==='explore')renderExplore();if(phase==='dungeon')renderZones();if(sheet.classList.contains('open'))renderInvest()}if(d.type==='hy-journey-item-result'){const fn=pendingItems.get(d.requestId);if(!fn)return;pendingItems.delete(d.requestId);if(d.ok&&d.item)parentCtx.itemQty[d.item]=Number(d.remaining||0);fn(!!d.ok);if(phase==='explore')renderExplore()}});
 $('#nextTravel').onclick=advanceRoute;$('#skipTravel').onclick=finishTravel;$('#exit1').onclick=exit;$('#exit2').onclick=exit;$('#exit3').onclick=exit;['#home1','#home2','#home3','#home4','#home5'].forEach(id=>$(id).onclick=()=>exit('home'));$('#closeInvest').onclick=()=>{sheet.classList.remove('open');activeClue=-1;renderGuide()};$('#closeStage').onclick=closeStage;$('#stageBackdrop').onclick=closeStage;$('#nextClue').onclick=()=>{const i=rstate().clueStates.findIndex(x=>!x.recorded);if(i>=0)openClue(i)};$('#advanceInvest').onclick=advanceInvest;$('#recordClue').onclick=recordClue;$('#enterDungeon').onclick=startDungeon;$('#backExplore').onclick=startExplore;$('#completeRegion').onclick=complete;$('#confirmBoss').onclick=confirmBoss;$('#replayBoss').onclick=replayBoss;
 document.querySelectorAll('#skillGrid [data-skill]').forEach(b=>b.onclick=()=>useBattleSkill(b.dataset.skill));
+/* 흥양기 v81 — 판(板) 보스전 프로토타입
+ * 기존 dungeon-flow.html의 데이터/에셋/저장 구조를 그대로 쓰고,
+ * 전투 루프만 합 → 7매듭 → 판의 기세 → 강신 구조로 교체한다.
+ */
+(() => {
+  'use strict';
+
+  const PAN_VERSION = '81.1.0';
+  const KNOTS = 7;
+  const HEAT_MAX = 4;
+  const TEMPO = [1, .93, .85, .77, .68];
+  const START_HEAT = { yeoja: 0, nokdong: 1, geogeum: 0, naro: 3, palyoung: 1 };
+  const HEAT_COPY = ['판이 가라앉아 있다', '호흡이 붙기 시작한다', '판이 달아오른다', '몰아치기 시작한다', '강신 직전'];
+  const CUES = {
+    break: ['익숙한 길이 한 겹 더 겹쳐 보인다.', '경계의 모양이 조금씩 어긋난다.', '무언가가 자리를 바꾸고 있다.'],
+    guard: ['누군가 대답을 기다리고 있다.', '시선이 멈춘 채 답을 재촉한다.', '기척이 가까이 와 말을 건다.'],
+    strike: ['주변의 무게가 한쪽으로 쏠린다.', '거리감이 갑자기 틀어진다.', '한 점으로 힘이 모이기 시작한다.']
+  };
+
+  const q = (s) => document.querySelector(s);
+  const qq = (s) => [...document.querySelectorAll(s)];
+  const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+  const clamp = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
+
+  const panCatalog=new Map();
+  const panCatalogReady=fetch('../card_manifest_v47.json',{signal:AbortSignal.timeout(6000)}).then(r=>{if(!r.ok)throw new Error('catalog');return r.json()}).then(data=>{
+    for(const c of (Array.isArray(data)?data:data.cards||[]))panCatalog.set(String(c.id).toLowerCase(),c);
+  }).catch(()=>{});
+  const original = {
+    startBossBattle,
+    renderBattle,
+    useBattleSkill,
+    finishBattle
+  };
+
+  function panCue(intent) {
+    const kind = intent?.[2] || 'strike';
+    const list = CUES[kind] || CUES.strike;
+    const idx = Math.max(0, ((battle?.turn || 1) - 1) % list.length);
+    return list[idx];
+  }
+
+  function panInitialHeat() {
+    return clamp(START_HEAT[current] ?? 0, 0, HEAT_MAX);
+  }
+
+  function panSyncLegacy() {
+    if (!battle) return;
+    battle.knotsRemaining = clamp(Number.isFinite(battle.knotsRemaining) ? battle.knotsRemaining : KNOTS, 0, KNOTS);
+    battle.heat = clamp(Number.isFinite(battle.heat) ? battle.heat : panInitialHeat(), 0, HEAT_MAX);
+    // 기존 저장/연출 코드가 참조하므로 값은 호환용으로만 유지한다.
+    battle.bossBreak = Math.round((KNOTS - battle.knotsRemaining) / KNOTS * 100);
+    battle.resolve = Math.round(battle.heat / HEAT_MAX * 100);
+  }
+
+  function panTempoScale() {
+    return TEMPO[clamp(battle?.heat ?? 0, 0, HEAT_MAX)] || 1;
+  }
+
+  function panApplyTempo() {
+    const game = q('#game');
+    if (!game || !battle) return;
+    const scale = panTempoScale();
+    game.style.setProperty('--pan-tempo', String(scale));
+    game.dataset.panHeat = String(battle.heat);
+    game.classList.add('pan-system-active');
+  }
+
+  function panEnsureUI() {
+    const game = q('#game');
+    if (!game || game.dataset.panUi === PAN_VERSION) return;
+    game.dataset.panUi = PAN_VERSION;
+
+    const style = document.createElement('style');
+    style.id = 'panSystemStyles';
+    style.textContent = `
+      #game.pan-system-active{--pan-tempo:1}
+      #game.pan-system-active .battle-presence .meter.hp,
+      #game.pan-system-active .battle-presence .meter.break{display:none!important}
+      #game.pan-system-active .battle-presence{width:min(480px,40vw)!important;padding:8px 12px 10px!important}
+      #game.pan-system-active .boss-identity span{position:static!important;margin-left:8px}
+      #game.pan-system-active .battle-intent{top:17%!important;width:min(420px,38vw)!important}
+      #game.pan-system-active .battle-intent b{color:#f1d9a1}
+      #game.pan-system-active .battle-intent span{color:#d6d0c5}
+
+      /* 3층 구도 — 보스(상단 60%) / 아인·동행자(하단층) / 손패(최하단) */
+      #game.pan-system-active .battle-actors{left:50%!important;right:auto!important;bottom:25%!important;width:30%!important;height:39%!important;translate:-50% 0;transform:none!important}
+      #game.pan-system-active .ain-actor{left:50%!important;right:auto!important;width:48%!important;height:100%!important;translate:-50% 0;z-index:2!important}
+      #game.pan-system-active .manifest-actor{left:-36%!important;right:auto!important;width:66%!important;height:94%!important;bottom:0!important;z-index:1!important;transform:translateX(-8%) scale(.94)!important}
+      #game.pan-system-active .manifest-actor.active{opacity:.9!important;transform:none!important}
+      #game.pan-system-active .skill-grid{left:18%!important;right:18%!important;bottom:max(8px,env(safe-area-inset-bottom))!important;height:23%!important;z-index:28!important}
+      #game.pan-system-active .raid-rail{display:none!important}
+      #game.pan-system-active .combat-log{right:max(12px,env(safe-area-inset-right))!important;bottom:27%!important;top:auto!important;width:min(285px,24vw)!important}
+      #game.pan-system-active .player-hud{width:min(300px,27vw)!important}
+
+      /* 숫자 BREAK 대신 실제 7매듭 */
+      #game.pan-system-active .knot-hud{left:max(16px,env(safe-area-inset-left))!important;right:auto!important;top:12%!important;bottom:auto!important;z-index:31!important;padding:8px 11px!important;border-radius:999px;background:rgba(3,7,9,.82)!important;backdrop-filter:blur(8px)}
+      #game.pan-system-active .knot-hud>b{font-size:12px!important}
+      #game.pan-system-active .knot-gauge i{width:14px!important;height:14px!important;transition:transform .35s ease,opacity .35s ease,filter .35s ease!important}
+      #game.pan-system-active .knot-gauge i.bound{border-color:#d4a557!important;background:#835a28!important;box-shadow:0 0 8px rgba(231,168,72,.55),inset 0 0 4px #f3d18c!important}
+      #game.pan-system-active .knot-gauge i.released{border-color:#7e8b8e!important;background:transparent!important;box-shadow:none!important;opacity:.42;transform:rotate(45deg) scale(.66)!important}
+
+      /* 현현 0/100을 판의 기세 5단계로 교체 */
+      #game.pan-system-active .meter.resolve .meter-track{height:6px!important}
+      #game.pan-system-active .meter.resolve .meter-track i{background:linear-gradient(90deg,#9b7137,#f1d28a)!important;transition:width calc(.42s * var(--pan-tempo)) ease!important}
+      #game.pan-system-active .meter.resolve .meter-head b{letter-spacing:.08em}
+
+      /* 장단이 올라갈수록 실제 연출 속도가 빨라진다 */
+      #game.pan-system-active[data-route="수호"] .skill-fx.play{animation-duration:calc(.62s * var(--pan-tempo))!important}
+      #game.pan-system-active[data-route="기록"] .skill-fx.play{animation-duration:calc(.70s * var(--pan-tempo))!important}
+      #game.pan-system-active[data-route="의례"] .skill-fx.play{animation-duration:calc(.90s * var(--pan-tempo))!important}
+      #game.pan-system-active[data-route="해령"] .skill-fx.play{animation-duration:calc(.80s * var(--pan-tempo))!important}
+      #game.pan-system-active[data-route="심판"] .skill-fx.play{animation-duration:calc(.55s * var(--pan-tempo))!important}
+      #game.pan-system-active[data-route="넋"] .skill-fx.play{animation-duration:calc(1s * var(--pan-tempo))!important}
+      #game.pan-system-active .skill-fx.strike i{animation-duration:calc(.58s * var(--pan-tempo))!important}
+      #game.pan-system-active .skill-fx.break i{animation-duration:calc(.70s * var(--pan-tempo))!important}
+      #game.pan-system-active .skill-fx.guard i{animation-duration:calc(.72s * var(--pan-tempo))!important}
+      #game.pan-system-active .damage-float.play{animation-duration:calc(.80s * var(--pan-tempo))!important}
+      #game.pan-system-active .hit-flash.play{animation-duration:calc(.48s * var(--pan-tempo))!important}
+      #game.pan-system-active .battle-shell.shake{animation-duration:calc(.34s * var(--pan-tempo))!important}
+      #game.pan-system-active .skill-banner.play{animation-duration:calc(1.1s * var(--pan-tempo))!important}
+
+      /* 합 — 보스 자체는 움직이지 않고, 양쪽 기술만 중앙에서 충돌한다. */
+      .pan-clash{position:absolute;z-index:110;inset:0;display:none;pointer-events:none;isolation:isolate}
+      .pan-clash.play{display:block}
+      .pan-clash:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 46%,rgba(0,0,0,.08),rgba(0,0,0,.52) 72%);animation:panVeil calc(var(--pan-clash-ms,760ms) * .72) ease both}
+      .pan-clash-side{position:absolute;top:39%;width:min(240px,22vw);height:26%;display:grid;place-items:center;gap:7px;opacity:0}
+      .pan-clash-player{left:10%;animation:panPlayerIn var(--pan-clash-ms,760ms) cubic-bezier(.18,.78,.2,1) both}
+      .pan-clash-enemy{right:10%;animation:panEnemyIn var(--pan-clash-ms,760ms) cubic-bezier(.18,.78,.2,1) both}
+      .pan-clash-player img{width:min(112px,9vw);height:min(150px,19vh);object-fit:cover;border-radius:9px;border:1px solid rgba(241,217,161,.55);box-shadow:0 8px 24px #000}
+      .pan-clash-side b{padding:5px 10px;border-radius:999px;background:rgba(3,7,10,.84);border:1px solid rgba(241,217,161,.22);font:800 12px "Noto Serif KR",serif;text-align:center}
+      .pan-clash-enemy b{border-color:rgba(197,106,94,.42);color:#f0bbb3}
+      .pan-clash-burst{position:absolute;z-index:4;left:50%;top:48%;translate:-50% -50%;width:min(230px,24vw);opacity:0;filter:drop-shadow(0 0 20px rgba(255,223,152,.78));animation:panBurst var(--pan-clash-ms,760ms) ease-out both}
+      .pan-clash-call{position:absolute;z-index:5;left:50%;top:48%;translate:-50% -50%;opacity:0;padding:7px 15px;border-radius:999px;background:rgba(2,5,8,.84);border:1px solid rgba(241,217,161,.46);font:900 clamp(20px,3vw,40px) "Noto Serif KR",serif;letter-spacing:.06em;text-shadow:0 3px 12px #000;animation:panCall var(--pan-clash-ms,760ms) ease-out both}
+      .pan-clash.win .pan-clash-call{color:#ffe3a1}
+      .pan-clash.lose .pan-clash-call{color:#efaaa0;border-color:rgba(197,106,94,.55)}
+      @keyframes panPlayerIn{0%{opacity:0;transform:translateX(-42%) scale(.86)}20%{opacity:1}48%{opacity:1;transform:translateX(115%) scale(1)}67%,100%{opacity:0;transform:translateX(115%) scale(.94)}}
+      @keyframes panEnemyIn{0%{opacity:0;transform:translateX(42%) scale(.94)}20%{opacity:1}48%{opacity:1;transform:translateX(-115%) scale(1)}67%,100%{opacity:0;transform:translateX(-115%) scale(.94)}}
+      @keyframes panBurst{0%,42%{opacity:0;transform:scale(.25)}51%{opacity:1;transform:scale(1.1)}78%,100%{opacity:0;transform:scale(1.75)}}
+      @keyframes panCall{0%,47%{opacity:0;transform:scale(.6)}57%,76%{opacity:1;transform:none}100%{opacity:0;transform:scale(1.12)}}
+      @keyframes panVeil{from{opacity:0}22%,80%{opacity:1}to{opacity:0}}
+
+      @media(max-width:900px){
+        #game.pan-system-active .battle-actors{bottom:27%!important;width:34%!important;height:35%!important}
+        #game.pan-system-active .skill-grid{left:14%!important;right:14%!important;height:24%!important}
+        #game.pan-system-active .knot-hud{top:11%!important}
+        .pan-clash-side{width:24vw}.pan-clash-player{left:7%}.pan-clash-enemy{right:7%}
+      }
+      @media(prefers-reduced-motion:reduce){.pan-clash-side,.pan-clash-burst,.pan-clash-call,.pan-clash:before{animation-duration:.24s!important}}
+    `;
+    style.textContent += `
+      #game.pan-system-active .battle-actors{height:22%!important;bottom:25%!important}
+      #game.pan-system-active .skill-grid{grid-template-columns:repeat(5,minmax(0,1fr))!important;left:18%!important;right:18%!important}
+      #game.pan-system-active #manifestSkill{display:none!important}
+      #game.pan-system-active .deployed-card.descended{border-color:transparent!important;box-shadow:none!important;background:transparent!important}
+      #game.pan-system-active .deployed-card.descended .skill-card-art{opacity:.18;mask-image:linear-gradient(transparent,#000,transparent)}
+      #game.pan-system-active .battle-presence{left:auto!important;right:2%!important;top:2%!important;translate:none!important}
+      #game.pan-system-active .knot-hud{top:2%!important}
+      #game.pan-system-active .battle-intent{top:13%!important;left:2%!important;right:auto!important;translate:none!important;width:29%!important}
+      #game.pan-system-active .player-hud{right:2%!important;top:17%!important;width:23%!important}
+      #game.pan-system-active .player-meters{display:grid!important;grid-template-columns:1fr!important;gap:8px}
+      #game.pan-system-active .meter-head{display:flex;justify-content:space-between;gap:8px;white-space:nowrap}
+      #game.pan-system-active .companion-mini{min-width:0}
+      #game.pan-system-active #battleCompanionMeta{display:none}
+      #game.pan-system-active .combat-log{font-size:12px!important}
+      #game.pan-system-active #manifestCine{display:none!important}
+      #game.pan-system-active #seventhSkillMotion{top:48%;height:28%;bottom:auto}
+      #game.pan-system-active .manifest-card-lift{display:none!important}
+      #game.pan-system-active #summonStage{top:48%;height:28%;bottom:auto}
+      #game.pan-system-active #summonStage .veil{display:none}
+      #game.pan-system-active #summonStage .nm{top:0}
+      #game.pan-system-active #summonStage .card{width:7%;height:80%;bottom:0}
+      .pan-field-actions{position:absolute;left:2%;bottom:2%;width:15%;display:grid;gap:4px;z-index:35}
+      .pan-field-actions button{font-size:12px!important;min-height:38px;padding:4px}
+      #game.pan-system-active .pan-clash-burst{display:none}
+      .pan-clash-sprite{position:absolute;left:50%;top:48%;translate:-50% -50%;width:160px;height:160px;background:url('../assets/fx/burst.webp') 0 0/2200% 100%;animation:panSprite .5s steps(21) both}
+      @keyframes panSprite{to{background-position:100% 0}}
+      #game.pan-system-active .battle-result .actions{flex-wrap:wrap}
+    `;
+    document.head.appendChild(style);
+
+    const clash = document.createElement('div');
+    clash.id = 'panClash';
+    clash.className = 'pan-clash';
+    clash.innerHTML = `
+      <div class="pan-clash-side pan-clash-player"><img id="panClashCard" alt=""><b id="panClashSkill">카드 기술</b></div>
+      <div class="pan-clash-side pan-clash-enemy"><b id="panClashIntent">보스 행동</b></div>
+      <div class="pan-clash-sprite" aria-hidden="true"></div>
+      <strong class="pan-clash-call" id="panClashCall">합</strong>`;
+    q('#battleShell')?.appendChild(clash);
+  }
+
+  function panRenderKnots() {
+    const remaining = clamp(battle.knotsRemaining, 0, KNOTS);
+    qq('#knotGauge i').forEach((k, i) => {
+      const bound = i < remaining;
+      k.classList.toggle('bound', bound);
+      k.classList.toggle('released', !bound);
+      k.classList.remove('lit');
+      k.setAttribute('aria-label', bound ? `매듭 ${i + 1} 묶임` : `매듭 ${i + 1} 풀림`);
+    });
+    const title = q('.knot-hud>b');
+    if (title) title.textContent = remaining ? '매듭을 푼다' : '일곱 매듭 해원';
+  }
+
+  function panRenderBattle(log) {
+    if (!battle) return;
+    panEnsureUI();
+    panSyncLegacy();
+    panApplyTempo();
+
+    const intent = battleIntent();
+    const player = clamp(Math.round(battle.playerHp), 0, 100);
+    const heat = clamp(battle.heat, 0, HEAT_MAX);
+    q('#battleCompanionName').textContent = `${parentCtx.companionName||'동행자'} · ${battle.manifestUsed?'현현':parentCtx.companionManifested?'현현 대기':'동행'}`;
+
+    q('#battleTurn').textContent = `TURN ${battle.turn}`;
+    q('#battlePhase').textContent = battle.firstEncounter ? '첫 대면 · 명분' : HEAT_COPY[heat];
+    q('#bossIntent').textContent = '다음 기척';
+    q('#bossIntentHint').textContent = panCue(intent);
+
+    // HP/BREAK는 판 시스템의 승패 조건이 아니다. 기존 값은 호환만 유지하고 화면에서는 숨긴다.
+    if (q('#bossHpText')) q('#bossHpText').textContent = '—';
+    if (q('#bossHpBar')) q('#bossHpBar').style.width = '100%';
+    if (q('#bossBreakText')) q('#bossBreakText').textContent = '—';
+    if (q('#bossBreakBar')) q('#bossBreakBar').style.width = '0%';
+
+    const resolveMeter = q('#resolveText')?.closest('.meter');
+    if (resolveMeter) {
+      const name = resolveMeter.querySelector('.meter-head span');
+      if (name) name.textContent = '판의 기세';
+    }
+    if (q('#resolveText')) q('#resolveText').textContent = `${'●'.repeat(heat+1)}${'○'.repeat(HEAT_MAX - heat)}`;
+    if (q('#resolveBar')) q('#resolveBar').style.width = `${heat / HEAT_MAX * 100}%`;
+    if (q('#playerHpText')) q('#playerHpText').textContent = battle.firstEncounter ? '첫 대면 보호' : `${player} / 100`;
+    if (q('#playerHpBar')) q('#playerHpBar').style.width = `${player}%`;
+
+    panRenderKnots();
+    if (log) q('#combatLog').innerHTML = log;
+
+    const manifest = q('#manifestSkill');
+    const ready = !!parentCtx.companionManifested && heat >= HEAT_MAX && !battle.manifestUsed && !battle.busy;
+    if (manifest) {
+      manifest.disabled = !ready;
+      manifest.classList.toggle('ready', ready);
+      const label = manifest.querySelector('b');
+      const note = manifest.querySelector('span');
+      if (label) label.textContent = battle.manifestUsed ? '✦ 강신 완료' : '✦ 7성 강신';
+      if (note) note.textContent = !parentCtx.companionManifested ? '최종현현 필요' : battle.manifestUsed ? '동행자가 판에 남아 있습니다' : ready ? '판이 최고조입니다' : '판의 기세가 더 필요합니다';
+    }
+    const responseNames={strike:'기록 · 맞서기',guard:'수호 · 지키기',break:'파훼 · 끊기'};
+    q('#bossIntentHint').textContent += ' ' + ({strike:'모인 힘의 흔적을 기록해 맞서세요.',guard:'대답 대신 경계를 지켜 기척을 막으세요.',break:'엇갈린 경계를 끊어 흐름을 되돌리세요.'}[intent[2]]);
+    qq('#skillGrid .battle-skill:not(.manifest),.pan-field-actions button').forEach(b => {
+      b.disabled = !!battle.busy || battle.won || battle.lost;
+      const small=b.querySelector('small');
+      if(small && !small.dataset.panLabel){small.dataset.panLabel='1';small.textContent=responseNames[b.dataset.skill];}
+    });
+    game.dataset.panBusy=String(!!battle.busy);
+    game.dataset.panKnots=String(battle.knotsRemaining);
+    game.dataset.panManifested=String(!!battle.manifestUsed);
+  }
+
+  async function panPlayClash(card, intent, won) {
+    panEnsureUI();
+    const root = q('#panClash');
+    const tier = kindTier(card);
+    const base = clamp(Math.round((tier.ms || 920) * .62 + 260), 520, 980);
+    const duration = Math.round(base * panTempoScale());
+    root.style.setProperty('--pan-clash-ms', `${duration}ms`);
+    root.className = `pan-clash play ${won ? 'win' : 'lose'}`;
+    q('#panClashCard').src = card?.img || parentCtx.companionImg || '../assets/cards-v63/C075.webp';
+    q('#panClashSkill').textContent = activeSkill(card || {})?.name || card?.skill || '기록의 수';
+    q('#panClashIntent').textContent = intent?.[0] || '이면의 기척';
+    q('#panClashCall').textContent = won ? '합 · 받아쳤다' : '합 · 밀렸다';
+    void root.offsetWidth;
+    await sleep(duration + 40);
+    root.className = 'pan-clash';
+  }
+
+  function kindTier(card) {
+    try { return skillTier(card || {}); }
+    catch { return { ms: 920, stop: 45, banner: true }; }
+  }
+
+  function panSkillNumbers(kind, card) {
+    const stage = card?.manifested ? 7 : Math.max(1, Number(card?.stage || battle.stage || 1));
+    const power = 1 + (stage - 1) * .07;
+    if (kind === 'break') return { damage: 17 * power, heal: 0 };
+    if (kind === 'guard') return { damage: 9 * power, heal: 7 };
+    return { damage: 30 * power, heal: 0 };
+  }
+
+  function panSetHeat(next) {
+    battle.heat = clamp(next, 0, HEAT_MAX);
+    panSyncLegacy();
+    panApplyTempo();
+  }
+
+  async function panManifest(card = null, auto = false) {
+    if (!battle || battle.manifestUsed || !parentCtx.companionManifested || battle.heat < HEAT_MAX) return false;
+    battle.manifestUsed = true;
+    battle.lastSkill = 'manifest';
+    card = battleParty().find(c=>c.id===parentCtx.companionCard && c.manifested) || battleParty().find(c=>c.manifested) || manifestationCard(null);
+    battle.manifestCardId = card.id;
+    const label = parentCtx.companionManifest || `${card?.name || parentCtx.companionName || '동행자'} · 강신`;
+    await playSummon(card, parentCtx.motion===false?330:1800);
+    q('#manifestActorImg').src=card.finalImg||parentCtx.companionFinalImg||card.img;
+    q('#skillGrid')?.querySelectorAll('[data-card]').forEach(button=>button.classList.toggle('descended',button.dataset.card===card.id));
+    q('#manifestTitle').textContent=label;
+    const actor = q('#manifestActor');
+    if (actor) actor.classList.add('active');
+    if (q('#manifestActorName')) q('#manifestActorName').textContent = `${card?.name || parentCtx.companionName || '동행자'} · 강신`;
+    playSkillFx('manifest', 92 * (1 + ((card?.stage || 7) - 1) * .07), true, label, card);
+    battle.busy = true;
+    panRenderBattle(`<b>${label}</b> · 판이 최고조에 닿자 카드의 경계가 사라지고 동행자가 내려왔습니다.${auto ? ' 강신은 턴을 소모하지 않습니다.' : ''}`);
+    return true;
+  }
+
+  async function panUseBattleSkill(kind, card = null) {
+    if (!battle || battle.busy || battle.won || battle.lost) return;
+
+    if (kind === 'manifest') {
+      if (!parentCtx.companionManifested) return toast('최종현현을 마친 7성 동행 카드가 필요합니다.');
+      if (battle.heat < HEAT_MAX) return toast('판의 기세가 아직 최고조에 닿지 않았습니다.');
+      if (battle.manifestUsed) return toast('동행자는 이미 판에 내려와 있습니다.');
+      battle.busy = true;
+      panRenderBattle();
+      await panManifest(card, false);
+      battle.busy=false; panRenderBattle();
+      return;
+    }
+
+    const intent = battleIntent();
+    kind = card ? cardSkillKind(card, 0) : kind;
+    const won = kind === intent[2];
+    const skill = activeSkill(card || {});
+    const label = skill?.name || card?.skill || (kind === 'guard' ? '금기 수호진' : kind === 'break' ? '이면 흔적 파훼' : '기록 베기');
+    const nums = panSkillNumbers(kind, card);
+    const critical = !!card?.manifested || (kind !== 'guard' && battle.turn % 3 === 0);
+    const damage = nums.damage * (critical ? 1.65 : 1);
+
+    battle.busy = true;
+    battle.lastCard = card?.id || null;
+    battle.lastSkill = kind;
+    battle.critical = critical;
+    panRenderBattle();
+
+    await panPlayClash(card, intent, won);
+
+    let log = '';
+    if (won) {
+      // 합에서 이긴 쪽 기술만 남는다.
+      battle.clashWins = Number(battle.clashWins || 0) + 1;
+      battle.knotsRemaining = Math.max(0, battle.knotsRemaining - 1);
+      panSetHeat(battle.heat + 1);
+      battle.bossHp = Math.max(1, battle.bossHp - damage); // 호환용. 승리는 HP가 아니라 7매듭이다.
+      if (nums.heal) battle.playerHp = Math.min(100, battle.playerHp + nums.heal);
+      if(card?.manifested && battle.manifestUsed) await playSeventhSkillMotion(card,label);
+      playSkillFx(kind, damage, critical, label, card);
+
+      const call = q('#breakCallout');
+      if (call) {
+        call.textContent = '매듭 풀림';
+        call.classList.remove('play'); void call.offsetWidth; call.classList.add('play');
+        setTimeout(() => { call.classList.remove('play'); call.textContent = '매듭 풀림'; }, Math.round(900 * panTempoScale()));
+      }
+      log = `<b>${card?.name ? card.name + ' · ' : ''}${label}</b>이 <b>${intent[0]}</b>과 맞부딪혀 이겼습니다. 보스의 행동은 부서지고 매듭 하나가 풀렸습니다.`;
+
+      // 최고조에 닿으면 7성 동행자는 자동으로 내려온다. 별도 턴을 먹지 않는다.
+      if (battle.heat >= HEAT_MAX && parentCtx.companionManifested && !battle.manifestUsed) {
+        await sleep(Math.round(260 * panTempoScale()));
+        await panManifest(card, true);
+        battle.busy = true; // 아래 턴 정리를 계속한다.
+      }
+
+      if (battle.knotsRemaining <= 0) {
+        battle.bossHp = 0;
+        return finishBattle(true, `${log} <b>일곱 매듭이 모두 풀렸습니다. 판이 결착됩니다.</b>`);
+      }
+    } else {
+      // 합에서 진 기술은 부서진다. 플레이어 피해는 반복전부터 실제로 들어온다.
+      battle.clashLosses = Number(battle.clashLosses || 0) + 1;
+      panSetHeat(battle.heat - 1);
+      const raw = intent[1] * (battle.knotsRemaining <= 3 ? 1.12 : 1);
+      const enemyDamage = battle.firstEncounter ? 0 : Math.max(1, Math.round(raw));
+      if (enemyDamage) battle.playerHp = Math.max(0, battle.playerHp - enemyDamage);
+      log = `<b>${card?.name ? card.name + ' · ' : ''}${label}</b>이 합에서 밀려 부서졌습니다. <b>${intent[0]}</b>${battle.firstEncounter ? '은 첫 대면이라 공격하지 않고 판을 거두었습니다.' : `이 관통해 결계 피해 ${enemyDamage}.`} 매듭은 풀리지 않고 판의 기세가 식었습니다.`;
+      if (battle.playerHp <= 0) return finishBattle(false, log);
+    }
+
+    battle.turn += 1;
+    battle.busy = false;
+    panSyncLegacy();
+    panRenderBattle(log);
+  }
+
+  async function panStartBossBattle() {
+    if(game.dataset.panStarting==='true')return;
+    game.dataset.panStarting='true';
+    await panCatalogReady;
+    parentCtx.party=battleParty().map(c=>({...c,skills:c.skills?.length?c.skills:(panCatalog.get(String(c.id).toLowerCase())?.skills||[])}));
+    const firstEncounter = !rstate().battle?.completed;
+    original.startBossBattle();
+    game.dataset.panStarting='false';
+    if (!battle) return;
+    battle.knotsRemaining = KNOTS;
+    battle.heat = panInitialHeat();
+    battle.firstEncounter = firstEncounter;
+    battle.manifestUsed = false;
+    battle.clashWins = 0;
+    battle.clashLosses = 0;
+    panSyncLegacy();
+    panEnsureUI();
+    // 7성 동행자도 강신 전에는 카드 경계를 벗어나지 않는다.
+    q('#manifestActor')?.classList.remove('active');
+    const deck=q('#skillGrid'),kinds=new Set(battleParty().map(cardSkillKind));
+    const fallback=document.createElement('div');fallback.className='pan-field-actions';
+    for(const [kind,label] of Object.entries({strike:'아인 · 기록',guard:'아인 · 수호',break:'아인 · 파훼'})){
+      if(kinds.has(kind))continue;
+      const b=document.createElement('button');b.className='soft';b.dataset.skill=kind;b.textContent=label;
+      b.onclick=()=>useBattleSkill(kind);fallback.appendChild(b);
+    }
+    q('.pan-field-actions')?.remove();deck.before(fallback);
+    panRenderBattle(firstEncounter
+      ? `<b>${refs[current].boss.name}</b>과 처음 마주합니다. 이 대면에서 보스는 반격하지 않습니다. 기척을 읽고 맞는 수로 합을 이겨 매듭을 풀어보세요.`
+      : `<b>${refs[current].boss.name}</b>과 판을 엽니다. 기척은 성격만 드러납니다. 맞는 수로 합을 이기면 매듭이 풀리고 판이 달아오릅니다.`);
+  }
+
+  function panFinishBattle(won, log) {
+    if(battle.won||battle.lost)return;
+    original.finishBattle(won, log);
+    if(won){const s=rstate();s.battle.pan={knotsRemaining:battle.knotsRemaining,heat:battle.heat,wins:battle.clashWins,losses:battle.clashLosses};s.battle.manifested=!!battle.manifestUsed;save();}
+    qq('.pan-field-actions button').forEach(b=>b.disabled=true);
+    if (!q('#battleResult')) return;
+    if (won) {
+      q('#battleResultTitle').textContent = `${refs[current].boss.name} · 일곱 매듭 해원`;
+      q('#battleResultCopy').textContent = '보스의 체력을 소진한 것이 아니라, 합을 이겨 일곱 매듭을 모두 풀고 판을 결착했습니다. 지역보스 보상은 기존 규칙대로 회수됩니다.';
+    } else {
+      q('#battleResultTitle').textContent = '판이 식었습니다';
+      q('#battleResultCopy').textContent = '정확한 기술명은 미리 보이지 않습니다. 기척의 성격을 읽고 카드의 역할을 골라 합을 이겨야 합니다.';
+    }
+  }
+
+  // 전역 바인딩을 교체한다. 기존 UI 이벤트는 실행 시점에 이 함수를 참조한다.
+  renderBattle = panRenderBattle;
+  useBattleSkill = panUseBattleSkill;
+  startBossBattle = panStartBossBattle;
+  finishBattle = panFinishBattle;
+
+  panEnsureUI();
+
+  // 이미 보스전이 열린 상태에서 주입된 경우도 프로토타입 상태를 보강한다.
+  if (typeof battle !== 'undefined' && battle && q('#battleShell')?.classList.contains('active')) {
+    battle.knotsRemaining ??= KNOTS;
+    battle.heat ??= panInitialHeat();
+    battle.firstEncounter ??= !rstate().battle?.completed;
+    battle.manifestUsed ??= false;
+    q('#manifestActor')?.classList.remove('active');
+    panRenderBattle('<b>판 시스템 v81</b>이 현재 전투에 적용되었습니다.');
+  }
+
+  window.hyPan = {
+    version: PAN_VERSION,
+    config: { knots: KNOTS, heatMax: HEAT_MAX, tempo: [...TEMPO], startHeat: { ...START_HEAT } },
+    state: () => battle ? ({
+      turn: battle.turn,
+      knotsRemaining: battle.knotsRemaining,
+      heat: battle.heat,
+      firstEncounter: battle.firstEncounter,
+      manifestUsed: battle.manifestUsed,
+      wins: battle.clashWins || 0,
+      losses: battle.clashLosses || 0,
+      busy:!!battle.busy, playerHp:battle.playerHp, won:!!battle.won, lost:!!battle.lost, response:battleIntent()[2],manifestCardId:battle.manifestCardId
+    }) : null,
+    cue: panCue,
+    // Read-only diagnostics.
+  };
+
+  console.info(`[흥양기] 판 보스전 시스템 v${PAN_VERSION} 적용`);
+})();
+
+
 start();
 })();
 </script>
