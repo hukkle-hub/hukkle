@@ -90,3 +90,50 @@
     Error: HYServerError,
   };
 })();
+
+/* v81 live route hook
+ * 기존 startJourney를 건드리지 않고 journeyFrame의 목적지만 판(板) 전투 래퍼로 바꾼다.
+ * 따라서 파티/카드 성장/저장/보상/postMessage 계약은 기존 메인 클라이언트 그대로 유지된다.
+ */
+(() => {
+  'use strict';
+
+  const PAN_VERSION = '81.0.0';
+
+  function installPanJourneyRoute() {
+    const frame = document.getElementById('journeyFrame');
+    if (!frame) return false;
+    if (frame.dataset.panRouteHook === PAN_VERSION) return true;
+
+    const rewrite = () => {
+      const raw = frame.getAttribute('src') || '';
+      if (!raw || raw === 'about:blank') return;
+      if (raw.includes('dungeon-flow-pan.html')) return;
+      if (!raw.includes('admin/dungeon-flow.html')) return;
+
+      let next = raw.replace('admin/dungeon-flow.html', 'admin/dungeon-flow-pan.html');
+      next = next.replace(/([?&])v=80\.0\.0(?=&|$)/, `$1v=${PAN_VERSION}`);
+      frame.setAttribute('src', next);
+      console.info(`[흥양기] 판 보스전 v${PAN_VERSION} 경로 적용`, next);
+    };
+
+    const observer = new MutationObserver(rewrite);
+    observer.observe(frame, { attributes: true, attributeFilter: ['src'] });
+    frame.dataset.panRouteHook = PAN_VERSION;
+    rewrite();
+
+    window.HYPanRoute = {
+      version: PAN_VERSION,
+      enabled: true,
+      frame,
+      rewrite,
+      observer,
+    };
+
+    return true;
+  }
+
+  if (!installPanJourneyRoute()) {
+    window.addEventListener('load', installPanJourneyRoute, { once: true });
+  }
+})();
