@@ -155,6 +155,7 @@
 
   function isSafeToAutoApply() {
     if (document.body?.dataset.hyUpdateLock) return false;
+    if (document.querySelector('.screen.active[data-screen="journey"]')) return false;
     if (typeof window.HYGame?.isSafeForUpdate === 'function') {
       try { return Boolean(window.HYGame.isSafeForUpdate()); } catch { return false; }
     }
