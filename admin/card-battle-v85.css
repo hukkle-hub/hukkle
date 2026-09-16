@@ -1,0 +1,82 @@
+/* Scope all overrides to the real battle; exploration retains its own layout. */
+#game.pan-system-active.card-battle-v85 .battle-shell{background:none!important;isolation:isolate}
+#game.pan-system-active.card-battle-v85 .battle-actors,#game.pan-system-active.card-battle-v85 .raid-rail,
+#game.pan-system-active.card-battle-v85 #skillFx,#game.pan-system-active.card-battle-v85 #damageFloat,#game.pan-system-active.card-battle-v85 #panClash,
+#game.pan-system-active.card-battle-v85 #breakCallout,#game.pan-system-active.card-battle-v85 #manifestCine,#game.pan-system-active.card-battle-v85 #seventhSkillMotion,
+#game.pan-system-active.card-battle-v85 #summonStage,#game.pan-system-active.card-battle-v85 #hitFlash,#game.pan-system-active.card-battle-v85 #skillBanner{display:none!important}
+.cb-board{position:absolute;inset:0;z-index:0;pointer-events:none;color:#f4e8ce}
+.cb-landscape{position:absolute;inset:0;background-position:center;background-size:cover}
+.cb-landscape:after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 36%,#07131a30,#030a11a8 76%),linear-gradient(0deg,#03090ff5,transparent 65%)}
+#game.pan-system-active.card-battle-v85 .battle-presence{position:absolute!important;top:3%!important;left:50%!important;right:auto!important;translate:-50% 0!important;width:30%!important;max-width:none!important;background:none!important;border:0!important;padding:0!important;text-align:center!important;z-index:3!important;box-shadow:none!important}
+#game.pan-system-active.card-battle-v85 .boss-identity{display:block!important}
+#game.pan-system-active.card-battle-v85 .boss-identity small{display:none!important}
+#game.pan-system-active.card-battle-v85 .battle-presence h2{font-size:clamp(19px,2.5vw,32px)!important;line-height:1.15!important;margin:0!important}
+#game.pan-system-active.card-battle-v85 #battlePhase{display:block!important;background:none!important;margin:3px 0 0!important;padding:0!important;font-size:11px!important}
+#game.pan-system-active.card-battle-v85 .boss-aura{display:none!important}
+.cb-boss{position:absolute;top:13%;left:50%;translate:-50%;width:clamp(115px,20%,260px);height:40%;border:2px solid #d3b274;border-radius:16px;overflow:hidden;background:#09141a;box-shadow:0 12px 35px #000b;margin:0}
+.cb-boss>img{width:100%;height:100%;object-fit:cover;object-position:center}
+.cb-boss-footer{position:absolute;bottom:0;left:0;right:0;padding:25px 12px 12px;background:linear-gradient(transparent,#061016 40%);display:flex;flex-wrap:wrap;justify-content:space-between;gap:5px;font-size:12px}
+.cb-boss-footer small{font-size:12px}.cb-progress{height:5px;border-radius:5px;overflow:hidden;background:#243034;width:100%}.cb-progress i{display:block;height:100%;background:#d6b16b;transition:width .3s}
+#game.pan-system-active.card-battle-v85 .knot-hud{top:3%!important;left:2%!important;right:auto!important;bottom:auto!important;font-size:12px!important;padding:8px!important;z-index:5!important}
+#game.pan-system-active.card-battle-v85 .battle-intent{left:auto!important;right:2%!important;top:16%!important;width:25%!important;translate:none!important;background:#061018e8!important;border:1px solid #cbb27d44!important;border-radius:12px!important;padding:12px!important;text-align:left!important;z-index:5!important}
+#game.pan-system-active.card-battle-v85 .battle-intent small{font-size:11px!important}
+#game.pan-system-active.card-battle-v85 .battle-intent b{font-size:15px!important}
+#game.pan-system-active.card-battle-v85 .battle-intent span{font-size:13px!important;line-height:1.45!important}
+#game.pan-system-active.card-battle-v85 .player-hud{left:2%!important;right:auto!important;top:auto!important;bottom:3%!important;width:18%!important;padding:10px!important;background:#061018e8!important;border:1px solid #adc1c52b!important;border-radius:12px!important;z-index:8!important}
+#game.pan-system-active.card-battle-v85 .player-meters{gap:6px!important}
+#game.pan-system-active.card-battle-v85 .meter-head{font-size:12px!important;white-space:normal!important}
+#game.pan-system-active.card-battle-v85 .companion-mini img{width:36px!important;height:42px!important;object-fit:cover!important}
+#game.pan-system-active.card-battle-v85 .companion-mini b{font-size:13px!important}
+#game.pan-system-active.card-battle-v85 .turn-chip{font-size:10px!important;padding:4px!important}
+#game.pan-system-active.card-battle-v85 .skill-grid{position:absolute!important;left:22%!important;right:2%!important;bottom:3%!important;height:29%!important;grid-template-columns:repeat(5,minmax(0,1fr)) minmax(0,1.08fr)!important;gap:8px!important;z-index:10!important}
+#game.pan-system-active.card-battle-v85 .battle-skill{position:relative!important;min-width:0!important;min-height:44px!important;height:100%!important;border:1px solid #cbb07d85!important;border-radius:12px!important;overflow:hidden!important;box-shadow:0 8px 20px #0008!important;background:#07121b!important;transition:transform .18s,border-color .18s!important;padding:0!important}
+#game.pan-system-active.card-battle-v85 .deployed-card.descended{background:#07121b!important;border:1px solid #98d8c0!important;box-shadow:0 0 12px #77c7aa44!important}
+#game.pan-system-active.card-battle-v85 .deployed-card .skill-card-art{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:cover!important;object-position:center 22%!important;opacity:1!important;mask-image:none!important}
+#game.pan-system-active.card-battle-v85 .skill-card-copy{position:absolute!important;inset:auto 0 0!important;padding:25px 8px 9px!important;background:linear-gradient(transparent,#061017 32%)!important;display:block!important;text-align:left!important}
+#game.pan-system-active.card-battle-v85 .skill-card-copy small{font-size:11px!important;color:#99d6c4!important;display:block!important}
+#game.pan-system-active.card-battle-v85 .skill-card-copy b{font-size:14px!important;display:block!important;line-height:1.25!important}
+#game.pan-system-active.card-battle-v85 .skill-card-copy>span{display:block!important;font-size:11px!important;color:#c9d2cf!important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#game.pan-system-active.card-battle-v85 .battle-skill:enabled:hover,#game.pan-system-active.card-battle-v85 .battle-skill:focus-visible{transform:translateY(-8px)!important;border-color:#ffe0a0!important}
+#game.pan-system-active.card-battle-v85 .battle-skill:disabled{opacity:.65!important;filter:none!important}
+#game.pan-system-active.card-battle-v85 .skill-cost{display:none!important} /* No fictitious mana costs: this mode uses one response per turn. */
+#game.pan-system-active.card-battle-v85 .manifest-mark{top:6px!important;right:6px!important;font-size:10px!important}
+#game.pan-system-active.card-battle-v85 #manifestSkill{display:flex!important;align-items:center!important;justify-content:center!important;flex-direction:column!important;gap:10px!important;padding:10px!important;background:radial-gradient(circle at 50% 32%,#2d535a,#08151d 80%)!important;text-align:center!important}
+#game.pan-system-active.card-battle-v85 #manifestSkill b{font-size:16px!important;position:static!important;line-height:1.3!important}
+#game.pan-system-active.card-battle-v85 #manifestSkill span{font-size:12px!important;position:static!important;line-height:1.4!important}
+#game.pan-system-active.card-battle-v85 .pan-field-actions{position:absolute!important;left:2%!important;right:auto!important;bottom:34%!important;width:18%!important;display:grid!important;gap:5px!important;z-index:10!important}
+#game.pan-system-active.card-battle-v85 .pan-field-actions button{min-height:36px!important;font-size:12px!important;padding:5px!important;background:#10252dec!important}
+#game.pan-system-active.card-battle-v85 .combat-log{position:absolute!important;left:23%!important;right:18%!important;bottom:34%!important;top:auto!important;width:auto!important;max-height:10%!important;overflow:auto!important;font-size:12px!important;line-height:1.4!important;padding:7px!important;background:#051018c9!important;z-index:6!important}
+.cb-controls{position:absolute;top:3%;right:2%;display:flex;gap:6px;z-index:12}.cb-controls button{min-height:36px;padding:6px 10px;border-radius:8px;background:#081720e8;border:1px solid #bda77b66;color:#eddcb8;font:inherit;font-size:12px}
+.cb-resolve{position:absolute;z-index:20;left:40%;top:43%;translate:-50% -50%;width:18%;height:40%;margin:0;border:2px solid #e0c281;border-radius:13px;background:#0a1820;overflow:hidden;box-shadow:0 12px 40px #000b;opacity:0}.cb-resolve>img{width:100%;height:100%;object-fit:cover}.cb-resolve>div{position:absolute;inset:auto 0 0;padding:32px 12px 14px;background:linear-gradient(transparent,#041016 40%);text-align:center}.cb-resolve small{display:block;color:#9adbc6;font-size:12px}.cb-resolve b{font-size:20px;word-break:keep-all}.cb-resolve img[hidden]{display:none}
+.cb-challenge{position:absolute;z-index:19;left:51%;top:23%;width:18%;height:40%;border:2px solid #b88778;border-radius:13px;background:radial-gradient(circle at 50% 30%,#3c2930,#0b1822);padding:16px;display:flex;flex-direction:column;justify-content:center;text-align:center;opacity:0;box-shadow:0 12px 40px #000b;word-break:keep-all}
+.cb-challenge small{font-size:12px;color:#dfa9a1}.cb-challenge b{font:800 clamp(14px,2vw,25px) serif;margin:12px 0}.cb-challenge p{font-size:12px;color:#b6c7c5}
+[data-card-action="win"] .cb-challenge,[data-card-action="lose"] .cb-challenge{animation:cb-challenge var(--cb-duration) ease both}
+@keyframes cb-challenge{0%{opacity:0;transform:translateY(-35px)}15%,70%{opacity:1;transform:none}100%{opacity:0;transform:translateY(-12px)}}
+#game.cb-first-encounter .cb-boss>img{filter:brightness(.45) saturate(.3)}
+#game.cb-first-encounter .cb-boss:after{content:'?';position:absolute;left:50%;top:32%;translate:-50% -50%;color:#cfbe99;font:60px serif}
+#game.cb-reduced.cb-animating .cb-challenge{animation:none!important;opacity:1}
+.cb-verdict{position:absolute;z-index:22;left:50%;top:19%;translate:-50%;font-size:clamp(16px,2.2vw,28px);font-weight:900;color:#bce9da;text-shadow:0 3px 7px #000;white-space:nowrap;opacity:0}.cb-verdict.critical{color:#ffdb83}.cb-verdict.show{animation:cb-verdict .45s ease forwards}
+.cb-cutin{position:absolute;inset:0;z-index:30;background:linear-gradient(110deg,#041018f7,#11252ff7);display:grid;grid-template-columns:50% 50%;align-items:center;opacity:0}.cb-cutin>img{width:100%;height:100%;min-height:0;object-fit:contain}.cb-cutin>div{padding:5% 8% 5% 4%;word-break:keep-all}.cb-cutin small{color:#a0dec8;font-size:13px;letter-spacing:.12em}.cb-cutin h2{font:900 clamp(26px,4vw,52px) serif;color:#f5deb0;margin:12px 0}.cb-cutin p{font-size:clamp(14px,2vw,24px);line-height:1.6;margin:0}
+[data-card-action="win"] .cb-resolve,[data-card-action="lose"] .cb-resolve{animation:cb-resolve var(--cb-duration) ease both}
+[data-card-action="lose"] .cb-resolve{border-color:#b78680}
+[data-card-action="manifest"] .cb-cutin{animation:cb-cutin var(--cb-duration) ease both}
+.cb-boss.cb-hit{animation:cb-hit .3s ease}
+@keyframes cb-resolve{0%,15%{opacity:0;transform:translateY(55px) rotateY(55deg) scale(.8)}35%,72%{opacity:1;transform:none}100%{opacity:0;transform:translateY(-35px) scale(.88)}}
+@keyframes cb-hit{30%{transform:translateX(5px) rotate(1deg)}65%{transform:translateX(-3px)}}
+@keyframes cb-verdict{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
+@keyframes cb-cutin{0%,100%{opacity:0}16%,80%{opacity:1}}
+#game.pan-system-active.card-battle-v85 .battle-result{z-index:45!important}
+#game.pan-system-active.card-battle-v85.cb-finished .skill-grid,#game.pan-system-active.card-battle-v85.cb-finished .pan-field-actions{display:none!important}
+#game.cb-reduced .cb-resolve,#game.cb-reduced .cb-cutin,#game.cb-reduced .cb-verdict{animation:none!important;opacity:0}
+#game.cb-reduced.cb-animating [data-card-action="manifest"] .cb-cutin,#game.cb-reduced.cb-animating .cb-resolve{opacity:1}
+#game.cb-reduced .cb-boss{animation:none!important}
+@media(max-height:500px){
+ #game.pan-system-active.card-battle-v85 .battle-intent{padding:7px!important;width:27%!important}.cb-controls button{min-height:32px;font-size:11px;padding:4px 8px}
+ #game.pan-system-active.card-battle-v85 .battle-intent small{display:none!important}#game.pan-system-active.card-battle-v85 .battle-intent span{font-size:11px!important;line-height:1.3!important}
+ #game.pan-system-active.card-battle-v85 .battle-intent b{font-size:13px!important}#game.pan-system-active.card-battle-v85 #battlePhase{font-size:10px!important}
+ #game.pan-system-active.card-battle-v85 .skill-grid{height:30%!important;gap:5px!important}#game.pan-system-active.card-battle-v85 .skill-card-copy{padding:18px 5px 5px!important}#game.pan-system-active.card-battle-v85 .skill-card-copy b{font-size:12px!important}#game.pan-system-active.card-battle-v85 .skill-card-copy small,#game.pan-system-active.card-battle-v85 .skill-card-copy>span{font-size:10px!important}
+ #game.pan-system-active.card-battle-v85 .player-hud{padding:6px!important}#game.pan-system-active.card-battle-v85 .companion-mini img{display:none!important}#game.pan-system-active.card-battle-v85 .companion-mini b{font-size:11px!important}#game.pan-system-active.card-battle-v85 .meter-head{font-size:10px!important}#game.pan-system-active.card-battle-v85 .turn-chip{font-size:9px!important}
+ #game.pan-system-active.card-battle-v85 #manifestSkill{padding:5px!important;gap:5px!important}#game.pan-system-active.card-battle-v85 #manifestSkill b{font-size:13px!important}#game.pan-system-active.card-battle-v85 #manifestSkill span{font-size:10px!important}
+ #game.pan-system-active.card-battle-v85 .combat-log{font-size:11px!important;max-height:12%!important;bottom:35%!important}.cb-boss-footer{font-size:11px;padding:17px 8px 7px}.cb-boss-footer small{font-size:10px}.cb-resolve b{font-size:15px}
+}
+@media(prefers-reduced-motion:reduce){.cb-resolve,.cb-cutin,.cb-boss,.cb-verdict{animation:none!important}.cb-animating .cb-resolve,.cb-animating [data-card-action="manifest"] .cb-cutin{opacity:1}}
