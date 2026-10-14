@@ -33,11 +33,13 @@ try{
  await page.locator('#confirmBoss').click();await page.waitForFunction(()=>hyBattleDirector.running&&!hyPan.state().busy);
  check(!(await page.locator('#game').evaluate(e=>e.classList.contains('cb-first-encounter'))),'Repeat still faceless');
  const before=await page.evaluate(()=>hyPan.state());
- await page.locator('[data-skill="'+before.response+'"]:visible').first().click();
+ await page.locator('#skillGrid [data-skill="'+before.response+'"]:visible:not(:disabled)').first().click();
  await page.waitForFunction(()=>!!document.querySelector('#battleShell').dataset.cardAction);
  await page.waitForTimeout(500);
  await page.screenshot({path:join(out,'exchange.png')});
  check((await page.locator('.cb-challenge b').textContent()).length>0,'Enemy card missing');
+ // v86: 재대면에서는 어떤 카드로 꺾는지 적지 않는다
+ const challengeCopy=await page.locator('.cb-challenge p').textContent();check(!/맞서기|지키기|끊기|기록으로|수호로|파훼로/.test(challengeCopy),'Answer leaked on enemy card: '+challengeCopy);
  await page.waitForFunction(t=>hyPan.state().turn>t&&!hyPan.state().busy,before.turn);
  check(await page.evaluate(()=>hyPan.state().knotsRemaining===6),'Counter did not resolve');
  report.viewports=[];
@@ -51,11 +53,14 @@ try{
   report.viewports.push({width,height,geometry});
  }
  await page.setViewportSize({width:1280,height:720});
- for(let i=0;i<3;i++){
+ // v86: 강신은 마지막 매듭에서 내린다 — 결착까지 둔다(맞는 카드가 쉬면 버티기)
+ for(let i=0;i<60&&!(await page.evaluate(()=>hyPan.state().won||hyPan.state().lost));i++){
   const s=await page.evaluate(()=>hyPan.state());
-  await page.locator('[data-skill="'+s.response+'"]:visible').first().click();
-  await page.waitForFunction(t=>hyPan.state().turn>t&&!hyPan.state().busy,s.turn,{timeout:15000});
+  const right=page.locator('#skillGrid [data-skill="'+s.response+'"]:visible:not(:disabled)');
+  await ((await right.count())?right.first():page.locator('#panBlock')).click();
+  await page.waitForFunction(t=>(hyPan.state().turn>t||hyPan.state().won||hyPan.state().lost)&&!hyPan.state().busy,s.turn,{timeout:20000});
  }
+ check(await page.evaluate(()=>hyPan.state().won),'Repeat battle not won: '+JSON.stringify(await page.evaluate(()=>hyPan.state())));
  check(await page.evaluate(()=>hyPan.state().manifestCardId==='c075'&&hyBattleDirector.manifested),'Incorrect manifested companion');
  await page.locator('.cb-motion').click();check(await page.evaluate(()=>hyBattleDirector.reduced),'Reduced motion');
  await page.screenshot({path:join(out,'manifested-hand.png')});

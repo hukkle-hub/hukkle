@@ -5,3 +5,4 @@ qa-combat/
 qa-cinematic/
 android/.gradle/
 android/**/build/
+qa-repeat/
