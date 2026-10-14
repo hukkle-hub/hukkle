@@ -37,13 +37,14 @@ const DECKS = (process.env.HY_REPEAT_DECKS || 'mixed,low,nobreak').split(',');
 const parties = {};
 for (const d of DECKS) parties[d] = await page.evaluate(list => list.map(([id, stage, m]) => { const c = hyCards.find(c => c.id.toLowerCase() === id); return { ...c, stage, manifested: !!m, img: new URL(c.img, location.href).href, finalImg: new URL(c.finalImg || c.img, location.href).href }; }), DECK_SPEC[d].cards);
 
-async function open(region, keepRecorded, deck = 'mixed') {
-  await page.evaluate(([region, keep]) => {
+async function open(region, keepRecorded, deck = 'mixed', preset = null) {
+  await page.evaluate(([region, keep, preset]) => {
     const prev = JSON.parse(localStorage.getItem('hy-dungeon-flow-v660') || '{}')[region] || {};
     const s = { routeDone: true, investigationComplete: true, routeVersion: 73, zones: [0, 1, 3, 5, 6], bossSeen: true, complete: true, battle: { completed: true, clears: 1 } };
     if (keep && prev.panRecorded) s.panRecorded = prev.panRecorded;
+    if (preset) Object.assign(s, typeof preset === 'string' ? JSON.parse(preset) : preset);
     localStorage.setItem('hy-dungeon-flow-v660', JSON.stringify({ [region]: s }));
-  }, [region, keepRecorded]);
+  }, [region, keepRecorded, preset]);
   await page.goto(origin + 'admin/dungeon-flow.html?region=' + region);
   await page.evaluate(([party, man]) => window.postMessage({ type: 'hy-journey-context', party, companionCard: 'c075', companionManifested: man, motion: false }, '*'), [parties[deck], DECK_SPEC[deck].manifested]);
   await page.locator('#confirmBoss').click(); await settled();
@@ -51,8 +52,8 @@ async function open(region, keepRecorded, deck = 'mixed') {
 
 /* policy: good = 기록된 수는 맞는 카드, 처음 보는 수는 후보 둘 중 하나를 찍고, 맞는 카드가 쉬면 버틴다.
  *         random = 깨어 있는 카드 아무거나. */
-async function play(region, policy, shots, deck = 'mixed') {
-  await open(region, false, deck);
+async function play(region, policy, shots, deck = 'mixed', preset = null) {
+  await open(region, false, deck, preset);
   const st0 = await page.evaluate(() => hyPan.state());
   check(st0.repeat && st0.phase === 1 && st0.knotsRemaining === 7, region + ' repeat start ' + JSON.stringify(st0));
   let maxHeatBeforeFinal = 0, leaks = [], restViolations = 0, sawStrong = false, firstNew = null, descentAtFinal = null, heatTrail = [];
@@ -113,6 +114,14 @@ try {
     check(good.filter(r => r.won).every(r => r.turns >= 8), `${region} repeat battle too short ${JSON.stringify(summary)}`);
     results.push({ summary, runs });
   }
+  /* D8 — 오늘 이미 3번 이긴 보스는 절반 보상 */
+  const today = await page.evaluate(() => new Date().toLocaleDateString('sv-SE'));
+  let capped = null;
+  for (let t = 0; t < 4 && !capped?.won; t++) capped = await play('nokdong', 'good', null, 'mixed', { bossDaily: { day: today, wins: 3 } });
+  check(capped.won, 'daily cap test could not win');
+  const capCopy = await page.locator('#battleResultCopy').textContent();
+  const capState = await page.evaluate(() => JSON.parse(localStorage.getItem('hy-dungeon-flow-v660')).nokdong.bossDaily);
+  check(capState.wins === 4 && /절반/.test(capCopy), 'daily cap ' + JSON.stringify(capState) + ' ' + capCopy);
   /* 기록은 다시 열어도 남는다 */
   await open('nokdong', true);
   const rec = await page.evaluate(() => JSON.parse(localStorage.getItem('hy-dungeon-flow-v660')).nokdong.panRecorded);

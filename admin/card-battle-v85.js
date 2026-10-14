@@ -144,7 +144,7 @@
       this.game.classList.remove('card-battle-v85', 'cb-finished', 'cb-first-encounter');
     }
     diagnostics() {
-      return { version: '87.0.0', running: this.running, region: this.region, failed: [...this.failed],
+      return { version: '88.0.0', running: this.running, region: this.region, failed: [...this.failed],
         manifested: this.manifested, routes: [...this.routes], reduced: this.reduced, presentation: 'cards' };
     }
   }
