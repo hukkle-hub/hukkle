@@ -54,7 +54,7 @@ const frame=page.frameLocator('#journeyFrame');
 await frame.locator('#confirmBoss').click();
 await page.waitForFunction(()=>{const w=document.querySelector('#journeyFrame').contentWindow;return w.hyPan?.state()&&!w.hyPan.state().busy;});
 const embedded=await page.evaluate(()=>{const f=document.querySelector('#journeyFrame');return {src:f.getAttribute('src'),nested:f.contentDocument.querySelectorAll('iframe').length,version:f.contentWindow.hyPan.version,party:f.contentDocument.documentElement.dataset.partyCount};});
-check(embedded.src.includes('/dungeon-flow.html?')&&embedded.nested===0&&embedded.version==='86.0.0'&&embedded.party==='5','embedded integration '+JSON.stringify(embedded));
+check(embedded.src.includes('/dungeon-flow.html?')&&embedded.nested===0&&embedded.version==='87.0.0'&&embedded.party==='5','embedded integration '+JSON.stringify(embedded));
 await page.screenshot({path:join(out,'embedded-battle.png')});
 results.push({embedded,passed:true});
 }catch(e){errors.push(String(e));}finally{await writeFile(join(out,'report.json'),JSON.stringify({results,errors},null,2));console.log(JSON.stringify({results,errors}));await browser.close();server.close();if(results.length!==regions.length+1||errors.length)process.exitCode=1;}
