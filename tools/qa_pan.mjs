@@ -14,7 +14,7 @@ const origin=process.env.HY_LIVE_URL||'http://127.0.0.1:4185/';
 const regions=(process.env.HY_PAN_REGIONS||'yeoja,nokdong,palyoung,geogeum,naro').split(',');
 function check(ok,msg){if(!ok)throw Error(msg);}
 async function settled(){await page.waitForFunction(()=>window.hyPan?.state()&&!window.hyPan.state().busy,null,{timeout:15000});}
-async function act(right=true){const before=await page.evaluate(()=>window.hyPan.state()),kind=right?before.response:['strike','guard','break'].find(k=>k!==before.response);await page.locator('[data-skill="'+kind+'"]:visible').first().click();await page.waitForFunction(t=>window.hyPan.state().turn>t||window.hyPan.state().won||window.hyPan.state().lost,before.turn,{timeout:15000});await settled();return {before,after:await page.evaluate(()=>window.hyPan.state())};}
+async function act(right=true){const before=await page.evaluate(()=>window.hyPan.state());const kinds=right?[before.response]:['strike','guard','break'].filter(k=>k!==before.response);let target=null;for(const k of kinds){const l=page.locator('#skillGrid [data-skill="'+k+'"]:visible:not(:disabled)');if(await l.count()){target=l.first();break;}}if(!target)target=page.locator('#panBlock:visible');await target.click();await page.waitForFunction(t=>window.hyPan.state().turn>t||window.hyPan.state().won||window.hyPan.state().lost,before.turn,{timeout:15000});await settled();return {before,after:await page.evaluate(()=>window.hyPan.state())};}
 try{
 await page.goto(origin);await page.waitForFunction(()=>window.hyCards?.length===125);
 const party=await page.evaluate(()=>['c001','c002','c075','c121','c034'].map(id=>{const c=hyCards.find(c=>c.id.toLowerCase()===id);return {...c,stage:6,manifested:id==='c075',img:new URL(c.img,location.href).href,finalImg:new URL(c.finalImg||c.img,location.href).href,skill:c.skills?.[5]?.name};}));
@@ -34,7 +34,8 @@ const victory=await page.evaluate(()=>hyPan.state());check(victory.won&&victory.
 await page.screenshot({path:join(out,region+'-victory.png')});
 await page.locator('#battleResultSecondary').click();await settled();
 const repeat=await act(false);check(repeat.after.playerHp<100&&repeat.after.knotsRemaining===7,'repeat counterattack');
-const hit=await act();check(hit.after.playerHp>=hit.before.playerHp,'correct clash must cancel counter');
+for(let w=0;w<4;w++){const s=await page.evaluate(()=>hyPan.state());if(await page.locator('#skillGrid [data-skill="'+s.response+'"]:visible:not(:disabled)').count())break;await page.locator('#panBlock').click();await page.waitForFunction(t=>hyPan.state().turn>t,s.turn);await settled();}
+const hit=await act();check(hit.after.playerHp>=hit.before.playerHp&&hit.after.knotsRemaining===6,'correct clash must cancel counter and untie '+JSON.stringify(hit.after));
 for(let i=0;i<15&&!(await page.evaluate(()=>hyPan.state().lost));i++)await act(false);
 check(await page.evaluate(()=>hyPan.state().lost),'repeat defeat');
 check(victory.manifestCardId==='c075','manifested companion must be the equipped 7-star');
@@ -53,7 +54,7 @@ const frame=page.frameLocator('#journeyFrame');
 await frame.locator('#confirmBoss').click();
 await page.waitForFunction(()=>{const w=document.querySelector('#journeyFrame').contentWindow;return w.hyPan?.state()&&!w.hyPan.state().busy;});
 const embedded=await page.evaluate(()=>{const f=document.querySelector('#journeyFrame');return {src:f.getAttribute('src'),nested:f.contentDocument.querySelectorAll('iframe').length,version:f.contentWindow.hyPan.version,party:f.contentDocument.documentElement.dataset.partyCount};});
-check(embedded.src.includes('/dungeon-flow.html?')&&embedded.nested===0&&embedded.version==='85.0.0'&&embedded.party==='5','embedded integration '+JSON.stringify(embedded));
+check(embedded.src.includes('/dungeon-flow.html?')&&embedded.nested===0&&embedded.version==='86.0.0'&&embedded.party==='5','embedded integration '+JSON.stringify(embedded));
 await page.screenshot({path:join(out,'embedded-battle.png')});
 results.push({embedded,passed:true});
 }catch(e){errors.push(String(e));}finally{await writeFile(join(out,'report.json'),JSON.stringify({results,errors},null,2));console.log(JSON.stringify({results,errors}));await browser.close();server.close();if(results.length!==regions.length+1||errors.length)process.exitCode=1;}

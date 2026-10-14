@@ -113,19 +113,19 @@
       this.pending = null;
       resolve?.();
     }
-    async play({ card, skill, route, won, critical, intent, response, firstEncounter }) {
+    async play({ card, skill, route, won, critical, intent, response, firstEncounter, challenge, strong, block, ms }) {
       if (!this.running) return;
       this.routes.add(route);
       this.picture(this.query('.cb-resolve>img'), card?.img, card?.name || '아인');
       this.query('.cb-resolve small').textContent = card?.name || '아인 · 현장 대응';
       this.query('.cb-resolve b').textContent = skill || '기록의 수';
-      this.challenge.querySelector('small').textContent = firstEncounter ? '단서 제시' : '보스가 낸 카드';
+      this.challenge.querySelector('small').textContent = firstEncounter ? '단서 제시' : strong ? '보스가 낸 카드 · 강수' : '보스가 낸 카드';
       this.challenge.querySelector('b').textContent = firstEncounter ? '얼굴 없는 기척' : intent;
-      this.challenge.querySelector('p').textContent = {strike:'기록으로 흔적에 맞서기',guard:'수호로 경계 지키기',break:'파훼로 흐름 끊기'}[response] || '기척에 대응하기';
-      await this.animate(won ? 'win' : 'lose', 1300, () => {
+      this.challenge.querySelector('p').textContent = challenge != null ? challenge : ({strike:'기록으로 흔적에 맞서기',guard:'수호로 경계 지키기',break:'파훼로 흐름 끊기'}[response] || '기척에 대응하기');
+      await this.animate(won ? 'win' : 'lose', ms || 1300, () => {
         this.query('.cb-boss').classList.toggle('cb-hit', won);
         const verdict = this.query('.cb-verdict');
-        verdict.textContent = firstEncounter ? (won ? '단서 해석 · 매듭 −1' : '단서 미해석 · 다시 관찰') : won ? (critical ? '치명 반격 · 매듭 −1' : '받아치기 · 매듭 −1') : '공격 관통 · 결계 피격';
+        verdict.textContent = firstEncounter ? (won ? '단서 해석 · 매듭 −1' : '단서 미해석 · 다시 관찰') : block ? '버티기 · 피해 ⅓' : won ? (critical ? '강수 반격 · 매듭' : '받아치기 · 매듭') : '공격 관통 · 결계 피격';
         verdict.classList.toggle('critical', won && !!critical);
         verdict.classList.add('show');
       });
@@ -144,7 +144,7 @@
       this.game.classList.remove('card-battle-v85', 'cb-finished', 'cb-first-encounter');
     }
     diagnostics() {
-      return { version: '85.0.0', running: this.running, region: this.region, failed: [...this.failed],
+      return { version: '86.0.0', running: this.running, region: this.region, failed: [...this.failed],
         manifested: this.manifested, routes: [...this.routes], reduced: this.reduced, presentation: 'cards' };
     }
   }

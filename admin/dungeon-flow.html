@@ -371,7 +371,7 @@ function safeImg(src){img.src=src;img.onerror=()=>{img.removeAttribute('src');im
 function safeVideo(src,onEnd){try{video.pause()}catch{}video.src=src;video.currentTime=0;video.muted=true;video.playsInline=true;video.onended=onEnd||null;video.onerror=()=>{if(onEnd)onEnd()};const p=video.play();if(p&&p.catch)p.catch(()=>{if(onEnd)onEnd()})}
 function setPhase(p){phase=p;game.dataset.phase=p;travel.style.display=p==='travel'?'block':'none';explore.style.display=p==='explore'?'block':'none';dungeon.style.display=p==='dungeon'?'grid':'none';bossPanel.style.display=p==='boss'?'grid':'none';$('#creativeBadge').style.display=(p==='dungeon'||p==='boss')?'inline-flex':'none';$('#phaseTitle').textContent=p==='travel'?'현실 이동':p==='explore'?'탐험 · 조사':p==='dungeon'?'자유 경로 던전':'금기 · 보스 전투';renderTop()}
 function renderTop(){const r=refs[current],s=rstate();$('#regionKicker').textContent=r.tag;$('#regionTitle').textContent=r.name;$('#sourceNote').textContent=r.source;$('#routeMemory').textContent=`루트 기억 ${s.routeDone?1:0}`;$('#clueCount').textContent=`기록 ${s.clueStates.filter(x=>x.recorded).length} / 3`}
-function start(){const r=refs[current],s=rstate();img.style.objectPosition=r.position;if(s.complete||s.bossSeen)startBossReveal();else if(s.investigationComplete)startDungeon();else if(s.routeDone)startExplore();else startTravel();if(embedded)emit('hy-journey-ready',{version:'85.0.0'})}
+function start(){const r=refs[current],s=rstate();img.style.objectPosition=r.position;if(s.complete||s.bossSeen)startBossReveal();else if(s.investigationComplete)startDungeon();else if(s.routeDone)startExplore();else startTravel();if(embedded)emit('hy-journey-ready',{version:'86.0.0'})}
 function startTravel(){const r=refs[current],s=rstate();try{video.pause()}catch{}video.muted=true;setPhase('travel');$('#travelTitle').textContent=r.travelTitle;$('#travelCopy').textContent=r.travelCopy;routeIndex=Math.max(0,Math.min(Number(s.routeIndex||0),r.route.length-1));renderTourism();renderRoute()}
 function changeTravelScene(index){const frames=TRAVEL_STILLS[current]||[ART[current].travel],src=frames[Math.min(index,frames.length-1)]||ART[current].travel;if(img.dataset.travelSrc===src)return;img.dataset.travelSrc=src;img.classList.remove('travel-cut');safeImg(src);void img.offsetWidth;img.classList.add('travel-cut');setTimeout(()=>img.classList.remove('travel-cut'),1100)}
 function changeExploreScene(index){const frames=EXPLORE_STILLS[current]||[ART[current].explore],src=frames[Math.max(0,Math.min(index,frames.length-1))]||ART[current].explore;if(img.dataset.exploreSrc===src&&img.getAttribute('src')===src)return;img.dataset.exploreSrc=src;img.classList.remove('travel-cut');safeImg(src);img.style.objectPosition=refs[current].position;void img.offsetWidth;img.classList.add('travel-cut');setTimeout(()=>img.classList.remove('travel-cut'),1100)}
@@ -570,7 +570,7 @@ document.querySelectorAll('#skillGrid [data-skill]').forEach(b=>b.onclick=()=>us
 (() => {
   'use strict';
 
-  const PAN_VERSION = '85.0.0';
+  const PAN_VERSION = '86.0.0';
   const KNOTS = 7;
   const HEAT_MAX = 4;
   const TEMPO = [1, .93, .85, .77, .68];
@@ -587,6 +587,232 @@ document.querySelectorAll('#skillGrid [data-skill]').forEach(b=>b.onclick=()=>us
   const sleep = (ms) => new Promise(r => setTimeout(r, ms));
   const clamp = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
 
+  /* ── v86 재대면 규칙 ─────────────────────────────────────────
+   * 첫 대면(기척 탐사)은 v85 그대로 둔다. 다시 만난 보스부터 아래 규칙을 쓴다.
+   * - 보스의 수는 이름·징조·종류(힘/부름/환영)만 보인다. 어떤 카드로 꺾는지는 적지 않는다.
+   * - 처음 보는 수는 두 종류 중 하나로만 보이고, 한 번 겪으면 아인이 기록한다(지역 저장).
+   * - 카드는 등급만큼 숨을 고른다. 센 카드는 매듭을 더 풀지만 오래 쉰다.
+   * - 매듭 1·1·1 → 겹매듭 2·2·3 → 마지막 매듭. 한 합에 매듭은 하나까지만 풀린다.
+   * - 판의 기세는 국면마다 상한이 있다. 최고조(강신)는 마지막 매듭에서만 열린다.
+   * - 이긴 직후 추임새를 고를 수 있다. 기세 +1, 대신 다음 수가 강수.
+   * - 아인 버티기: 피해 1/3, 진전 없음.
+   */
+  /* 조사 — 이름 뒤에 붙는 이/가, 을/를, 은/는, 과/와. 마지막 한글 음절의 받침으로 고른다. */
+  function jo(word, pair) {
+    const m = String(word).match(/[가-힣](?=[^가-힣]*$)/);
+    const batchim = m ? (m[0].charCodeAt(0) - 0xac00) % 28 > 0 : false;
+    const [a, b] = { 이: ['이', '가'], 을: ['을', '를'], 은: ['은', '는'], 과: ['과', '와'] }[pair];
+    return String(word) + (batchim ? a : b);
+  }
+  const KIND_WORD = { strike: '힘', guard: '부름', break: '환영' };
+  const KIND_NEXT = { strike: 'guard', guard: 'break', break: 'strike' };
+  const KNOT_THICK = [1, 1, 1, 2, 2, 3, 'F'];
+  const HEAT_CAP = [0, 2, 3, 4];
+  const GRADE_RULE = { 일반: { power: 1, rest: 0 }, 희귀: { power: 1, rest: 0 }, 영웅: { power: 1, rest: 1 }, 전설: { power: 2, rest: 2 } };
+  const REPEAT_DAMAGE = 0.65;
+  const STRONG_DAMAGE = 1.6;
+  /* 지역 장단. 녹동항은 물때마다 기세가 가운데로 끌려간다. 나머지 네 곳은 다음 단계에서 채운다. */
+  const REGION_PAN = { nokdong: { tide: 4 } };
+  /* 둘째 국면에 새로 나오는 수 — [이름, 피해, 종류, 징조]. 대사·이름은 가안이다. */
+  const MOVES2 = {
+    yeoja:    [['물때 거스름', 30, 'strike', '갯골의 물이 거꾸로 흐르기 시작한다.'], ['뻘 속의 손', 32, 'guard', '발목을 잡은 손이 누군가의 이름을 묻는다.'], ['두 번째 수평선', 29, 'break', '수평선이 하나 더 그어진다.']],
+    nokdong:  [['밀물', 33, 'guard', '발밑으로 물이 차오른다. 누가 이름을 부른다.'], ['빈 배', 31, 'break', '아무도 없는 배가 소리 없이 다가온다.'], ['노 내리치기', 36, 'strike', '노가 하늘 높이 들린다.']],
+    palyoung: [['아홉째 봉우리', 34, 'break', '세어 보면 봉우리가 하나 많다.'], ['먼저 오는 메아리', 37, 'guard', '내 목소리가 내가 부르기 전에 돌아온다.'], ['구르는 돌', 39, 'strike', '능선 위에서 돌 하나가 구르기 시작한다.']],
+    geogeum:  [['난간 세기', 40, 'guard', '다리 난간을 하나씩 세는 소리가 들린다.'], ['내려앉는 다리', 42, 'strike', '다리 한가운데가 무겁게 내려앉는다.'], ['거꾸로 비친 하늘', 38, 'break', '바다가 하늘을 거꾸로 비춘다.']],
+    naro:     [['거꾸로 세는 수', 43, 'guard', '누군가 숫자를 거꾸로 센다.'], ['두 번째 발사', 46, 'strike', '땅이 낮게 울리며 불꽃이 모인다.'], ['둘이 된 등대', 41, 'break', '등대가 두 개로 보인다.']]
+  };
+  /* 첫째 국면 수의 징조. BOSS_RULES 의 넷째 칸은 「~로 ~하세요」 정답 안내라 재대면에선 쓰지 않는다. */
+  const TELL1 = {
+    '늦은 반사': '물에 비친 그림자가 한 박자 늦게 움직인다.', '이름 없는 부름': '갯벌 저편에서 누가 이름을 부른다.', '갯골 역류': '갯골의 물살이 한쪽으로 몰린다.',
+    '낮은 등불': '등불이 물 위가 아니라 물 아래에서 흔들린다.', '사공의 물음': '누군가 대답을 기다리는 침묵이 길어진다.', '긴 물길': '노가 물을 길게 당긴다. 거리가 늘어난다.',
+    '접힌 능선': '지나온 능선이 앞에 또 나타난다.', '뒤의 발소리': '뒤에서 따라오던 발소리가 함께 멈춘다.', '등짐 낙하': '등짐의 무게가 한쪽으로 기운다.',
+    '반복 표식': '같은 표식이 같은 자리에 또 박혀 있다.', '끝없는 셈': '누군가 끝나지 않는 숫자를 센다.', '해안 절단': '수평선이 칼날처럼 곧게 선다.',
+    '해무 고정광': '해무 속 불빛이 조금도 움직이지 않는다.', '따라오라는 빛': '불빛이 이리 오라고 깜박인다.', '원근 붕괴': '먼 것과 가까운 것이 한꺼번에 다가온다.'
+  };
+  const PHASE_LINE = {
+    nokdong: ['…물때가 바뀐다. 배를 띄워야 해. — 남은 매듭은 겹으로 묶여 있다.', '건너야 할 사람이 아직 남았다… — 마지막 매듭은 판이 끓어오를 때만 풀린다.'],
+    _: ['기척이 달라졌다. 남은 매듭은 겹으로 묶여 있다. 센 수가 아니면 한 번에 풀리지 않는다.', '마지막 매듭. 판이 끓어오를 때만 풀린다.']
+  };
+  const repeatMode = () => !!(battle && !battle.firstEncounter && battle.repeat);
+  const regionPan = () => REGION_PAN[current] || {};
+  const heatCap = () => HEAT_CAP[battle?.phase || 1];
+  function cardRule(card) { return GRADE_RULE[activeSkill(card || {})?.grade] || GRADE_RULE.영웅; }
+  function recordedSet() {
+    const s = rstate();
+    if (!Array.isArray(s.panRecorded)) s.panRecorded = (BOSS_RULES[current] || BOSS_RULES.yeoja).patterns.map(p => p[0]);
+    return s.panRecorded;
+  }
+  function isRecorded(name) { return recordedSet().includes(name); }
+  function recordMove(name) { const r = recordedSet(); if (!r.includes(name)) { r.push(name); save(); return true; } return false; }
+  function pickMove() {
+    let pool = [...(BOSS_RULES[current] || BOSS_RULES.yeoja).patterns];
+    if (battle.phase >= 2) pool = pool.concat(MOVES2[current] || MOVES2.yeoja);
+    const last = battle.kindTrail || (battle.kindTrail = []);
+    let m = pool[0];
+    for (let k = 0; k < 24; k++) {
+      m = pool[Math.floor(Math.random() * pool.length)];
+      const triple = last.length >= 2 && last[last.length - 1] === m[2] && last[last.length - 2] === m[2];
+      if (!triple && m[0] !== battle.intentMove?.[0]) break;
+    }
+    last.push(m[2]);
+    return m;
+  }
+  function moveTell(m) {
+    if (TELL1[m[0]]) return TELL1[m[0]];
+    if (Object.values(MOVES2).some(list => list.includes(m))) return m[3];
+    return panCue(m);
+  }
+  function intentLabel(m) {
+    if (!m) return '';
+    return isRecorded(m[0]) ? KIND_WORD[m[2]] : `? ${[KIND_WORD[m[2]], KIND_WORD[KIND_NEXT[m[2]]]].sort().join(' 또는 ')}`;
+  }
+  function repeatInit() {
+    battle.repeat = true;
+    battle.phase = 1;
+    battle.knotIdx = 0;
+    battle.knotLeft = KNOT_THICK[0];
+    battle.knotsRemaining = KNOTS;
+    battle.rest = {};
+    battle.strong = false;
+    battle.chuimOpen = false;
+    battle.blocks = 0;
+    battle.chuimsae = 0;
+    battle.kindTrail = [];
+    battle.heat = clamp(panInitialHeat(), 0, heatCap());
+    battle.intentMove = pickMove();
+    recordedSet(); save(); // 첫 대면에서 겪은 수는 처음부터 기록돼 있다
+  }
+  function repeatSetHeat(next) { panSetHeat(clamp(next, 0, heatCap())); }
+  async function repeatUntie(power) {
+    if (battle.knotIdx >= 6) return '';
+    battle.knotLeft -= power;
+    let note = '매듭이 느슨해졌습니다';
+    if (battle.knotLeft <= 0) {
+      battle.knotIdx += 1;
+      battle.knotLeft = KNOT_THICK[battle.knotIdx] === 'F' ? 0 : KNOT_THICK[battle.knotIdx];
+      note = '매듭 하나가 풀렸습니다';
+    }
+    battle.knotsRemaining = KNOTS - battle.knotIdx;
+    const lines = PHASE_LINE[current] || PHASE_LINE._;
+    if (battle.knotIdx >= 3 && battle.phase === 1) { battle.phase = 2; note += ` <b>${refs[current].boss.name}</b> ${lines[0]}`; }
+    if (battle.knotIdx >= 6 && battle.phase === 2) { battle.phase = 3; note += ` ${lines[1]}`; }
+    return note;
+  }
+  function repeatChuimsae() {
+    if (!repeatMode() || battle.busy || !battle.chuimOpen) return;
+    battle.chuimOpen = false;
+    battle.strong = true;
+    battle.chuimsae += 1;
+    repeatSetHeat(battle.heat + 1);
+    panRenderBattle('<b>얼쑤!</b> 추임새가 판을 달굽니다. 대신 <b>' + refs[current].boss.name + '의 다음 수는 강수</b>입니다.');
+  }
+  async function repeatFinale(card) {
+    const companion = parentCtx.companionManifested && !battle.manifestUsed;
+    if (companion) await panManifest(card, true);
+    battle.knotIdx = 7;
+    battle.knotsRemaining = 0;
+    const name = battle.manifestCardId ? (battleParty().find(c => c.id === battle.manifestCardId)?.name || parentCtx.companionName || '동행자') : '아인';
+    const line = companion ? `<b>${name} · 공수</b> — 네 길은 이미 닿았다. 이제 내려놓아라.` : '<b>아인의 기록</b> — 마지막 매듭에 이름을 적어 넣었다.';
+    return finishBattle(true, `${line} <b>일곱 매듭이 모두 풀렸습니다.</b>`);
+  }
+  async function repeatTurn(kind, card) {
+    const block = kind === 'block';
+    if (!block && card && (battle.rest[card.id] || 0) > 0) return toast(`${jo(card.name, '은')} 숨을 고르는 중입니다.`);
+    const intent = battle.intentMove;
+    if (!block) kind = card ? cardSkillKind(card, 0) : kind;
+    const won = !block && kind === intent[2];
+    const rule = block ? { power: 0, rest: 0 } : cardRule(card);
+    const strong = !!battle.strong;
+    const firstSight = !isRecorded(intent[0]);
+    battle.busy = true;
+    battle.chuimOpen = false;
+    battle.lastCard = card?.id || null;
+    battle.lastSkill = block ? 'block' : kind;
+    battle.critical = won && strong;
+    panRenderBattle();
+    await panPlayClash(block ? null : card, intent, won, block);
+    recordMove(intent[0]);
+    const label = block ? '버티기' : (activeSkill(card || {})?.name || card?.skill || '기록의 수');
+    const who = block ? '아인' : (card?.name || '아인');
+    let log = '';
+    if (won) {
+      battle.clashWins = Number(battle.clashWins || 0) + 1;
+      repeatSetHeat(battle.heat + 1);
+      if (battle.phase === 3 && battle.heat >= HEAT_CAP[3]) return repeatFinale(card);
+      const note = await repeatUntie(rule.power + (strong ? 1 : 0));
+      log = `<b>${jo(`${who} · ${label}`, '이')}</b> <b>${jo(intent[0], '을')}</b> 꺾었습니다${strong ? ' (강수를 받아친 일격)' : ''}. ${note}`;
+    } else {
+      const raw = intent[1] * REPEAT_DAMAGE * (strong ? STRONG_DAMAGE : 1) * (block ? 1 / 3 : 1);
+      const dmg = Math.max(1, Math.round(raw));
+      battle.playerHp = Math.max(0, battle.playerHp - dmg);
+      if (block) { battle.blocks += 1; log = `아인이 버텼습니다. <b>${intent[0]}</b> · 결계 피해 ${dmg}. 판은 그대로입니다.`; }
+      else {
+        battle.clashLosses = Number(battle.clashLosses || 0) + 1;
+        repeatSetHeat(battle.heat - 1);
+        log = `<b>${jo(`${who} · ${label}`, '이')}</b> 합에서 밀렸습니다. <b>${strong ? jo(intent[0] + '(강수)', '이') : jo(intent[0], '이')}</b> 관통해 결계 피해 ${dmg}. 판이 식습니다.`;
+      }
+    }
+    if (firstSight) log += ` <b>기록됨</b> — ${jo(intent[0], '은')} ${KIND_WORD[intent[2]]}의 수입니다.`;
+    battle.strong = false;
+    for (const id of Object.keys(battle.rest)) battle.rest[id] = Math.max(0, battle.rest[id] - 1);
+    if (!block && card && rule.rest) battle.rest[card.id] = rule.rest;
+    if (battle.playerHp <= 0) return finishBattle(false, log);
+    battle.turn += 1;
+    const tide = regionPan().tide;
+    if (tide && (battle.turn - 1) % tide === 0) {
+      const before = battle.heat;
+      repeatSetHeat(before > 2 ? before - 1 : before < 2 ? before + 1 : 2);
+      if (before !== battle.heat) log += ` 물때가 바뀌었습니다 — 판의 기세가 ${before > battle.heat ? '가라앉습니다' : '되살아납니다'}.`;
+    }
+    battle.chuimOpen = won && battle.heat < heatCap();
+    battle.intentMove = pickMove();
+    battle.busy = false;
+    panSyncLegacy();
+    panRenderBattle(log);
+  }
+  function repeatRenderKnots() {
+    qq('#knotGauge i').forEach((k, i) => {
+      const t = KNOT_THICK[i], released = i < battle.knotIdx;
+      k.classList.toggle('bound', !released);
+      k.classList.toggle('released', released);
+      k.classList.toggle('thick', t !== 'F' && t > 1 && !released);
+      k.classList.toggle('loose', !released && i === battle.knotIdx && t !== 'F' && battle.knotLeft < t);
+      k.classList.toggle('final', t === 'F' && !released);
+      k.classList.remove('lit');
+      k.setAttribute('aria-label', released ? `매듭 ${i + 1} 풀림` : t === 'F' ? '마지막 매듭' : `매듭 ${i + 1} · ${t}겹`);
+    });
+    const title = q('.knot-hud>b');
+    if (title) title.textContent = ['', '매듭을 푼다', '겹매듭', '마지막 매듭'][battle.phase];
+  }
+  function repeatRender() {
+    const m = battle.intentMove, heat = clamp(battle.heat, 0, HEAT_MAX), cap = heatCap();
+    q('#bossIntent').textContent = m[0];
+    q('#bossIntentHint').textContent = `${moveTell(m)} · ${intentLabel(m)}${battle.strong ? ' · 강수' : ''}`;
+    q('.battle-intent')?.classList.toggle('pan-strong', !!battle.strong);
+    const tide = regionPan().tide, left = tide ? tide - ((battle.turn - 1) % tide) : 0;
+    q('#battlePhase').textContent = `공방 ${battle.turn} · ${['', '첫째 판', '겹매듭', '마지막 매듭'][battle.phase]}${tide ? ` · 물때까지 ${left}수` : ''}`;
+    if (q('#resolveText')) q('#resolveText').textContent = Array.from({ length: HEAT_MAX + 1 }, (_, i) => i <= heat ? '●' : i <= cap ? '○' : '·').join('');
+    repeatRenderKnots();
+    qq('#skillGrid .battle-skill:not(.manifest)').forEach(b => {
+      const left = battle.rest[b.dataset.card] || 0;
+      b.dataset.rest = String(left);
+      b.disabled = !!battle.busy || battle.won || battle.lost || left > 0;
+      const card = battleParty().find(c => c.id === b.dataset.card), rule = cardRule(card);
+      b.dataset.panRule = `매듭 ${rule.power}${rule.rest ? ` · 쉼 ${rule.rest}` : ''}`;
+    });
+    const chuim = q('#panChuimsae');
+    if (chuim) { chuim.hidden = !battle.chuimOpen; chuim.disabled = !!battle.busy; }
+    const block = q('#panBlock');
+    if (block) block.disabled = !!battle.busy || battle.won || battle.lost;
+    /* 재대면의 강신은 마지막 매듭을 끊는 합에서 저절로 내린다. 손으로 부르지 않는다. */
+    const manifest = q('#manifestSkill');
+    if (manifest) {
+      manifest.disabled = true; manifest.classList.remove('ready');
+      const note = manifest.querySelector('span');
+      if (note) note.textContent = !parentCtx.companionManifested ? '최종현현 필요' : battle.phase < 3 ? '마지막 매듭에서 내린다' : heat >= cap ? '이번 합을 이기면 내린다' : '판을 더 달궈야 한다';
+    }
+  }
+
   const panCatalog=new Map();
   const director=window.HYBattleDirector?new window.HYBattleDirector(q('#battleShell')):null;
   window.hyBattleDirector=director;
@@ -599,6 +825,9 @@ document.querySelectorAll('#skillGrid [data-skill]').forEach(b=>b.onclick=()=>us
     useBattleSkill,
     finishBattle
   };
+
+  const originalIntent = battleIntent;
+  battleIntent = () => (battle && battle.repeat && battle.intentMove) ? battle.intentMove : originalIntent();
 
   function panCue(intent) {
     const kind = intent?.[2] || 'strike';
@@ -758,6 +987,7 @@ document.querySelectorAll('#skillGrid [data-skill]').forEach(b=>b.onclick=()=>us
   }
 
   function panRenderKnots() {
+    if (repeatMode()) return repeatRenderKnots();
     const remaining = clamp(battle.knotsRemaining, 0, KNOTS);
     qq('#knotGauge i').forEach((k, i) => {
       const bound = i < remaining;
@@ -816,7 +1046,7 @@ document.querySelectorAll('#skillGrid [data-skill]').forEach(b=>b.onclick=()=>us
       if (note) note.textContent = !parentCtx.companionManifested ? '최종현현 필요' : battle.manifestUsed ? '동행자가 판에 남아 있습니다' : ready ? '판이 최고조입니다' : '판의 기세가 더 필요합니다';
     }
     const responseNames={strike:'기록 · 맞서기',guard:'수호 · 지키기',break:'파훼 · 끊기'};
-    q('#bossIntentHint').textContent += ' ' + ({strike:'모인 힘의 흔적을 기록해 맞서세요.',guard:'대답 대신 경계를 지켜 기척을 막으세요.',break:'엇갈린 경계를 끊어 흐름을 되돌리세요.'}[intent[2]]);
+    if (battle.firstEncounter) q('#bossIntentHint').textContent += ' ' + ({strike:'모인 힘의 흔적을 기록해 맞서세요.',guard:'대답 대신 경계를 지켜 기척을 막으세요.',break:'엇갈린 경계를 끊어 흐름을 되돌리세요.'}[intent[2]]);
     qq('#skillGrid .battle-skill:not(.manifest),.pan-field-actions button').forEach(b => {
       b.disabled = !!battle.busy || battle.won || battle.lost;
       const small=b.querySelector('small');
@@ -829,10 +1059,12 @@ document.querySelectorAll('#skillGrid [data-skill]').forEach(b=>b.onclick=()=>us
     q('#battleBossName').textContent = battle.firstEncounter ? '이름 없는 기척' : refs[current].boss.name;
     q('#bossIntent').textContent = battle.firstEncounter ? '다가온 단서' : intent[0];
     q('#battlePhase').textContent = battle.firstEncounter ? '첫 대면 · 기척 탐사' : `공방 ${battle.turn} · 대응 카드 선택`;
+    if (repeatMode()) repeatRender();
   }
 
-  async function panPlayClash(card, intent, won) {
-    if(director?.running){await director.play({card,skill:activeSkill(card||{})?.name||card?.skill,route:skillRoute(activeSkill(card),card||{}),won,critical:battle.critical,intent:intent[0],response:intent[2],firstEncounter:battle.firstEncounter});return;}
+  async function panPlayClash(card, intent, won, block = false) {
+    const clashMs = Math.round(clamp((kindTier(card).ms || 920) + 380, 760, 1800) * panTempoScale());
+    if(director?.running){await director.play({card,skill:block?'버티기':activeSkill(card||{})?.name||card?.skill,route:skillRoute(activeSkill(card),card||{}),won,critical:battle.critical,intent:intent[0],response:intent[2],firstEncounter:battle.firstEncounter,challenge:battle.repeat?intentLabel(intent):null,strong:!!battle.strong,block,ms:battle.repeat?clashMs:null});return;}
     panEnsureUI();
     const root = q('#panClash');
     const tier = kindTier(card);
@@ -891,6 +1123,7 @@ document.querySelectorAll('#skillGrid [data-skill]').forEach(b=>b.onclick=()=>us
 
   async function panUseBattleSkill(kind, card = null) {
     if (!battle || battle.busy || battle.won || battle.lost) return;
+    if (repeatMode() && kind !== 'manifest') return repeatTurn(kind, card);
 
     if (kind === 'manifest') {
       if (!parentCtx.companionManifested) return toast('최종현현을 마친 7성 동행 카드가 필요합니다.');
@@ -939,7 +1172,7 @@ document.querySelectorAll('#skillGrid [data-skill]').forEach(b=>b.onclick=()=>us
         call.classList.remove('play'); void call.offsetWidth; call.classList.add('play');
         setTimeout(() => { call.classList.remove('play'); call.textContent = '매듭 풀림'; }, Math.round(900 * panTempoScale()));
       }
-      log = `<b>${card?.name ? card.name + ' · ' : ''}${label}</b>이 <b>${intent[0]}</b>과 맞부딪혀 이겼습니다. 보스의 행동은 부서지고 매듭 하나가 풀렸습니다.`;
+      log = `<b>${jo((card?.name ? card.name + ' · ' : '') + label, '이')}</b> <b>${jo(intent[0], '과')}</b> 맞부딪혀 이겼습니다. 보스의 행동은 부서지고 매듭 하나가 풀렸습니다.`;
 
       // 최고조에 닿으면 7성 동행자는 자동으로 내려온다. 별도 턴을 먹지 않는다.
       if (battle.heat >= HEAT_MAX && parentCtx.companionManifested && !battle.manifestUsed) {
@@ -959,7 +1192,7 @@ document.querySelectorAll('#skillGrid [data-skill]').forEach(b=>b.onclick=()=>us
       const raw = intent[1] * (battle.knotsRemaining <= 3 ? 1.12 : 1);
       const enemyDamage = battle.firstEncounter ? 0 : Math.max(1, Math.round(raw));
       if (enemyDamage) battle.playerHp = Math.max(0, battle.playerHp - enemyDamage);
-      log = `<b>${card?.name ? card.name + ' · ' : ''}${label}</b>이 합에서 밀려 부서졌습니다. <b>${intent[0]}</b>${battle.firstEncounter ? '은 첫 대면이라 공격하지 않고 판을 거두었습니다.' : `이 관통해 결계 피해 ${enemyDamage}.`} 매듭은 풀리지 않고 판의 기세가 식었습니다.`;
+      log = `<b>${jo((card?.name ? card.name + ' · ' : '') + label, '이')}</b> 합에서 밀려 부서졌습니다. <b>${battle.firstEncounter ? jo(intent[0], '은') : jo(intent[0], '이')}</b>${battle.firstEncounter ? ' 첫 대면이라 공격하지 않고 판을 거두었습니다.' : ` 관통해 결계 피해 ${enemyDamage}.`} 매듭은 풀리지 않고 판의 기세가 식었습니다.`;
       if (battle.playerHp <= 0) return finishBattle(false, log);
     }
 
@@ -984,6 +1217,8 @@ document.querySelectorAll('#skillGrid [data-skill]').forEach(b=>b.onclick=()=>us
     battle.manifestUsed = false;
     battle.clashWins = 0;
     battle.clashLosses = 0;
+    battle.repeat = false;
+    if (!firstEncounter) repeatInit();
     panSyncLegacy();
     panEnsureUI();
     // 7성 동행자도 강신 전에는 카드 경계를 벗어나지 않는다.
@@ -995,13 +1230,17 @@ document.querySelectorAll('#skillGrid [data-skill]').forEach(b=>b.onclick=()=>us
       const b=document.createElement('button');b.className='soft';b.dataset.skill=kind;b.textContent=label;
       b.onclick=()=>useBattleSkill(kind);fallback.appendChild(b);
     }
+    if(!firstEncounter){fallback.innerHTML='';
+      const blk=document.createElement('button');blk.className='soft';blk.id='panBlock';blk.dataset.skill='block';blk.innerHTML='아인 · 버티기<small data-pan-label=1>피해 ⅓ · 진전 없음</small>';blk.onclick=()=>useBattleSkill('block');
+      const chu=document.createElement('button');chu.className='soft';chu.id='panChuimsae';chu.hidden=true;chu.innerHTML='얼쑤! 추임새<small data-pan-label=1>기세 +1 · 다음 수가 강수</small>';chu.onclick=repeatChuimsae;
+      fallback.append(chu,blk);}
     q('.pan-field-actions')?.remove();deck.before(fallback);
     battle.busy=true;panRenderBattle();
     if(director)await director.start({region:current,party:battleParty(),companion:battleParty().find(c=>c.id===parentCtx.companionCard),heat:battle.heat,motion:parentCtx.motion,firstEncounter});
     battle.busy=false;
     panRenderBattle(firstEncounter
       ? '얼굴 없는 기척과 마주합니다. 카드를 내어 흔적을 기록하고, 경계를 지키고, 단서를 해석하세요. 첫 탐사에서는 피해를 받지 않습니다.'
-      : `<b>${refs[current].boss.name}</b>이 먼저 카드를 냅니다. 대응 카드를 골라 받아치면 매듭이 풀리고, 대응에 실패하면 적 공격이 결계에 들어옵니다.`);
+      : `<b>${jo(refs[current].boss.name, '이')}</b> 먼저 카드를 냅니다. 대응 카드를 골라 받아치면 매듭이 풀리고, 대응에 실패하면 적 공격이 결계에 들어옵니다.`);
   }
 
   function panFinishBattle(won, log) {
@@ -1048,9 +1287,12 @@ document.querySelectorAll('#skillGrid [data-skill]').forEach(b=>b.onclick=()=>us
       manifestUsed: battle.manifestUsed,
       wins: battle.clashWins || 0,
       losses: battle.clashLosses || 0,
+      repeat:!!battle.repeat, phase:battle.phase||0, knotIdx:battle.knotIdx??null, heatCap:battle.repeat?heatCap():HEAT_MAX, strong:!!battle.strong, chuimOpen:!!battle.chuimOpen, blocks:battle.blocks||0, chuimsae:battle.chuimsae||0,
+      rest:{...(battle.rest||{})}, intent:battle.repeat?{name:battle.intentMove[0],kind:battle.intentMove[2],recorded:isRecorded(battle.intentMove[0]),label:intentLabel(battle.intentMove)}:null,
       busy:!!battle.busy, playerHp:battle.playerHp, won:!!battle.won, lost:!!battle.lost, response:battleIntent()[2],manifestCardId:battle.manifestCardId
     }) : null,
     cue: panCue,
+    rules: { knots: [...KNOT_THICK], heatCap: [...HEAT_CAP], grade: GRADE_RULE, repeatDamage: REPEAT_DAMAGE, strongDamage: STRONG_DAMAGE, region: REGION_PAN },
     // Read-only diagnostics.
   };
 

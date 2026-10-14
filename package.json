@@ -7,7 +7,8 @@
     "qa:combat": "node tools/qa_pan.mjs",
     "qa:cinematic": "node tools/qa_card_battle_v85.mjs",
     "qa:gameplay": "node tools/qa_gameplay_v75.mjs",
-    "qa:manifest": "node tools/qa_manifest_v76.mjs"
+    "qa:manifest": "node tools/qa_manifest_v76.mjs",
+    "qa:repeat": "node tools/qa_pan_repeat_v86.mjs"
   },
   "devDependencies": {
     "playwright": "1.55.0"

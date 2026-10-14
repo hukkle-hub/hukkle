@@ -14,6 +14,7 @@ on:
       - "tools/qa_pan.mjs"
       - "tools/qa_cinematic_v82.mjs"
       - "tools/qa_card_battle_v85.mjs"
+      - "tools/qa_pan_repeat_v86.mjs"
       - "package.json"
       - ".github/workflows/mobile-ui-qa.yml"
   push:
@@ -39,6 +40,15 @@ jobs:
       - run: npm run qa:yeojaman
       - run: npm run qa:combat
       - run: npm run qa:cinematic
+      - run: npm run qa:repeat
+      - name: Upload repeat-encounter pan QA
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: repeat-pan-v86-qa
+          path: qa-repeat/
+          if-no-files-found: error
+          retention-days: 30
       - name: Upload card exchange and viewport QA
         if: always()
         uses: actions/upload-artifact@v4
