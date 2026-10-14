@@ -56,6 +56,15 @@ async function play(region, policy, shots, deck = 'mixed', preset = null) {
   await open(region, false, deck, preset);
   const st0 = await page.evaluate(() => hyPan.state());
   check(st0.repeat && st0.phase === 1 && st0.knotsRemaining === 7, region + ' repeat start ' + JSON.stringify(st0));
+  /* v89 층 구도: 그림이 다 뜨고, 보스 몸통 위에 HUD가 없어야 한다 */
+  await page.waitForFunction(() => [...document.querySelectorAll('.cb-stage img[src]')].every(i => i.complete), null, { timeout: 15000 });
+  const stage = await page.evaluate(() => {
+    const d = hyBattleDirector.diagnostics(), f = document.querySelector('.cb-bossfig').getBoundingClientRect();
+    const hud = '.battle-intent,.combat-log,.player-hud,.skill-grid,.pan-field-actions,.knot-hud,.cb-controls,.battle-presence';
+    const pts = [[.5, .25], [.5, .5], [.5, .75], [.3, .5], [.7, .5]].map(([a, b]) => document.elementFromPoint(f.left + f.width * a, f.top + f.height * b));
+    return { presentation: d.presentation, failed: d.failed, covered: pts.filter(e => e && e.closest(hud)).length, bossH: Math.round(f.height), bossInside: f.top >= -2 && f.bottom <= innerHeight + 2 };
+  });
+  check(stage.presentation === 'layered' && stage.failed.length === 0 && stage.covered === 0 && stage.bossInside && stage.bossH > 150, region + ' layered stage ' + JSON.stringify(stage));
   let maxHeatBeforeFinal = 0, leaks = [], restViolations = 0, sawStrong = false, firstNew = null, descentAtFinal = null, heatTrail = [];
   for (let n = 0; n < 80; n++) {
     const s = await page.evaluate(() => hyPan.state());
@@ -87,9 +96,10 @@ async function play(region, policy, shots, deck = 'mixed', preset = null) {
     if (/맞서기|지키기|끊기/.test(challenge || '')) leaks.push('card:' + challenge);
   }
   const end = await page.evaluate(() => hyPan.state());
+  const field = await page.evaluate(() => hyBattleDirector.diagnostics().companionOnField);
   if (shots) await page.screenshot({ path: join(out, `${region}-${end.won ? 'won' : 'lost'}.png`) });
   const saved = await page.evaluate(region => JSON.parse(localStorage.getItem('hy-dungeon-flow-v660'))[region], region);
-  return { region, policy, deck, descentAtFinal, heatTrail: heatTrail.join(''), won: end.won, turns: end.turn, hp: Math.round(end.playerHp), wins: end.wins, losses: end.losses, blocks: end.blocks, chuimsae: end.chuimsae, manifest: end.manifestUsed, manifestCard: end.manifestCardId, knots: end.knotsRemaining, maxHeatBeforeFinal, leaks, restViolations, sawStrong, firstNew, recorded: saved.panRecorded?.length || 0, newRecorded: firstNew ? saved.panRecorded?.includes(firstNew) : null };
+  return { region, policy, deck, field, descentAtFinal, heatTrail: heatTrail.join(''), won: end.won, turns: end.turn, hp: Math.round(end.playerHp), wins: end.wins, losses: end.losses, blocks: end.blocks, chuimsae: end.chuimsae, manifest: end.manifestUsed, manifestCard: end.manifestCardId, knots: end.knotsRemaining, maxHeatBeforeFinal, leaks, restViolations, sawStrong, firstNew, recorded: saved.panRecorded?.length || 0, newRecorded: firstNew ? saved.panRecorded?.includes(firstNew) : null };
 }
 
 try {
@@ -104,6 +114,7 @@ try {
       check(r.maxHeatBeforeFinal <= 3, `${region} heat reached the top before the final knot`);
       const has7 = DECK_SPEC[r.deck].manifested;
       if (r.won) check(r.knots === 0 && (has7 ? r.manifest && r.manifestCard === 'c075' : !r.manifest), `${region}/${r.deck} win must end with the descent only when a 7-star exists`);
+      if (has7 && r.won) check(r.field, `${region}/${r.deck} descended companion must stay on the field`);
       if (has7 && r.descentAtFinal !== null) check(r.descentAtFinal === true, `${region}/${r.deck} 7-star must descend on entering the final knot`);
       if (r.firstNew) check(r.newRecorded, `${region} new move ${r.firstNew} not saved`);
     }
