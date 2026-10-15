@@ -56,15 +56,16 @@ async function play(region, policy, shots, deck = 'mixed', preset = null) {
   await open(region, false, deck, preset);
   const st0 = await page.evaluate(() => hyPan.state());
   check(st0.repeat && st0.phase === 1 && st0.knotsRemaining === 7, region + ' repeat start ' + JSON.stringify(st0));
-  /* v89 층 구도: 그림이 다 뜨고, 보스 몸통 위에 HUD가 없어야 한다 */
-  await page.waitForFunction(() => [...document.querySelectorAll('.cb-stage img[src]')].every(i => i.complete), null, { timeout: 15000 });
+  /* v90 그림자극: 막이 그려지고(프레임 진행), 그림이 다 뜨고, 지역 변주가 맞고, 막 한가운데를 HUD가 덮지 않아야 한다 */
+  await page.waitForFunction(() => (hyBattleDirector.diagnostics().shadow?.frames || 0) > 8, null, { timeout: 15000 });
   const stage = await page.evaluate(() => {
-    const d = hyBattleDirector.diagnostics(), f = document.querySelector('.cb-bossfig').getBoundingClientRect();
+    const d = hyBattleDirector.diagnostics(), f = document.querySelector('.cb-stage .sh-canvas').getBoundingClientRect();
     const hud = '.battle-intent,.combat-log,.player-hud,.skill-grid,.pan-field-actions,.knot-hud,.cb-controls,.battle-presence';
-    const pts = [[.5, .25], [.5, .5], [.5, .75], [.3, .5], [.7, .5]].map(([a, b]) => document.elementFromPoint(f.left + f.width * a, f.top + f.height * b));
-    return { presentation: d.presentation, failed: d.failed, covered: pts.filter(e => e && e.closest(hud)).length, bossH: Math.round(f.height), bossInside: f.top >= -2 && f.bottom <= innerHeight + 2 };
+    const pts = [[.5, .3], [.6, .3], [.5, .45], [.65, .45]].map(([a, b]) => document.elementFromPoint(f.left + f.width * a, f.top + f.height * b));
+    return { presentation: d.presentation, failed: d.failed, variant: d.shadow?.variant, error: d.shadow?.error, covered: pts.filter(e => e && e.closest(hud)).length, w: Math.round(f.width), h: Math.round(f.height) };
   });
-  check(stage.presentation === 'layered' && stage.failed.length === 0 && stage.covered === 0 && stage.bossInside && stage.bossH > 150, region + ' layered stage ' + JSON.stringify(stage));
+  const wantVariant = { nokdong: 'lattice', naro: 'lamps' }[region] || 'duel';
+  check(stage.presentation === 'shadow' && stage.failed.length === 0 && !stage.error && stage.variant === wantVariant && stage.covered === 0 && stage.w > 300, region + ' shadow stage ' + JSON.stringify(stage));
   let maxHeatBeforeFinal = 0, leaks = [], restViolations = 0, sawStrong = false, firstNew = null, descentAtFinal = null, heatTrail = [];
   for (let n = 0; n < 80; n++) {
     const s = await page.evaluate(() => hyPan.state());
@@ -97,6 +98,8 @@ async function play(region, policy, shots, deck = 'mixed', preset = null) {
   }
   const end = await page.evaluate(() => hyPan.state());
   const field = await page.evaluate(() => hyBattleDirector.diagnostics().companionOnField);
+  const sh = await page.evaluate(() => hyBattleDirector.diagnostics().shadow);
+  check(sh && sh.knots === end.knotsRemaining && sh.done === (end.won ? 'won' : end.lost ? 'lost' : null) && !sh.error, region + ' shadow follows the fight ' + JSON.stringify({ sh, knots: end.knotsRemaining }));
   if (shots) await page.screenshot({ path: join(out, `${region}-${end.won ? 'won' : 'lost'}.png`) });
   const saved = await page.evaluate(region => JSON.parse(localStorage.getItem('hy-dungeon-flow-v660'))[region], region);
   return { region, policy, deck, field, descentAtFinal, heatTrail: heatTrail.join(''), won: end.won, turns: end.turn, hp: Math.round(end.playerHp), wins: end.wins, losses: end.losses, blocks: end.blocks, chuimsae: end.chuimsae, manifest: end.manifestUsed, manifestCard: end.manifestCardId, knots: end.knotsRemaining, maxHeatBeforeFinal, leaks, restViolations, sawStrong, firstNew, recorded: saved.panRecorded?.length || 0, newRecorded: firstNew ? saved.panRecorded?.includes(firstNew) : null };

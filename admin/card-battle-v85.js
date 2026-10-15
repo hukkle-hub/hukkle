@@ -1,4 +1,6 @@
 /* Card presentation only. The dungeon owns turns, seven knots, saves and rewards.
+ * v90 — 재대면은 그림자극으로 그린다 (2026-10-15 결정). 무대는 shadow-stage-v90.js가 그리고, 여기서는 신호만 넘긴다.
+ *   막이 없는 환경(스크립트 누락 등)에서는 v89 층 구도로 물러선다.
  * v89 — 재대면은 층 구도로 그린다 (2026-10-14 결정 D1·D3).
  *   먼 띠 → 안개 → 중간 띠 → 보스(정지) → 합 공간 → 가까운 띠 → 안개 → 아인(뒷모습) · 동행자 → HUD
  *   보스는 움직이지 않는다. 맞으면 명멸만 한다. 효과는 구운 아틀라스(burst·framebreak·rise·fog)만 쓴다.
@@ -41,6 +43,7 @@
       this.stage.className = 'cb-stage';
       this.stage.innerHTML = '<div class="cb-l far"><img alt=""></div><div class="cb-fog back"></div><div class="cb-l mid"><img alt=""></div><div class="cb-bossfig"><img alt=""></div><div class="cb-clash"></div><div class="cb-l near"><img alt=""></div><div class="cb-fog front"></div><div class="cb-ain"><img alt="아인"></div><div class="cb-companion"><img alt=""></div><div class="cb-fx"></div>';
       this.board.prepend(this.stage);
+      this.shadow = window.HYShadowStage ? new window.HYShadowStage(this.stage) : null;
       this.ro = new ResizeObserver(() => this.layout());
       this.ro.observe(this.board);
       this.challenge = document.createElement('article');
@@ -96,6 +99,7 @@
     }
     updateMotion() {
       this.game.classList.toggle('cb-reduced', this.reduced);
+      if (this.shadow) this.shadow.reduced = this.reduced;
       const b = this.controls.querySelector('.cb-motion');
       b.setAttribute('aria-pressed', String(this.reduced));
       b.textContent = this.reduced ? '전체 연출' : '연출 간소화';
@@ -121,7 +125,11 @@
       this.query('.cb-landscape').style.backgroundImage = `url("${art}${backgrounds[region] || backgrounds.yeoja}")`;
       this.layered = !firstEncounter;
       this.game.classList.toggle('cb-layered', this.layered);
-      if (this.layered) {
+      this.game.classList.toggle('cb-shadow', this.layered && !!this.shadow);
+      if (this.layered && this.shadow) {
+        await this.shadow.start({ region, bossName: document.querySelector('#battleBossName')?.textContent || '보스', companionId: companion?.id, reduced: this.reduced });
+        this.failed.push(...this.shadow.failed);
+      } else if (this.layered) {
         const cfg = STAGE[region] || STAGE.nokdong;
         for (const band of ['far', 'mid', 'near']) { const img = this.query(`.cb-l.${band} img`); this.picture(img, `${L}${region}-${band}.webp`, ''); img.style.filter = cfg.grade; }
         this.picture(this.query('.cb-bossfig img'), `${L}boss-${region}.webp`, document.querySelector('#battleBossName')?.textContent || '보스');
@@ -140,6 +148,7 @@
         this.query('.cb-progress i').style.width = `${knots / 7 * 100}%`;
       }
       this.heat = heat;
+      if (this.layered && this.shadow?.running) this.shadow.sync(window.hyPan?.state?.());
       this.game.classList.toggle('cb-finished', !!(won || lost));
       this.controls.querySelector('.cb-exit').disabled = !!busy;
     }
@@ -177,8 +186,28 @@
     async play(args) {
       if (!this.running) return;
       this.routes.add(args.route);
+      if (this.layered && this.shadow?.running) return this.playShadow(args);
       if (this.layered) return this.playLayered(args);
       return this.playCards(args);
+    }
+    /* v90 그림자극: 카드가 막으로 날아가 부딪친다. 판정 문구와 상태 표시는 카드 화면과 같은 자리를 쓴다(검수·접근성). */
+    async playShadow({ card, won, critical, intent, challenge, strong, block, ms, kind, companionCard }) {
+      const dur = this.reduced ? 300 : (ms || 1300);
+      this.root.dataset.cardAction = won ? 'win' : 'lose';
+      this.challenge.querySelector('small').textContent = strong ? '보스가 낸 카드 · 강수' : '보스가 낸 카드';
+      this.challenge.querySelector('b').textContent = intent || '';
+      this.challenge.querySelector('p').textContent = challenge || '';
+      const btn = card && document.querySelector(`#skillGrid [data-card="${card.id}"]`);
+      const b = this.board.getBoundingClientRect(), r = btn?.getBoundingClientRect();
+      const from = r ? { x: r.left + r.width / 2 - b.left, y: r.top + r.height / 2 - b.top } : null;
+      const verdict = this.query('.cb-verdict');
+      const shown = setTimeout(() => {
+        verdict.textContent = block ? '버티기 · 피해 ⅓' : won ? (critical ? '강수 반격 · 매듭' : '받아치기 · 매듭') : '공격 관통 · 결계 피격';
+        verdict.classList.toggle('critical', won && !!critical); verdict.classList.add('show');
+      }, dur * .4);
+      await this.shadow.clash({ won, kind, block, companionCard, cardImg: block ? null : (card?.img || null), from, ms: dur });
+      clearTimeout(shown); verdict.classList.remove('show', 'critical');
+      delete this.root.dataset.cardAction;
     }
     async playLayered({ card, skill, won, critical, intent, challenge, strong, block, ms, kind, companionCard }) {
       const dur = this.reduced ? 260 : (ms || 1300);
@@ -244,6 +273,7 @@
       this.query('.cb-cutin h2').textContent = card?.name || '현현 동행';
       this.query('.cb-cutin p').textContent = label || '일곱 별 현현';
       await this.animate('manifest', 1900);
+      if (this.layered && this.shadow?.running) { this.shadow.descend(); return; }
       if (this.layered && this.running) {
         const id = String(card?.id || '').toUpperCase(), c = this.query('.cb-companion'), img = c.querySelector('img');
         const src = id === 'C075' ? `${L}dang-0.webp` : COMPANION_CUTS.has(id) ? `${L}companions/${id}.webp` : null;
@@ -257,13 +287,15 @@
     stop() {
       this.running = false;
       this.cancelAnimation();
-      this.game.classList.remove('card-battle-v85', 'cb-finished', 'cb-first-encounter', 'cb-layered');
+      this.shadow?.stop();
+      this.game.classList.remove('card-battle-v85', 'cb-finished', 'cb-first-encounter', 'cb-layered', 'cb-shadow');
       this.query('.cb-clash').innerHTML = ''; this.query('.cb-fx').innerHTML = '';
     }
     diagnostics() {
-      return { version: '89.0.0', running: this.running, region: this.region, failed: [...this.failed],
-        manifested: this.manifested, routes: [...this.routes], reduced: this.reduced, presentation: this.layered ? 'layered' : 'cards',
-        companionOnField: !!this.query('.cb-companion.on') };
+      const sh = this.layered && this.shadow?.running ? this.shadow.diagnostics() : null;
+      return { version: '90.0.0', running: this.running, region: this.region, failed: [...this.failed],
+        manifested: this.manifested, routes: [...this.routes], reduced: this.reduced, presentation: sh ? 'shadow' : this.layered ? 'layered' : 'cards',
+        companionOnField: sh ? !!(this.shadow.companionShadow && this.shadow.rv('comp') > .5) || (this.manifested && !this.shadow.companionShadow) : !!this.query('.cb-companion.on'), shadow: sh };
     }
   }
   window.HYBattleDirector = CardBattle;

@@ -145,3 +145,10 @@
 #game.pan-system-active.card-battle-v85.cb-layered .combat-log{left:auto!important;right:2%!important;width:25%!important;top:37%!important;bottom:auto!important;max-height:17%!important}
 #game.cb-reduced .cb-fog{animation:none}
 @media(prefers-reduced-motion:reduce){.cb-fog{animation:none}.cb-bossfig.cb-flicker,.cb-ain.cb-recoil,.cb-board.cb-shake{animation:none}}
+
+/* v90 — 그림자극 무대. 층 구도 그림은 숨기고 캔버스 한 장만 쓴다. */
+.cb-stage .sh-canvas{position:absolute;inset:0;width:100%;height:100%;display:none}
+#game.cb-shadow .cb-stage .sh-canvas{display:block}
+#game.cb-shadow .cb-l,#game.cb-shadow .cb-fog,#game.cb-shadow .cb-bossfig,#game.cb-shadow .cb-ain,#game.cb-shadow .cb-companion{display:none!important}
+#game.cb-shadow .cb-stage{background:#030305}
+#game.cb-shadow .cb-verdict{top:40%;left:50%}
