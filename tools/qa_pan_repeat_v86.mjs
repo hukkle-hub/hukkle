@@ -99,6 +99,7 @@ async function play(region, policy, shots, deck = 'mixed', preset = null) {
   const end = await page.evaluate(() => hyPan.state());
   const field = await page.evaluate(() => hyBattleDirector.diagnostics().companionOnField);
   const sh = await page.evaluate(() => hyBattleDirector.diagnostics().shadow);
+  if (end.manifestUsed && /c075/i.test(end.manifestCardId || '')) check(sh?.companionShadow === 'dang-5', region + ' descended 해신 당골 casts its shadow ' + JSON.stringify(sh));
   check(sh && sh.knots === end.knotsRemaining && sh.done === (end.won ? 'won' : end.lost ? 'lost' : null) && !sh.error, region + ' shadow follows the fight ' + JSON.stringify({ sh, knots: end.knotsRemaining }));
   if (shots) await page.screenshot({ path: join(out, `${region}-${end.won ? 'won' : 'lost'}.png`) });
   const saved = await page.evaluate(region => JSON.parse(localStorage.getItem('hy-dungeon-flow-v660'))[region], region);

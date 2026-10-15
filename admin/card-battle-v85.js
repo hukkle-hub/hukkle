@@ -273,7 +273,7 @@
       this.query('.cb-cutin h2').textContent = card?.name || '현현 동행';
       this.query('.cb-cutin p').textContent = label || '일곱 별 현현';
       await this.animate('manifest', 1900);
-      if (this.layered && this.shadow?.running) { this.shadow.descend(); return; }
+      if (this.layered && this.shadow?.running) { this.shadow.descend(card?.id); return; }
       if (this.layered && this.running) {
         const id = String(card?.id || '').toUpperCase(), c = this.query('.cb-companion'), img = c.querySelector('img');
         const src = id === 'C075' ? `${L}dang-0.webp` : COMPANION_CUTS.has(id) ? `${L}companions/${id}.webp` : null;
@@ -295,7 +295,7 @@
       const sh = this.layered && this.shadow?.running ? this.shadow.diagnostics() : null;
       return { version: '90.0.0', running: this.running, region: this.region, failed: [...this.failed],
         manifested: this.manifested, routes: [...this.routes], reduced: this.reduced, presentation: sh ? 'shadow' : this.layered ? 'layered' : 'cards',
-        companionOnField: sh ? !!(this.shadow.companionShadow && this.shadow.rv('comp') > .5) || (this.manifested && !this.shadow.companionShadow) : !!this.query('.cb-companion.on'), shadow: sh };
+        companionOnField: sh ? this.shadow.rv('comp') > .5 : !!this.query('.cb-companion.on'), shadow: sh ? { ...sh, companionShadow: this.shadow.companionShadow } : null };
     }
   }
   window.HYBattleDirector = CardBattle;

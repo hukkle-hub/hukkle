@@ -53,7 +53,7 @@
         face: region === 'yeoja' ? A + 'face-yeoja.webp' : `${P}boss-${region}.webp`
       };
       for (let i = 0; i < 6; i++) map['ain' + i] = `${P}ain-${i}.webp`;
-      if (this.companionShadow) map['dang-5'] = P + 'dang-5.webp';
+      map['dang-5'] = P + 'dang-5.webp';
       for (const k of ['b0', 'b1', 'b2', 'face']) { delete this.img[k]; }
       for (const key in this.cache) if (/^b[012]|face/.test(key)) delete this.cache[key];
       await this.load(map);
@@ -240,8 +240,10 @@
       this.atlas('fx-shock', x, this.variant === 'lattice' ? 22 : 46, 190, 600);
     }
     hurt() { this.ramp('candle', clamp(.35 + .65 * this.hp / 100, .2, 1), 3); }
-    async descend() {
+    /* 강신: 내려온 카드로 동행 그림자를 정한다(시작 때 동행 정보가 없을 수도 있다). 해신 당골만 전용 실루엣이 있다. */
+    async descend(cardId) {
       if (!this.running) return;
+      if (String(cardId || '').toUpperCase() === 'C075') this.companionShadow = 'dang-5';
       this.ramp('cold', 1, 1.2); this.ramp('comp', 1, 1.2); this.ramp('d', .95, 1.2); this.flash = .35; this.flashC = '#cfeaff';
     }
     async finale() { this.ramp('gone', 1, .9); this.ramp('open', 1, .7); this.atlas('fx-gold', 800, 420, 1000, 1400); this.flash = .25; this.flashC = '#ffe6b8'; this.ain = 'ain' + AIN.break; }
