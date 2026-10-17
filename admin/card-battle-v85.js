@@ -293,7 +293,7 @@
     }
     diagnostics() {
       const sh = this.layered && this.shadow?.running ? this.shadow.diagnostics() : null;
-      return { version: '90.0.0', running: this.running, region: this.region, failed: [...this.failed],
+      return { version: '90.1.0', running: this.running, region: this.region, failed: [...this.failed],
         manifested: this.manifested, routes: [...this.routes], reduced: this.reduced, presentation: sh ? 'shadow' : this.layered ? 'layered' : 'cards',
         companionOnField: sh ? this.shadow.rv('comp') > .5 : !!this.query('.cb-companion.on'), shadow: sh ? { ...sh, companionShadow: this.shadow.companionShadow } : null };
     }

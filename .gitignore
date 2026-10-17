@@ -7,3 +7,4 @@ android/.gradle/
 android/**/build/
 qa-repeat/
 node_modules
+qa-truth/

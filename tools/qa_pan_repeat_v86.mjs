@@ -101,6 +101,11 @@ async function play(region, policy, shots, deck = 'mixed', preset = null) {
   const sh = await page.evaluate(() => hyBattleDirector.diagnostics().shadow);
   if (end.manifestUsed && /c075/i.test(end.manifestCardId || '')) check(sh?.companionShadow === 'dang-5', region + ' descended 해신 당골 casts its shadow ' + JSON.stringify(sh));
   check(sh && sh.knots === end.knotsRemaining && sh.done === (end.won ? 'won' : end.lost ? 'lost' : null) && !sh.error, region + ' shadow follows the fight ' + JSON.stringify({ sh, knots: end.knotsRemaining }));
+  /* v90.1: 결과 칸은 실제로 받은 것만 — 이기면 인장, 지면 '보상 없음'. 옛 정적 4칸(원화·기억 조각)은 없어야 한다 */
+  if (end.won || end.lost) {
+    const grid = await page.locator('#rewardGrid').innerText().catch(() => '');
+    check(end.won ? /인장/.test(grid) && !/원화|기억 조각/.test(grid) : /보상 없음/.test(grid), region + ' result grid shows what was actually given ' + JSON.stringify(grid));
+  }
   if (shots) await page.screenshot({ path: join(out, `${region}-${end.won ? 'won' : 'lost'}.png`) });
   const saved = await page.evaluate(region => JSON.parse(localStorage.getItem('hy-dungeon-flow-v660'))[region], region);
   return { region, policy, deck, field, descentAtFinal, heatTrail: heatTrail.join(''), won: end.won, turns: end.turn, hp: Math.round(end.playerHp), wins: end.wins, losses: end.losses, blocks: end.blocks, chuimsae: end.chuimsae, manifest: end.manifestUsed, manifestCard: end.manifestCardId, knots: end.knotsRemaining, maxHeatBeforeFinal, leaks, restViolations, sawStrong, firstNew, recorded: saved.panRecorded?.length || 0, newRecorded: firstNew ? saved.panRecorded?.includes(firstNew) : null };
