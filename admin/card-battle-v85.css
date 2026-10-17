@@ -103,3 +103,52 @@
  #game.pan-system-active.card-battle-v85 .battle-skill[data-rest]:not([data-rest="0"])::after{font-size:11px;line-height:1.3;padding:0 4px;text-align:center}
  #game.pan-system-active.card-battle-v85 .pan-field-actions button{min-height:34px!important;font-size:11px!important}
 }
+/* v89 — 재대면 층 구도. 그림·아틀라스만 쓰고 CSS 도형으로 효과를 만들지 않는다. */
+.cb-stage{position:absolute;inset:0;overflow:hidden;display:none;pointer-events:none;background:#05080c}
+#game.cb-layered .cb-stage{display:block}
+#game.cb-layered .cb-landscape,#game.cb-layered .cb-boss,#game.cb-layered .cb-challenge,#game.cb-layered .cb-resolve{display:none!important}
+.cb-l{position:absolute;left:0;width:100%}
+.cb-l img{display:block;width:100%;height:auto}
+.cb-l.far img{filter:blur(1px)}
+.cb-fog{position:absolute;left:0;right:0;height:34%;background:url('../assets/battle-v89/fog.webp') repeat-x 0 50%/auto 100%;opacity:.55;animation:cb-fog 70s linear infinite}
+.cb-fog.back{top:26%}.cb-fog.front{top:50%;opacity:.32;animation-duration:46s;animation-direction:reverse}
+@keyframes cb-fog{to{background-position:-2048px 50%}}
+.cb-bossfig{position:absolute;left:56%;translate:-50% 0;height:56%;top:8%;filter:drop-shadow(0 14px 16px #000a)}
+.cb-bossfig img{display:block;height:100%;width:auto}
+.cb-bossfig.cb-flicker{animation:cb-flicker .5s steps(1)}
+@keyframes cb-flicker{0%{opacity:1}12%{opacity:.35}24%{opacity:1}40%{opacity:.6}52%,100%{opacity:1}}
+.cb-clash,.cb-fx{position:absolute;inset:0}
+.cb-ain{position:absolute;left:17%;bottom:-9%;height:80%;filter:brightness(1.12) saturate(1.05) drop-shadow(0 0 18px #ffd8a040)}
+.cb-ain img{display:block;height:100%;width:auto}
+.cb-ain.cb-recoil{animation:cb-recoil .38s ease-out}
+@keyframes cb-recoil{30%{transform:translateX(-18px)}}
+.cb-ain{z-index:3}
+/* 동행자는 아인 뒤 왼쪽 — 손패와 오른쪽 기둥(예고·기록)을 피하고 보스를 가리지 않는다 */
+.cb-companion{position:absolute;z-index:2;left:2%;bottom:31%;height:47%;opacity:0;transition:opacity .8s;filter:drop-shadow(0 0 22px #6fd5ff55) brightness(1.06)}
+.cb-companion.on{opacity:1}.cb-companion.mirror img{transform:scaleX(-1)}
+.cb-companion img{display:block;height:100%;width:auto}
+.cb-companion.cb-cast{animation:cb-cast .6s ease-out}
+@keyframes cb-cast{40%{filter:drop-shadow(0 0 40px #8fe6ffcc) brightness(1.3)}}
+.cb-fly{position:absolute;width:clamp(64px,9vw,128px);aspect-ratio:2/3;border-radius:10px;overflow:hidden;background:#0b141a;border:2px solid #e2c281;box-shadow:0 10px 26px #000b;display:grid;place-items:end center;transform:translate(-50%,-50%)}
+.cb-fly img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cb-fly b{position:relative;z-index:1;width:100%;padding:14px 5px 6px;background:linear-gradient(transparent,#05090ce6 45%);font:800 clamp(9px,1.1vw,14px) "Noto Serif KR",serif;text-align:center;color:#f4e3bd}
+.cb-fly.theirs{border-color:#c47a6c;background:#1c0e0d;place-items:center;align-content:center;gap:6px;text-align:center;padding:8px}
+.cb-fly.theirs b{background:none;padding:0;color:#f3cfc6;font-size:clamp(11px,1.4vw,18px)}
+.cb-fly.theirs small{color:#e39486;font-size:clamp(8px,.9vw,11px);font-weight:800;letter-spacing:.08em}
+.cb-fly.block{border-color:#7fb4b0;place-items:center}.cb-fly.block b{background:none}
+.cb-atlas{position:absolute;background-repeat:no-repeat;mix-blend-mode:screen;pointer-events:none}
+.cb-board.cb-shake{animation:cb-shake .28s ease-out}
+@keyframes cb-shake{25%{translate:5px -3px}50%{translate:-4px 2px}75%{translate:2px 1px}}
+#game.cb-layered .cb-verdict{top:26%;left:39%}
+@media(max-height:500px){#game.pan-system-active.card-battle-v85.cb-layered .combat-log{top:42%!important;max-height:14%!important}}
+/* 층 구도에서는 보스를 가리지 않도록 전투 기록을 오른쪽 기둥으로 옮긴다 */
+#game.pan-system-active.card-battle-v85.cb-layered .combat-log{left:auto!important;right:2%!important;width:25%!important;top:37%!important;bottom:auto!important;max-height:17%!important}
+#game.cb-reduced .cb-fog{animation:none}
+@media(prefers-reduced-motion:reduce){.cb-fog{animation:none}.cb-bossfig.cb-flicker,.cb-ain.cb-recoil,.cb-board.cb-shake{animation:none}}
+
+/* v90 — 그림자극 무대. 층 구도 그림은 숨기고 캔버스 한 장만 쓴다. */
+.cb-stage .sh-canvas{position:absolute;inset:0;width:100%;height:100%;display:none}
+#game.cb-shadow .cb-stage .sh-canvas{display:block}
+#game.cb-shadow .cb-l,#game.cb-shadow .cb-fog,#game.cb-shadow .cb-bossfig,#game.cb-shadow .cb-ain,#game.cb-shadow .cb-companion{display:none!important}
+#game.cb-shadow .cb-stage{background:#030305}
+#game.cb-shadow .cb-verdict{top:40%;left:50%}

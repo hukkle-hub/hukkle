@@ -286,6 +286,7 @@
 <div class="source" id="sourceNote"></div><div class="toast" id="toast"></div>
 </div>
 <div class="orientation"><div><b>가로 화면 권장</b><p>흥양기의 탐험 화면은 모바일 가로 화면을 기준으로 제작했습니다.</p></div></div>
+<script src="./shadow-stage-v90.js"></script>
 <script src="./card-battle-v85.js"></script>
 <script>
 (()=>{
@@ -371,7 +372,7 @@ function safeImg(src){img.src=src;img.onerror=()=>{img.removeAttribute('src');im
 function safeVideo(src,onEnd){try{video.pause()}catch{}video.src=src;video.currentTime=0;video.muted=true;video.playsInline=true;video.onended=onEnd||null;video.onerror=()=>{if(onEnd)onEnd()};const p=video.play();if(p&&p.catch)p.catch(()=>{if(onEnd)onEnd()})}
 function setPhase(p){phase=p;game.dataset.phase=p;travel.style.display=p==='travel'?'block':'none';explore.style.display=p==='explore'?'block':'none';dungeon.style.display=p==='dungeon'?'grid':'none';bossPanel.style.display=p==='boss'?'grid':'none';$('#creativeBadge').style.display=(p==='dungeon'||p==='boss')?'inline-flex':'none';$('#phaseTitle').textContent=p==='travel'?'현실 이동':p==='explore'?'탐험 · 조사':p==='dungeon'?'자유 경로 던전':'금기 · 보스 전투';renderTop()}
 function renderTop(){const r=refs[current],s=rstate();$('#regionKicker').textContent=r.tag;$('#regionTitle').textContent=r.name;$('#sourceNote').textContent=r.source;$('#routeMemory').textContent=`루트 기억 ${s.routeDone?1:0}`;$('#clueCount').textContent=`기록 ${s.clueStates.filter(x=>x.recorded).length} / 3`}
-function start(){const r=refs[current],s=rstate();img.style.objectPosition=r.position;if(s.complete||s.bossSeen)startBossReveal();else if(s.investigationComplete)startDungeon();else if(s.routeDone)startExplore();else startTravel();if(embedded)emit('hy-journey-ready',{version:'87.0.0'})}
+function start(){const r=refs[current],s=rstate();img.style.objectPosition=r.position;if(s.complete||s.bossSeen)startBossReveal();else if(s.investigationComplete)startDungeon();else if(s.routeDone)startExplore();else startTravel();if(embedded)emit('hy-journey-ready',{version:'90.0.0'})}
 function startTravel(){const r=refs[current],s=rstate();try{video.pause()}catch{}video.muted=true;setPhase('travel');$('#travelTitle').textContent=r.travelTitle;$('#travelCopy').textContent=r.travelCopy;routeIndex=Math.max(0,Math.min(Number(s.routeIndex||0),r.route.length-1));renderTourism();renderRoute()}
 function changeTravelScene(index){const frames=TRAVEL_STILLS[current]||[ART[current].travel],src=frames[Math.min(index,frames.length-1)]||ART[current].travel;if(img.dataset.travelSrc===src)return;img.dataset.travelSrc=src;img.classList.remove('travel-cut');safeImg(src);void img.offsetWidth;img.classList.add('travel-cut');setTimeout(()=>img.classList.remove('travel-cut'),1100)}
 function changeExploreScene(index){const frames=EXPLORE_STILLS[current]||[ART[current].explore],src=frames[Math.max(0,Math.min(index,frames.length-1))]||ART[current].explore;if(img.dataset.exploreSrc===src&&img.getAttribute('src')===src)return;img.dataset.exploreSrc=src;img.classList.remove('travel-cut');safeImg(src);img.style.objectPosition=refs[current].position;void img.offsetWidth;img.classList.add('travel-cut');setTimeout(()=>img.classList.remove('travel-cut'),1100)}
@@ -557,7 +558,11 @@ async function useBattleSkill(kind,card=null){
  if(battle.playerHp<=0)return finishBattle(false,log);
  battle.turn+=1;battle.busy=false;renderBattle(log)
 }
-function finishBattle(won,log){const r=refs[current],s=rstate(),first=!s.battle?.completed;battle.busy=false;battle.won=won;battle.lost=!won;renderBattle(log);document.querySelectorAll('#skillGrid button').forEach(b=>b.disabled=true);$('#skillGrid').style.display='none';$('#raidRail').style.display='none';$('.knot-hud').style.display='none';$('#battleResult').classList.add('show');$('#battleResult').classList.toggle('victory',won);$('#battleResultTitle').textContent=won?`${r.boss.name} · 금기 봉합`:'결계가 무너졌습니다';$('#battleResultCopy').textContent=won?'지역보스 인장과 진화 재료를 회수했습니다. 보스 카드는 낮은 확률로 직접 드롭됩니다.':'행동 예고와 대응 문구를 읽으면 피해를 크게 줄일 수 있습니다. 전투는 즉시 다시 시작할 수 있습니다.';$('#battleResultPrimary').textContent=won?'기록 완료 · 지도':'다시 도전';$('#battleResultPrimary').onclick=won?exit:startBossBattle;$('#battleResultSecondary').textContent=won?'보스 반복 도전':'기척으로 돌아가기';$('#battleResultSecondary').onclick=won?startBossBattle:startBossReveal;if(won){s.bossSeen=true;s.complete=true;s.battle={completed:true,clears:Number(s.battle?.clears||0)+1,turns:battle.turn,companion:parentCtx.companionCard,manifested:battle.lastSkill==='manifest'||battle.resolve===0,rewards:['지역보스 인장','고급 지전','정화수','보스 카드 추첨']};save();if(first)emit('hy-journey-boss-seen',{boss:r.boss.name,taboo:r.boss.taboo});emit('hy-journey-reward',{source:'region-boss',materials:{paper:5,water:2},fragmentCardId:stageEncounter(6)?.id,fragments:5,bossCardDrop:Math.random()<.08});emit('hy-journey-battle-complete',{boss:r.boss.name,turns:battle.turn,companion:parentCtx.companionCard,rewards:4,repeat:!first});if(first)emit('hy-journey-complete',{zones:s.zones.length,records:s.clueStates.filter(x=>x.recorded).length,boss:r.boss.name,battle:true});toast(`${r.name} 지역보스 보상을 회수했습니다. 반복 도전할 수 있습니다.`)}}
+/* D8(10/14) — 보스별 하루 3회까지 전량, 이후 절반. 날짜는 기기 시각 기준. 서버 검증은 아직 없다. */
+const BOSS_DAILY_FULL=3;
+function bossDay(){return new Date().toLocaleDateString('sv-SE')}
+function bossDailyTick(s){const day=bossDay();if(!s.bossDaily||s.bossDaily.day!==day)s.bossDaily={day,wins:0};s.bossDaily.wins+=1;save();return{wins:s.bossDaily.wins,full:s.bossDaily.wins<=BOSS_DAILY_FULL}}
+function finishBattle(won,log){const r=refs[current],s=rstate(),first=!s.battle?.completed;battle.busy=false;battle.won=won;battle.lost=!won;renderBattle(log);document.querySelectorAll('#skillGrid button').forEach(b=>b.disabled=true);$('#skillGrid').style.display='none';$('#raidRail').style.display='none';$('.knot-hud').style.display='none';$('#battleResult').classList.add('show');$('#battleResult').classList.toggle('victory',won);$('#battleResultTitle').textContent=won?`${r.boss.name} · 금기 봉합`:'결계가 무너졌습니다';$('#battleResultCopy').textContent=won?'지역보스 인장과 진화 재료를 회수했습니다. 보스 카드는 낮은 확률로 직접 드롭됩니다.':'행동 예고와 대응 문구를 읽으면 피해를 크게 줄일 수 있습니다. 전투는 즉시 다시 시작할 수 있습니다.';$('#battleResultPrimary').textContent=won?'기록 완료 · 지도':'다시 도전';$('#battleResultPrimary').onclick=won?exit:startBossBattle;$('#battleResultSecondary').textContent=won?'보스 반복 도전':'기척으로 돌아가기';$('#battleResultSecondary').onclick=won?startBossBattle:startBossReveal;if(won){s.bossSeen=true;s.complete=true;s.battle={completed:true,clears:Number(s.battle?.clears||0)+1,turns:battle.turn,companion:parentCtx.companionCard,manifested:battle.lastSkill==='manifest'||battle.resolve===0,rewards:['지역보스 인장','고급 지전','정화수','보스 카드 추첨']};save();if(first)emit('hy-journey-boss-seen',{boss:r.boss.name,taboo:r.boss.taboo});const daily=bossDailyTick(s),k=daily.full?1:.5;emit('hy-journey-reward',{source:'region-boss',materials:{paper:Math.max(1,Math.floor(5*k)),water:Math.max(1,Math.floor(2*k))},fragmentCardId:stageEncounter(6)?.id,fragments:Math.max(1,Math.floor(5*k)),bossCardDrop:Math.random()<.08*k,dailyWins:daily.wins,dailyFull:daily.full});emit('hy-journey-battle-complete',{boss:r.boss.name,turns:battle.turn,companion:parentCtx.companionCard,rewards:4,repeat:!first});if(first)emit('hy-journey-complete',{zones:s.zones.length,records:s.clueStates.filter(x=>x.recorded).length,boss:r.boss.name,battle:true});toast(`${r.name} 지역보스 보상을 회수했습니다. 반복 도전할 수 있습니다.`)}}
 function replayBoss(){img.animate([{transform:'scale(1.015)'},{transform:'scale(1.06)'},{transform:'scale(1.015)'}],{duration:1200,easing:'ease-in-out'});toast('이면의 기척을 다시 확인했습니다.')}
 function exit(target='map'){target=target==='home'?'home':'map';if(embedded)emit('hy-journey-exit',{target});else if(target==='home')location.replace('../index.html');else history.back()}
 window.addEventListener('message',e=>{const d=e.data||{};if(d.type==='hy-journey-context'){parentCtx={...parentCtx,...d,itemQty:{...parentCtx.itemQty,...(d.itemQty||{})}};document.documentElement.dataset.partyCount=String(parentCtx.party?.length||0);document.documentElement.dataset.companionManifested=parentCtx.companionManifested?'true':'false';if(phase==='explore')renderExplore();if(phase==='dungeon')renderZones();if(sheet.classList.contains('open'))renderInvest()}if(d.type==='hy-journey-item-result'){const fn=pendingItems.get(d.requestId);if(!fn)return;pendingItems.delete(d.requestId);if(d.ok&&d.item)parentCtx.itemQty[d.item]=Number(d.remaining||0);fn(!!d.ok);if(phase==='explore')renderExplore()}});
@@ -570,7 +575,7 @@ document.querySelectorAll('#skillGrid [data-skill]').forEach(b=>b.onclick=()=>us
 (() => {
   'use strict';
 
-  const PAN_VERSION = '87.0.0';
+  const PAN_VERSION = '90.0.0';
   const KNOTS = 7;
   const HEAT_MAX = 4;
   const TEMPO = [1, .93, .85, .77, .68];
@@ -608,7 +613,9 @@ document.querySelectorAll('#skillGrid [data-skill]').forEach(b=>b.onclick=()=>us
   const KIND_NEXT = { strike: 'guard', guard: 'break', break: 'strike' };
   const KNOT_THICK = [1, 1, 1, 2, 2, 3, 'F'];
   const HEAT_CAP = [0, 2, 3, 4];
-  const GRADE_RULE = { 일반: { power: 1, rest: 0 }, 희귀: { power: 1, rest: 0 }, 영웅: { power: 1, rest: 1 }, 전설: { power: 2, rest: 2 } };
+  /* D6(10/14) — 별이 높을수록 판에서 분명히 세야 한다. 일반·희귀는 쉬지 않는 대신 겹매듭을 반 겹만 푼다. 전설은 두 겹을 풀고 한 수만 쉰다. */
+  const GRADE_RULE = { 일반: { power: 1, rest: 0, thin: true }, 희귀: { power: 1, rest: 0, thin: true }, 영웅: { power: 1, rest: 1 }, 전설: { power: 2, rest: 1 } };
+  function knotPower(rule) { const t = KNOT_THICK[battle.knotIdx]; return rule.thin && t !== 'F' && t > 1 ? rule.power / 2 : rule.power; }
   const REPEAT_DAMAGE = 0.65;
   const STRONG_DAMAGE = 1.6;
   /* 지역 장단 — 보스의 성격이 판의 박자로 드러난다. 화면에 장단 이름은 띄우지 않는다.
@@ -644,6 +651,9 @@ document.querySelectorAll('#skillGrid [data-skill]').forEach(b=>b.onclick=()=>us
     nokdong: ['…물때가 바뀐다. 배를 띄워야 해. — 남은 매듭은 겹으로 묶여 있다.', '건너야 할 사람이 아직 남았다… — 마지막 매듭은 판이 끓어오를 때만 풀린다.'],
     _: ['기척이 달라졌다. 남은 매듭은 겹으로 묶여 있다. 센 수가 아니면 한 번에 풀리지 않는다.', '마지막 매듭. 판이 끓어오를 때만 풀린다.']
   };
+  /* D7(10/14) — 지역 약점에 맞춰 보스가 자주 쓰는 수가 다르다. 덱을 짤 이유가 된다. 가중치 4:3:3 (약 40%). */
+  const FAVORED = { yeoja: 'break', nokdong: 'guard', palyoung: 'break', geogeum: 'strike', naro: 'break' };
+  const FAVORED_WORD = { strike: '힘', guard: '부름', break: '환영' };
   const repeatMode = () => !!(battle && !battle.firstEncounter && battle.repeat);
   const regionPan = () => REGION_PAN[current] || {};
   const heatCap = () => HEAT_CAP[battle?.phase || 1];
@@ -660,8 +670,9 @@ document.querySelectorAll('#skillGrid [data-skill]').forEach(b=>b.onclick=()=>us
     if (battle.phase >= 2) pool = pool.concat(MOVES2[current] || MOVES2.yeoja);
     const last = battle.kindTrail || (battle.kindTrail = []);
     let m = pool[0];
+    const fav = FAVORED[current], weighted = pool.flatMap(p => p[2] === fav ? [p, p, p, p] : [p, p, p]);
     for (let k = 0; k < 24; k++) {
-      m = pool[Math.floor(Math.random() * pool.length)];
+      m = weighted[Math.floor(Math.random() * weighted.length)];
       const triple = last.length >= 2 && last[last.length - 1] === m[2] && last[last.length - 2] === m[2];
       if (!triple && m[0] !== battle.intentMove?.[0]) break;
     }
@@ -775,7 +786,7 @@ document.querySelectorAll('#skillGrid [data-skill]').forEach(b=>b.onclick=()=>us
       const heavy = regionPan().heavy;
       if (!heavy || battle.streak % heavy === 0) repeatSetHeat(battle.heat + 1);
       if (battle.phase === 3 && battle.heat >= HEAT_CAP[3]) return repeatFinale(card);
-      const note = await repeatUntie(rule.power + (strong ? 1 : 0));
+      const note = await repeatUntie(knotPower(rule) + (strong ? 1 : 0));
       log = `<b>${jo(`${who} · ${label}`, '이')}</b> <b>${jo(intent[0], '을')}</b> 꺾었습니다${strong ? ' (강수를 받아친 일격)' : ''}. ${note}`;
     } else {
       const raw = intent[1] * REPEAT_DAMAGE * (strong ? STRONG_DAMAGE : 1) * (block ? 1 / 3 : 1);
@@ -836,7 +847,7 @@ document.querySelectorAll('#skillGrid [data-skill]').forEach(b=>b.onclick=()=>us
       b.dataset.rest = String(left);
       b.disabled = !!battle.busy || battle.won || battle.lost || left > 0;
       const card = battleParty().find(c => c.id === b.dataset.card), rule = cardRule(card);
-      b.dataset.panRule = `매듭 ${rule.power}${rule.rest ? ` · 쉼 ${rule.rest}` : ''}`;
+      b.dataset.panRule = `매듭 ${knotPower(rule) === 0.5 ? '½' : knotPower(rule)}${rule.rest ? ` · 쉼 ${rule.rest}` : ''}`;
       const small = b.querySelector('small');
       if (small && battle.manifestUsed && b.dataset.card === battle.manifestCardId) { small.textContent = '동행 · 무엇이든'; b.classList.add('pan-companion'); }
     });
@@ -1105,7 +1116,7 @@ document.querySelectorAll('#skillGrid [data-skill]').forEach(b=>b.onclick=()=>us
 
   async function panPlayClash(card, intent, won, block = false) {
     const clashMs = Math.round(clamp((kindTier(card).ms || 920) + 380, 760, 1800) * panTempoScale());
-    if(director?.running){await director.play({card,skill:block?'버티기':activeSkill(card||{})?.name||card?.skill,route:skillRoute(activeSkill(card),card||{}),won,critical:battle.critical,intent:intent[0],response:intent[2],firstEncounter:battle.firstEncounter,challenge:battle.repeat?intentLabel(intent):null,strong:!!battle.strong,block,ms:battle.repeat?clashMs:null});return;}
+    if(director?.running){await director.play({card,skill:block?'버티기':activeSkill(card||{})?.name||card?.skill,route:skillRoute(activeSkill(card),card||{}),won,critical:battle.critical,intent:intent[0],response:intent[2],firstEncounter:battle.firstEncounter,challenge:battle.repeat?intentLabel(intent):null,strong:!!battle.strong,block,ms:battle.repeat?clashMs:null,kind:battle.lastSkill,companionCard:!!(battle.manifestUsed&&card&&card.id===battle.manifestCardId)});return;}
     panEnsureUI();
     const root = q('#panClash');
     const tier = kindTier(card);
@@ -1281,12 +1292,13 @@ document.querySelectorAll('#skillGrid [data-skill]').forEach(b=>b.onclick=()=>us
     battle.busy=false;
     panRenderBattle(firstEncounter
       ? '얼굴 없는 기척과 마주합니다. 카드를 내어 흔적을 기록하고, 경계를 지키고, 단서를 해석하세요. 첫 탐사에서는 피해를 받지 않습니다.'
-      : `<b>${jo(refs[current].boss.name, '이')}</b> 먼저 수를 냅니다. 맞서기는 힘을, 지키기는 부름을, 끊기는 환영을 꺾습니다. ${REGION_PAN[current]?.hint || ''}`);
+      : `<b>${jo(refs[current].boss.name, '이')}</b> 먼저 수를 냅니다. 맞서기는 힘을, 지키기는 부름을, 끊기는 환영을 꺾습니다. ${REGION_PAN[current]?.hint || ''} 이 보스는 <b>${FAVORED_WORD[FAVORED[current]]}</b>의 수를 자주 씁니다.`);
   }
 
   function panFinishBattle(won, log) {
     if(battle.won||battle.lost)return;
     original.finishBattle(won, log);
+    if(won){const sd=rstate().bossDaily;if(sd&&q('#battleResultCopy'))setTimeout(()=>{const c=q('#battleResultCopy');if(c)c.textContent+=sd.wins<=BOSS_DAILY_FULL?` 오늘 이 보스 보상 ${sd.wins}/${BOSS_DAILY_FULL}회 전량.`:' 오늘은 전량 보상 3회를 넘겨 절반만 받습니다.';},0);}
     if(won){const s=rstate();s.battle.pan={knotsRemaining:battle.knotsRemaining,heat:battle.heat,wins:battle.clashWins,losses:battle.clashLosses};s.battle.manifested=!!battle.manifestUsed;save();}
     qq('.pan-field-actions button').forEach(b=>b.disabled=true);
     if (!q('#battleResult')) return;
@@ -1329,7 +1341,7 @@ document.querySelectorAll('#skillGrid [data-skill]').forEach(b=>b.onclick=()=>us
       wins: battle.clashWins || 0,
       losses: battle.clashLosses || 0,
       repeat:!!battle.repeat, phase:battle.phase||0, streak:battle.streak||0, region:current, knotIdx:battle.knotIdx??null, heatCap:battle.repeat?heatCap():HEAT_MAX, strong:!!battle.strong, chuimOpen:!!battle.chuimOpen, blocks:battle.blocks||0, chuimsae:battle.chuimsae||0,
-      rest:{...(battle.rest||{})}, intent:battle.repeat?{name:battle.intentMove[0],kind:battle.intentMove[2],recorded:isRecorded(battle.intentMove[0]),label:intentLabel(battle.intentMove)}:null,
+      rest:{...(battle.rest||{})}, favored:FAVORED[current], daily:rstate().bossDaily||null, intent:battle.repeat?{name:battle.intentMove[0],kind:battle.intentMove[2],recorded:isRecorded(battle.intentMove[0]),label:intentLabel(battle.intentMove)}:null,
       busy:!!battle.busy, playerHp:battle.playerHp, won:!!battle.won, lost:!!battle.lost, response:battleIntent()[2],manifestCardId:battle.manifestCardId
     }) : null,
     cue: panCue,
