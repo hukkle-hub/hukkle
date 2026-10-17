@@ -111,7 +111,7 @@
 .knot-hud{position:absolute;z-index:24;right:max(16px,env(safe-area-inset-right));bottom:17%;display:flex;align-items:center;gap:7px;padding:5px 8px;background:rgba(3,7,9,.7);border:1px solid rgba(241,217,161,.15)}.knot-hud>b{font-family:"Noto Serif KR",serif;color:#e9d3a0}.knot-gauge{display:flex;gap:5px}.knot-gauge i{width:13px;height:13px;rotate:45deg;border:1px solid #667078;background:#0a0e12;box-shadow:inset 0 0 5px #000;transition:.3s}.knot-gauge i.lit{border-color:#f4cb70;background:#dc8f39;box-shadow:0 0 10px #e7a848,inset 0 0 4px #fff0a6}
 .break-callout{position:absolute;z-index:47;left:57%;top:42%;translate:-50% -50%;opacity:0;pointer-events:none;font:950 clamp(42px,8vw,112px) serif;color:#ffe4a0;letter-spacing:.08em;text-shadow:0 3px 12px #000,0 0 22px #73d7ee}.break-callout.play{animation:breakCall 1s ease-out both}@keyframes breakCall{0%{opacity:0;transform:scale(1.7)}18%,68%{opacity:1;transform:none}100%{opacity:0;transform:scale(.92)}}
 .battle-shell.camera-strike~*{}#game.camera-strike .scene-img{transform:scale(1.09) translateX(-2%);filter:brightness(.92) contrast(1.22)}#game.camera-strike .ain-actor{animation:ainLunge .55s ease-out}#game.camera-break .scene-img{transform:scale(1.12);filter:brightness(1.08) contrast(1.36) saturate(.72)}@keyframes ainLunge{40%{transform:translate(20%, -3%) scale(1.08)}100%{transform:none}}
-.battle-result{width:min(590px,66vw);text-align:center;border:1px solid rgba(232,207,151,.36);background:linear-gradient(150deg,rgba(5,11,14,.97),rgba(7,18,21,.94))}.reward-grid{display:none;grid-template-columns:repeat(4,1fr);gap:7px;margin:14px 0}.battle-result.victory .reward-grid{display:grid}.reward-item{padding:10px 5px;border:1px solid rgba(232,207,151,.22);background:rgba(255,255,255,.035)}.reward-item i{display:block;font-style:normal;font-size:23px}.reward-item b{display:block;margin-top:5px;font-size:12px}.reward-item small{color:#a5b6b7;font-size:10px}
+.battle-result{width:min(590px,66vw);text-align:center;border:1px solid rgba(232,207,151,.36);background:linear-gradient(150deg,rgba(5,11,14,.97),rgba(7,18,21,.94))}.reward-grid{display:none;grid-template-columns:repeat(4,1fr);gap:7px;margin:14px 0}.battle-result.victory .reward-grid{display:grid}.battle-result .reward-grid.empty{display:grid;grid-template-columns:1fr;max-width:260px;margin-left:auto;margin-right:auto}.reward-item{padding:10px 5px;border:1px solid rgba(232,207,151,.22);background:rgba(255,255,255,.035)}.reward-item i{display:block;font-style:normal;font-size:23px}.reward-item b{display:block;margin-top:5px;font-size:12px}.reward-item small{color:#a5b6b7;font-size:10px}
 @media(max-width:900px){.battle-presence{width:42vw;padding:5px 8px}.boss-identity h2{font-size:19px}.boss-identity span{font-size:9px}.battle-intent{top:17%;width:35vw;padding:5px 8px}.raid-rail{top:20%;gap:3px}.raid-unit{width:38px;height:44px}.battle-actors{left:2%;width:31%;height:67%}.skill-grid{left:23%;right:14%;height:27%;gap:3px}.player-hud{right:7px;width:25vw}.combat-log{right:7px;width:21vw;bottom:34%}.knot-hud{right:7px;bottom:25%;gap:4px}.knot-gauge{gap:3px}.knot-gauge i{width:9px;height:9px}.reward-item{padding:6px 3px}.reward-item i{font-size:17px}}
 @media(max-height:620px){.raid-unit{width:36px;height:42px}.battle-presence{top:5px}.battle-intent{top:16%}.battle-actors{height:68%}.skill-grid{height:27%;bottom:5px}.combat-log{bottom:33%}.knot-hud{bottom:27%}.battle-result{padding:12px}.reward-grid{margin:8px 0}}
 @media(prefers-reduced-motion:reduce){#game.camera-strike .ain-actor,.break-callout.play{animation-duration:.25s}}
@@ -277,7 +277,7 @@
       <div class="combat-log" id="combatLog" aria-live="polite"></div>
       <div class="skill-grid" id="skillGrid" aria-label="배치 카드와 스킬"></div>
       <div class="knot-hud"><b>7매듭</b><div class="knot-gauge" id="knotGauge" aria-label="현현 공명 7매듭"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
-      <div class="battle-result" id="battleResult"><h3 id="battleResultTitle"></h3><p id="battleResultCopy"></p><div class="reward-grid" id="rewardGrid"><div class="reward-item"><i>▣</i><b>동행 카드 조각</b><small>× 3</small></div><div class="reward-item"><i>▤</i><b>단서 기록</b><small>× 1</small></div><div class="reward-item"><i>₩</i><b>원화</b><small>2,400원</small></div><div class="reward-item"><i>✦</i><b>기억 조각</b><small>× 1</small></div></div><div class="actions"><button class="gold" id="battleResultPrimary"></button><button class="soft" id="battleResultSecondary">전투 다시 보기</button><button class="soft direct-home" id="home5">메인으로 나가기</button></div></div>
+      <div class="battle-result" id="battleResult"><h3 id="battleResultTitle"></h3><p id="battleResultCopy"></p><div class="reward-grid" id="rewardGrid"></div><div class="actions"><button class="gold" id="battleResultPrimary"></button><button class="soft" id="battleResultSecondary">전투 다시 보기</button><button class="soft direct-home" id="home5">메인으로 나가기</button></div></div>
      </section>
      <div class="skill-banner" id="skillBanner"><small id="skillBannerType">CARD SKILL</small><b id="skillBannerName"></b></div><div class="break-callout" id="breakCallout">BREAK</div><div class="seventh-skill-motion" id="seventhSkillMotion"><img class="manifest-card-lift" id="seventhSkillCard" alt="사용 카드"><div class="manifest-sigil" id="seventhSkillSigil">기록</div><div class="manifest-particles" id="manifestParticles"></div><img id="seventhSkillFigure" alt="7성 스킬 모션"><div class="manifest-technique"><small id="manifestRoute">기록 · 현현 전용기</small><b id="manifestTechnique">일곱 별 현현</b></div><i class="manifest-ground"></i><i class="manifest-impact"></i></div><div class="hit-flash" id="hitFlash"></div><div class="skill-fx" id="skillFx"><i></i><i></i><i></i></div><output class="damage-float" id="damageFloat"></output>
     </div>
@@ -356,7 +356,7 @@ const DUNGEON_STAGE_COPY=[
  ['주민이 오가는 길의 흔적을 따라 작은 무리를 상대합니다.','생활길 우회','피해를 줄이고 재료를 수집','정면 제압','카드 조각 확률을 높임'],
  ['실제 풍경과 이면 흔적을 겹쳐 지역 카드를 찾습니다.','풍경 기록','안정적으로 지역 카드 탐색','깊은 흔적 추적','더 높은 단계의 카드 탐색'],
  ['지역을 지키는 강한 존재가 길을 막습니다.','약점 파훼','BREAK를 노려 균열 생성','수호 후 반격','피해를 줄이고 고급 재료 획득'],
- ['보스 전에 흐트러진 장단과 도구를 정리합니다.','정화 의례','결계와 체력을 회복','공명 의례','제작 재료를 더 찾아봄'],
+ ['보스 전에 흐트러진 숨과 도구를 정리합니다.','정화 의례','결계와 체력을 회복','공명 의례','제작 재료를 더 찾아봄'],
  ['지역의 심층 개체가 6성 카드의 진명을 지킵니다.','금기 준수','안전하게 첫 6성 카드를 확보','위험 감수','추가 재료와 함께 돌파'],
  ['장 보스의 수하가 마지막 경계를 붙듭니다.','규칙 해독','금기를 읽고 관문을 봉합','강행 돌파','강한 공격으로 보스전 개방']
 ];
@@ -372,7 +372,7 @@ function safeImg(src){img.src=src;img.onerror=()=>{img.removeAttribute('src');im
 function safeVideo(src,onEnd){try{video.pause()}catch{}video.src=src;video.currentTime=0;video.muted=true;video.playsInline=true;video.onended=onEnd||null;video.onerror=()=>{if(onEnd)onEnd()};const p=video.play();if(p&&p.catch)p.catch(()=>{if(onEnd)onEnd()})}
 function setPhase(p){phase=p;game.dataset.phase=p;travel.style.display=p==='travel'?'block':'none';explore.style.display=p==='explore'?'block':'none';dungeon.style.display=p==='dungeon'?'grid':'none';bossPanel.style.display=p==='boss'?'grid':'none';$('#creativeBadge').style.display=(p==='dungeon'||p==='boss')?'inline-flex':'none';$('#phaseTitle').textContent=p==='travel'?'현실 이동':p==='explore'?'탐험 · 조사':p==='dungeon'?'자유 경로 던전':'금기 · 보스 전투';renderTop()}
 function renderTop(){const r=refs[current],s=rstate();$('#regionKicker').textContent=r.tag;$('#regionTitle').textContent=r.name;$('#sourceNote').textContent=r.source;$('#routeMemory').textContent=`루트 기억 ${s.routeDone?1:0}`;$('#clueCount').textContent=`기록 ${s.clueStates.filter(x=>x.recorded).length} / 3`}
-function start(){const r=refs[current],s=rstate();img.style.objectPosition=r.position;if(s.complete||s.bossSeen)startBossReveal();else if(s.investigationComplete)startDungeon();else if(s.routeDone)startExplore();else startTravel();if(embedded)emit('hy-journey-ready',{version:'90.0.0'})}
+function start(){const r=refs[current],s=rstate();img.style.objectPosition=r.position;if(s.complete||s.bossSeen)startBossReveal();else if(s.investigationComplete)startDungeon();else if(s.routeDone)startExplore();else startTravel();if(embedded)emit('hy-journey-ready',{version:'90.1.0'})}
 function startTravel(){const r=refs[current],s=rstate();try{video.pause()}catch{}video.muted=true;setPhase('travel');$('#travelTitle').textContent=r.travelTitle;$('#travelCopy').textContent=r.travelCopy;routeIndex=Math.max(0,Math.min(Number(s.routeIndex||0),r.route.length-1));renderTourism();renderRoute()}
 function changeTravelScene(index){const frames=TRAVEL_STILLS[current]||[ART[current].travel],src=frames[Math.min(index,frames.length-1)]||ART[current].travel;if(img.dataset.travelSrc===src)return;img.dataset.travelSrc=src;img.classList.remove('travel-cut');safeImg(src);void img.offsetWidth;img.classList.add('travel-cut');setTimeout(()=>img.classList.remove('travel-cut'),1100)}
 function changeExploreScene(index){const frames=EXPLORE_STILLS[current]||[ART[current].explore],src=frames[Math.max(0,Math.min(index,frames.length-1))]||ART[current].explore;if(img.dataset.exploreSrc===src&&img.getAttribute('src')===src)return;img.dataset.exploreSrc=src;img.classList.remove('travel-cut');safeImg(src);img.style.objectPosition=refs[current].position;void img.offsetWidth;img.classList.add('travel-cut');setTimeout(()=>img.classList.remove('travel-cut'),1100)}
@@ -562,7 +562,9 @@ async function useBattleSkill(kind,card=null){
 const BOSS_DAILY_FULL=3;
 function bossDay(){return new Date().toLocaleDateString('sv-SE')}
 function bossDailyTick(s){const day=bossDay();if(!s.bossDaily||s.bossDaily.day!==day)s.bossDaily={day,wins:0};s.bossDaily.wins+=1;save();return{wins:s.bossDaily.wins,full:s.bossDaily.wins<=BOSS_DAILY_FULL}}
-function finishBattle(won,log){const r=refs[current],s=rstate(),first=!s.battle?.completed;battle.busy=false;battle.won=won;battle.lost=!won;renderBattle(log);document.querySelectorAll('#skillGrid button').forEach(b=>b.disabled=true);$('#skillGrid').style.display='none';$('#raidRail').style.display='none';$('.knot-hud').style.display='none';$('#battleResult').classList.add('show');$('#battleResult').classList.toggle('victory',won);$('#battleResultTitle').textContent=won?`${r.boss.name} · 금기 봉합`:'결계가 무너졌습니다';$('#battleResultCopy').textContent=won?'지역보스 인장과 진화 재료를 회수했습니다. 보스 카드는 낮은 확률로 직접 드롭됩니다.':'행동 예고와 대응 문구를 읽으면 피해를 크게 줄일 수 있습니다. 전투는 즉시 다시 시작할 수 있습니다.';$('#battleResultPrimary').textContent=won?'기록 완료 · 지도':'다시 도전';$('#battleResultPrimary').onclick=won?exit:startBossBattle;$('#battleResultSecondary').textContent=won?'보스 반복 도전':'기척으로 돌아가기';$('#battleResultSecondary').onclick=won?startBossBattle:startBossReveal;if(won){s.bossSeen=true;s.complete=true;s.battle={completed:true,clears:Number(s.battle?.clears||0)+1,turns:battle.turn,companion:parentCtx.companionCard,manifested:battle.lastSkill==='manifest'||battle.resolve===0,rewards:['지역보스 인장','고급 지전','정화수','보스 카드 추첨']};save();if(first)emit('hy-journey-boss-seen',{boss:r.boss.name,taboo:r.boss.taboo});const daily=bossDailyTick(s),k=daily.full?1:.5;emit('hy-journey-reward',{source:'region-boss',materials:{paper:Math.max(1,Math.floor(5*k)),water:Math.max(1,Math.floor(2*k))},fragmentCardId:stageEncounter(6)?.id,fragments:Math.max(1,Math.floor(5*k)),bossCardDrop:Math.random()<.08*k,dailyWins:daily.wins,dailyFull:daily.full});emit('hy-journey-battle-complete',{boss:r.boss.name,turns:battle.turn,companion:parentCtx.companionCard,rewards:4,repeat:!first});if(first)emit('hy-journey-complete',{zones:s.zones.length,records:s.clueStates.filter(x=>x.recorded).length,boss:r.boss.name,battle:true});toast(`${r.name} 지역보스 보상을 회수했습니다. 반복 도전할 수 있습니다.`)}}
+/* 결과 칸은 실제로 보낸 보상만 보여 준다(v90.1). 진 판은 보상 없음. */
+function showRewardGrid(rw){const g=$('#rewardGrid');if(!g)return;g.classList.toggle('empty',!rw);if(!rw){g.innerHTML='<div class="reward-item"><i>–</i><b>보상 없음</b><small>진 판은 기록만 남는다</small></div>';return}const N={rope:'금줄',paper:'지전',water:'정화수',blade:'신칼',mirror:'명두',food:'의례 음식'};const items=[['印',refs[current].boss.name+' 인장','× 1'],...Object.entries(rw.materials||{}).filter(([,n])=>n>0).map(([id,n])=>['▤',N[id]||id,'× '+n])];if(rw.fragmentCardId)items.push(['▣',(rw.fragmentCardName||'카드')+' 조각','× '+rw.fragments]);if(rw.bossCardDrop)items.push(['✦','보스 카드','6성 드롭']);g.innerHTML=items.map(([i,b,s])=>`<div class="reward-item"><i>${i}</i><b>${b}</b><small>${s}</small></div>`).join('')}
+function finishBattle(won,log){const r=refs[current],s=rstate(),first=!s.battle?.completed;battle.busy=false;battle.won=won;battle.lost=!won;renderBattle(log);showRewardGrid(null);document.querySelectorAll('#skillGrid button').forEach(b=>b.disabled=true);$('#skillGrid').style.display='none';$('#raidRail').style.display='none';$('.knot-hud').style.display='none';$('#battleResult').classList.add('show');$('#battleResult').classList.toggle('victory',won);$('#battleResultTitle').textContent=won?`${r.boss.name} · 금기 봉합`:'결계가 무너졌습니다';$('#battleResultCopy').textContent=won?'지역보스 인장과 진화 재료를 회수했습니다. 보스 카드는 낮은 확률로 직접 드롭됩니다.':'행동 예고와 대응 문구를 읽으면 피해를 크게 줄일 수 있습니다. 전투는 즉시 다시 시작할 수 있습니다.';$('#battleResultPrimary').textContent=won?'기록 완료 · 지도':'다시 도전';$('#battleResultPrimary').onclick=won?exit:startBossBattle;$('#battleResultSecondary').textContent=won?'보스 반복 도전':'기척으로 돌아가기';$('#battleResultSecondary').onclick=won?startBossBattle:startBossReveal;if(won){s.bossSeen=true;s.complete=true;s.battle={completed:true,clears:Number(s.battle?.clears||0)+1,turns:battle.turn,companion:parentCtx.companionCard,manifested:battle.lastSkill==='manifest'||battle.resolve===0,rewards:['지역보스 인장','고급 지전','정화수','보스 카드 추첨']};save();if(first)emit('hy-journey-boss-seen',{boss:r.boss.name,taboo:r.boss.taboo});const daily=bossDailyTick(s),k=daily.full?1:.5;const bossReward={source:'region-boss',materials:{paper:Math.max(1,Math.floor(5*k)),water:Math.max(1,Math.floor(2*k))},fragmentCardId:stageEncounter(6)?.id,fragmentCardName:stageEncounter(6)?.name,fragments:Math.max(1,Math.floor(5*k)),bossCardDrop:Math.random()<.08*k,dailyWins:daily.wins,dailyFull:daily.full};emit('hy-journey-reward',bossReward);showRewardGrid(bossReward);emit('hy-journey-battle-complete',{boss:r.boss.name,turns:battle.turn,companion:parentCtx.companionCard,rewards:4,repeat:!first});if(first)emit('hy-journey-complete',{zones:s.zones.length,records:s.clueStates.filter(x=>x.recorded).length,boss:r.boss.name,battle:true});toast(`${r.name} 지역보스 보상을 회수했습니다. 반복 도전할 수 있습니다.`)}}
 function replayBoss(){img.animate([{transform:'scale(1.015)'},{transform:'scale(1.06)'},{transform:'scale(1.015)'}],{duration:1200,easing:'ease-in-out'});toast('이면의 기척을 다시 확인했습니다.')}
 function exit(target='map'){target=target==='home'?'home':'map';if(embedded)emit('hy-journey-exit',{target});else if(target==='home')location.replace('../index.html');else history.back()}
 window.addEventListener('message',e=>{const d=e.data||{};if(d.type==='hy-journey-context'){parentCtx={...parentCtx,...d,itemQty:{...parentCtx.itemQty,...(d.itemQty||{})}};document.documentElement.dataset.partyCount=String(parentCtx.party?.length||0);document.documentElement.dataset.companionManifested=parentCtx.companionManifested?'true':'false';if(phase==='explore')renderExplore();if(phase==='dungeon')renderZones();if(sheet.classList.contains('open'))renderInvest()}if(d.type==='hy-journey-item-result'){const fn=pendingItems.get(d.requestId);if(!fn)return;pendingItems.delete(d.requestId);if(d.ok&&d.item)parentCtx.itemQty[d.item]=Number(d.remaining||0);fn(!!d.ok);if(phase==='explore')renderExplore()}});
@@ -575,7 +577,7 @@ document.querySelectorAll('#skillGrid [data-skill]').forEach(b=>b.onclick=()=>us
 (() => {
   'use strict';
 
-  const PAN_VERSION = '90.0.0';
+  const PAN_VERSION = '90.1.0';
   const KNOTS = 7;
   const HEAT_MAX = 4;
   const TEMPO = [1, .93, .85, .77, .68];
@@ -599,7 +601,7 @@ document.querySelectorAll('#skillGrid [data-skill]').forEach(b=>b.onclick=()=>us
    * - 카드는 등급만큼 숨을 고른다. 센 카드는 매듭을 더 풀지만 오래 쉰다.
    * - 매듭 1·1·1 → 겹매듭 2·2·3 → 마지막 매듭. 한 합에 매듭은 하나까지만 풀린다.
    * - 판의 기세는 국면마다 상한이 있다. 최고조(강신)는 마지막 매듭에서만 열린다.
-   * - 이긴 직후 추임새를 고를 수 있다. 기세 +1, 대신 다음 수가 강수.
+   * - 이긴 직후 기세를 걸 수 있다(화면: "기세를 건다"). 기세 +1, 대신 다음 수가 강수.
    * - 아인 버티기: 피해 1/3, 진전 없음.
    */
   /* 조사 — 이름 뒤에 붙는 이/가, 을/를, 은/는, 과/와. 마지막 한글 음절의 받침으로 고른다. */
@@ -711,7 +713,7 @@ document.querySelectorAll('#skillGrid [data-skill]').forEach(b=>b.onclick=()=>us
     const t = battle.tips, out = [];
     const say = (key, text) => { if (!t[key]) { t[key] = 1; out.push(text); } };
     if (card && battle.rest[card.id] > 0) say('rest', `쓴 카드는 숨을 고릅니다. 센 카드일수록 오래 쉽니다 (${card.name} ${battle.rest[card.id]}수).`);
-    if (battle.chuimOpen) say('chuim', '이긴 직후에는 추임새를 넣을 수 있습니다. 판이 달아오르는 대신 다음 수가 강수가 됩니다.');
+    if (battle.chuimOpen) say('chuim', '이긴 직후에는 기세를 걸 수 있습니다. 판이 달아오르는 대신 다음 수가 강수가 됩니다.');
     if (block) say('block', '버티면 피해가 3분의 1로 줄지만 판은 나아가지 않습니다.');
     if (!isRecorded(battle.intentMove[0])) say('unknown', '처음 보는 수는 두 종류 중 하나로만 보입니다. 한 번 겪으면 아인이 기록합니다.');
     if (out.length) save();
@@ -748,7 +750,7 @@ document.querySelectorAll('#skillGrid [data-skill]').forEach(b=>b.onclick=()=>us
     battle.strong = true;
     battle.chuimsae += 1;
     repeatSetHeat(battle.heat + 1);
-    panRenderBattle('<b>얼쑤!</b> 추임새가 판을 달굽니다. 대신 <b>' + refs[current].boss.name + '의 다음 수는 강수</b>입니다.');
+    panRenderBattle('<b>기세를 걸었습니다.</b> 판이 달아오릅니다. 대신 <b>' + refs[current].boss.name + '의 다음 수는 강수</b>입니다.');
   }
   async function repeatFinale(card) {
     if (parentCtx.companionManifested && !battle.manifestUsed) await panManifest(card, true, true);
@@ -1284,7 +1286,7 @@ document.querySelectorAll('#skillGrid [data-skill]').forEach(b=>b.onclick=()=>us
     }
     if(!firstEncounter){fallback.innerHTML='';
       const blk=document.createElement('button');blk.className='soft';blk.id='panBlock';blk.dataset.skill='block';blk.innerHTML='아인 · 버티기<small data-pan-label=1>피해 ⅓ · 진전 없음</small>';blk.onclick=()=>useBattleSkill('block');
-      const chu=document.createElement('button');chu.className='soft';chu.id='panChuimsae';chu.hidden=true;chu.innerHTML='얼쑤! 추임새<small data-pan-label=1>기세 +1 · 다음 수가 강수</small>';chu.onclick=repeatChuimsae;
+      const chu=document.createElement('button');chu.className='soft';chu.id='panChuimsae';chu.hidden=true;chu.innerHTML='기세를 건다<small data-pan-label=1>기세 +1 · 대신 다음 수가 강수</small>';chu.onclick=repeatChuimsae;
       fallback.append(chu,blk);}
     q('.pan-field-actions')?.remove();deck.before(fallback);
     battle.busy=true;panRenderBattle();
@@ -1307,7 +1309,7 @@ document.querySelectorAll('#skillGrid [data-skill]').forEach(b=>b.onclick=()=>us
       q('#battleResultCopy').textContent = battle.firstEncounter ? '얼굴 없는 기척의 단서를 모두 기록했습니다. 다음 대면부터 보스가 모습을 드러내며, 공격과 대응 카드를 주고받는 전투가 시작됩니다.' : '보스의 공격을 받아치며 일곱 매듭을 풀었습니다. 지역 인장과 재료를 회수하고 다시 도전할 수 있습니다.';
     } else {
       q('#battleResultTitle').textContent = '판이 식었습니다';
-      q('#battleResultCopy').textContent = '보스가 낸 공격 카드와 대응 안내를 읽어보세요. 기록 · 수호 · 파훼 중 알맞은 카드로 받아칠 수 있습니다.';
+      q('#battleResultCopy').textContent = '보스가 낸 수와 대응 안내를 읽어보세요. 맞서기 · 지키기 · 끊기 중 알맞은 카드로 받아칠 수 있습니다.';
     }
   }
 

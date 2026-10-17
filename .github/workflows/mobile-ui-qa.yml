@@ -36,6 +36,7 @@ jobs:
           cache: npm
       - run: npm install
       - run: npx playwright install --with-deps chromium
+      - run: npm run qa:truth
       - run: npm run qa:mobile
       - run: npm run qa:yeojaman
       - run: npm run qa:combat
