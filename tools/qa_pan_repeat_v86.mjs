@@ -104,6 +104,8 @@ async function play(region, policy, shots, deck = 'mixed', preset = null) {
   /* v90.1: 결과 칸은 실제로 받은 것만 — 이기면 인장, 지면 '보상 없음'. 옛 정적 4칸(원화·기억 조각)은 없어야 한다 */
   if (end.won || end.lost) {
     const grid = await page.locator('#rewardGrid').innerText().catch(() => '');
+    const gridShown = await page.locator('#rewardGrid').isVisible().catch(() => false);
+    check(gridShown, region + ' result grid is visible after the fight');
     check(end.won ? /인장/.test(grid) && !/원화|기억 조각/.test(grid) : /보상 없음/.test(grid), region + ' result grid shows what was actually given ' + JSON.stringify(grid));
   }
   if (shots) await page.screenshot({ path: join(out, `${region}-${end.won ? 'won' : 'lost'}.png`) });
